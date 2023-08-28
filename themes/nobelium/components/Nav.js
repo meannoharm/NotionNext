@@ -39,7 +39,7 @@ const Nav = (props) => {
     <>
       <div className="observer-element h-4 md:h-12" ref={sentinalRef}></div>
       <div
-        className={`sticky-nav m-auto w-full h-6 flex flex-row justify-between items-center mb-2 md:mb-12 py-8 bg-opacity-60 ${
+        className={`sticky-nav m-auto mb-2 flex h-6 w-full flex-row items-center justify-between bg-opacity-60 py-8 md:mb-12 ${
           !fullWidth ? 'max-w-3xl px-4' : 'px-4 md:px-24'
         }`}
         id="sticky-nav"
@@ -49,24 +49,13 @@ const Nav = (props) => {
           <Link href="/" aria-label={BLOG.title}>
             <div className="h-6 w-6">
               {/* <SvgIcon/> */}
-              {CONFIG.NAV_NOTION_ICON ? (
-                <LazyImage
-                  src={siteInfo?.icon}
-                  width={24}
-                  height={24}
-                  alt={BLOG.AUTHOR}
-                />
-              ) : (
-                <SvgIcon />
-              )}
+              {CONFIG.NAV_NOTION_ICON ? <LazyImage src={siteInfo?.icon} width={24} height={24} alt={BLOG.AUTHOR} /> : <SvgIcon />}
             </div>
           </Link>
           {navBarTitle ? (
-            <p className="ml-2 font-medium text-gray-800 dark:text-gray-300 header-name">
-              {navBarTitle}
-            </p>
+            <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">{navBarTitle}</p>
           ) : (
-            <p className="ml-2 font-medium text-gray-800 dark:text-gray-300 header-name">
+            <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">
               {siteInfo?.title}
               {/* ,{' '}<span className="font-normal">{siteInfo?.description}</span> */}
             </p>
@@ -134,28 +123,17 @@ const NavBar = (props) => {
   }
 
   return (
-    <div className="flex-shrink-0 flex">
-      <ul className="hidden md:flex flex-row">
+    <div className="flex flex-shrink-0">
+      <ul className="hidden flex-row md:flex">
         {links?.map((link) => (
           <MenuItemDrop key={link?.id} link={link} />
         ))}
       </ul>
       <div className="md:hidden">
-        <Collapse
-          collapseRef={collapseRef}
-          isOpen={isOpen}
-          type="vertical"
-          className="fixed top-16 right-6"
-        >
-          <div className="dark:border-black bg-white dark:bg-black rounded border p-2 text-sm">
+        <Collapse collapseRef={collapseRef} isOpen={isOpen} type="vertical" className="fixed right-6 top-16">
+          <div className="rounded border bg-white p-2 text-sm dark:border-black dark:bg-black">
             {links?.map((link) => (
-              <MenuItemCollapse
-                key={link?.id}
-                link={link}
-                onHeightChange={(param) =>
-                  collapseRef.current?.updateCollapseHeight(param)
-                }
-              />
+              <MenuItemCollapse key={link?.id} link={link} onHeightChange={(param) => collapseRef.current?.updateCollapseHeight(param)} />
             ))}
           </div>
         </Collapse>
@@ -165,10 +143,7 @@ const NavBar = (props) => {
       {JSON.parse(CONFIG.MENU_SEARCH_BUTTON) && <SearchButton {...props} />}
       <DarkModeButton />
 
-      <i
-        onClick={toggleOpen}
-        className="fas fa-bars cursor-pointer px-5 flex justify-center items-center md:hidden"
-      ></i>
+      <i onClick={toggleOpen} className="fas fa-bars flex cursor-pointer items-center justify-center px-5 md:hidden"></i>
     </div>
   );
 };

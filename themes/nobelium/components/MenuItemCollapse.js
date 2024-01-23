@@ -28,14 +28,17 @@ export const MenuItemCollapse = (props) => {
 
   return (
     <>
-      <div className="w-full px-4 py-2 text-left dark:border-black dark:bg-hexo-black-gray" onClick={toggleShow}>
+      <div
+        className="w-full px-4 py-2 text-left transition-all duration-200 hover:text-red-400  dark:border-black dark:bg-hexo-black-gray"
+        onClick={toggleShow}
+      >
         {!hasSubMenu && (
           <Link
             href={link?.to}
             target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
             className="flex  justify-between pb-1 pl-2 pr-4 font-extralight tracking-widest no-underline dark:text-gray-200"
           >
-            <span className=" items-center transition-all duration-200 hover:text-red-400">
+            <span className="items-center">
               {link?.icon && (
                 <span className="mr-2">
                   <i className={link.icon} />
@@ -50,7 +53,7 @@ export const MenuItemCollapse = (props) => {
             onClick={hasSubMenu ? toggleOpenSubMenu : null}
             className="flex cursor-pointer items-center pb-1 pl-2 pr-4  font-extralight tracking-widest no-underline dark:text-gray-200"
           >
-            <span className=" items-center mr-auto transition-all duration-200 hover:text-red-400">
+            <span className="mr-auto items-center">
               {link?.icon && (
                 <span className="mr-2">
                   <i className={link.icon} />
@@ -58,7 +61,7 @@ export const MenuItemCollapse = (props) => {
               )}
               {link?.name}
             </span>
-            <i className="fa fa-plus px-2 text-gray-400"></i>
+            {isOpen ? <i className="fa fa-minus px-2" /> : <i className="fa fa-plus px-2" />}
           </div>
         )}
       </div>
@@ -70,10 +73,10 @@ export const MenuItemCollapse = (props) => {
             return (
               <div
                 key={sLink.id}
-                className="justify-start border-b bg-gray-50 px-10 py-3  pr-6 text-left font-extralight tracking-widest transition-all duration-200 hover:bg-gray-50 dark:border-gray-800 dark:bg-black dark:hover:bg-gray-900"
+                className="justify-start border-b bg-gray-50 text-left font-extralight tracking-widest transition-all duration-200 last:border-none hover:bg-gray-100 dark:border-gray-800 dark:bg-black dark:hover:bg-gray-900"
               >
                 <Link href={sLink.to} target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}>
-                  <span className="text-xs">{sLink.title}</span>
+                  <div className="px-10 py-3 pr-6  text-left text-xs">{sLink.title}</div>
                 </Link>
               </div>
             );

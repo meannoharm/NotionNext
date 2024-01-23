@@ -24,11 +24,11 @@ export const Footer = (props) => {
       {/* <DarkModeButton className="text-center py-4" /> */}
       <hr className="border-gray-200 dark:border-gray-600" />
       <div className="my-4 text-sm leading-6">
-        <div className="align-center flex flex-wrap">
-          <div className="mr-2">
+        <div className="flex flex-col items-center md:flex-row">
+          <div className="md:mr-2 mr-0">
             © {BLOG.AUTHOR} {copyrightDate}.
           </div>
-          <div className="mr-auto">
+          <div className="md:mr-auto mr-0">
             Licensed under <a href={BLOG.LICENSE_URL}>{BLOG.LICENSE}</a>.
           </div>
           <Vercel />

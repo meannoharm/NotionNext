@@ -36,7 +36,7 @@ const Nav = (props) => {
     };
   }, [sentinalRef]);
   return (
-    <>
+    <div>
       <div className="observer-element h-4 md:h-12" ref={sentinalRef}></div>
       <div
         className={`sticky-nav m-auto mb-2 flex h-6 w-full flex-row items-center justify-between bg-opacity-60 py-8 md:mb-12 ${
@@ -45,13 +45,11 @@ const Nav = (props) => {
         id="sticky-nav"
         ref={navRef}
       >
-        <div className="flex items-center">
-          <Link href="/" aria-label={BLOG.title}>
+          <Link className="flex items-center" href="/" aria-label={BLOG.title}>
             <div className="h-6 w-6">
               {/* <SvgIcon/> */}
               {CONFIG.NAV_NOTION_ICON ? <LazyImage src={siteInfo?.icon} width={24} height={24} alt={BLOG.AUTHOR} /> : <SvgIcon />}
             </div>
-          </Link>
           {navBarTitle ? (
             <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">{navBarTitle}</p>
           ) : (
@@ -60,10 +58,10 @@ const Nav = (props) => {
               {/* ,{' '}<span className="font-normal">{siteInfo?.description}</span> */}
             </p>
           )}
-        </div>
+        </Link>
         <NavBar {...props} />
       </div>
-    </>
+    </div>
   );
 };
 

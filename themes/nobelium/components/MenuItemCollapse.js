@@ -48,9 +48,9 @@ export const MenuItemCollapse = (props) => {
         {hasSubMenu && (
           <div
             onClick={hasSubMenu ? toggleOpenSubMenu : null}
-            className="flex cursor-pointer justify-between pb-1 pl-2 pr-4  font-extralight tracking-widest no-underline dark:text-gray-200"
+            className="flex cursor-pointer items-center pb-1 pl-2 pr-4  font-extralight tracking-widest no-underline dark:text-gray-200"
           >
-            <span className=" items-center transition-all duration-200 hover:text-red-400">
+            <span className=" items-center mr-auto transition-all duration-200 hover:text-red-400">
               {link?.icon && (
                 <span className="mr-2">
                   <i className={link.icon} />

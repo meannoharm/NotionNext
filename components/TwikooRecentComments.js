@@ -1,12 +1,11 @@
-
 /**
  * 显示最近评论 TODO
  * @returns {JSX.Element}
  * @constructor
  */
 
-const TwikooRecentComments = (props) => {
-  return null
-}
+const TwikooRecentComments = () => {
+  return null;
+};
 
-export default TwikooRecentComments
+export default TwikooRecentComments;

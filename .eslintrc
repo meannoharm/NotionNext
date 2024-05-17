@@ -1,3 +1,15 @@
 {
-  "extends": ["eslint:recommended", "next", "prettier"]
+  "root": true,
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "next",
+    "prettier"
+  ]
 }

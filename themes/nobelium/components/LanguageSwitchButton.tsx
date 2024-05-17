@@ -27,7 +27,7 @@ export default function LanguageSwitchButton() {
         </div>
       </div>
       {isOpen && (
-        <div className="absolute rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black">
+        <div className="absolute w-48 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black">
           <Collapse isOpen={isOpen}>
             {supportedLocales.map((lang) => (
               <div

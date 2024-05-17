@@ -36,7 +36,7 @@ const Vercel = () => {
         </defs>
       </svg>
     </a>
-  )
-}
+  );
+};
 
-export default Vercel
+export default Vercel;

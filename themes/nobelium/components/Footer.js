@@ -25,10 +25,10 @@ export const Footer = (props) => {
       <hr className="border-gray-200 dark:border-gray-600" />
       <div className="my-4 text-sm leading-6">
         <div className="flex flex-col items-center md:flex-row">
-          <div className="md:mr-2 mr-0">
+          <div className="mr-0 md:mr-2">
             © {BLOG.AUTHOR} {copyrightDate}.
           </div>
-          <div className="md:mr-auto mr-0">
+          <div className="mb-2 mr-0 md:mr-auto">
             Licensed under <a href={BLOG.LICENSE_URL}>{BLOG.LICENSE}</a>.
           </div>
           <Vercel />

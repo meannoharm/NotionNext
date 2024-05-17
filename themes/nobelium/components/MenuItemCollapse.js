@@ -1,6 +1,8 @@
 import Collapse from '@/components/Collapse';
 import Link from 'next/link';
 import { useState } from 'react';
+import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
+import { useRef } from 'react';
 
 /**
  * 折叠菜单
@@ -9,14 +11,14 @@ import { useState } from 'react';
  */
 export const MenuItemCollapse = (props) => {
   const { link } = props;
-  const [show, changeShow] = useState(false);
-  const hasSubMenu = link?.subMenus?.length > 0;
-
   const [isOpen, changeIsOpen] = useState(false);
+  const menuRef = useRef();
 
-  const toggleShow = () => {
-    changeShow(!show);
-  };
+  useToggleClickOutSide(menuRef, () => {
+    changeIsOpen(false);
+  });
+
+  const hasSubMenu = link?.subMenus?.length > 0;
 
   const toggleOpenSubMenu = () => {
     changeIsOpen(!isOpen);
@@ -27,62 +29,60 @@ export const MenuItemCollapse = (props) => {
   }
 
   return (
-    <>
-      <div
-        className="w-full px-4 py-2 text-left transition-all duration-200 hover:text-red-400  dark:border-black dark:bg-hexo-black-gray"
-        onClick={toggleShow}
-      >
-        {!hasSubMenu && (
-          <Link
-            href={link?.to}
-            target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
-            className="flex  justify-between pb-1 pl-2 pr-4 font-extralight tracking-widest no-underline dark:text-gray-200"
-          >
-            <span className="items-center">
-              {link?.icon && (
-                <span className="mr-2">
-                  <i className={link.icon} />
-                </span>
-              )}
-              {link?.name}
-            </span>
-          </Link>
-        )}
-        {hasSubMenu && (
-          <div
-            onClick={hasSubMenu ? toggleOpenSubMenu : null}
-            className="flex cursor-pointer items-center pb-1 pl-2 pr-4  font-extralight tracking-widest no-underline dark:text-gray-200"
-          >
-            <span className="mr-auto items-center">
-              {link?.icon && (
-                <span className="mr-2">
-                  <i className={link.icon} />
-                </span>
-              )}
-              {link?.name}
-            </span>
-            {isOpen ? <i className="fa fa-minus px-2" /> : <i className="fa fa-plus px-2" />}
+    <div className="mb-2 transition-all duration-200  last:mb-0 dark:border-black dark:bg-hexo-black-gray">
+      {!hasSubMenu && (
+        <Link
+          href={link?.to}
+          target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
+          className="flex px-4 dark:text-gray-200 "
+        >
+          {link?.icon && (
+            <div className="mr-2">
+              <i className={link.icon} />
+            </div>
+          )}
+          <div>{link?.name}</div>
+        </Link>
+      )}
+      {hasSubMenu && (
+        <div
+          onClick={hasSubMenu ? toggleOpenSubMenu : null}
+          className="flex cursor-pointer justify-center px-4 dark:text-gray-200 "
+        >
+          {link?.icon && (
+            <div className="mr-2">
+              <i className={link.icon} />
+            </div>
+          )}
+          <div class="mr-auto">{link?.name}</div>
+          <div class="flex items-center">
+            {isOpen ? (
+              <i className="fa fa-minus" />
+            ) : (
+              <i className="fa fa-plus" />
+            )}
           </div>
-        )}
-      </div>
-
+        </div>
+      )}
       {/* 折叠子菜单 */}
       {hasSubMenu && (
         <Collapse isOpen={isOpen} onHeightChange={props.onHeightChange}>
-          {link.subMenus.map((sLink) => {
-            return (
-              <div
-                key={sLink.id}
-                className="justify-start border-b bg-gray-50 text-left font-extralight tracking-widest transition-all duration-200 last:border-none hover:bg-gray-100 dark:border-gray-800 dark:bg-black dark:hover:bg-gray-900"
-              >
-                <Link href={sLink.to} target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}>
-                  <div className="px-10 py-3 pr-6  text-left text-xs">{sLink.title}</div>
+          <div class="flex flex-col">
+            {link.subMenus.map((sLink) => {
+              return (
+                <Link
+                  key={sLink.id}
+                  href={sLink.to}
+                  target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
+                  class="mt-2 px-10"
+                >
+                  {sLink.title}
                 </Link>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </Collapse>
       )}
-    </>
+    </div>
   );
 };

@@ -11,14 +11,15 @@ import LazyImage from '@/components/LazyImage';
 import DarkModeButton from '@/components/DarkModeButton';
 import RandomPostButton from './RandomPostButton';
 import SearchButton from './SearchButton';
+import LanguageSwitchButton from './LanguageSwitchButton';
 
 const Nav = (props) => {
   const { navBarTitle, fullWidth, siteInfo } = props;
-  const useSticky = !BLOG.autoCollapsedNavBar;
   const navRef = useRef(null);
-  const sentinalRef = useRef([]);
+  const sentinelRef = useRef([]);
+
   const handler = ([entry]) => {
-    if (navRef && navRef.current && useSticky) {
+    if (navRef && navRef.current) {
       if (!entry.isIntersecting && entry !== undefined) {
         navRef.current?.classList.add('sticky-nav-full');
       } else {
@@ -28,16 +29,22 @@ const Nav = (props) => {
       navRef.current?.classList.add('remove-sticky');
     }
   };
+
   useEffect(() => {
-    const obvserver = new window.IntersectionObserver(handler);
-    obvserver.observe(sentinalRef.current);
+    const observer = new window.IntersectionObserver(handler);
+    const sentinelRefCurrent = sentinelRef.current;
+    observer.observe(sentinelRefCurrent);
     return () => {
-      if (sentinalRef.current) obvserver.unobserve(sentinalRef.current);
+      if (sentinelRefCurrent) observer.unobserve(sentinelRefCurrent);
     };
-  }, [sentinalRef]);
+  }, [sentinelRef]);
+
   return (
-    <div>
-      <div className="observer-element h-4 md:h-12" ref={sentinalRef}></div>
+    <>
+      <div
+        className="observer-element absolute top-0 h-4 md:h-12"
+        ref={sentinelRef}
+      ></div>
       <div
         className={`sticky-nav m-auto mb-2 flex h-6 w-full flex-row items-center justify-between bg-opacity-60 py-8 md:mb-12 ${
           !fullWidth ? 'max-w-3xl px-4' : 'px-4 md:px-24'
@@ -45,13 +52,24 @@ const Nav = (props) => {
         id="sticky-nav"
         ref={navRef}
       >
-          <Link className="flex items-center" href="/" aria-label={BLOG.title}>
-            <div className="h-6 w-6">
-              {/* <SvgIcon/> */}
-              {CONFIG.NAV_NOTION_ICON ? <LazyImage src={siteInfo?.icon} width={24} height={24} alt={BLOG.AUTHOR} /> : <SvgIcon />}
-            </div>
+        <Link className="flex items-center" href="/" aria-label={BLOG.title}>
+          <div className="h-6 w-6">
+            {/* <SvgIcon/> */}
+            {CONFIG.NAV_NOTION_ICON ? (
+              <LazyImage
+                src={siteInfo?.icon}
+                width={24}
+                height={24}
+                alt={BLOG.AUTHOR}
+              />
+            ) : (
+              <SvgIcon />
+            )}
+          </div>
           {navBarTitle ? (
-            <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">{navBarTitle}</p>
+            <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">
+              {navBarTitle}
+            </p>
           ) : (
             <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">
               {siteInfo?.title}
@@ -61,7 +79,7 @@ const Nav = (props) => {
         </Link>
         <NavBar {...props} />
       </div>
-    </div>
+    </>
   );
 };
 
@@ -127,11 +145,24 @@ const NavBar = (props) => {
           <MenuItemDrop key={link?.id} link={link} />
         ))}
       </ul>
+
+      {/* 移动端使用的菜单 */}
       <div className="md:hidden">
-        <Collapse collapseRef={collapseRef} isOpen={isOpen} type="vertical" className="fixed right-6 top-16">
-          <div className="rounded border bg-white p-2 text-sm dark:border-black dark:bg-black">
+        <Collapse
+          collapseRef={collapseRef}
+          isOpen={isOpen}
+          type="vertical"
+          className="fixed right-6 top-16"
+        >
+          <div className="flex w-48 flex-col rounded border bg-white py-2 text-sm dark:border-black dark:bg-black">
             {links?.map((link) => (
-              <MenuItemCollapse key={link?.id} link={link} onHeightChange={(param) => collapseRef.current?.updateCollapseHeight(param)} />
+              <MenuItemCollapse
+                key={link?.id}
+                link={link}
+                onHeightChange={(param) =>
+                  collapseRef.current?.updateCollapseHeight(param)
+                }
+              />
             ))}
           </div>
         </Collapse>
@@ -139,9 +170,13 @@ const NavBar = (props) => {
 
       {JSON.parse(CONFIG.MENU_RANDOM_POST) && <RandomPostButton {...props} />}
       {JSON.parse(CONFIG.MENU_SEARCH_BUTTON) && <SearchButton {...props} />}
+      <LanguageSwitchButton {...props} />
       <DarkModeButton />
 
-      <i onClick={toggleOpen} className="fas fa-bars flex cursor-pointer items-center justify-center px-5 md:hidden"></i>
+      {/* 移动端菜单按钮 */}
+      <div className="flex h-10 w-10 cursor-pointer items-center justify-center md:hidden">
+        <i onClick={toggleOpen} className="fas fa-bars"></i>
+      </div>
     </div>
   );
 };

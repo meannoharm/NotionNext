@@ -9,8 +9,8 @@
   },
   "author": {
     "name": "tangly",
-    "email": "811460602@qq.com",
-    "url": "http://gao.tn"
+    "email": "czgaotian1@gmail.com",
+    "url": "http://04.lu"
   },
   "scripts": {
     "dev": "next dev",
@@ -18,7 +18,8 @@
     "start": "next start",
     "post-build": "next-sitemap --config next-sitemap.config.js",
     "export": "next build && next-sitemap --config next-sitemap.config.js && next export",
-    "bundle-report": "ANALYZE=true yarn build"
+    "bundle-report": "ANALYZE=true pnpm build",
+    "lint": "next lint"
   },
   "dependencies": {
     "@giscus/react": "^2.2.6",
@@ -56,11 +57,14 @@
     "typed.js": "^2.0.12"
   },
   "devDependencies": {
+    "@types/node": "^20.12.12",
     "@types/react": "18.2.75",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
     "@waline/client": "^2.5.1",
     "autoprefixer": "^10.4.13",
-    "eslint": "^7.26.0",
+    "eslint": "^7.32.0",
     "eslint-config-next": "^14.1.4",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.23.0",
     "eslint-plugin-node": "^11.1.0",

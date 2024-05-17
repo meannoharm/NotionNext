@@ -1,18 +1,23 @@
 ARG NOTION_PAGE_ID
+# Use a smaller base image
+ARG NODE_VERSION=node:20-alpine
+
 # Install dependencies only when needed
-FROM node:18-alpine3.18 AS deps
+FROM NODE_VERSION AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 RUN npm install -g pnpm
-RUN pnpm install
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
-FROM node:18-alpine3.18 AS builder
+FROM deps AS builder
 ARG NOTION_PAGE_ID
-COPY --from=deps ./node_modules ./node_modules
-RUN npm run build
+COPY . .
+RUN pnpm run build
 
-ENV NODE_ENV production
+# TODO production
 
 EXPOSE 3000
 

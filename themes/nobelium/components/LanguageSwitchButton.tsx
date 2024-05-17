@@ -4,12 +4,14 @@ import { supportedLocales } from '@/lib/lang';
 import { Language } from '@/components/HeroIcons';
 import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
 
+import type { RefObject } from 'react';
+
 /**
  * 语言切换
  */
 export default function LanguageSwitchButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLElement>(null) as RefObject<HTMLDivElement>;
 
   useToggleClickOutSide(menuRef, () => {
     setIsOpen(false);

@@ -1,12 +1,25 @@
 import { useEffect } from 'react';
+import type { RefObject } from 'react';
 
 export default function useToggleClickOutSide(
-  targetRef: any,
+  targetRef: RefObject<HTMLElement> | RefObject<HTMLElement>[],
   callback: Function,
 ) {
   useEffect(() => {
+    let targetRefs: RefObject<HTMLElement>[] = [];
+    if (!Array.isArray(targetRef)) {
+      targetRefs = [targetRef];
+    } else {
+      targetRefs = targetRef;
+    }
     const handleClickOutside = (event: MouseEvent) => {
-      if (targetRef.current && !targetRef.current.contains(event.target)) {
+      let isOutside = true;
+      targetRefs.forEach((ref) => {
+        if (ref.current && ref.current.contains(event.target as Node)) {
+          isOutside = false;
+        }
+      });
+      if (isOutside) {
         callback();
       }
     };

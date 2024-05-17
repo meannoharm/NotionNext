@@ -1,8 +1,6 @@
 import Collapse from '@/components/Collapse';
 import Link from 'next/link';
 import { useState } from 'react';
-import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
-import { useRef } from 'react';
 
 /**
  * 折叠菜单
@@ -12,11 +10,6 @@ import { useRef } from 'react';
 export const MenuItemCollapse = (props) => {
   const { link } = props;
   const [isOpen, changeIsOpen] = useState(false);
-  const menuRef = useRef();
-
-  useToggleClickOutSide(menuRef, () => {
-    changeIsOpen(false);
-  });
 
   const hasSubMenu = link?.subMenus?.length > 0;
 
@@ -74,7 +67,7 @@ export const MenuItemCollapse = (props) => {
                   key={sLink.id}
                   href={sLink.to}
                   target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
-                  class="mt-2 px-10"
+                  class="mt-2 px-12"
                 >
                   {sLink.title}
                 </Link>

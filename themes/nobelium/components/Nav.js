@@ -12,6 +12,7 @@ import DarkModeButton from '@/components/DarkModeButton';
 import RandomPostButton from './RandomPostButton';
 import SearchButton from './SearchButton';
 import LanguageSwitchButton from './LanguageSwitchButton';
+import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
 
 const Nav = (props) => {
   const { navBarTitle, fullWidth, siteInfo } = props;
@@ -86,10 +87,17 @@ const Nav = (props) => {
 const NavBar = (props) => {
   const { customMenu, customNav } = props;
   const [isOpen, changeOpen] = useState(false);
+  const collapseRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const mobileMenuToggleButtonRef = useRef(null);
+
   const toggleOpen = () => {
     changeOpen(!isOpen);
   };
-  const collapseRef = useRef(null);
+
+  useToggleClickOutSide([mobileMenuRef, mobileMenuToggleButtonRef], () => {
+    changeOpen(false);
+  });
 
   const { locale } = useGlobal();
   let links = [
@@ -147,7 +155,7 @@ const NavBar = (props) => {
       </ul>
 
       {/* 移动端使用的菜单 */}
-      <div className="md:hidden">
+      <div className="md:hidden" ref={mobileMenuRef}>
         <Collapse
           collapseRef={collapseRef}
           isOpen={isOpen}
@@ -174,8 +182,12 @@ const NavBar = (props) => {
       <DarkModeButton />
 
       {/* 移动端菜单按钮 */}
-      <div className="flex h-10 w-10 cursor-pointer items-center justify-center md:hidden">
-        <i onClick={toggleOpen} className="fas fa-bars"></i>
+      <div
+        onClick={toggleOpen}
+        ref={mobileMenuToggleButtonRef}
+        className="flex h-10 w-10 cursor-pointer items-center justify-center md:hidden"
+      >
+        <i className="fas fa-bars"></i>
       </div>
     </div>
   );

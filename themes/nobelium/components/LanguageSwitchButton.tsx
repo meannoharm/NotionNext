@@ -1,3 +1,4 @@
+import { useGlobal } from '@/lib/global';
 import Collapse from '@/components/Collapse';
 import { useRef, useState } from 'react';
 import { supportedLocales } from '@/lib/lang';
@@ -12,15 +13,20 @@ import type { RefObject } from 'react';
 export default function LanguageSwitchButton() {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLElement>(null) as RefObject<HTMLDivElement>;
+  const { lang, updateLang } = useGlobal();
 
   useToggleClickOutSide(menuRef, () => {
     setIsOpen(false);
   });
 
+  const changeLanguage = (language: string) => {
+    if (language !== lang) updateLang(language);
+  };
+
   return (
     <div className="relative" onClick={() => setIsOpen(!isOpen)} ref={menuRef}>
       <div
-        className={`flex h-10 w-10 transform cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10`}
+        className={`flex h-10 w-10 transform cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-black hover:bg-opacity-10 dark:text-gray-200 dark:hover:bg-white dark:hover:bg-opacity-10`}
       >
         <Language className="h-5 w-5" />
       </div>
@@ -32,6 +38,7 @@ export default function LanguageSwitchButton() {
             <div
               className="p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
               key={lang}
+              onClick={() => changeLanguage(lang)}
             >
               {lang}
             </div>

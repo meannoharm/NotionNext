@@ -47,9 +47,9 @@ dependencies:
   localStorage:
     specifier: ^1.0.4
     version: 1.0.4
-  lodash.throttle:
+  lodash:
     specifier: ^4.1.1
-    version: 4.1.1
+    version: 4.17.21
   memory-cache:
     specifier: ^0.2.0
     version: 0.2.0
@@ -77,9 +77,6 @@ dependencies:
   react:
     specifier: ^18.2.0
     version: 18.2.0
-  react-cookies:
-    specifier: ^0.1.1
-    version: 0.1.1
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
@@ -2648,11 +2645,6 @@ packages:
     resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}
     dev: false
 
-  /cookie@0.3.1:
-    resolution: {integrity: sha512-+IJOX0OqlHCszo2mBUq+SrEbCj6w7Kpffqx60zYbPTFaO4+yYgRjHwcZNpWvaTylDHaV7PPmBHzSecZiMhtPgw==}
-    engines: {node: '>= 0.6'}
-    dev: false
-
   /copy-to-clipboard@3.3.3:
     resolution: {integrity: sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==}
     dependencies:
@@ -5057,13 +5049,6 @@ packages:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
     dependencies:
       safe-buffer: 5.2.1
-    dev: false
-
-  /react-cookies@0.1.1:
-    resolution: {integrity: sha512-PP75kJ4vtoHuuTdq0TAD3RmlAv7vuDQh9fkC4oDlhntgs9vX1DmREomO0Y1mcQKR9nMZ6/zxoflaMJ3MAmF5KQ==}
-    dependencies:
-      cookie: 0.3.1
-      object-assign: 4.1.1
     dev: false
 
   /react-dom@18.2.0(react@18.2.0):

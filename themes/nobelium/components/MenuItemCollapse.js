@@ -47,8 +47,8 @@ export const MenuItemCollapse = (props) => {
               <i className={link.icon} />
             </div>
           )}
-          <div class="mr-auto">{link?.name}</div>
-          <div class="flex items-center">
+          <div className="mr-auto">{link?.name}</div>
+          <div className="flex items-center">
             {isOpen ? (
               <i className="fa fa-minus" />
             ) : (
@@ -67,7 +67,7 @@ export const MenuItemCollapse = (props) => {
                   key={sLink.id}
                   href={sLink.to}
                   target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
-                  class="mt-2 px-12"
+                  className="mt-2 px-12"
                 >
                   {sLink.title}
                 </Link>

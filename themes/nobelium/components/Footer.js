@@ -28,7 +28,7 @@ export const Footer = (props) => {
           <div className="mr-0 md:mr-2">
             © {BLOG.AUTHOR} {copyrightDate}.
           </div>
-          <div className="mb-2 mr-0 md:mr-auto">
+          <div className="mb-2 mr-0 md:mr-auto md:mb-0">
             Licensed under <a href={BLOG.LICENSE_URL}>{BLOG.LICENSE}</a>.
           </div>
           <Vercel />

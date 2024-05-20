@@ -8,7 +8,7 @@ import { MenuItemDrop } from './MenuItemDrop';
 import Collapse from '@/components/Collapse';
 import { MenuItemCollapse } from './MenuItemCollapse';
 import LazyImage from '@/components/LazyImage';
-import DarkModeButton from '@/components/DarkModeButton';
+import DarkModeButton from './DarkModeButton';
 import RandomPostButton from './RandomPostButton';
 import SearchButton from './SearchButton';
 import LanguageSwitchButton from './LanguageSwitchButton';

@@ -1,12 +1,19 @@
 import { useGlobal } from '@/lib/global';
 import { saveDarkModeToCookies } from '@/themes/theme';
-import { Moon, Sun } from './HeroIcons';
+import { Moon, Sun } from '@/components/HeroIcons';
 import { useImperativeHandle } from 'react';
+
+import type { RefObject } from 'react';
+
+export interface DarkModeButtonProps {
+  className: string;
+  cRef: RefObject<{ handleChangeDarkMode: () => void }>;
+}
 
 /**
  * 深色模式按钮
  */
-const DarkModeButton = (props) => {
+const DarkModeButton = (props: DarkModeButtonProps) => {
   const { cRef, className } = props;
   const { isDarkMode, updateDarkMode } = useGlobal();
 
@@ -39,7 +46,6 @@ const DarkModeButton = (props) => {
       } flex h-10 w-10 items-center justify-center rounded-full text-gray-800 hover:bg-black hover:bg-opacity-10 dark:text-gray-200 dark:hover:bg-white dark:hover:bg-opacity-10`}
     >
       <div id="darkModeButton" className=" h-5 w-5 transform cursor-pointer ">
-        {' '}
         {isDarkMode ? <Sun /> : <Moon />}
       </div>
     </div>

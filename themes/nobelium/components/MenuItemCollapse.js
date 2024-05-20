@@ -60,7 +60,7 @@ export const MenuItemCollapse = (props) => {
       {/* 折叠子菜单 */}
       {hasSubMenu && (
         <Collapse isOpen={isOpen} onHeightChange={props.onHeightChange}>
-          <div class="flex flex-col">
+          <div className="flex flex-col">
             {link.subMenus.map((sLink) => {
               return (
                 <Link

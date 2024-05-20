@@ -22,7 +22,7 @@ export const MenuItemDrop = ({ link }) => {
   const hasSubMenu = link?.subMenus?.length > 0;
 
   return (
-    <div className="mx-3 my-2 cursor-pointer" ref={menuRef}>
+    <div className="relative cursor-pointer px-3 py-2 " ref={menuRef}>
       {!hasSubMenu && (
         <div className="nav block text-black dark:text-gray-50">
           <Link
@@ -48,28 +48,28 @@ export const MenuItemDrop = ({ link }) => {
 
       {/* 子菜单 */}
       {hasSubMenu && (
-        <ul
-          className={`${show ? 'visible top-12 opacity-100 ' : 'invisible top-10 opacity-0 '} absolute  z-20  block border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black `}
+        <div
+          className={`${show ? 'visible top-10 opacity-100 ' : 'invisible top-8 opacity-0 '} absolute z-20 block w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
         >
           {link.subMenus.map((sLink) => {
             return (
-              <li
+              <div
                 key={sLink.id}
-                className="not:last-child:border-b-0 border-b py-3 pl-3  pr-6 tracking-widest text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
+                className="p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
               >
                 <Link
                   href={sLink.to}
                   target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
                 >
-                  <span className="text-nowrap text-sm font-extralight">
+                  <span className="text-nowrap">
                     {link?.icon && <i className={sLink?.icon}> &nbsp; </i>}
                     {sLink.title}
                   </span>
                 </Link>
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
       )}
     </div>
   );

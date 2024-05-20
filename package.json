@@ -1,6 +1,6 @@
 {
   "name": "notion-next",
-  "version": "4.0.13",
+  "version": "0.0.1",
   "homepage": "https://github.com/meannoharm/NotionNextBlogBase.git",
   "license": "MIT",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "author": {
     "name": "tangly",
-    "email": "czgaotian1@gmail.com",
+    "email": "me@04.lu",
     "url": "http://04.lu"
   },
   "scripts": {
@@ -73,7 +73,6 @@
     "axios": ">=0.21.1"
   },
   "bugs": {
-    "url": "https://github.com/meannoharm/NotionNextBlogBase/issues",
-    "email": "811460602@qq.com"
+    "url": "https://github.com/meannoharm/NotionNextBlogBase/issues"
   }
 }

@@ -1,35 +1,30 @@
 import { generateLocaleDict, initLocale } from './lang';
-import {
-  ReactElement,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import BLOG from '@/blog.config';
 import {
   THEMES,
+  initTheme,
   initDarkMode,
   operateDarkMode,
   saveDarkModeToLocalStorage,
 } from '@/themes/theme';
 import NProgress from 'nprogress';
-import { getQueryVariable, isBrowser } from './utils';
+import { getQueryVariable } from './utils';
 
-NProgress.configure({ showSpinner: false });
+import type { FunctionComponent, ReactNode } from 'react';
 
 export interface GlobalContextProps {
   lang: string;
-  locale: any;
+  locale: unknown;
   theme: string;
   isDarkMode: boolean;
   onLoading: boolean;
-  siteInfo: any;
-  categoryOptions: any;
-  tagOptions: any;
+  siteInfo: unknown;
+  categoryOptions: unknown;
+  tagOptions: unknown;
   updateLang: (lang: string) => void;
-  updateLocale: (locale: any) => void;
+  updateLocale: (locale: unknown) => void;
   switchTheme: (theme: string) => void;
   setTheme: (theme: string) => void;
   updateDarkMode: (isDarkMode: boolean) => void;
@@ -59,9 +54,11 @@ const GlobalContext = createContext<GlobalContextProps>({
  * @returns {JSX.Element}
  * @constructor
  */
-export function GlobalContextProvider(
-  props: GlobalContextProps & { children: ReactElement },
-) {
+export const GlobalContextProvider: FunctionComponent<
+  GlobalContextProps & {
+    children: ReactNode;
+  }
+> = (props) => {
   const { children, siteInfo, categoryOptions, tagOptions } = props;
   const router = useRouter();
   // lang 为所选语言，如 zh-CN,
@@ -148,25 +145,6 @@ export function GlobalContextProvider(
       {children}
     </GlobalContext.Provider>
   );
-}
-
-/**
- * 切换主题时的特殊处理
- * @param {*} setTheme
- */
-const initTheme = () => {
-  if (isBrowser) {
-    setTimeout(() => {
-      const elements = document.querySelectorAll('[id^="theme-"]');
-      if (elements?.length > 1) {
-        elements[elements.length - 1].scrollIntoView();
-        // 删除前面的元素，只保留最后一个元素
-        for (let i = 0; i < elements.length - 1; i++) {
-          elements[i]?.parentNode?.removeChild(elements[i]);
-        }
-      }
-    }, 500);
-  }
 };
 
 export const useGlobal = () => useContext(GlobalContext);

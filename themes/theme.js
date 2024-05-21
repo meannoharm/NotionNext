@@ -1,5 +1,5 @@
 import BLOG from '@/blog.config';
-import { getQueryParam, getQueryVariable } from '../lib/utils';
+import { getQueryParam, getQueryVariable, isBrowser } from '../lib/utils';
 import dynamic from 'next/dynamic';
 import getConfig from 'next/config';
 import * as ThemeComponents from '@theme-components';
@@ -140,4 +140,23 @@ export const loadThemeFromLocalStorage = () => {
  */
 export const saveThemeToLocalStorage = (newTheme) => {
   localStorage.setItem('theme', newTheme);
+};
+
+/**
+ * 切换主题时的特殊处理
+ * @param {*} setTheme
+ */
+export const initTheme = () => {
+  if (isBrowser) {
+    setTimeout(() => {
+      const elements = document.querySelectorAll('[id^="theme-"]');
+      if (elements?.length > 1) {
+        elements[elements.length - 1].scrollIntoView();
+        // 删除前面的元素，只保留最后一个元素
+        for (let i = 0; i < elements.length - 1; i++) {
+          elements[i]?.parentNode?.removeChild(elements[i]);
+        }
+      }
+    }, 500);
+  }
 };

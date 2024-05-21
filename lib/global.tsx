@@ -1,5 +1,11 @@
 import { generateLocaleDict, initLocale } from './lang';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  ReactElement,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useRouter } from 'next/router';
 import BLOG from '@/blog.config';
 import {
@@ -12,7 +18,40 @@ import NProgress from 'nprogress';
 import { getQueryVariable, isBrowser } from './utils';
 
 NProgress.configure({ showSpinner: false });
-const GlobalContext = createContext();
+
+export interface GlobalContextProps {
+  lang: string;
+  locale: any;
+  theme: string;
+  isDarkMode: boolean;
+  onLoading: boolean;
+  siteInfo: any;
+  categoryOptions: any;
+  tagOptions: any;
+  updateLang: (lang: string) => void;
+  updateLocale: (locale: any) => void;
+  switchTheme: (theme: string) => void;
+  setTheme: (theme: string) => void;
+  updateDarkMode: (isDarkMode: boolean) => void;
+  setOnLoading: (onLoading: boolean) => void;
+}
+
+const GlobalContext = createContext<GlobalContextProps>({
+  lang: BLOG.LANG,
+  locale: {},
+  theme: BLOG.THEME,
+  isDarkMode: false,
+  onLoading: false,
+  siteInfo: {},
+  categoryOptions: [],
+  tagOptions: [],
+  updateLang: () => {},
+  updateLocale: () => {},
+  switchTheme: () => {},
+  setTheme: () => {},
+  updateDarkMode: () => {},
+  setOnLoading: () => {},
+});
 
 /**
  * 全局变量Provider，包括语言本地化、样式主题、搜索词
@@ -20,7 +59,9 @@ const GlobalContext = createContext();
  * @returns {JSX.Element}
  * @constructor
  */
-export function GlobalContextProvider(props) {
+export function GlobalContextProvider(
+  props: GlobalContextProps & { children: ReactElement },
+) {
   const { children, siteInfo, categoryOptions, tagOptions } = props;
   const router = useRouter();
   // lang 为所选语言，如 zh-CN,
@@ -49,7 +90,7 @@ export function GlobalContextProvider(props) {
   }, [isDarkMode]);
 
   useEffect(() => {
-    const handleStart = (url) => {
+    const handleStart = (url: string) => {
       NProgress.start();
       const { theme } = router.query;
       if (theme && !url.includes(`theme=${theme}`)) {
@@ -121,7 +162,7 @@ const initTheme = () => {
         elements[elements.length - 1].scrollIntoView();
         // 删除前面的元素，只保留最后一个元素
         for (let i = 0; i < elements.length - 1; i++) {
-          elements[i].parentNode.removeChild(elements[i]);
+          elements[i]?.parentNode?.removeChild(elements[i]);
         }
       }
     }, 500);

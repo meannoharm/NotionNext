@@ -9,8 +9,8 @@ import {
   operateDarkMode,
   saveDarkModeToLocalStorage,
 } from '@/themes/theme';
-import NProgress from 'nprogress';
 import { getQueryVariable } from './utils';
+import { progressStart, progressDone } from '@/components/NProgress';
 
 import type { FunctionComponent, ReactNode } from 'react';
 
@@ -88,7 +88,7 @@ export const GlobalContextProvider: FunctionComponent<
 
   useEffect(() => {
     const handleStart = (url: string) => {
-      NProgress.start();
+      progressStart();
       const { theme } = router.query;
       if (theme && !url.includes(`theme=${theme}`)) {
         const newUrl = `${url}${url.includes('?') ? '&' : '?'}theme=${theme}`;
@@ -97,7 +97,7 @@ export const GlobalContextProvider: FunctionComponent<
       setOnLoading(true);
     };
     const handleStop = () => {
-      NProgress.done();
+      progressDone();
       setOnLoading(false);
     };
     const queryTheme = getQueryVariable('theme') || BLOG.THEME;

@@ -1,14 +1,14 @@
 {
   "name": "notion-next",
   "version": "0.0.1",
-  "homepage": "https://github.com/meannoharm/NotionNextBlogBase.git",
+  "homepage": "https://github.com/czgaotian/NotionNextBlogBase.git",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/meannoharm/NotionNextBlogBase.git"
+    "url": "https://github.com/czgaotian/NotionNextBlogBase.git"
   },
   "author": {
-    "name": "tangly",
+    "name": "czgaotian",
     "email": "me@04.lu",
     "url": "http://04.lu"
   },

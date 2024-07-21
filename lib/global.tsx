@@ -83,7 +83,7 @@ export const GlobalContextProvider: FunctionComponent<
   // 切换暗黑模式
   useEffect(() => {
     saveDarkModeToLocalStorage(isDarkMode);
-    operateDarkMode();
+    operateDarkMode(isDarkMode);
   }, [isDarkMode]);
 
   useEffect(() => {

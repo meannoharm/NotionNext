@@ -3,9 +3,9 @@ import { useGlobal } from '@/lib/global';
 const Vercel = () => {
   const { isDarkMode } = useGlobal();
 
-  const fontColor = isDarkMode ? 'white' : 'black';
-  const bgColor = isDarkMode ? 'black' : 'white';
-  const dividerColor = isDarkMode ? '#e5e5e5' : '#050505';
+  const fontColor = isDarkMode ? 'black' : 'white';
+  const bgColor = isDarkMode ? 'white' : 'black';
+  const dividerColor = isDarkMode ? '#050505' : '#e5e5e5';
 
   return (
     <a

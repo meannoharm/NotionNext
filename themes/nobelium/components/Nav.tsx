@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import BLOG from '@/blog.config';
-import { useGlobal } from '@/lib/global';
 import CONFIG from '../config';
 import { SvgIcon } from './SvgIcon';
 import { MenuItemDrop } from './MenuItemDrop';
@@ -13,13 +12,22 @@ import RandomPostButton from './RandomPostButton';
 import SearchButton from './SearchButton';
 import LanguageSwitchButton from './LanguageSwitchButton';
 import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
+import { useTranslation } from 'next-i18next';
 
-const Nav = (props) => {
+import type { FC } from 'react';
+import type { NavLink } from '../types/nav';
+import type { CollapseHandle } from '@/components/Collapse';
+
+export interface NavProps {
+  [key: string]: any;
+}
+
+const Nav: FC<NavProps> = (props) => {
   const { navBarTitle, fullWidth, siteInfo } = props;
-  const navRef = useRef(null);
-  const sentinelRef = useRef([]);
+  const navRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
-  const handler = ([entry]) => {
+  const handler: IntersectionObserverCallback = ([entry]) => {
     if (navRef && navRef.current) {
       if (!entry.isIntersecting && entry !== undefined) {
         navRef.current?.classList.add('sticky-nav-full');
@@ -34,7 +42,7 @@ const Nav = (props) => {
   useEffect(() => {
     const observer = new window.IntersectionObserver(handler);
     const sentinelRefCurrent = sentinelRef.current;
-    observer.observe(sentinelRefCurrent);
+    if (sentinelRefCurrent) observer.observe(sentinelRefCurrent);
     return () => {
       if (sentinelRefCurrent) observer.unobserve(sentinelRefCurrent);
     };
@@ -53,7 +61,7 @@ const Nav = (props) => {
         id="sticky-nav"
         ref={navRef}
       >
-        <Link className="flex items-center" href="/" aria-label={BLOG.title}>
+        <Link className="flex items-center" href="/" aria-label={BLOG.TITLE}>
           <div className="h-6 w-6">
             {/* <SvgIcon/> */}
             {CONFIG.NAV_NOTION_ICON ? (
@@ -84,10 +92,15 @@ const Nav = (props) => {
   );
 };
 
-const NavBar = (props) => {
+export interface NavBarProps {
+  [key: string]: any;
+}
+
+const NavBar: FC<NavBarProps> = (props) => {
+  const { t } = useTranslation('nav');
   const { customMenu, customNav } = props;
   const [isOpen, changeOpen] = useState(false);
-  const collapseRef = useRef(null);
+  const collapseRef = useRef<CollapseHandle>(null);
   const mobileMenuRef = useRef(null);
   const mobileMenuToggleButtonRef = useRef(null);
 
@@ -99,48 +112,44 @@ const NavBar = (props) => {
     changeOpen(false);
   });
 
-  const { locale } = useGlobal();
-  let links = [
+  const links: NavLink[] = [
     {
       id: 2,
-      name: locale.NAV.RSS,
+      name: t('rss'),
       to: '/feed',
-      show: BLOG.ENABLE_RSS && CONFIG.MENU_RSS,
+      show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
       target: '_blank',
     },
     {
       icon: 'fas fa-search',
-      name: locale.NAV.SEARCH,
+      name: t('search'),
       to: '/search',
       show: CONFIG.MENU_SEARCH,
     },
     {
       icon: 'fas fa-archive',
-      name: locale.NAV.ARCHIVE,
+      name: t('archive'),
       to: '/archive',
       show: CONFIG.MENU_ARCHIVE,
     },
     {
       icon: 'fas fa-folder',
-      name: locale.COMMON.CATEGORY,
+      name: t('menu-category'),
       to: '/category',
       show: CONFIG.MENU_CATEGORY,
     },
     {
       icon: 'fas fa-tag',
-      name: locale.COMMON.TAGS,
+      name: t('tags'),
       to: '/tag',
       show: CONFIG.MENU_TAG,
     },
   ];
-  if (customNav) {
-    links = links.concat(customNav);
-  }
 
-  // 如果 开启自定义菜单，则覆盖Page生成的菜单
-  if (BLOG.CUSTOM_MENU) {
-    links = customMenu;
-  }
+  // TODO 自定义菜单
+  // if (customNav) {
+  //   links = links.concat(customNav);
+  // }
 
   if (!links || links.length === 0) {
     return null;
@@ -149,9 +158,7 @@ const NavBar = (props) => {
   return (
     <div className="flex flex-shrink-0">
       <ul className="hidden flex-row md:flex">
-        {links?.map((link) => (
-          <MenuItemDrop key={link?.id} link={link} />
-        ))}
+        {links?.map((link) => <MenuItemDrop key={link?.id} link={link} />)}
       </ul>
 
       {/* 移动端使用的菜单 */}
@@ -167,17 +174,15 @@ const NavBar = (props) => {
               <MenuItemCollapse
                 key={link?.id}
                 link={link}
-                onHeightChange={(param) =>
-                  collapseRef.current?.updateCollapseHeight(param)
-                }
+                onHeightChange={collapseRef.current?.updateCollapseHeight}
               />
             ))}
           </div>
         </Collapse>
       </div>
 
-      {JSON.parse(CONFIG.MENU_RANDOM_POST) && <RandomPostButton {...props} />}
-      {JSON.parse(CONFIG.MENU_SEARCH_BUTTON) && <SearchButton {...props} />}
+      {CONFIG.MENU_RANDOM_POST && <RandomPostButton {...props} />}
+      {CONFIG.MENU_SEARCH_BUTTON && <SearchButton {...props} />}
       <LanguageSwitchButton {...props} />
       <DarkModeButton />
 
@@ -194,10 +199,3 @@ const NavBar = (props) => {
 };
 
 export default Nav;
-
-/**
- *
-                    {!JSON.parse(BLOG.THEME_SWITCH) && <div className='hidden md:block'><DarkModeButton {...props} /></div>}
-                    <ReadingProgress />
-
- */

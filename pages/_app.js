@@ -7,6 +7,7 @@ import 'react-notion-x/src/styles.css';
 import '@/styles/notion.css'; //  重写部分样式
 
 import { GlobalContextProvider } from '@/lib/global';
+import { appWithTranslation } from 'next-i18next';
 
 import dynamic from 'next/dynamic';
 import { isBrowser, loadExternalResource } from '@/lib/utils';
@@ -55,4 +56,4 @@ const MyApp = ({ Component, pageProps }) => {
   );
 };
 
-export default MyApp;
+export default appWithTranslation(MyApp);

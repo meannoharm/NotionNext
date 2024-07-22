@@ -1,4 +1,3 @@
-import { generateLocaleDict, initLocale } from './lang';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import BLOG from '@/blog.config';
@@ -15,16 +14,12 @@ import { progressStart, progressDone } from '@/components/NProgress';
 import type { FunctionComponent, ReactNode } from 'react';
 
 export interface GlobalContextProps {
-  lang: string;
-  locale: unknown;
   theme: string;
   isDarkMode: boolean;
   onLoading: boolean;
   siteInfo: unknown;
   categoryOptions: unknown;
   tagOptions: unknown;
-  updateLang: (lang: string) => void;
-  updateLocale: (locale: unknown) => void;
   switchTheme: (theme: string) => void;
   setTheme: (theme: string) => void;
   updateDarkMode: (isDarkMode: boolean) => void;
@@ -32,16 +27,12 @@ export interface GlobalContextProps {
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
-  lang: BLOG.LANG,
-  locale: {},
   theme: BLOG.THEME,
   isDarkMode: false,
   onLoading: false,
   siteInfo: {},
   categoryOptions: [],
   tagOptions: [],
-  updateLang: () => {},
-  updateLocale: () => {},
   switchTheme: () => {},
   setTheme: () => {},
   updateDarkMode: () => {},
@@ -63,22 +54,14 @@ export const GlobalContextProvider: FunctionComponent<
   const router = useRouter();
   // lang 为所选语言，如 zh-CN,
   // locale 为对应语言的配置对象
-  const [lang, updateLang] = useState(BLOG.LANG); // 默认语言
-  const [locale, updateLocale] = useState(generateLocaleDict(BLOG.LANG)); // 默认语言
   const [theme, setTheme] = useState(BLOG.THEME); // 默认博客主题
   const [isDarkMode, updateDarkMode] = useState(BLOG.APPEARANCE === 'dark'); // 默认深色模式
   const [onLoading, setOnLoading] = useState(false); // 抓取文章数据
 
   useEffect(() => {
-    initLocale(lang, locale, updateLang, updateLocale);
     updateDarkMode(initDarkMode());
     initTheme();
   }, []);
-
-  // 切换语言
-  useEffect(() => {
-    updateLocale(generateLocaleDict(lang));
-  }, [lang]);
 
   // 切换暗黑模式
   useEffect(() => {
@@ -128,10 +111,6 @@ export const GlobalContextProvider: FunctionComponent<
       value={{
         onLoading,
         setOnLoading,
-        lang,
-        updateLang,
-        locale,
-        updateLocale,
         isDarkMode,
         updateDarkMode,
         theme,

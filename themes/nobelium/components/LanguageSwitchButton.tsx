@@ -1,9 +1,9 @@
-import { useGlobal } from '@/lib/global';
+import { useRouter } from 'next/router';
 import Collapse from '@/components/Collapse';
 import { useRef, useState } from 'react';
-import { supportedLocales } from '@/lib/lang';
 import { Language } from '@/components/HeroIcons';
 import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
+import nextI18NextConfig from '@/next-i18next.config.js';
 
 import type { RefObject } from 'react';
 
@@ -13,14 +13,22 @@ import type { RefObject } from 'react';
 export default function LanguageSwitchButton() {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLElement>(null) as RefObject<HTMLDivElement>;
-  const { lang, updateLang } = useGlobal();
+  const router = useRouter();
+  const { locales } = nextI18NextConfig.i18n;
 
   useToggleClickOutSide(menuRef, () => {
     setIsOpen(false);
   });
 
-  const changeLanguage = (language: string) => {
-    if (language !== lang) updateLang(language);
+  const changeLanguage = (locale: string) => {
+    router.push(
+      {
+        route: router.pathname,
+        query: router.query,
+      },
+      router.asPath,
+      { locale },
+    );
   };
 
   return (
@@ -34,13 +42,13 @@ export default function LanguageSwitchButton() {
         className={`${isOpen ? 'visible top-10 opacity-100 ' : 'invisible top-8 opacity-0 '} absolute w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
       >
         <Collapse isOpen={isOpen}>
-          {supportedLocales.map((lang) => (
+          {locales.map((locale) => (
             <div
               className="p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
-              key={lang}
-              onClick={() => changeLanguage(lang)}
+              key={locale}
+              onClick={() => changeLanguage(locale)}
             >
-              {lang}
+              {locale}
             </div>
           ))}
         </Collapse>

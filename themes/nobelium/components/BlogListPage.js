@@ -3,8 +3,10 @@ import { useGlobal } from '@/lib/global';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import BlogPost from './BlogPost';
+import { useTranslation } from 'next-i18next';
 
 export const BlogListPage = (props) => {
+  const { t } = useTranslation('common');
   const { page = 1, posts, postCount } = props;
   const { locale } = useGlobal();
   const router = useRouter();
@@ -38,7 +40,7 @@ export const BlogListPage = (props) => {
           className={`${showPrev ? '  ' : ' pointer-events-none invisible block '}no-underline rounded px-3 py-2`}
         >
           <button rel="prev" className="block cursor-pointer">
-            ← {locale.PAGINATION.PREV}
+            {t('prev')}
           </button>
         </Link>
         <Link
@@ -49,7 +51,7 @@ export const BlogListPage = (props) => {
           className={`${showNext ? '  ' : 'pointer-events-none invisible '}  rounded px-3 py-2 no-underline`}
         >
           <button rel="next" className="block cursor-pointer">
-            {locale.PAGINATION.NEXT} →
+            {t('next')}
           </button>
         </Link>
       </div>

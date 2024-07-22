@@ -2,17 +2,17 @@ import { useGlobal } from '@/lib/global';
 import { Moon, Sun } from '@/components/HeroIcons';
 import { useImperativeHandle } from 'react';
 
-import type { RefObject } from 'react';
+import type { FC, RefObject } from 'react';
 
 export interface DarkModeButtonProps {
-  className: string;
-  cRef: RefObject<{ handleChangeDarkMode: () => void }>;
+  className?: string;
+  cRef?: RefObject<{ handleChangeDarkMode: () => void }>;
 }
 
 /**
  * 深色模式按钮
  */
-const DarkModeButton = (props: DarkModeButtonProps) => {
+const DarkModeButton: FC<DarkModeButtonProps> = (props) => {
   const { cRef, className } = props;
   const { isDarkMode, updateDarkMode } = useGlobal();
 
@@ -46,4 +46,5 @@ const DarkModeButton = (props: DarkModeButtonProps) => {
     </div>
   );
 };
+
 export default DarkModeButton;

@@ -2,16 +2,24 @@ import Collapse from '@/components/Collapse';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import type { FC } from 'react';
+import type { NavLink } from '../types/nav';
+
+export interface MenuItemCollapseProps {
+  link: NavLink;
+  onHeightChange?: (params: { height: number }) => void;
+}
+
 /**
  * 折叠菜单
  * @param {*} param0
  * @returns
  */
-export const MenuItemCollapse = (props) => {
+export const MenuItemCollapse: FC<MenuItemCollapseProps> = (props) => {
   const { link } = props;
   const [isOpen, changeIsOpen] = useState(false);
 
-  const hasSubMenu = link?.subMenus?.length > 0;
+  const hasSubMenu = link?.subMenus?.length && link?.subMenus?.length > 0;
 
   const toggleOpenSubMenu = () => {
     changeIsOpen(!isOpen);
@@ -39,7 +47,7 @@ export const MenuItemCollapse = (props) => {
       )}
       {hasSubMenu && (
         <div
-          onClick={hasSubMenu ? toggleOpenSubMenu : null}
+          onClick={hasSubMenu ? toggleOpenSubMenu : undefined}
           className="flex cursor-pointer justify-center px-4 dark:text-gray-200 "
         >
           {link?.icon && (
@@ -61,18 +69,21 @@ export const MenuItemCollapse = (props) => {
       {hasSubMenu && (
         <Collapse isOpen={isOpen} onHeightChange={props.onHeightChange}>
           <div className="flex flex-col">
-            {link.subMenus.map((sLink) => {
-              return (
-                <Link
-                  key={sLink.id}
-                  href={sLink.to}
-                  target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
-                  className="mt-2 px-12"
-                >
-                  {sLink.title}
-                </Link>
-              );
-            })}
+            {link.subMenus &&
+              link.subMenus.map((sLink) => {
+                return (
+                  <Link
+                    key={sLink.id}
+                    href={sLink.to}
+                    target={
+                      link?.to?.indexOf('http') === 0 ? '_blank' : '_self'
+                    }
+                    className="mt-2 px-12"
+                  >
+                    {sLink.title}
+                  </Link>
+                );
+              })}
           </div>
         </Collapse>
       )}

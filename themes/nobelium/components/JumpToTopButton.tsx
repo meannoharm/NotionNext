@@ -1,5 +1,6 @@
 import { useGlobal } from '@/lib/global';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'next-i18next';
 
 /**
  * 跳转到网页顶部
@@ -10,7 +11,7 @@ import React, { useEffect } from 'react';
  * @constructor
  */
 const JumpToTopButton = () => {
-  const { locale } = useGlobal();
+  const { t } = useTranslation('common');
   const jumpToTopButtonRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const JumpToTopButton = () => {
   return (
     <div
       ref={jumpToTopButtonRef}
-      title={locale.POST.TOP}
+      title={t('top')}
       className="cursor-pointer"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >

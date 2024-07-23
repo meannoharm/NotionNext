@@ -1,12 +1,13 @@
-import { useGlobal } from '@/lib/global';
 import { useEffect } from 'react';
+import { useTranslation } from 'next-i18next';
 
 /**
  * 字数统计
  * @returns
  */
 export default function WordCount() {
-  const { locale } = useGlobal();
+  const { t } = useTranslation('common');
+
   useEffect(() => {
     countWords();
   });
@@ -20,7 +21,7 @@ export default function WordCount() {
       <span className="flex items-center whitespace-nowrap">
         <i className="fas fa-clock mr-1" />
         <span></span>
-        <span id="readTime">0</span>&nbsp;{locale.COMMON.MINUTE}
+        <span id="readTime">0</span>&nbsp;{t('minute')}
       </span>
     </span>
   );

@@ -3,11 +3,12 @@ import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { loadExternalResource } from '@/lib/utils';
+import { useTranslation } from 'next-i18next';
 
 const CusdisComponent = ({ frontMatter }) => {
-  const { locale } = useGlobal();
   const router = useRouter();
   const { isDarkMode } = useGlobal();
+  const { i18n } = useTranslation();
 
   //   处理cusdis主题
   useEffect(() => {
@@ -20,7 +21,7 @@ const CusdisComponent = ({ frontMatter }) => {
   return (
     <div
       id="cusdis_thread"
-      lang={locale.LOCALE.toLowerCase()}
+      lang={i18n.language}
       data-host={BLOG.COMMENT_CUSDIS_HOST}
       data-app-id={BLOG.COMMENT_CUSDIS_APP_ID}
       data-page-id={frontMatter.id}

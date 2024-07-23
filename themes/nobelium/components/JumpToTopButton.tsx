@@ -1,4 +1,3 @@
-import { useGlobal } from '@/lib/global';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 

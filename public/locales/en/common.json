@@ -36,8 +36,9 @@
   "word-count": "W.C.",
   "prev": "Prev",
   "next": "Next",
-  "articles": "Search Articles",
+  "search-articles": "Search Articles",
   "search-tags": "Search in",
   "back": "Back",
-  "top": "Top"
+  "top": "Top",
+  "analytics": "Analytics"
 }

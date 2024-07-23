@@ -114,31 +114,35 @@ const NavBar: FC<NavBarProps> = (props) => {
 
   const links: NavLink[] = [
     {
-      id: 2,
+      id: 'rss',
       name: t('rss'),
       to: '/feed',
       show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
       target: '_blank',
     },
     {
+      id: 'search',
       icon: 'fas fa-search',
       name: t('search'),
       to: '/search',
       show: CONFIG.MENU_SEARCH,
     },
     {
+      id: 'archive',
       icon: 'fas fa-archive',
       name: t('archive'),
       to: '/archive',
       show: CONFIG.MENU_ARCHIVE,
     },
     {
+      id: 'category',
       icon: 'fas fa-folder',
-      name: t('menu-category'),
+      name: t('category'),
       to: '/category',
       show: CONFIG.MENU_CATEGORY,
     },
     {
+      id: 'tags',
       icon: 'fas fa-tag',
       name: t('tags'),
       to: '/tag',
@@ -158,7 +162,9 @@ const NavBar: FC<NavBarProps> = (props) => {
   return (
     <div className="flex flex-shrink-0">
       <ul className="hidden flex-row md:flex">
-        {links?.map((link) => <MenuItemDrop key={link?.id} link={link} />)}
+        {links.map((link) => (
+          <MenuItemDrop key={link?.id} link={link} />
+        ))}
       </ul>
 
       {/* 移动端使用的菜单 */}
@@ -170,7 +176,7 @@ const NavBar: FC<NavBarProps> = (props) => {
           className="fixed right-6 top-16"
         >
           <div className="flex w-48 flex-col rounded border bg-white py-2 text-sm dark:border-black dark:bg-black">
-            {links?.map((link) => (
+            {links.map((link) => (
               <MenuItemCollapse
                 key={link?.id}
                 link={link}

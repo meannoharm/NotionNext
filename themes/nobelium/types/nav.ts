@@ -1,5 +1,5 @@
 export type NavLink = {
-  id?: number;
+  id?: string;
   icon?: string;
   name: string;
   to: string;

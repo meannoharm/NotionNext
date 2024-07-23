@@ -5,5 +5,7 @@
   "about": "About",
   "mail": "E-Mail",
   "archive": "Archive",
-  "navigator": "Navigator"
+  "navigator": "Navigator",
+  "category": "Category",
+  "tags": "Tags"
 }

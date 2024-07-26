@@ -1,16 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import BLOG from '@/blog.config';
 import Link from 'next/link';
 import React from 'react';
-import throttle from 'lodash.throttle';
+import { throttle } from 'lodash';
 import { deepClone } from '@/lib/utils';
 import { useTranslation } from 'next-i18next';
 
-export const BlogListScroll = (props) => {
+import type { FC } from 'react';
+
+export interface BlogListScrollProps {}
+
+const BlogListScroll: FC<BlogListScrollProps> = (props) => {
   const { posts } = props;
   const { t } = useTranslation('common');
 
-  const [page, updatePage] = React.useState(1);
+  const [page, updatePage] = useState(1);
 
   let hasMore = false;
   const postsToShow =
@@ -27,7 +31,7 @@ export const BlogListScroll = (props) => {
     updatePage(page + 1);
   };
 
-  const targetRef = React.useRef(null);
+  const targetRef = useRef<HTMLDivElement>(null);
 
   // 监听滚动自动分页加载
   useEffect(() => {
@@ -90,3 +94,5 @@ export const BlogListScroll = (props) => {
     </div>
   );
 };
+
+export default BlogListScroll;

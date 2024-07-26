@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import BLOG from '@/blog.config';
-import CONFIG from '../config';
+import CONFIG from '../theme.config';
 import { SvgIcon } from './SvgIcon';
 import { MenuItemDrop } from './MenuItemDrop';
 import Collapse from '@/components/Collapse';

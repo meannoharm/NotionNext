@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
+    "@types/lodash": "^4.17.7",
     "@types/node": "^20.12.12",
     "@types/nprogress": "^0.2.3",
     "@types/react": "18.2.75",

@@ -2,7 +2,7 @@ import BLOG from '@/blog.config';
 // import DarkModeButton from '@/components/DarkModeButton'
 import Vercel from '@/components/Vercel';
 
-export const Footer = (props) => {
+const Footer = (props) => {
   const d = new Date();
   const currentYear = d.getFullYear();
   const { post } = props;
@@ -28,7 +28,7 @@ export const Footer = (props) => {
           <div className="mr-0 md:mr-2">
             © {BLOG.AUTHOR} {copyrightDate}.
           </div>
-          <div className="mb-2 mr-0 md:mr-auto md:mb-0">
+          <div className="mb-2 mr-0 md:mb-0 md:mr-auto">
             Licensed under <a href={BLOG.LICENSE_URL}>{BLOG.LICENSE}</a>.
           </div>
           <Vercel />
@@ -37,3 +37,5 @@ export const Footer = (props) => {
     </footer>
   );
 };
+
+export default Footer;

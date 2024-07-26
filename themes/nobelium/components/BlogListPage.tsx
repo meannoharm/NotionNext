@@ -1,14 +1,18 @@
 import BLOG from '@/blog.config';
-import { useGlobal } from '@/lib/global';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import BlogPost from './BlogPost';
 import { useTranslation } from 'next-i18next';
 
-export const BlogListPage = (props) => {
+import type {FC} from 'react';
+
+export interface BlogListPageProps {
+
+}
+
+const BlogListPage: FC<BlogListPageProps> = (props) => {
   const { t } = useTranslation('common');
   const { page = 1, posts, postCount } = props;
-  const { locale } = useGlobal();
   const router = useRouter();
   const totalPage = Math.ceil(postCount / BLOG.POSTS_PER_PAGE);
   const currentPage = +page;
@@ -58,3 +62,5 @@ export const BlogListPage = (props) => {
     </div>
   );
 };
+
+export default BlogListPage;

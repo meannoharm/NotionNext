@@ -6,14 +6,14 @@ const cacheInvalidSeconds = 1000000000 * 1000;
 // 文件名
 const jsonFile = path.resolve('./data.json');
 
-export async function getCache(key) {
+export async function getCache(key: string) {
   const exist = await fs.existsSync(jsonFile);
   if (!exist) return null;
   const data = await fs.readFileSync(jsonFile);
   let json = null;
   if (!data) return null;
   try {
-    json = JSON.parse(data);
+    json = JSON.parse(data.toString());
   } catch (error) {
     console.error('读取JSON缓存文件失败', data);
     return null;
@@ -35,20 +35,22 @@ export async function getCache(key) {
  * @param data
  * @returns {Promise<null>}
  */
-export async function setCache(key, data) {
-  const exist = await fs.existsSync(jsonFile);
-  const json = exist ? JSON.parse(await fs.readFileSync(jsonFile)) : {};
+export function setCache(key: string, data: any) {
+  const exist = fs.existsSync(jsonFile);
+  const json = exist ? JSON.parse(fs.readFileSync(jsonFile).toString()) : {};
   json[key] = data;
   json[key + '_expire_time'] = new Date().getTime();
   fs.writeFileSync(jsonFile, JSON.stringify(json));
 }
 
-export async function delCache(key) {
-  const exist = await fs.existsSync(jsonFile);
-  const json = exist ? JSON.parse(await fs.readFileSync(jsonFile)) : {};
+export function delCache(key: string) {
+  const exist = fs.existsSync(jsonFile);
+  const json = exist ? JSON.parse(fs.readFileSync(jsonFile).toString()) : {};
   delete json.key;
   json[key + '_expire_time'] = new Date().getTime();
   fs.writeFileSync(jsonFile, JSON.stringify(json));
 }
 
-export default { getCache, setCache, delCache };
+const localFileCache = { getCache, setCache, delCache };
+
+export default localFileCache;

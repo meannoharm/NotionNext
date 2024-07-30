@@ -50,10 +50,7 @@ const Search = (props) => {
  * 浏览器前端搜索
  */
 export async function getStaticProps() {
-  const props = await getGlobalData({
-    from: 'search-props',
-    pageType: ['Post'],
-  });
+  const props = await getGlobalData('search-props');
   const { allPages } = props;
   props.posts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',

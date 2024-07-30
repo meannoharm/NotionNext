@@ -31,10 +31,7 @@ const Index = (props) => {
  * @returns
  */
 export async function getStaticProps({ params: { keyword } }) {
-  const props = await getGlobalData({
-    from: 'search-props',
-    pageType: ['Post'],
-  });
+  const props = await getGlobalData('search-props');
   const { allPages } = props;
   const allPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',

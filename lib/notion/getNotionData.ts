@@ -1,29 +1,34 @@
 import BLOG from '@/blog.config';
-import { getDataFromCache, setDataToCache } from '@/lib/cache/cache_manager';
+import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { idToUuid } from 'notion-utils';
-import { deepClone } from '../utils';
 import { getAllCategories } from './getAllCategories';
 import getAllPageIds from './getAllPageIds';
 import { getAllTags } from './getAllTags';
 import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
+import { cloneDeep } from 'lodash';
+
+import type {
+  CustomNav,
+  PageProperties,
+  BlockMap,
+  Collection,
+  CollectionPropertySchemaMap,
+  SelectOption,
+} from './types';
 
 /**
  * 获取博客数据
  * @param {*} pageId
  * @param {*} from
- * @param latestPostCount 截取最新文章数量
- * @param categoryCount
- * @param tagsCount 截取标签数量
- * @param pageType 过滤的文章类型，数组格式 ['Page','Post']
  * @returns
  *
  */
-export async function getGlobalData({ pageId = BLOG.NOTION_PAGE_ID, from }) {
+export async function getGlobalData(from: string) {
   // 从notion获取
-  const data = await getNotionPageData({ pageId, from });
-  const db = deepClone(data);
+  const data = await getNotionPageData(BLOG.NOTION_PAGE_ID, from);
+  const db = cloneDeep(data);
   // 不返回的敏感数据
   delete db.block;
   delete db.schema;
@@ -42,7 +47,7 @@ export async function getGlobalData({ pageId = BLOG.NOTION_PAGE_ID, from }) {
  * @param {*}} param0
  * @returns
  */
-function getLatestPosts({ allPages, latestPostCount }) {
+function getLatestPosts(allPages, latestPostCount: number) {
   const allPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   );
@@ -61,7 +66,7 @@ function getLatestPosts({ allPages, latestPostCount }) {
  * @param from 请求来源
  * @returns {Promise<JSX.Element|*|*[]>}
  */
-export async function getNotionPageData({ pageId, from }) {
+export async function getNotionPageData(pageId: string, from: string) {
   // 尝试从缓存获取
   const cacheKey = 'page_block_' + pageId;
   const data = await getDataFromCache(cacheKey);
@@ -69,7 +74,7 @@ export async function getNotionPageData({ pageId, from }) {
     console.log('[缓存]:', `from:${from}`, `root-page-id:${pageId}`);
     return data;
   }
-  const db = await getDataBaseInfoByNotionAPI({ pageId, from });
+  const db = await getDataBaseInfoByNotionAPI(pageId, from);
   // 存入缓存
   if (db) {
     await setDataToCache(cacheKey, db);
@@ -82,13 +87,13 @@ export async function getNotionPageData({ pageId, from }) {
  * @param notionPageData
  * @returns {Promise<[]|*[]>}
  */
-function getCustomNav({ allPages }) {
-  const customNav = [];
+function getCustomNav(allPages: PageProperties[]) {
+  const customNav: CustomNav[] = [];
   if (allPages && allPages.length > 0) {
-    allPages.forEach((p) => {
+    allPages.forEach((p: PageProperties) => {
       if (p?.slug?.indexOf('http') === 0) {
         customNav.push({
-          icon: p.icon || null,
+          icon: p.icon || '',
           name: p.title,
           to: p.slug,
           target: '_blank',
@@ -96,7 +101,7 @@ function getCustomNav({ allPages }) {
         });
       } else {
         customNav.push({
-          icon: p.icon || null,
+          icon: p.icon || '',
           name: p.title,
           to: '/' + p.slug,
           target: '_self',
@@ -146,12 +151,12 @@ function getCustomMenu({ collectionData }) {
 
 /**
  * 获取标签选项
- * @param schema
+ * @param schemaMap
  * @returns {undefined}
  */
-function getTagOptions(schema) {
-  if (!schema) return {};
-  const tagSchema = Object.values(schema).find(
+function getTagOptions(schemaMap: CollectionPropertySchemaMap): SelectOption[] {
+  if (!schemaMap) return [];
+  const tagSchema = Object.values(schemaMap).find(
     (e) => e.name === BLOG.NOTION_PROPERTY_NAME.tags,
   );
   return tagSchema?.options || [];
@@ -159,12 +164,14 @@ function getTagOptions(schema) {
 
 /**
  * 获取分类选项
- * @param schema
+ * @param schemaMap
  * @returns {{}|*|*[]}
  */
-function getCategoryOptions(schema) {
-  if (!schema) return {};
-  const categorySchema = Object.values(schema).find(
+function getCategoryOptions(
+  schemaMap: CollectionPropertySchemaMap,
+): SelectOption[] {
+  if (!schemaMap) return [];
+  const categorySchema = Object.values(schemaMap).find(
     (e) => e.name === BLOG.NOTION_PROPERTY_NAME.category,
   );
   return categorySchema?.options || [];
@@ -176,7 +183,7 @@ function getCategoryOptions(schema) {
  * @param from
  * @returns {Promise<{title,description,pageCover,icon}>}
  */
-function getSiteInfo({ collection, block }) {
+function getSiteInfo(collection: Collection, block: BlockMap) {
   const title = collection?.name?.[0][0] || BLOG.TITLE;
   const description = collection?.description
     ? Object.assign(collection).description[0][0]
@@ -241,10 +248,10 @@ async function getNotice(post) {
 }
 
 // 没有数据时返回
-const EmptyData = (pageId) => {
+const EmptyData = (pageId: string) => {
   const empty = {
     notice: null,
-    siteInfo: getSiteInfo({}),
+    siteInfo: getSiteInfo(),
     allPages: [
       {
         id: 1,
@@ -285,32 +292,35 @@ const EmptyData = (pageId) => {
  * 调用NotionAPI获取Page数据
  * @returns {Promise<JSX.Element|null|*>}
  */
-async function getDataBaseInfoByNotionAPI({ pageId, from }) {
+async function getDataBaseInfoByNotionAPI(pageId: string, from: string) {
   const pageRecordMap = await getPostBlocks(pageId, from);
   if (!pageRecordMap) {
     console.error('can`t get Notion Data ; Which id is: ', pageId);
     return {};
   }
-  pageId = idToUuid(pageId);
-  const block = pageRecordMap.block || {};
-  const rawMetadata = block[pageId]?.value;
+  const pageUuid = idToUuid(pageId);
+  const blockMap = pageRecordMap.block || {};
+  const rawMetadata = blockMap[pageUuid].value;
   // Check Type Page-Database和Inline-Database
   if (
-    rawMetadata?.type !== 'collection_view_page' &&
-    rawMetadata?.type !== 'collection_view'
+    rawMetadata.type !== 'collection_view_page' &&
+    rawMetadata.type !== 'collection_view'
   ) {
-    console.error(`pageId "${pageId}" is not a database`);
-    return EmptyData(pageId);
+    console.error(`pageId "${pageUuid}" is not a database`);
+    return EmptyData(pageUuid);
   }
   const collection = Object.values(pageRecordMap.collection)[0]?.value || {};
-  const siteInfo = getSiteInfo({ collection, block });
-  const collectionId = rawMetadata?.collection_id;
+  const siteInfo = getSiteInfo(collection, blockMap);
+
+  const collectionId = rawMetadata.collection_id;
+  const viewIds = rawMetadata.view_ids;
+
   const collectionQuery = pageRecordMap.collection_query;
   const collectionView = pageRecordMap.collection_view;
-  const schema = collection?.schema;
 
-  const viewIds = rawMetadata?.view_ids;
-  const collectionData = [];
+  const schemaMap = collection.schema;
+
+  const collectionData: PageProperties[] = [];
   const pageIds = getAllPageIds(
     collectionQuery,
     collectionId,
@@ -327,37 +337,35 @@ async function getDataBaseInfoByNotionAPI({ pageId, from }) {
       pageRecordMap,
     );
   }
-  for (let i = 0; i < pageIds.length; i++) {
-    const id = pageIds[i];
-    const value = block[id]?.value;
-    if (!value) {
-      continue;
+
+  pageIds.forEach(async (id) => {
+    if (blockMap[id].value) {
+      const properties =
+        (await getPageProperties(
+          id,
+          blockMap,
+          schemaMap,
+          getTagOptions(schemaMap),
+        )) || null;
+
+      if (properties) {
+        collectionData.push(properties);
+      }
     }
-    const properties =
-      (await getPageProperties(
-        id,
-        block,
-        schema,
-        null,
-        getTagOptions(schema),
-      )) || null;
-    if (properties) {
-      collectionData.push(properties);
-    }
-  }
+  });
 
   // 文章计数
   let postCount = 0;
   // 查找所有的Post和Page
   const allPages = collectionData.filter((post) => {
-    if (post?.type === 'Post' && post.status === 'Published') {
+    if (post.type === 'Post' && post.status === 'Published') {
       postCount++;
     }
     return (
       post &&
-      post?.slug &&
-      !post?.slug?.startsWith('http') &&
-      (post?.status === 'Invisible' || post?.status === 'Published')
+      post.slug &&
+      !post.slug?.startsWith('http') &&
+      (post.status === 'Invisible' || post.status === 'Published')
     );
   });
 
@@ -369,32 +377,32 @@ async function getDataBaseInfoByNotionAPI({ pageId, from }) {
   }
 
   const notice = await getNotice(
-    collectionData.filter((post) => {
-      return (
+    collectionData.filter(
+      (post) =>
         post &&
-        post?.type &&
-        post?.type === 'Notice' &&
-        post.status === 'Published'
-      );
-    })?.[0],
+        post.type &&
+        post.type === 'Notice' &&
+        post.status &&
+        post.status === 'Published',
+    )[0],
   );
-  const categoryOptions = getAllCategories({
+  const categoryOptions = getAllCategories(
     allPages,
-    categoryOptions: getCategoryOptions(schema),
-  });
+    getCategoryOptions(schemaMap),
+  );
   const tagOptions = getAllTags({
     allPages,
-    tagOptions: getTagOptions(schema),
+    tagOptions: getTagOptions(schemaMap),
   });
   // 旧的菜单
-  const customNav = getCustomNav({
-    allPages: collectionData.filter(
+  const customNav = getCustomNav(
+    collectionData.filter(
       (post) => post?.type === 'Page' && post.status === 'Published',
     ),
-  });
+  );
   // 新的菜单
   const customMenu = await getCustomMenu({ collectionData });
-  const latestPosts = getLatestPosts({ allPages, latestPostCount: 6 });
+  const latestPosts = getLatestPosts(allPages, 6);
   const allNavPages = getNavPages({ allPages });
 
   return {
@@ -407,8 +415,8 @@ async function getDataBaseInfoByNotionAPI({ pageId, from }) {
     collectionId,
     collectionView,
     viewIds,
-    block,
-    schema,
+    block: blockMap,
+    schema: schemaMap,
     tagOptions,
     categoryOptions,
     rawMetadata,

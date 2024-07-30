@@ -30,7 +30,7 @@ const TagIndex = (props) => {
 
 export async function getStaticProps() {
   const from = 'tag-index-props';
-  const props = await getGlobalData({ from });
+  const props = await getGlobalData(from);
   delete props.allPages;
   return {
     props,

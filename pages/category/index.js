@@ -30,7 +30,7 @@ export default function Category(props) {
 }
 
 export async function getStaticProps() {
-  const props = await getGlobalData({ from: 'category-index-props' });
+  const props = await getGlobalData('category-index-props');
   delete props.allPages;
   return {
     props,

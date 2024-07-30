@@ -111,9 +111,15 @@ importers:
       '@eslint/js':
         specifier: ^9.3.0
         version: 9.3.0
+      '@types/js-md5':
+        specifier: ^0.7.2
+        version: 0.7.2
       '@types/lodash':
         specifier: ^4.17.7
         version: 4.17.7
+      '@types/memory-cache':
+        specifier: ^0.2.6
+        version: 0.2.6
       '@types/node':
         specifier: ^20.12.12
         version: 20.12.12
@@ -141,6 +147,9 @@ importers:
       next-sitemap:
         specifier: ^1.6.203
         version: 1.9.12(next@14.1.4(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      notion-types:
+        specifier: ^6.16.0
+        version: 6.16.0
       postcss:
         specifier: ^8.4.20
         version: 8.4.38
@@ -748,6 +757,9 @@ packages:
   '@types/js-cookie@2.2.7':
     resolution: {integrity: sha512-aLkWa0C0vO5b4Sr798E26QgOkss68Un0bLjs7u9qxzPT5CG+8DuNTffWES58YzJs3hrVAOs1wonycqEBqNJubA==}
 
+  '@types/js-md5@0.7.2':
+    resolution: {integrity: sha512-IwcFIov1JbiEToo3DgrVEwkMUR1BVlVyLjk245AzGHyyOlyddDFIeSIZO+WlhTortOa4P1PdCS8cDrTl7RW1HA==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -759,6 +771,9 @@ packages:
 
   '@types/lodash@4.17.7':
     resolution: {integrity: sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==}
+
+  '@types/memory-cache@0.2.6':
+    resolution: {integrity: sha512-G+9tuwWqss2hvX+T/RNY9CY8qSvuCx8uwnl+tXQWwXtBelXUGcn4j6zknDR+2EfdrgBsMZik0jCKNlDEHIBONQ==}
 
   '@types/node@20.12.12':
     resolution: {integrity: sha512-eWLDGF/FOSPtAvEqeRAQ4C8LSA7M1I7i0ky1I8U7kD1J5ITyW3AsRhQrKVoWf5pFKZ2kILsEGJhsI9r93PYnOw==}
@@ -4426,6 +4441,8 @@ snapshots:
 
   '@types/js-cookie@2.2.7': {}
 
+  '@types/js-md5@0.7.2': {}
+
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
@@ -4435,6 +4452,8 @@ snapshots:
       '@types/node': 20.12.12
 
   '@types/lodash@4.17.7': {}
+
+  '@types/memory-cache@0.2.6': {}
 
   '@types/node@20.12.12':
     dependencies:

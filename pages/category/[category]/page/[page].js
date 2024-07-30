@@ -32,7 +32,7 @@ export default function Category(props) {
 
 export async function getStaticProps({ params: { category, page } }) {
   const from = 'category-page-props';
-  let props = await getGlobalData({ from });
+  let props = await getGlobalData(from);
 
   // 过滤状态类型
   props.posts = props.allPages
@@ -61,7 +61,7 @@ export async function getStaticProps({ params: { category, page } }) {
 
 export async function getStaticPaths() {
   const from = 'category-paths';
-  const { categoryOptions, allPages } = await getGlobalData({ from });
+  const { categoryOptions, allPages } = await getGlobalData(from);
   const paths = [];
 
   categoryOptions?.forEach((category) => {

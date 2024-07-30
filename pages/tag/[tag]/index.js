@@ -30,7 +30,7 @@ const Tag = (props) => {
 
 export async function getStaticProps({ params: { tag } }) {
   const from = 'tag-props';
-  const props = await getGlobalData({ from });
+  const props = await getGlobalData(from);
 
   // 过滤状态
   props.posts = props.allPages
@@ -70,7 +70,7 @@ function getTagNames(tags) {
 
 export async function getStaticPaths() {
   const from = 'tag-static-path';
-  const { tagOptions } = await getGlobalData({ from });
+  const { tagOptions } = await getGlobalData(from);
   const tagNames = getTagNames(tagOptions);
 
   return {

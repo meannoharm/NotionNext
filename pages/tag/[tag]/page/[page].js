@@ -25,7 +25,7 @@ const Tag = (props) => {
 
 export async function getStaticProps({ params: { tag, page } }) {
   const from = 'tag-page-props';
-  const props = await getGlobalData({ from });
+  const props = await getGlobalData(from);
   // 过滤状态、标签
   props.posts = props.allPages
     ?.filter((page) => page.type === 'Post' && page.status === 'Published')
@@ -49,7 +49,7 @@ export async function getStaticProps({ params: { tag, page } }) {
 
 export async function getStaticPaths() {
   const from = 'tag-page-static-path';
-  const { tagOptions, allPages } = await getGlobalData({ from });
+  const { tagOptions, allPages } = await getGlobalData(from);
   const paths = [];
   tagOptions?.forEach((tag) => {
     // 过滤状态类型

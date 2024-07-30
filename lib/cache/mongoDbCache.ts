@@ -1,10 +1,10 @@
 import { MongoClient } from 'mongodb';
 
-const DB_URL = process.env.MONGO_DB_URL; // e.g. mongodb+srv://mongo_user:[password]@xxx.mongodb.net//?retryWrites=true&w=majority
-const DB_NAME = process.env.MONGO_DB_NAME; // e.g. tangly1024
+const DB_URL = process.env.MONGO_DB_URL as string; // e.g. mongodb+srv://mongo_user:[password]@xxx.mongodb.net//?retryWrites=true&w=majority
+const DB_NAME = process.env.MONGO_DB_NAME as string; // e.g. tangly1024
 const DB_COLLECTION = 'posts';
 
-export async function getCache(key) {
+export async function getCache(key: string) {
   const client = await MongoClient.connect(DB_URL).catch((err) => {
     console.error(err);
   });
@@ -26,7 +26,7 @@ export async function getCache(key) {
  * @param data
  * @returns {Promise<null>}
  */
-export async function setCache(key, data) {
+export async function setCache(key: string, data: any) {
   const client = await MongoClient.connect(DB_URL).catch((err) => {
     console.error(err);
   });
@@ -55,7 +55,7 @@ export async function setCache(key, data) {
   return data;
 }
 
-export async function delCache(key) {
+export async function delCache(key: string) {
   const client = await MongoClient.connect(DB_URL).catch((err) => {
     console.error(err);
   });
@@ -72,4 +72,6 @@ export async function delCache(key) {
   return null;
 }
 
-export default { getCache, setCache, delCache };
+const mongoDbCache = { getCache, setCache, delCache };
+
+export default mongoDbCache;

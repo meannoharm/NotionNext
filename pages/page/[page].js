@@ -44,6 +44,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params: { page } }) {
   const from = `page-${page}`;
   const props = await getGlobalData(from);
+  console.log(props);
   const { allPages } = props;
   const allPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',

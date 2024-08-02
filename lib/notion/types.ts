@@ -1,10 +1,37 @@
+import type {
+  BlockMap,
+  Collection,
+  CollectionPropertySchema,
+  CollectionPropertySchemaMap,
+  CollectionQueryResult,
+  CollectionViewBlock,
+  CollectionViewMap,
+  CollectionViewPageBlock,
+  ExtendedRecordMap,
+} from 'notion-types';
+
 export type * from 'notion-types';
 
-export interface PageProperties {
+export interface PageInfo {
   id: string;
-  type: PagePropertiesType;
-  status: PagePropertiesStatus;
-  category: string[];
+  title: string;
+  type?: PagePropertiesType;
+  status?: PagePropertiesStatus;
+  category?: string;
+  publishDate: string;
+  latestEditedDate: string;
+  fullWidth: boolean;
+  pageIcon: string;
+  pageCover: string;
+  pageCoverThumbnail: string;
+  content: string[];
+
+  blockMap?: ExtendedRecordMap;
+  date: string;
+  icon: string;
+  tags: string[];
+  summary: string;
+  slug: string;
   [key: string]: any;
 }
 
@@ -37,16 +64,46 @@ export interface CustomNav {
 
 export interface SiteInfo {
   title: string;
-  description: any;
-  pageCover: any;
-  icon: any;
+  description: string;
+  pageCover: string;
+  icon: string;
 }
 
-export interface DataBaseInfo {}
-
-export interface Category {
+export interface CategoryInfo {
   id: string;
   name: string;
   color: string;
   count: number;
+}
+
+export interface TagInfo {
+  id: string;
+  name: string;
+  color: string;
+  count: number;
+}
+
+export interface DataBaseInfo {
+  notice: PageInfo | null;
+  siteInfo: SiteInfo;
+  allPages: PageInfo[];
+  collection: Collection;
+  collectionQuery: {
+    [collectionId: string]: {
+      [collectionViewId: string]: CollectionQueryResult;
+    };
+  };
+  collectionId: string | null;
+  collectionView: CollectionViewMap;
+  viewIds: string[];
+  block: BlockMap;
+  schema: CollectionPropertySchemaMap;
+  tagOptions: TagInfo[];
+  categoryOptions: CategoryInfo[];
+  rawMetadata: CollectionViewBlock | CollectionViewPageBlock;
+  customNav: CustomNav[];
+  postCount: number;
+  publishedPosts: PageInfo[];
+  pageIds: string[];
+  latestPosts: PageInfo[];
 }

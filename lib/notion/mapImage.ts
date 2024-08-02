@@ -6,11 +6,19 @@ import BLOG from '@/blog.config';
  * 2. UnPlash 图片可以通过api q=50 控制压缩质量 width=400 控制图片尺寸
  * @param {*} image
  */
-const compressImage = (image, width = 400, quality = 50, fmt = 'webp') => {
+export const compressImage = (
+  image: string,
+  width = 400,
+  quality = 50,
+  fmt = 'webp',
+) => {
   if (!image) {
-    return null;
+    return '';
   }
-  if (image.indexOf(BLOG.NOTION_HOST) === 0 && image.indexOf('amazonaws.com') > 0) {
+  if (
+    image.indexOf(BLOG.NOTION_HOST) === 0 &&
+    image.indexOf('amazonaws.com') > 0
+  ) {
     return `${image}&width=${width}`;
   }
   // 压缩unsplash图片
@@ -20,9 +28,9 @@ const compressImage = (image, width = 400, quality = 50, fmt = 'webp') => {
     // 获取URL参数
     const params = new URLSearchParams(urlObj.search);
     // 将q参数的值替换
-    params.set('q', quality);
+    params.set('q', quality.toString());
     // 尺寸
-    params.set('width', width);
+    params.set('width', width.toString());
     // 格式
     params.set('fmt', fmt);
     params.set('fm', fmt);
@@ -48,11 +56,16 @@ const compressImage = (image, width = 400, quality = 50, fmt = 'webp') => {
  * @param {*} value
  * @returns
  */
-const mapImgUrl = (img, block, type = 'block', from) => {
+export const mapImgUrl = (
+  img: string,
+  blockId: string,
+  type = 'block',
+  from?: string,
+) => {
   if (!img) {
-    return null;
+    return '';
   }
-  let ret = null;
+  let ret = '';
   // 相对目录，则视为notion的自带图片
   if (img.startsWith('/')) {
     ret = BLOG.NOTION_HOST + img;
@@ -61,10 +74,19 @@ const mapImgUrl = (img, block, type = 'block', from) => {
   }
 
   // Notion 图床转换为永久地址
-  const isNotionImg = ret.indexOf('secure.notion-static.com') > 0 || ret.indexOf('prod-files-secure') > 0;
+  const isNotionImg =
+    ret.indexOf('secure.notion-static.com') > 0 ||
+    ret.indexOf('prod-files-secure') > 0;
   const isImgBlock = BLOG.IMG_URL_TYPE === 'Notion' || type === 'block';
   if (isNotionImg && isImgBlock) {
-    ret = BLOG.NOTION_HOST + '/image/' + encodeURIComponent(ret) + '?table=' + type + '&id=' + block.id;
+    ret =
+      BLOG.NOTION_HOST +
+      '/image/' +
+      encodeURIComponent(ret) +
+      '?table=' +
+      type +
+      '&id=' +
+      blockId;
   }
 
   // UnSplash 随机图片接口优化
@@ -72,7 +94,7 @@ const mapImgUrl = (img, block, type = 'block', from) => {
     // 检查原始URL是否已经包含参数
     const separator = ret.includes('?') ? '&' : '?';
     // 拼接唯一识别参数，防止请求的图片被缓存
-    ret = `${ret}${separator}random=${block.id}`;
+    ret = `${ret}${separator}random=${blockId}`;
   }
 
   // 文章封面
@@ -82,5 +104,3 @@ const mapImgUrl = (img, block, type = 'block', from) => {
 
   return ret;
 };
-
-export { mapImgUrl, compressImage };

@@ -1,11 +1,11 @@
-import type { Category, PageProperties, SelectOption } from './types';
+import type { CategoryInfo, PageInfo, SelectOption } from './types';
 
 /**
  * 获取所有文章的标签
  * @param allPosts
  * @param sliceCount 默认截取数量为12，若为0则返回全部
  * @param tagOptions tags的下拉选项
- * @returns {Category[]}
+ * @returns {CategoryInfo[]}
  */
 
 /**
@@ -14,18 +14,12 @@ import type { Category, PageProperties, SelectOption } from './types';
  * @returns {Promise<{}|*[]>}
  */
 export function getAllCategories(
-  allPages: PageProperties[],
+  publishedPosts: PageInfo[],
   categoryOptions: SelectOption[],
   sliceCount = 0,
-): Category[] {
-  const allPosts = allPages?.filter(
-    (page) => page.type === 'Post' && page.status === 'Published',
-  );
-  if (!allPosts || !categoryOptions) {
-    return [];
-  }
+): CategoryInfo[] {
   // 计数
-  const categories = allPosts.map((p) => p.category).flat();
+  const categories = publishedPosts.map((p) => p.category).flat();
   const countMap: { [key: string]: number } = {};
   categories.forEach((category) => {
     if (category in countMap) {
@@ -34,7 +28,7 @@ export function getAllCategories(
       countMap[category] = 1;
     }
   });
-  const list: Category[] = [];
+  const list: CategoryInfo[] = [];
   for (const categoryOption of categoryOptions) {
     const count = countMap[categoryOption.value];
     if (count) {

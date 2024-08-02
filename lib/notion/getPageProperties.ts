@@ -1,18 +1,22 @@
 import { getTextContent, getDateValue } from 'notion-utils';
 import { NotionAPI } from 'notion-client';
 import BLOG from '@/blog.config';
-import formatDate from '../formatDate';
-// import { createHash } from 'crypto'
 import md5 from 'js-md5';
 import { mapImgUrl } from './mapImage';
+import dayjs from 'dayjs';
+import { PagePropertiesType, PagePropertiesStatus } from './types';
 
-import {
-  type BlockMap,
-  type PageProperties,
-  type CollectionPropertySchemaMap,
-  type SelectOption,
-  PagePropertiesType,
+import type {
+  BlockMap,
+  PageInfo,
+  CollectionPropertySchemaMap,
+  Decoration,
 } from './types';
+
+type TempPageInfo = {
+  id: string;
+  [key: string]: any;
+};
 
 const excludeProperties = ['date', 'select', 'multi_select', 'person'];
 
@@ -20,25 +24,24 @@ export default async function getPageProperties(
   id: string,
   blockMap: BlockMap,
   schemaMap: CollectionPropertySchemaMap,
-  tagOptions: SelectOption[],
   authToken?: string,
-): Promise<PageProperties> {
-  const properties: Partial<PageProperties> = { id: id };
+): Promise<PageInfo> {
+  const pageInfo: TempPageInfo = { id: id };
   const block = blockMap[id].value;
 
-  Object.entries(blockMap[id].value.properties).forEach(async ([key, val]) => {
+  Object.entries<Decoration[]>(block.properties).forEach(async ([key, val]) => {
     const schema = schemaMap[key];
     if (schema.type && !excludeProperties.includes(schema.type)) {
-      properties[schema.name] = getTextContent(val);
+      pageInfo[schema.name] = getTextContent(val);
     } else {
       switch (schema.type) {
         case 'date': {
-          properties[schema.name] = getDateValue(val);
+          pageInfo[schema.name] = getDateValue(val);
           break;
         }
         case 'select':
         case 'multi_select': {
-          properties[schema.name] = getTextContent(val).split(',');
+          pageInfo[schema.name] = getTextContent(val).split(',');
           break;
         }
         case 'person': {
@@ -61,7 +64,7 @@ export default async function getPageProperties(
               users.push(user);
             }
           }
-          properties[schema.name] = users;
+          pageInfo[schema.name] = users;
           break;
         }
         default:
@@ -73,86 +76,75 @@ export default async function getPageProperties(
   // 映射键：用户自定义表头名
   const fieldNames = BLOG.NOTION_PROPERTY_NAME;
   if (fieldNames) {
-    Object.keys(fieldNames).forEach((key) => {
-      if (fieldNames[key] && properties[fieldNames[key]])
-        properties[key] = properties[fieldNames[key]];
-    });
+    for (const [key, value] of Object.entries(fieldNames)) {
+      if (value && pageInfo[value]) pageInfo[key] = pageInfo[value];
+    }
   }
 
   // type\status\category 是单选下拉框 取数组第一个
-  properties.type = properties.type?.[0] || '';
-  properties.status = properties.status?.[0] || '';
-  properties.category = properties.category?.[0] || '';
+  if (pageInfo.type && pageInfo.type[0]) pageInfo.type = pageInfo.type[0];
+  if (pageInfo.status && pageInfo.status[0])
+    pageInfo.status = pageInfo.status[0];
+  if (pageInfo.category && pageInfo.category[0])
+    pageInfo.category = pageInfo.category[0];
 
   // 映射值：用户个性化type和status字段的下拉框选项，在此映射回代码的英文标识
-  mapProperties(properties);
+  mapProperties(pageInfo);
 
-  properties.publishDate = new Date(
-    properties?.date?.start_date || block.created_time,
-  ).getTime();
-  properties.publishDay = formatDate(properties.publishDate, BLOG.LANG);
-  properties.lastEditedDate = new Date(block?.last_edited_time);
-  properties.lastEditedDay = formatDate(
-    new Date(block?.last_edited_time),
-    BLOG.LANG,
+  pageInfo.publishDate = dayjs(
+    pageInfo?.date?.start_date || block.created_time,
+  ).format();
+  // pageInfo.publishDay = formatDate(pageInfo.publishDate, BLOG.LANG);
+  pageInfo.lastEditedDate = dayjs(block?.last_edited_time).format();
+  // pageInfo.lastEditedDay = formatDate(
+  //   new Date(block?.last_edited_time),
+  //   BLOG.LANG,
+  // );
+  pageInfo.fullWidth = block.format?.page_full_width ?? false;
+  pageInfo.pageIcon = mapImgUrl(block?.format?.page_icon, block.id);
+  pageInfo.pageCover = mapImgUrl(block?.format?.page_cover, block.id);
+  pageInfo.pageCoverThumbnail = mapImgUrl(
+    block?.format?.page_cover,
+    block.id,
+    'block',
+    'pageCoverThumbnail',
   );
-  properties.fullWidth = block.format?.page_full_width ?? false;
-  properties.pageIcon =
-    mapImgUrl(blockMap[id].value?.format?.page_icon, blockMap[id].value) ?? '';
-  properties.pageCover =
-    mapImgUrl(blockMap[id].value?.format?.page_cover, blockMap[id].value) ?? '';
-  properties.pageCoverThumbnail =
-    mapImgUrl(
-      blockMap[id].value?.format?.page_cover,
-      blockMap[id].value,
-      'block',
-      'pageCoverThumbnail',
-    ) ?? '';
-  properties.content = block.content ?? [];
-  properties.tagItems =
-    properties?.tags?.map((tag) => {
-      return {
-        name: tag,
-        color: tagOptions?.find((t) => t.value === tag)?.color || 'gray',
-      };
-    }) || [];
-  delete properties.content;
 
   // 处理URL
-  if (properties.type === BLOG.NOTION_PROPERTY_NAME.type_post) {
-    properties.slug = BLOG.POST_URL_PREFIX
-      ? generateCustomizeUrl(properties)
-      : properties.slug ?? properties.id;
-  } else if (properties.type === BLOG.NOTION_PROPERTY_NAME.type_page) {
-    properties.slug = properties.slug ?? properties.id;
+  if (pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_post) {
+    pageInfo.slug = BLOG.POST_URL_PREFIX
+      ? generateCustomizeUrl(pageInfo)
+      : pageInfo.slug ?? pageInfo.id;
+  } else if (pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_page) {
+    pageInfo.slug = pageInfo.slug ?? pageInfo.id;
   } else if (
-    properties.type === BLOG.NOTION_PROPERTY_NAME.type_menu ||
-    properties.type === BLOG.NOTION_PROPERTY_NAME.type_sub_menu
+    pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_menu ||
+    pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_sub_menu
   ) {
     // 菜单路径为空、作为可展开菜单使用
-    properties.to = properties.slug ?? '#';
-    properties.name = properties.title ?? '';
+    pageInfo.to = pageInfo.slug ?? '#';
+    pageInfo.name = pageInfo.title ?? '';
   }
 
   // 开启伪静态路径
-  if (JSON.parse(BLOG.PSEUDO_STATIC)) {
+  if (BLOG.PSEUDO_STATIC) {
     if (
-      !properties?.slug?.endsWith('.html') &&
-      !properties?.slug?.startsWith('http')
+      !pageInfo?.slug?.endsWith('.html') &&
+      !pageInfo?.slug?.startsWith('http')
     ) {
-      properties.slug += '.html';
+      pageInfo.slug += '.html';
     }
   }
-  properties.password = properties.password
-    ? md5(properties.slug + properties.password)
+  pageInfo.password = pageInfo.password
+    ? md5(pageInfo.slug + pageInfo.password)
     : '';
-  return properties;
+  return pageInfo as PageInfo;
 }
 
 /**
  * 映射用户自定义表头
  */
-function mapProperties(properties: PageProperties) {
+function mapProperties(properties: TempPageInfo) {
   if (properties.type === BLOG.NOTION_PROPERTY_NAME.type_post) {
     properties.type = PagePropertiesType.Post;
   }
@@ -163,10 +155,10 @@ function mapProperties(properties: PageProperties) {
     properties.type = PagePropertiesType.Notice;
   }
   if (properties.status === BLOG.NOTION_PROPERTY_NAME.status_publish) {
-    properties.status = PagePropertiesType.Published;
+    properties.status = PagePropertiesStatus.Published;
   }
   if (properties.status === BLOG.NOTION_PROPERTY_NAME.status_invisible) {
-    properties.status = PagePropertiesType.Invisible;
+    properties.status = PagePropertiesStatus.Invisible;
   }
 }
 
@@ -175,7 +167,7 @@ function mapProperties(properties: PageProperties) {
  * @param {*} postProperties
  * @returns
  */
-function generateCustomizeUrl(postProperties: PageProperties) {
+function generateCustomizeUrl(postProperties: TempPageInfo) {
   let fullPrefix = '';
   const allSlugPatterns = BLOG.POST_URL_PREFIX.split('/');
   allSlugPatterns.forEach((pattern, idx) => {
@@ -186,11 +178,11 @@ function generateCustomizeUrl(postProperties: PageProperties) {
       const formatPostCreatedDate = new Date(postProperties?.publishDay);
       fullPrefix += String(formatPostCreatedDate.getUTCMonth() + 1).padStart(
         2,
-        0,
+        '0',
       );
     } else if (pattern === '%day%' && postProperties?.publishDay) {
       const formatPostCreatedDate = new Date(postProperties?.publishDay);
-      fullPrefix += String(formatPostCreatedDate.getUTCDate()).padStart(2, 0);
+      fullPrefix += String(formatPostCreatedDate.getUTCDate()).padStart(2, '0');
     } else if (pattern === '%slug%') {
       fullPrefix += postProperties.slug ?? postProperties.id;
     } else if (!pattern.includes('%')) {

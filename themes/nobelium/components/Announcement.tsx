@@ -4,7 +4,7 @@ import type { FC } from 'react';
 const NotionPage = dynamic(() => import('@/components/NotionPage'));
 
 export interface AnnouncementProps {
-  notice: any;
+  notice?: any;
   className?: string;
 }
 

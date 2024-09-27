@@ -6,9 +6,12 @@ import BlogListPage from '../components/BlogListPage';
 import BlogListScroll from '../components/BlogListScroll';
 import BlogListBar from '../components/BlogListBar';
 
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
-export interface LayoutPostListProps {}
+export interface LayoutPostListProps {
+  topSlot: ReactNode;
+  posts: any;
+}
 
 /**
  * 博客列表

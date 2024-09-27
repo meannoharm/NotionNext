@@ -1,4 +1,4 @@
-import { useRef, createContext, useContext } from 'react';
+import { useRef, createContext } from 'react';
 import { Transition } from '@headlessui/react';
 import { useGlobal } from '@/lib/global';
 import CommonHead from '@/components/CommonHead';

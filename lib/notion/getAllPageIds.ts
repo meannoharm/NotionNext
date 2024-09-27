@@ -8,7 +8,7 @@ type Query = {
 
 export default function getAllPageIds(
   collectionQuery: Query,
-  collectionId: string | undefined,
+  collectionId: string | null,
   collectionView: CollectionViewMap,
   viewIds: string[],
 ) {

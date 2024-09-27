@@ -9,3 +9,8 @@ TODO:
 全部ts化
 主题部分改版
 新主题：innocent 和 colorful
+
+small TODO:
+fix style bug
+? state management for Notion Data
+? dev local cache

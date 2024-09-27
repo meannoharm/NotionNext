@@ -4,11 +4,9 @@ import Link from 'next/link';
 import BlogPost from './BlogPost';
 import { useTranslation } from 'next-i18next';
 
-import type {FC} from 'react';
+import type { FC } from 'react';
 
-export interface BlogListPageProps {
-
-}
+export interface BlogListPageProps {}
 
 const BlogListPage: FC<BlogListPageProps> = (props) => {
   const { t } = useTranslation('common');
@@ -27,9 +25,7 @@ const BlogListPage: FC<BlogListPageProps> = (props) => {
   return (
     <div className="my-6 w-full">
       <div id="posts-wrapper">
-        {posts?.map((post) => (
-          <BlogPost key={post.id} post={post} />
-        ))}
+        {posts?.map((post) => <BlogPost key={post.id} post={post} />)}
       </div>
 
       <div className="flex justify-between text-xs">

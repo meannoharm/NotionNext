@@ -1,75 +1,68 @@
 import { MongoClient } from 'mongodb';
 
-const DB_URL = process.env.MONGO_DB_URL as string; // e.g. mongodb+srv://mongo_user:[password]@xxx.mongodb.net//?retryWrites=true&w=majority
-const DB_NAME = process.env.MONGO_DB_NAME as string; // e.g. tangly1024
+const DB_URL = process.env.MONGO_DB_URL as string;
+const DB_NAME = process.env.MONGO_DB_NAME as string;
 const DB_COLLECTION = 'posts';
 
-export async function getCache(key: string) {
-  const client = await MongoClient.connect(DB_URL).catch((err) => {
-    console.error(err);
-  });
-  const dbo = client.db(DB_NAME);
-  const query = { block_id: key };
-  const res = await dbo
-    .collection('posts')
-    .findOne(query)
-    .catch((err) => {
-      console.error(err);
+let client: MongoClient | null = null;
+
+async function connectToDatabase() {
+  if (!client) {
+    client = await MongoClient.connect(DB_URL, {
+      // Optional connection pooling config
+      maxPoolSize: 10, // Maintain up to 10 socket connections
     });
-  await client.close();
-  return res;
+  }
+  return client.db(DB_NAME);
 }
 
-/**
- * 并发请求写文件异常； Vercel生产环境不支持写文件。
- * @param key
- * @param data
- * @returns {Promise<null>}
- */
-export async function setCache(key: string, data: any) {
-  const client = await MongoClient.connect(DB_URL).catch((err) => {
-    console.error(err);
-  });
-  const dbo = client.db(DB_NAME);
-  data.block_id = key;
-  const query = { block_id: key };
-  const jsonObj = JSON.parse(JSON.stringify(data));
-
-  const updRes = await dbo
-    .collection(DB_COLLECTION)
-    .updateOne(query, { $set: jsonObj })
-    .catch((err) => {
-      console.error(err);
-    });
-  console.log('更新结果', key, updRes);
-  if (updRes.matchedCount === 0) {
-    const insertRes = await dbo
-      .collection(DB_COLLECTION)
-      .insertOne(jsonObj)
-      .catch((err) => {
-        console.error(err);
-      });
-    console.log('插入结果', key, insertRes);
+export async function getCache(key: string) {
+  try {
+    const dbo = await connectToDatabase();
+    const query = { block_id: key };
+    const res = await dbo.collection(DB_COLLECTION).findOne(query);
+    return res;
+  } catch (err) {
+    console.error(`Failed to get cache for key: ${key}`, err);
+    throw err;
   }
-  await client.close();
-  return data;
+}
+
+export async function setCache(key: string, data: any) {
+  try {
+    const dbo = await connectToDatabase();
+    data.block_id = key;
+    const query = { block_id: key };
+    const jsonObj = JSON.parse(JSON.stringify(data));
+
+    const updRes = await dbo
+      .collection(DB_COLLECTION)
+      .updateOne(query, { $set: jsonObj });
+    console.log('Update result', key, updRes);
+
+    if (updRes.matchedCount === 0) {
+      const insertRes = await dbo.collection(DB_COLLECTION).insertOne(jsonObj);
+      console.log('Insert result', key, insertRes);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(`Failed to set cache for key: ${key}`, err);
+    throw err;
+  }
 }
 
 export async function delCache(key: string) {
-  const client = await MongoClient.connect(DB_URL).catch((err) => {
-    console.error(err);
-  });
-  const dbo = client.db(DB_NAME);
-  const query = { block_id: key };
-  const res = await dbo
-    .collection('posts')
-    .deleteOne(query)
-    .catch((err) => {
-      console.error(err);
-    });
-  console.log('删除结果', key, res);
-  await client.close();
-  return null;
+  try {
+    const dbo = await connectToDatabase();
+    const query = { block_id: key };
+    const res = await dbo.collection(DB_COLLECTION).deleteOne(query);
+    console.log('Delete result', key, res);
+    return null;
+  } catch (err) {
+    console.error(`Failed to delete cache for key: ${key}`, err);
+    throw err;
+  }
 }
 
 const mongoDbCache = { getCache, setCache, delCache };

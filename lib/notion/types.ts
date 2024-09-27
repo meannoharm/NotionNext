@@ -1,7 +1,6 @@
 import type {
   BlockMap,
   Collection,
-  CollectionPropertySchema,
   CollectionPropertySchemaMap,
   CollectionQueryResult,
   CollectionViewBlock,

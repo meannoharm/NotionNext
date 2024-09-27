@@ -85,12 +85,12 @@ export async function getNotionPageData(
     console.log('[缓存]:', `from:${from}`, `root-page-id:${pageId}`);
     return data;
   }
-  const db = await getDataBaseInfoByNotionAPI(pageId, from);
+  const dataBaseInfo = await getDataBaseInfoByNotionAPI(pageId, from);
   // 存入缓存
-  if (db) {
-    await setDataToCache(cacheKey, db);
+  if (dataBaseInfo) {
+    await setDataToCache(cacheKey, dataBaseInfo);
   }
-  return db;
+  return dataBaseInfo;
 }
 
 /**
@@ -235,8 +235,6 @@ async function getDataBaseInfoByNotionAPI(
   const tagOptions = getTagOptions(schemaMap);
   const categoryOptions = getCategoryOptions(schemaMap);
 
-  const pageProperties: PageInfo[] = [];
-
   const pageIds = getAllPageIds(
     collectionQuery,
     collectionId,
@@ -254,16 +252,29 @@ async function getDataBaseInfoByNotionAPI(
     );
   }
 
-  pageIds.forEach(async (id) => {
-    if (blockMap[id].value) {
-      const properties =
-        (await getPageProperties(id, blockMap, schemaMap)) || null;
-
-      if (properties) {
-        pageProperties.push(properties);
-      }
-    }
-  });
+  const pageProperties: PageInfo[] = (
+    await Promise.all(
+      pageIds.map(async (pageId) => {
+        if (blockMap[pageId]?.value) {
+          try {
+            const properties = await getPageProperties(
+              pageId,
+              blockMap,
+              schemaMap,
+            );
+            return properties || null;
+          } catch (error) {
+            console.error(
+              `Error getting properties for page ${pageId}:`,
+              error,
+            );
+            return null;
+          }
+        }
+        return null;
+      }),
+    )
+  ).filter(Boolean) as PageInfo[];
 
   // 查找所有的Post和Page
   const allPages: PageInfo[] = [];

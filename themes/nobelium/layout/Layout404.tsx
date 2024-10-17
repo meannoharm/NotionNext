@@ -1,4 +1,4 @@
-import LayoutBase from './BaseLayout';
+import LayoutBase from './LayoutBase';
 
 /**
  * 404 页面

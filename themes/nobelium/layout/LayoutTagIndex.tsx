@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import LayoutBase from './BaseLayout';
+import LayoutBase from './LayoutBase';
 
 /**
  * 文章标签列表

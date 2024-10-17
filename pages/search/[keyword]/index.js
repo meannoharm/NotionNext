@@ -1,5 +1,5 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
-import { getDataFromCache } from '@/lib/cache/cache_manager';
+import { getDataFromCache } from '@/lib/cache/cacheManager';
 import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';

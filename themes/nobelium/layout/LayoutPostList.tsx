@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import BLOG from '@/blog.config';
-import LayoutBase from './BaseLayout';
+import LayoutBase from './LayoutBase';
 import { deepClone } from '@/lib/utils';
 import BlogListPage from '../components/BlogListPage';
 import BlogListScroll from '../components/BlogListScroll';

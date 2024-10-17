@@ -3,6 +3,9 @@ import { getQueryParam, getQueryVariable, isBrowser } from '../lib/utils';
 import dynamic from 'next/dynamic';
 import getConfig from 'next/config';
 import * as ThemeComponents from '@theme-components';
+
+import type { NextRouter } from 'next/router';
+
 // 所有主题在next.config.js中扫描
 export const { THEMES = [] } = getConfig().publicRuntimeConfig;
 /**
@@ -11,9 +14,9 @@ export const { THEMES = [] } = getConfig().publicRuntimeConfig;
  * @param {*} router
  * @returns
  */
-export const getLayoutByTheme = (router) => {
+export const getLayoutByTheme = (router: NextRouter) => {
   const themeQuery = getQueryParam(router.asPath, 'theme') || BLOG.THEME;
-  const layout = getLayoutNameByPath(router.pathname);
+  const layout = getLayoutNameByPathName(router.pathname);
   if (themeQuery !== BLOG.THEME) {
     return dynamic(
       () => import(`@/themes/${themeQuery}`).then((m) => m[layout]),
@@ -26,11 +29,11 @@ export const getLayoutByTheme = (router) => {
 
 /**
  * 根据路径 获取对应的layout
- * @param {*} path
+ * @param {*} pathname
  * @returns
  */
-export const getLayoutNameByPath = (path) => {
-  switch (path) {
+export const getLayoutNameByPathName = (pathname: string) => {
+  switch (pathname) {
     case '/':
       return 'LayoutIndex';
     case '/archive':
@@ -122,7 +125,7 @@ export const loadDarkModeFromLocalStorage = () => {
  * 保存深色模式
  * @param isDarkMode
  */
-export const saveDarkModeToLocalStorage = (isDarkMode) => {
+export const saveDarkModeToLocalStorage = (isDarkMode: boolean) => {
   localStorage.setItem('isDarkMode', isDarkMode);
 };
 
@@ -138,7 +141,7 @@ export const loadThemeFromLocalStorage = () => {
  * 保存默认主题
  * @param newTheme
  */
-export const saveThemeToLocalStorage = (newTheme) => {
+export const saveThemeToLocalStorage = (newTheme: string) => {
   localStorage.setItem('theme', newTheme);
 };
 

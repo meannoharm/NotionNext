@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { deepClone } from '@/lib/utils';
 import BLOG from '@/blog.config';
-import LayoutBase from './BaseLayout';
+import LayoutBase from './LayoutBase';
 import BlogListBar from '../components/BlogListBar';
 import SearchNavBar from '../components/SearchNavBar';
 import BlogListPage from '../components/BlogListPage';

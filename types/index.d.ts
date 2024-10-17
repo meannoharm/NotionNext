@@ -9,3 +9,7 @@ export interface Meta {
   slug: string;
   type: string;
 }
+
+declare module '@theme-components' {
+  export const Component: any;
+}

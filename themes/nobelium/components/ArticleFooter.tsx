@@ -9,7 +9,7 @@ import { useTranslation } from 'next-i18next';
  * @param validPassword(bool) 回调函数，校验正确回调入参为true
  * @returns
  */
-export const ArticleFooter = (props) => {
+export const ArticleFooter = () => {
   const router = useRouter();
   const { t } = useTranslation('common');
 
@@ -34,3 +34,5 @@ export const ArticleFooter = (props) => {
     </div>
   );
 };
+
+export default ArticleFooter;

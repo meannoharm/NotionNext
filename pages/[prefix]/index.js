@@ -81,7 +81,6 @@ const Slug = (props) => {
   props = { ...props, lock, meta, setLock, validPassword };
   // 根据页面路径加载不同Layout文件
   const Layout = getLayoutByTheme(router);
-  console.log(11111, router, Layout);
   return <Layout {...props} />;
 };
 

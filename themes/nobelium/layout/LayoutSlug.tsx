@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { isBrowser } from '@/lib/utils';
 import LayoutBase from './LayoutBase';
 import ArticleLock from '../components/ArticleLock';
 import ArticleInfo from '../components/ArticleInfo';
@@ -27,13 +24,11 @@ const LayoutSlug: FC<LayoutSlugProps> = (props) => {
 
       {!lock && (
         <div id="article-wrapper" className="px-2">
-          <>
-            <ArticleInfo post={post} />
-            <NotionPage post={post} />
-            <ShareBar post={post} />
-            <Comment frontMatter={post} />
-            <ArticleFooter />
-          </>
+          <ArticleInfo post={post} />
+          <NotionPage post={post} />
+          <ShareBar post={post} />
+          <Comment frontMatter={post} />
+          <ArticleFooter />
         </div>
       )}
     </LayoutBase>

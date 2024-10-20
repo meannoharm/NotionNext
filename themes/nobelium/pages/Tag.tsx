@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import LayoutBase from './LayoutBase';
+import LayoutBase from '../layout/LayoutBase';
 
 /**
  * 文章标签列表
  * @param {*} props
  * @returns
  */
-const LayoutTagIndex = (props) => {
+const Tag = (props) => {
   const { tagOptions } = props;
   return (
     <LayoutBase {...props}>
@@ -35,4 +35,4 @@ const LayoutTagIndex = (props) => {
   );
 };
 
-export default LayoutTagIndex;
+export default Tag;

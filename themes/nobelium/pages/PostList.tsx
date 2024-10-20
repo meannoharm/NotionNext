@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import BLOG from '@/blog.config';
-import LayoutBase from './LayoutBase';
+import LayoutBase from '../layout/LayoutBase';
 import { deepClone } from '@/lib/utils';
 import BlogListPage from '../components/BlogListPage';
 import BlogListScroll from '../components/BlogListScroll';
@@ -8,7 +8,7 @@ import BlogListBar from '../components/BlogListBar';
 
 import type { FC, ReactNode } from 'react';
 
-export interface LayoutPostListProps {
+export interface PostListProps {
   topSlot: ReactNode;
   posts: any;
 }
@@ -18,7 +18,7 @@ export interface LayoutPostListProps {
  * @param {*} props
  * @returns
  */
-const LayoutPostList: FC<LayoutPostListProps> = (props) => {
+const PostList: FC<PostListProps> = (props) => {
   const { posts, topSlot } = props;
 
   // 在列表中进行实时过滤
@@ -48,4 +48,4 @@ const LayoutPostList: FC<LayoutPostListProps> = (props) => {
   );
 };
 
-export default LayoutPostList;
+export default PostList;

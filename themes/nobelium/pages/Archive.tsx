@@ -1,4 +1,4 @@
-import LayoutBase from './LayoutBase';
+import LayoutBase from '../layout/LayoutBase';
 import BlogArchiveItem from '../components/BlogArchiveItem';
 
 /**
@@ -6,7 +6,7 @@ import BlogArchiveItem from '../components/BlogArchiveItem';
  * @param {*} props
  * @returns
  */
-const LayoutArchive = (props) => {
+const Archive = (props) => {
   const { archivePosts } = props;
   return (
     <LayoutBase {...props}>
@@ -23,4 +23,4 @@ const LayoutArchive = (props) => {
   );
 };
 
-export default LayoutArchive;
+export default Archive;

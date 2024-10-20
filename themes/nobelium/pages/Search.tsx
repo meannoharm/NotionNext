@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { deepClone } from '@/lib/utils';
 import BLOG from '@/blog.config';
-import LayoutBase from './LayoutBase';
+import LayoutBase from '../layout/LayoutBase';
 import BlogListBar from '../components/BlogListBar';
 import SearchNavBar from '../components/SearchNavBar';
 import BlogListPage from '../components/BlogListPage';
@@ -10,7 +10,7 @@ import replaceSearchResult from '@/components/Mark';
 
 import type { FC } from 'react';
 
-export interface LayoutSearchProps {}
+export interface SearchProps {}
 
 /**
  * 搜索
@@ -18,7 +18,7 @@ export interface LayoutSearchProps {}
  * @param {*} props
  * @returns
  */
-const LayoutSearch: FC<LayoutSearchProps> = (props) => {
+const Search: FC<SearchProps> = (props) => {
   const { keyword, posts } = props;
   useEffect(() => {
     if (isBrowser) {
@@ -62,4 +62,4 @@ const LayoutSearch: FC<LayoutSearchProps> = (props) => {
   );
 };
 
-export default LayoutSearch;
+export default Search;

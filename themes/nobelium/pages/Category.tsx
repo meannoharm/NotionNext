@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import LayoutBase from './LayoutBase';
+import LayoutBase from '../layout/LayoutBase';
 
 /**
  * 文章分类列表
  * @param {*} props
  * @returns
  */
-const LayoutCategoryIndex = (props) => {
+const Category = (props) => {
   const { categoryOptions } = props;
 
   return (
@@ -36,4 +36,4 @@ const LayoutCategoryIndex = (props) => {
   );
 };
 
-export default LayoutCategoryIndex;
+export default Category;

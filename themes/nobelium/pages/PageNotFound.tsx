@@ -1,12 +1,12 @@
-import LayoutBase from './LayoutBase';
+import LayoutBase from '../layout/LayoutBase';
 
 /**
  * 404 页面
  * @param {*} props
  * @returns
  */
-const Layout404 = (props) => {
+const PageNotFound = (props) => {
   return <LayoutBase {...props}>404 Not found.</LayoutBase>;
 };
 
-export default Layout404;
+export default PageNotFound;

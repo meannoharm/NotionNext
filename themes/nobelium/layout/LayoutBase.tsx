@@ -27,6 +27,8 @@ export interface LayoutBaseProps {
 const LayoutBase: FC<LayoutBaseProps> = (props) => {
   const { children, post, topSlot, meta } = props;
 
+  console.log(post);
+
   const fullWidth = post?.fullWidth ?? false;
   const { onLoading } = useGlobal();
   const searchModal = useRef(null);
@@ -35,7 +37,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
     <ThemeGlobalNobelium.Provider value={{ searchModal }}>
       <div
         id="theme-nobelium"
-        className="nobelium relative flex  min-h-screen  w-full flex-col bg-white dark:bg-black dark:text-gray-300"
+        className="nobelium relative flex h-screen w-screen flex-col bg-white dark:bg-black dark:text-gray-300"
       >
         {/* SEO相关 */}
         <CommonHead meta={meta} />
@@ -46,7 +48,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
         {/* 主区 */}
         <main
           id="out-wrapper"
-          className={`relative m-auto w-full flex-grow transition-all ${!fullWidth ? 'max-w-2xl px-4' : 'px-4 md:px-24'}`}
+          className={`relative flex-grow transition-all ${!fullWidth ? 'max-w-2xl px-4' : 'px-4 md:px-24'}`}
         >
           <Transition
             show={!onLoading}

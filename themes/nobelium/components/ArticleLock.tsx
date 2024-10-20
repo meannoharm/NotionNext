@@ -8,7 +8,7 @@ import { useTranslation } from 'next-i18next';
  * @param validPassword(bool) 回调函数，校验正确回调入参为true
  * @returns
  */
-export const ArticleLock = (props) => {
+const ArticleLock = (props) => {
   const { validPassword } = props;
   const { t } = useTranslation('common');
 
@@ -66,3 +66,5 @@ export const ArticleLock = (props) => {
     </div>
   );
 };
+
+export default ArticleLock;

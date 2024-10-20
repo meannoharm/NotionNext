@@ -35,27 +35,27 @@ export const getLayoutByTheme = (router: NextRouter) => {
 export const getLayoutNameByPathName = (pathname: string) => {
   switch (pathname) {
     case '/':
-      return 'LayoutIndex';
+      return 'Index';
     case '/archive':
-      return 'LayoutArchive';
+      return 'Archive';
     case '/page/[page]':
     case '/category/[category]':
     case '/category/[category]/page/[page]':
     case '/tag/[tag]':
     case '/tag/[tag]/page/[page]':
-      return 'LayoutPostList';
+      return 'PostList';
     case '/search':
     case '/search/[keyword]':
     case '/search/[keyword]/page/[page]':
-      return 'LayoutSearch';
+      return 'Search';
     case '/404':
-      return 'Layout404';
+      return 'PageNotFound';
     case '/tag':
-      return 'LayoutTagIndex';
+      return 'Tag';
     case '/category':
-      return 'LayoutCategoryIndex';
+      return 'Category';
     default:
-      return 'LayoutSlug';
+      return 'Post';
   }
 };
 

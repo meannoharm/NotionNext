@@ -1,4 +1,4 @@
-import LayoutBase from './LayoutBase';
+import LayoutBase from '../layout/LayoutBase';
 import ArticleLock from '../components/ArticleLock';
 import ArticleInfo from '../components/ArticleInfo';
 import ArticleFooter from '../components/ArticleFooter';
@@ -15,7 +15,7 @@ export interface LayoutSlugProps {
   validPassword: any;
 }
 
-const LayoutSlug: FC<LayoutSlugProps> = (props) => {
+const Post: FC<LayoutSlugProps> = (props) => {
   const { post, lock, validPassword } = props;
 
   return (
@@ -35,4 +35,4 @@ const LayoutSlug: FC<LayoutSlugProps> = (props) => {
   );
 };
 
-export default LayoutSlug;
+export default Post;

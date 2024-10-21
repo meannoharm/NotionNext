@@ -1,7 +1,7 @@
 import PageNotFound from './pages/PageNotFound';
 import Archive from './pages/Archive';
 import Category from './pages/Category';
-import Index from './pages/Index';
+import Home from './pages/Home';
 import PostList from './pages/PostList';
 import Search from './pages/Search';
 import Tag from './pages/Tag';
@@ -13,7 +13,7 @@ export {
   PageNotFound,
   Archive,
   Category,
-  Index,
+  Home,
   PostList,
   Search,
   Tag,

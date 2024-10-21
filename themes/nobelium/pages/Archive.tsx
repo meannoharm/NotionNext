@@ -1,12 +1,16 @@
 import LayoutBase from '../layout/LayoutBase';
 import BlogArchiveItem from '../components/BlogArchiveItem';
 
+import type { FC } from 'react';
+
+export interface ArchiveProps {}
+
 /**
  * 归档
  * @param {*} props
  * @returns
  */
-const Archive = (props) => {
+const Archive: FC<ArchiveProps> = (props) => {
   const { archivePosts } = props;
   return (
     <LayoutBase {...props}>

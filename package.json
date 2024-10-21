@@ -36,7 +36,6 @@
     "feed": "^4.2.2",
     "i18next": "^23.12.2",
     "js-md5": "^0.7.3",
-    "localStorage": "^1.0.4",
     "lodash": "^4.1.1",
     "memory-cache": "^0.2.0",
     "mongodb": "^4.17.2",
@@ -54,6 +53,7 @@
     "react-notion-x": "6.16.0",
     "react-share": "^4.4.1",
     "react-tweet-embed": "~2.0.0",
+    "store": "^2.0.12",
     "typed.js": "^2.0.12"
   },
   "devDependencies": {
@@ -64,6 +64,7 @@
     "@types/node": "^20.12.12",
     "@types/nprogress": "^0.2.3",
     "@types/react": "18.2.75",
+    "@types/store": "^2.0.5",
     "@waline/client": "^2.5.1",
     "autoprefixer": "^10.4.13",
     "eslint": "8.57.0",

@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import LayoutBase from '../layout/LayoutBase';
 
+import type { FC } from 'react';
+
+export interface CategoryProps {}
+
 /**
  * 文章分类列表
  * @param {*} props
  * @returns
  */
-const Category = (props) => {
+const Category: FC<CategoryProps> = (props) => {
   const { categoryOptions } = props;
 
   return (

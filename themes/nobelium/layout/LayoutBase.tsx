@@ -1,4 +1,4 @@
-import { useRef, createContext } from 'react';
+import React, { useRef, createContext } from 'react';
 import { Transition } from '@headlessui/react';
 import { useGlobal } from '@/lib/global';
 import CommonHead from '@/components/CommonHead';
@@ -9,15 +9,13 @@ import Live2D from '@/components/Live2D';
 import AlgoliaSearchModal from '@/components/AlgoliaSearchModal';
 
 import type { FC, ReactNode } from 'react';
+import type { ThemeProps } from '@/themes/types';
 
 // 主题全局状态
 const ThemeGlobalNobelium = createContext({});
 
-export interface LayoutBaseProps {
-  children: ReactNode;
-  post: any;
-  topSlot?: any;
-  meta: any;
+export interface LayoutBaseProps extends ThemeProps {
+  topSlot?: ReactNode;
 }
 
 /**
@@ -25,6 +23,7 @@ export interface LayoutBaseProps {
  * @constructor
  */
 const LayoutBase: FC<LayoutBaseProps> = (props) => {
+  console.log(props);
   const { children, post, topSlot, meta } = props;
 
   console.log(post);

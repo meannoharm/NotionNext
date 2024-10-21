@@ -2,6 +2,7 @@ import BLOG from '@/blog.config';
 import { getQueryParam, getQueryVariable, isBrowser } from '../lib/utils';
 import dynamic from 'next/dynamic';
 import getConfig from 'next/config';
+import store from 'store';
 import * as ThemeComponents from '@theme-components';
 
 import type { NextRouter } from 'next/router';
@@ -35,7 +36,7 @@ export const getLayoutByTheme = (router: NextRouter) => {
 export const getLayoutNameByPathName = (pathname: string) => {
   switch (pathname) {
     case '/':
-      return 'Index';
+      return 'Home';
     case '/archive':
       return 'Archive';
     case '/page/[page]':
@@ -83,7 +84,7 @@ export const initDarkMode = () => {
   return isDarkMode;
 };
 
-export const operateDarkMode = (isDarkMode) => {
+export const operateDarkMode = (isDarkMode: boolean) => {
   const htmlElement = document.getElementsByTagName('html')[0];
   htmlElement.classList.toggle('light', !isDarkMode);
   htmlElement.classList.toggle('dark', isDarkMode);
@@ -118,7 +119,7 @@ export function isPreferDark() {
  * @returns {*}
  */
 export const loadDarkModeFromLocalStorage = () => {
-  return localStorage.getItem('isDarkMode');
+  return store.get('isDarkMode');
 };
 
 /**
@@ -126,7 +127,7 @@ export const loadDarkModeFromLocalStorage = () => {
  * @param isDarkMode
  */
 export const saveDarkModeToLocalStorage = (isDarkMode: boolean) => {
-  localStorage.setItem('isDarkMode', isDarkMode);
+  store.set('isDarkMode', isDarkMode);
 };
 
 /**
@@ -134,7 +135,7 @@ export const saveDarkModeToLocalStorage = (isDarkMode: boolean) => {
  * @returns {*}
  */
 export const loadThemeFromLocalStorage = () => {
-  return localStorage.getItem('theme');
+  return store.get('theme');
 };
 
 /**
@@ -142,7 +143,7 @@ export const loadThemeFromLocalStorage = () => {
  * @param newTheme
  */
 export const saveThemeToLocalStorage = (newTheme: string) => {
-  localStorage.setItem('theme', newTheme);
+  store.set('theme', newTheme);
 };
 
 /**

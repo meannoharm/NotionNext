@@ -107,6 +107,9 @@ importers:
       react-tweet-embed:
         specifier: ~2.0.0
         version: 2.0.0(react@18.2.0)
+      store:
+        specifier: ^2.0.12
+        version: 2.0.12
       typed.js:
         specifier: ^2.0.12
         version: 2.1.0
@@ -132,6 +135,9 @@ importers:
       '@types/react':
         specifier: 18.2.75
         version: 18.2.75
+      '@types/store':
+        specifier: ^2.0.5
+        version: 2.0.5
       '@waline/client':
         specifier: ^2.5.1
         version: 2.15.8(typescript@5.4.4)
@@ -792,6 +798,9 @@ packages:
 
   '@types/responselike@1.0.3':
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
+
+  '@types/store@2.0.5':
+    resolution: {integrity: sha512-5NmTKe3GWdOaykzq7no+Ahf6mafJu0oLc9JNhJ3E26+0oFvd6GnksnZQpMXcH526mfG4xDYjFiKzyDL51PzeWQ==}
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
@@ -3003,6 +3012,9 @@ packages:
   stacktrace-js@2.0.2:
     resolution: {integrity: sha512-Je5vBeY4S1r/RnLydLl0TBTi3F2qdfWmYsGvtfZgEI+SCprPppaIhQf5nGcal4gI4cGpCV/duLcAzT1np6sQqg==}
 
+  store@2.0.12:
+    resolution: {integrity: sha512-eO9xlzDpXLiMr9W1nQ3Nfp9EzZieIQc10zPPMP5jsVV7bLOziSFFBP0XoDXACEIFtdI+rIz0NwWVA/QVJ8zJtw==}
+
   streamsearch@1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
     engines: {node: '>=10.0.0'}
@@ -4477,6 +4489,8 @@ snapshots:
   '@types/responselike@1.0.3':
     dependencies:
       '@types/node': 20.12.12
+
+  '@types/store@2.0.5': {}
 
   '@types/trusted-types@2.0.7': {}
 
@@ -6919,6 +6933,8 @@ snapshots:
       error-stack-parser: 2.1.4
       stack-generator: 2.0.10
       stacktrace-gps: 3.1.2
+
+  store@2.0.12: {}
 
   streamsearch@1.1.0: {}
 

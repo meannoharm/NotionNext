@@ -2,18 +2,10 @@ import BLOG from '@/blog.config';
 import Head from 'next/head';
 
 import type { FC } from 'react';
+import type { PageMeta } from '@/pages/types';
 
 export interface CommonHeadProps {
-  meta?: {
-    title: string;
-    description: string;
-    slug: string;
-    image: string;
-    type: string;
-    tags: string;
-    category: string;
-    publishDay: string;
-  };
+  meta?: PageMeta;
   children?: React.ReactNode;
 }
 

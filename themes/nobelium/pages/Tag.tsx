@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import LayoutBase from '../layout/LayoutBase';
 
+import type { FC } from 'react';
+
+export interface TagProps {}
+
 /**
  * 文章标签列表
  * @param {*} props
  * @returns
  */
-const Tag = (props) => {
+const Tag: FC<TagProps> = (props) => {
   const { tagOptions } = props;
   return (
     <LayoutBase {...props}>

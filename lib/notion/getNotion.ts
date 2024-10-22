@@ -34,7 +34,6 @@ export async function getNotion(pageId: string) {
       new Date(postInfo?.last_edited_time).toString(),
       BLOG.LANG,
     ),
-    fullWidth: false,
     page_cover: getPageCover(postInfo),
     date: {
       start_date: formatDate(

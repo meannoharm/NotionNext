@@ -24,11 +24,8 @@ export interface LayoutBaseProps extends ThemeProps {
  */
 const LayoutBase: FC<LayoutBaseProps> = (props) => {
   console.log(props);
-  const { children, post, topSlot, meta } = props;
+  const { children, topSlot, meta } = props;
 
-  console.log(post);
-
-  const fullWidth = post?.fullWidth ?? false;
   const { onLoading } = useGlobal();
   const searchModal = useRef(null);
 
@@ -47,7 +44,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
         {/* 主区 */}
         <main
           id="out-wrapper"
-          className={`relative flex-grow transition-all ${!fullWidth ? 'max-w-2xl px-4' : 'px-4 md:px-24'}`}
+          className="relative max-w-2xl flex-grow px-4 transition-all"
         >
           <Transition
             show={!onLoading}
@@ -67,7 +64,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
         </main>
 
         {/* 页脚 */}
-        <Footer {...props} />
+        <Footer />
 
         {/* 右下悬浮 */}
         <div className="fixed bottom-4 right-4">

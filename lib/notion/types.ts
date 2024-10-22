@@ -19,7 +19,6 @@ export interface PageInfo {
   category?: string;
   publishDate: string;
   latestEditedDate: string;
-  fullWidth: boolean;
   pageIcon: string;
   pageCover: string;
   pageCoverThumbnail: string;

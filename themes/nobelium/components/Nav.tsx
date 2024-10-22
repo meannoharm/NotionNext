@@ -17,13 +17,12 @@ import { useTranslation } from 'next-i18next';
 import type { FC } from 'react';
 import type { NavLink } from '../types/nav';
 import type { CollapseHandle } from '@/components/Collapse';
+import type { ThemeProps } from '@/themes/types';
 
-export interface NavProps {
-  [key: string]: any;
-}
+export interface NavProps extends ThemeProps {}
 
 const Nav: FC<NavProps> = (props) => {
-  const { navBarTitle, fullWidth, siteInfo } = props;
+  const { siteInfo } = props;
   const navRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -55,9 +54,7 @@ const Nav: FC<NavProps> = (props) => {
         ref={sentinelRef}
       ></div>
       <div
-        className={`sticky-nav m-auto mb-2 flex h-6 w-full flex-row items-center justify-between bg-opacity-60 py-8 md:mb-12 ${
-          !fullWidth ? 'max-w-3xl px-4' : 'px-4 md:px-24'
-        }`}
+        className="sticky-nav m-auto mb-2 flex h-6 w-full max-w-3xl flex-row items-center justify-between bg-opacity-60 px-4 py-8 md:mb-12"
         id="sticky-nav"
         ref={navRef}
       >
@@ -75,16 +72,9 @@ const Nav: FC<NavProps> = (props) => {
               <SvgIcon />
             )}
           </div>
-          {navBarTitle ? (
-            <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">
-              {navBarTitle}
-            </p>
-          ) : (
-            <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">
-              {siteInfo?.title}
-              {/* ,{' '}<span className="font-normal">{siteInfo?.description}</span> */}
-            </p>
-          )}
+          <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">
+            {siteInfo?.title}
+          </p>
         </Link>
         <NavBar {...props} />
       </div>
@@ -98,7 +88,6 @@ export interface NavBarProps {
 
 const NavBar: FC<NavBarProps> = (props) => {
   const { t } = useTranslation('nav');
-  const { customMenu, customNav } = props;
   const [isOpen, changeOpen] = useState(false);
   const collapseRef = useRef<CollapseHandle>(null);
   const mobileMenuRef = useRef(null);
@@ -150,11 +139,6 @@ const NavBar: FC<NavBarProps> = (props) => {
     },
   ];
 
-  // TODO 自定义菜单
-  // if (customNav) {
-  //   links = links.concat(customNav);
-  // }
-
   if (!links || links.length === 0) {
     return null;
   }
@@ -188,8 +172,8 @@ const NavBar: FC<NavBarProps> = (props) => {
       </div>
 
       {CONFIG.MENU_RANDOM_POST && <RandomPostButton {...props} />}
-      {CONFIG.MENU_SEARCH_BUTTON && <SearchButton {...props} />}
-      <LanguageSwitchButton {...props} />
+      {CONFIG.MENU_SEARCH_BUTTON && <SearchButton />}
+      <LanguageSwitchButton />
       <DarkModeButton />
 
       {/* 移动端菜单按钮 */}

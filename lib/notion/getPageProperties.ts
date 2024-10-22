@@ -100,7 +100,6 @@ export default async function getPageProperties(
   //   new Date(block?.last_edited_time),
   //   BLOG.LANG,
   // );
-  pageInfo.fullWidth = block.format?.page_full_width ?? false;
   pageInfo.pageIcon = mapImgUrl(block?.format?.page_icon, block.id);
   pageInfo.pageCover = mapImgUrl(block?.format?.page_cover, block.id);
   pageInfo.pageCoverThumbnail = mapImgUrl(

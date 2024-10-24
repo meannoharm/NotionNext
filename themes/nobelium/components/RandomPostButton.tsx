@@ -5,8 +5,7 @@ import { useTranslation } from 'next-i18next';
 /**
  * 随机跳转到一个文章
  */
-export default function RandomPostButton(props) {
-  const { latestPosts } = props;
+export default function RandomPostButton() {
   const router = useRouter();
   const { t } = useTranslation('menu');
   /**

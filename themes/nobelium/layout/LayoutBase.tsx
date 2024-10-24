@@ -1,18 +1,13 @@
-import React, { useRef, createContext } from 'react';
 import { Transition } from '@headlessui/react';
 import { useGlobal } from '@/lib/global';
 import CommonHead from '@/components/CommonHead';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import JumpToTopButton from '../components/JumpToTopButton';
-import Live2D from '@/components/Live2D';
-import AlgoliaSearchModal from '@/components/AlgoliaSearchModal';
+import { NobeliumStoreProvider } from '../providers';
 
 import type { FC, ReactNode } from 'react';
 import type { ThemeProps } from '@/themes/types';
-
-// 主题全局状态
-const ThemeGlobalNobelium = createContext({});
 
 export interface LayoutBaseProps extends ThemeProps {
   topSlot?: ReactNode;
@@ -23,14 +18,12 @@ export interface LayoutBaseProps extends ThemeProps {
  * @constructor
  */
 const LayoutBase: FC<LayoutBaseProps> = (props) => {
-  console.log(props);
   const { children, topSlot, meta } = props;
 
   const { onLoading } = useGlobal();
-  const searchModal = useRef(null);
 
   return (
-    <ThemeGlobalNobelium.Provider value={{ searchModal }}>
+    <NobeliumStoreProvider>
       <div
         id="theme-nobelium"
         className="nobelium relative flex h-screen w-screen flex-col bg-white dark:bg-black dark:text-gray-300"
@@ -39,7 +32,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
         <CommonHead meta={meta} />
 
         {/* 顶部导航栏 */}
-        <Nav {...props} />
+        <Nav />
 
         {/* 主区 */}
         <main
@@ -70,16 +63,8 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
         <div className="fixed bottom-4 right-4">
           <JumpToTopButton />
         </div>
-
-        {/* 左下悬浮 */}
-        <div className="fixed -left-14 bottom-4 z-40 justify-end">
-          <Live2D />
-        </div>
-
-        {/* 搜索框 */}
-        <AlgoliaSearchModal cRef={searchModal} {...props} />
       </div>
-    </ThemeGlobalNobelium.Provider>
+    </NobeliumStoreProvider>
   );
 };
 

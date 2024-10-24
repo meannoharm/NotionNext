@@ -13,18 +13,16 @@ import SearchButton from './SearchButton';
 import LanguageSwitchButton from './LanguageSwitchButton';
 import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
 import { useTranslation } from 'next-i18next';
+import { useNobeliumStore } from '../providers';
 
 import type { FC } from 'react';
 import type { NavLink } from '../types/nav';
 import type { CollapseHandle } from '@/components/Collapse';
-import type { ThemeProps } from '@/themes/types';
 
-export interface NavProps extends ThemeProps {}
-
-const Nav: FC<NavProps> = (props) => {
-  const { siteInfo } = props;
+const Nav: FC = () => {
   const navRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const { siteInfo } = useNobeliumStore((state) => state);
 
   const handler: IntersectionObserverCallback = ([entry]) => {
     if (navRef && navRef.current) {
@@ -76,17 +74,13 @@ const Nav: FC<NavProps> = (props) => {
             {siteInfo?.title}
           </p>
         </Link>
-        <NavBar {...props} />
+        <NavBar />
       </div>
     </>
   );
 };
 
-export interface NavBarProps {
-  [key: string]: any;
-}
-
-const NavBar: FC<NavBarProps> = (props) => {
+const NavBar: FC = () => {
   const { t } = useTranslation('nav');
   const [isOpen, changeOpen] = useState(false);
   const collapseRef = useRef<CollapseHandle>(null);
@@ -171,7 +165,7 @@ const NavBar: FC<NavBarProps> = (props) => {
         </Collapse>
       </div>
 
-      {CONFIG.MENU_RANDOM_POST && <RandomPostButton {...props} />}
+      {CONFIG.MENU_RANDOM_POST && <RandomPostButton />}
       {CONFIG.MENU_SEARCH_BUTTON && <SearchButton />}
       <LanguageSwitchButton />
       <DarkModeButton />

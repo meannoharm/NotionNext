@@ -4,9 +4,9 @@ import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
 import { isBrowser } from '@/lib/utils';
-import { formatDateFmt } from '@/lib/formatDate';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
+import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, ArchiveIndexProps } from '../types';
@@ -49,9 +49,9 @@ const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async () => {
-  const props = await getGlobalData('archive-index');
+  const globalData = await getGlobalData('archive-index');
 
-  const posts = props.allPages?.filter(
+  const posts = globalData.allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   ) as PageInfo[];
 
@@ -59,18 +59,18 @@ export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async () => {
   posts
     .sort((a, b) => (dayjs(b.publishDate).isAfter(a.publishDate) ? 1 : -1))
     .forEach((post) => {
-      const date = formatDateFmt(post.publishDate, 'yyyy-MM');
+      const date = dayjs(post.publishDate).format('yyyy-MM');
       if (!archivePosts[date]) archivePosts[date] = [];
       archivePosts[date].push(post);
     });
 
   return {
     props: {
-      ...props,
+      ...omit(globalData, 'allPages'),
       posts,
       archivePosts,
     },
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND, 10),
+    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
 };
 

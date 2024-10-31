@@ -1,7 +1,7 @@
 import LayoutBase from '../layout/LayoutBase';
 import BlogArchiveItem from '../components/BlogArchiveItem';
 
-import type { ArchiveComponent } from '../../types';
+import type { ArchiveComponent } from '@/themes/types';
 
 /**
  * 归档

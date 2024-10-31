@@ -11,15 +11,19 @@ export type PageMeta = {
   tags?: string;
 };
 
+export type DataBaseForProps = Omit<DataBaseInfo, 'allPages'>;
+
 export type PageMetaProps = {
   pageMeta: PageMeta;
 };
 
-export type ThemeBaseProps = DataBaseInfo & PageMetaProps;
+export type ThemeBaseProps = DataBaseForProps & PageMetaProps;
 
-export type ArchiveIndexProps = DataBaseInfo & {
+export type ArchiveIndexProps = DataBaseForProps & {
   posts: PageInfo[];
   archivePosts: Record<string, PageInfo[]>;
 };
+export type CategoryIndexProps = DataBaseForProps;
 
 export type ArchiveProps = PageMetaProps & ArchiveIndexProps;
+export type CategoryProps = PageMetaProps & CategoryIndexProps;

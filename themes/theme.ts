@@ -15,7 +15,9 @@ export const { THEMES = [] } = getConfig().publicRuntimeConfig;
  * @param {*} router
  * @returns
  */
-export const getLayoutByTheme = (router: NextRouter) => {
+export const getLayoutByTheme: (router: NextRouter) => React.ComponentType = (
+  router,
+) => {
   const themeQuery = getQueryParam(router.asPath, 'theme') || BLOG.THEME;
   const layout = getLayoutNameByPathName(router.pathname);
   if (themeQuery !== BLOG.THEME) {

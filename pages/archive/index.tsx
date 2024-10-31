@@ -1,5 +1,5 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
-import { useEffect } from 'react';
+import { useEffect, type FC } from 'react';
 import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
@@ -7,12 +7,16 @@ import { isBrowser } from '@/lib/utils';
 import { formatDateFmt } from '@/lib/formatDate';
 import { useTranslation } from 'next-i18next';
 
-const ArchiveIndex = (props) => {
+import type { GetStaticProps } from 'next';
+import type { PageMeta, ArchiveIndexProps } from '../types';
+import type { ArchiveComponent } from '@/themes/types';
+
+const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   const { siteInfo } = props;
   const { t } = useTranslation('nav');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter());
+  const Archive = getLayoutByTheme(useRouter()) as ArchiveComponent;
 
   useEffect(() => {
     if (isBrowser) {
@@ -31,7 +35,7 @@ const ArchiveIndex = (props) => {
     }
   }, []);
 
-  const meta = {
+  const pageMeta: PageMeta = {
     title: `${t('archive')} | ${siteInfo?.title}`,
     description: siteInfo?.description,
     image: siteInfo?.pageCover,
@@ -39,43 +43,33 @@ const ArchiveIndex = (props) => {
     type: 'website',
   };
 
-  props = { ...props, meta };
-
-  return <Layout {...props} />;
+  return <Archive pageMeta={pageMeta} {...props} />;
 };
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async () => {
   const props = await getGlobalData('archive-index');
-  // 处理分页
-  props.posts = props.allPages?.filter(
+
+  const posts = props.allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
-  );
-  delete props.allPages;
+  ) as PageInfo[];
 
-  const postsSortByDate = Object.create(props.posts);
-
-  postsSortByDate.sort((a, b) => {
-    return b?.publishDate - a?.publishDate;
-  });
-
-  const archivePosts = {};
-
-  postsSortByDate.forEach((post) => {
-    const date = formatDateFmt(post.publishDate, 'yyyy-MM');
-    if (archivePosts[date]) {
+  const archivePosts: Record<string, PageInfo[]> = {};
+  posts
+    .sort((a, b) => b.publishDate - a.publishDate)
+    .forEach((post) => {
+      const date = formatDateFmt(post.publishDate, 'yyyy-MM');
+      if (!archivePosts[date]) archivePosts[date] = [];
       archivePosts[date].push(post);
-    } else {
-      archivePosts[date] = [post];
-    }
-  });
-
-  props.archivePosts = archivePosts;
-  delete props.allPages;
+    });
 
   return {
-    props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND),
+    props: {
+      ...props,
+      posts,
+      archivePosts,
+    },
+    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND, 10),
   };
-}
+};
 
 export default ArchiveIndex;

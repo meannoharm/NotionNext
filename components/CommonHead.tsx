@@ -5,23 +5,23 @@ import type { FC } from 'react';
 import type { PageMeta } from '@/pages/types';
 
 export interface CommonHeadProps {
-  meta?: PageMeta;
+  pageMeta?: PageMeta;
   children?: React.ReactNode;
 }
 
-const CommonHead: FC<CommonHeadProps> = ({ meta, children }) => {
+const CommonHead: FC<CommonHeadProps> = ({ pageMeta, children }) => {
   let url = BLOG.SUB_PATH?.length ? `${BLOG.LINK}/${BLOG.SUB_PATH}` : BLOG.LINK;
   let image;
-  if (meta) {
-    url = `${url}/${meta.slug}`;
-    image = meta.image || '/bg_image.jpg';
+  if (pageMeta) {
+    url = `${url}/${pageMeta.slug}`;
+    image = pageMeta.image || '/bg_image.jpg';
   }
-  const title = meta?.title || BLOG.TITLE;
-  const description = meta?.description || BLOG.DESCRIPTION;
-  const type = meta?.type || 'website';
-  const keywords = meta?.tags || BLOG.KEYWORDS;
+  const title = pageMeta?.title || BLOG.TITLE;
+  const description = pageMeta?.description || BLOG.DESCRIPTION;
+  const type = pageMeta?.type || 'website';
+  const keywords = pageMeta?.tags || BLOG.KEYWORDS;
   const lang = BLOG.LANG.replace('-', '_'); // Facebook OpenGraph 要 zh_CN 這樣的格式才抓得到語言
-  const category = meta?.category || BLOG.KEYWORDS || '軟體科技'; // section 主要是像是 category 這樣的分類，Facebook 用這個來抓連結的分類
+  const category = pageMeta?.category || BLOG.KEYWORDS || '軟體科技'; // section 主要是像是 category 這樣的分類，Facebook 用這個來抓連結的分類
 
   return (
     <Head>
@@ -79,9 +79,12 @@ const CommonHead: FC<CommonHeadProps> = ({ meta, children }) => {
       {BLOG.ANALYTICS_BUSUANZI_ENABLE && (
         <meta name="referrer" content="no-referrer-when-downgrade" />
       )}
-      {meta?.type === 'Post' && (
+      {pageMeta?.type === 'Post' && (
         <>
-          <meta property="article:published_time" content={meta.publishDay} />
+          <meta
+            property="article:published_time"
+            content={pageMeta.publishDay}
+          />
           <meta property="article:author" content={BLOG.AUTHOR} />
           <meta property="article:section" content={category} />
           <meta

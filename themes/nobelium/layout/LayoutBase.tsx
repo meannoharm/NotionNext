@@ -7,10 +7,11 @@ import JumpToTopButton from '../components/JumpToTopButton';
 import { NobeliumStoreProvider } from '../providers';
 
 import type { FC, ReactNode } from 'react';
-import type { ThemeProps } from '@/themes/types';
+import type { BaseThemeProps } from '@/pages/types';
 
-export interface LayoutBaseProps extends ThemeProps {
+export interface LayoutBaseProps extends BaseThemeProps {
   topSlot?: ReactNode;
+  children: ReactNode;
 }
 
 /**
@@ -18,7 +19,7 @@ export interface LayoutBaseProps extends ThemeProps {
  * @constructor
  */
 const LayoutBase: FC<LayoutBaseProps> = (props) => {
-  const { children, topSlot, meta } = props;
+  const { children, topSlot, pageMeta } = props;
 
   const { onLoading } = useGlobal();
 
@@ -29,7 +30,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
         className="nobelium relative flex h-screen w-screen flex-col bg-white dark:bg-black dark:text-gray-300"
       >
         {/* SEO相关 */}
-        <CommonHead meta={meta} />
+        <CommonHead pageMeta={pageMeta} />
 
         {/* 顶部导航栏 */}
         <Nav />

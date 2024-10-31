@@ -83,7 +83,7 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta, children }) => {
         <>
           <meta
             property="article:published_time"
-            content={pageMeta.publishDay}
+            content={pageMeta?.publishDay}
           />
           <meta property="article:author" content={BLOG.AUTHOR} />
           <meta property="article:section" content={category} />

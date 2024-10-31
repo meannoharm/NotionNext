@@ -1,4 +1,4 @@
 import type { FC } from 'react';
-import type { ArchiveIndexProps } from '@/pages/types';
+import type { ArchiveProps } from '@/pages/types';
 
-export type ArchiveComponent = FC<ArchiveIndexProps>;
+export type ArchiveComponent = FC<ArchiveProps>;

@@ -6,10 +6,12 @@ import { getLayoutByTheme } from '@/themes/theme';
 import { isBrowser } from '@/lib/utils';
 import { formatDateFmt } from '@/lib/formatDate';
 import { useTranslation } from 'next-i18next';
+import dayjs from 'dayjs';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, ArchiveIndexProps } from '../types';
 import type { ArchiveComponent } from '@/themes/types';
+import type { PageInfo } from '@/lib/notion/types';
 
 const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   const { siteInfo } = props;
@@ -55,7 +57,7 @@ export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async () => {
 
   const archivePosts: Record<string, PageInfo[]> = {};
   posts
-    .sort((a, b) => b.publishDate - a.publishDate)
+    .sort((a, b) => (dayjs(b.publishDate).isAfter(a.publishDate) ? 1 : -1))
     .forEach((post) => {
       const date = formatDateFmt(post.publishDate, 'yyyy-MM');
       if (!archivePosts[date]) archivePosts[date] = [];

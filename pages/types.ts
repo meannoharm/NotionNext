@@ -6,13 +6,20 @@ export type PageMeta = {
   image: string;
   slug: string;
   type: string;
+  publishDay?: string;
+  category?: string;
+  tags?: string;
 };
 
-export type BaseThemeProps = DataBaseInfo & {
+export type PageMetaProps = {
   pageMeta: PageMeta;
 };
 
-export type ArchiveIndexProps = BaseThemeProps & {
+export type ThemeBaseProps = DataBaseInfo & PageMetaProps;
+
+export type ArchiveIndexProps = DataBaseInfo & {
   posts: PageInfo[];
   archivePosts: Record<string, PageInfo[]>;
 };
+
+export type ArchiveProps = PageMetaProps & ArchiveIndexProps;

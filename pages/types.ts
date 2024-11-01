@@ -24,6 +24,13 @@ export type ArchiveIndexProps = DataBaseForProps & {
   archivePosts: Record<string, PageInfo[]>;
 };
 export type CategoryIndexProps = DataBaseForProps;
+export type HomeIndexProps = DataBaseForProps &
+  PageMetaProps & {
+    posts: PageInfo[];
+  };
+export type PageNotFoundIndexProps = DataBaseForProps;
 
 export type ArchiveProps = PageMetaProps & ArchiveIndexProps;
 export type CategoryProps = PageMetaProps & CategoryIndexProps;
+export type HomeProps = HomeIndexProps;
+export type PageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;

@@ -5,15 +5,22 @@ import { generateRss } from '@/lib/rss';
 import { generateRobotsTxt } from '@/lib/robots.txt';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
+import { omit } from 'lodash';
+
+import type { GetStaticProps } from 'next';
+import type { FC } from 'react';
+import type { HomeIndexProps } from '@/pages/types';
+import type { PageInfo } from '@/lib/notion/types';
+import { HomeComponent } from '@/themes/types';
 
 /**
  * 首页布局
  * @param {*} props
  * @returns
  */
-const Index = (props) => {
+const Index: FC<HomeIndexProps> = (props) => {
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter());
+  const Layout = getLayoutByTheme(useRouter()) as HomeComponent;
   return <Layout {...props} />;
 };
 
@@ -21,62 +28,63 @@ const Index = (props) => {
  * SSG 获取数据
  * @returns
  */
-export async function getStaticProps() {
-  const from = 'index';
-  const props = await getGlobalData(from);
+export const getStaticProps: GetStaticProps<HomeIndexProps> = async () => {
+  const globalData = await getGlobalData('index');
 
-  const { siteInfo } = props;
-  props.posts = props.allPages?.filter(
+  const { siteInfo } = globalData;
+  let posts: PageInfo[] = globalData.allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   );
 
-  const meta = {
+  const pageMeta = {
     title: `${siteInfo?.title} | ${siteInfo?.description}`,
     description: siteInfo?.description,
     image: siteInfo?.pageCover,
     slug: '',
     type: 'website',
   };
+
   // 处理分页
   if (BLOG.POST_LIST_STYLE === 'scroll') {
     // 滚动列表默认给前端返回所有数据
-  } else if (BLOG.POST_LIST_STYLE === 'page') {
-    props.posts = props.posts?.slice(0, BLOG.POSTS_PER_PAGE);
+  }
+
+  if (BLOG.POST_LIST_STYLE === 'page') {
+    posts = posts?.slice(0, BLOG.POSTS_PER_PAGE) || [];
   }
 
   // 预览文章内容
   if (BLOG.POST_LIST_PREVIEW === 'true') {
-    for (const i in props.posts) {
-      const post = props.posts[i];
-      if (post.password && post.password !== '') {
-        continue;
-      }
-      post.blockMap = await getPostBlocks(
-        post.id,
-        'slug',
-        BLOG.POST_PREVIEW_LINES,
-      );
-    }
+    await Promise.all(
+      posts.map(async (post) => {
+        if (!post.password) {
+          post.blockMap = await getPostBlocks(
+            post.id,
+            'slug',
+            BLOG.POST_PREVIEW_LINES,
+          );
+        }
+      }),
+    );
   }
 
   // 生成robotTxt
   generateRobotsTxt();
   // 生成Feed订阅
-  if (JSON.parse(BLOG.ENABLE_RSS)) {
-    generateRss(props?.latestPosts || []);
+  if (BLOG.ENABLE_RSS) {
+    generateRss(globalData?.latestPosts || []);
   }
 
   // 生成全文索引 - 仅在 yarn build 时执行 && process.env.npm_lifecycle_event === 'build'
 
-  delete props.allPages;
-
   return {
     props: {
-      meta,
-      ...props,
+      pageMeta,
+      posts,
+      ...omit(globalData, 'allPages'),
     },
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND),
+    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
-}
+};
 
 export default Index;

@@ -9,6 +9,7 @@ import { omit } from 'lodash';
 import type { FC } from 'react';
 import type { PageMeta, CategoryIndexProps } from '../types';
 import type { CategoryComponent } from '@/themes/types';
+import type { GetStaticProps } from 'next';
 
 /**
  * 分类首页
@@ -33,7 +34,7 @@ export const Category: FC<CategoryIndexProps> = (props) => {
   return <Layout pageMeta={pageMeta} {...props} />;
 };
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<CategoryIndexProps> = async () => {
   const globalData = await getGlobalData('category-index-props');
   return {
     props: omit(globalData, 'allPages'),

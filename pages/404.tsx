@@ -1,10 +1,9 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
-import { useGlobal } from '@/lib/global';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
 
-import type {FC } from 'react';
-import type {PageNotFoundIndexProps} from '@/pages/type'
+import type { FC } from 'react';
+import type { PageNotFoundIndexProps, PageMeta } from '@/pages/types';
 import type { PageNotFoundComponent } from '@/themes/types';
 import type { GetStaticProps } from 'next';
 
@@ -14,23 +13,26 @@ import type { GetStaticProps } from 'next';
  * @returns
  */
 const NoFound: FC<PageNotFoundIndexProps> = (props) => {
-  const { siteInfo } = useGlobal();
-  const meta = {
+  const { siteInfo } = props;
+  const pageMeta: PageMeta = {
     title: `${props?.siteInfo?.title} | 页面找不到啦`,
+    description: '404 page not found',
+    slug: '',
+    type: 'website',
     image: siteInfo?.pageCover,
   };
-
-  props = { ...props, meta };
 
   // 根据页面路径加载不同Layout文件
   const Layout = getLayoutByTheme(useRouter()) as PageNotFoundComponent;
 
-  return <Layout {...props} />;
+  return <Layout pageMeta={pageMeta} {...props} />;
 };
 
-export const getStaticProps:GetStaticProps<PageNotFoundIndexProps> = async () => {
+export const getStaticProps: GetStaticProps<
+  PageNotFoundIndexProps
+> = async () => {
   const props = (await getGlobalData('404')) || {};
   return { props };
-}
+};
 
 export default NoFound;

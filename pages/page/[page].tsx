@@ -3,13 +3,13 @@ import { getPostBlocks } from '@/lib/notion';
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
+import { omit } from 'lodash';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, PostListIndexProps } from '../types';
 import type { PostListComponent } from '@/themes/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import { omit } from 'lodash';
 
 export interface PageParams extends ParsedUrlQuery {
   page: string;

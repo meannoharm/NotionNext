@@ -7,8 +7,13 @@ import { deepClone } from '@/lib/utils';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
+import { PageInfo } from '@/lib/notion/types';
 
-export interface BlogListScrollProps {}
+export interface BlogListScrollProps {
+  posts: PageInfo[];
+  page: number;
+  postCount: number;
+}
 
 const BlogListScroll: FC<BlogListScrollProps> = (props) => {
   const { posts } = props;

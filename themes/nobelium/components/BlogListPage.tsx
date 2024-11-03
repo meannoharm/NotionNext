@@ -5,8 +5,13 @@ import BlogPost from './BlogPost';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
+import { PageInfo } from '@/lib/notion/types';
 
-export interface BlogListPageProps {}
+export interface BlogListPageProps {
+  posts: PageInfo[];
+  page: number;
+  postCount: number;
+}
 
 const BlogListPage: FC<BlogListPageProps> = (props) => {
   const { t } = useTranslation('common');

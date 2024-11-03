@@ -11,5 +11,7 @@ export type ArchiveComponent = FC<ArchiveProps>;
 export type CategoryComponent = FC<CategoryProps>;
 export type HomeComponent = FC<HomeProps>;
 export type PageNotFoundComponent = FC<PageNotFoundProps>;
-// TODO: POST
-export type PostListComponents = FC<PostListProps>;
+export type PostComponents = FC;
+export type PostListComponent = FC<PostListProps>;
+export type SearchComponent = FC;
+export type TagComponent = FC;

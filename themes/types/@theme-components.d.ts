@@ -1,10 +1,10 @@
 declare module '@theme-components' {
-  export const Home: React.ComponentType;
-  export const Archive: import('./components').Archive;
-  export const PostList: React.ComponentType;
-  export const Search: React.ComponentType;
-  export const PageNotFound: React.ComponentType;
-  export const Post: React.ComponentType;
-  export const Tag: React.ComponentType;
-  export const Category: React.ComponentType;
+  export const Home: import('./components').HomeComponent;
+  export const Archive: import('./components').ArchiveComponent;
+  export const PostList: import('./components').PostListComponent;
+  export const Search: import('./components').SearchComponent;
+  export const PageNotFound: import('./components').PageNotFoundComponent;
+  export const Post: import('./components').PostComponent;
+  export const Tag: import('./components').TagComponent;
+  export const Category: import('./components').CategoryComponent;
 }

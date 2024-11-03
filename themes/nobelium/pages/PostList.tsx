@@ -6,24 +6,20 @@ import BlogListPage from '../components/BlogListPage';
 import BlogListScroll from '../components/BlogListScroll';
 import BlogListBar from '../components/BlogListBar';
 
-import type { FC, ReactNode } from 'react';
-
-export interface PostListProps {
-  topSlot: ReactNode;
-  posts: any;
-}
+import type { PostListComponents } from '@/themes/types';
+import type { PageInfo } from '@/notion/types';
 
 /**
  * 博客列表
  * @param {*} props
  * @returns
  */
-const PostList: FC<PostListProps> = (props) => {
+const PostList: PostListComponents = (props) => {
   const { posts, topSlot } = props;
 
   // 在列表中进行实时过滤
   const [filterKey, setFilterKey] = useState('');
-  let filteredBlogPosts = [];
+  let filteredBlogPosts: PageInfo[] = [];
   if (filterKey && posts) {
     filteredBlogPosts = posts.filter((post) => {
       const tagContent = post?.tags ? post?.tags.join(' ') : '';

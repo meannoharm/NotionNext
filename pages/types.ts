@@ -29,8 +29,13 @@ export type HomeIndexProps = DataBaseForProps &
     posts: PageInfo[];
   };
 export type PageNotFoundIndexProps = DataBaseForProps;
+export type PostListIndexProps = DataBaseForProps & {
+  posts: PageInfo[];
+  page: number;
+};
 
-export type ArchiveProps = PageMetaProps & ArchiveIndexProps;
-export type CategoryProps = PageMetaProps & CategoryIndexProps;
+export type ArchiveProps = ArchiveIndexProps & PageMetaProps;
+export type CategoryProps = CategoryIndexProps & PageMetaProps;
 export type HomeProps = HomeIndexProps;
 export type PageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
+export type PostListProps = PostListIndexProps & PageMetaProps;

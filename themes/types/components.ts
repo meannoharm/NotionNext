@@ -6,11 +6,13 @@ import type {
   ThemeHomeProps,
   ThemePageNotFoundProps,
   ThemePageProps,
+  ThemeCategoryPageProps,
 } from '@/pages/types';
 
 export type ArchiveComponent = FC<ThemeArchiveProps>;
 export type CategoryComponent = FC<ThemeCategoryProps>;
 export type CategoryDetailComponent = FC<ThemeCategoryDetailProps>;
+export type CategoryPageComponent = FC<ThemeCategoryPageProps>;
 export type HomeComponent = FC<ThemeHomeProps>;
 export type PageNotFoundComponent = FC<ThemePageNotFoundProps>;
 export type PostComponents = FC;

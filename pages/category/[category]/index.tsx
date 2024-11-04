@@ -4,8 +4,6 @@ import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
 import { useTranslation } from 'next-i18next';
-import { omit } from 'lodash';
-import { PageInfo } from '@/lib/notion/types';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, CategoryDetailProps } from '../../types';
@@ -22,7 +20,7 @@ export interface CategoryDetailParams extends ParsedUrlQuery {
  * @param {*} props
  * @returns
  */
-export const Category: FC<CategoryDetailProps> = (props) => {
+const CategoryDetail: FC<CategoryDetailProps> = (props) => {
   const { siteInfo } = props;
   const { t } = useTranslation('common');
 
@@ -45,30 +43,25 @@ export const getStaticProps: GetStaticProps<
   CategoryDetailParams
 > = async (context) => {
   const { category } = context.params as CategoryDetailParams;
-  const props = await getGlobalData('category-props');
+  const { allPages, ...globalProps } = await getGlobalData('category-props');
 
-  let posts: PageInfo[] = props.allPages?.filter(
+  const filteredPosts = allPages.filter(
     (page) =>
       page.type === 'Post' &&
       page.status === 'Published' &&
-      page.category &&
-      page.category.includes(category),
+      page.category?.includes(category),
   );
-  // 处理文章页数
-  const postCount = posts.length;
-  // 处理分页
-  if (BLOG.POST_LIST_STYLE === 'scroll') {
-    // 滚动列表 给前端返回所有数据
-  } else if (BLOG.POST_LIST_STYLE === 'page') {
-    posts = posts?.slice(0, BLOG.POSTS_PER_PAGE) || [];
-  }
+  const posts =
+    BLOG.POST_LIST_STYLE === 'page'
+      ? filteredPosts.slice(0, BLOG.POSTS_PER_PAGE)
+      : filteredPosts;
 
   return {
     props: {
-      ...omit(props, 'allPages'),
+      ...globalProps,
       category,
       posts,
-      postCount,
+      postCount: posts.length,
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
@@ -86,3 +79,5 @@ export const getStaticPaths: GetStaticPaths<
     fallback: true,
   };
 };
+
+export default CategoryDetail;

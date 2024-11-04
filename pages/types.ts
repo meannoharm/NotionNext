@@ -29,6 +29,9 @@ export type CategoryDetailProps = DataBaseForProps & {
   posts: PageInfo[];
   postCount: number;
 };
+export type CategoryPageProps = DataBaseForProps & {
+  category: string;
+};
 export type HomeIndexProps = DataBaseForProps &
   PageMetaProps & {
     posts: PageInfo[];
@@ -42,6 +45,7 @@ export type PageIndexProps = DataBaseForProps & {
 export type ThemeArchiveProps = ArchiveIndexProps & PageMetaProps;
 export type ThemeCategoryProps = CategoryIndexProps & PageMetaProps;
 export type ThemeCategoryDetailProps = CategoryDetailProps & PageMetaProps;
+export type ThemeCategoryPageProps = CategoryPageProps & PageMetaProps;
 export type ThemeHomeProps = HomeIndexProps;
 export type ThemePageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
 export type ThemePageProps = PageIndexProps & PageMetaProps;

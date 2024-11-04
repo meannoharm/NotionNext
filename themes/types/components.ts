@@ -8,6 +8,7 @@ import type {
   ThemePageProps,
   ThemeCategoryPageProps,
   ThemeTagDetailProps,
+  ThemeTagPageProps,
 } from '@/pages/types';
 
 export type ArchiveComponent = FC<ThemeArchiveProps>;
@@ -21,3 +22,4 @@ export type PostListComponent = FC<ThemePageProps>;
 export type SearchComponent = FC;
 export type TagComponent = FC;
 export type TagDetailComponent = FC<ThemeTagDetailProps>;
+export type TagPageComponent = FC<ThemeTagPageProps>;

@@ -63,7 +63,12 @@ export const getStaticProps: GetStaticProps<
     );
 
   return {
-    props: { ...globalProps, postCount: posts.length, category, page },
+    props: {
+      ...globalProps,
+      postCount: posts.length,
+      category,
+      page: pageNumber,
+    },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
 };

@@ -7,7 +7,7 @@ import BlogListScroll from '../components/BlogListScroll';
 import BlogListBar from '../components/BlogListBar';
 
 import type { PageInfo } from '@/lib/notion/types';
-import type { PostListProps } from '@/pages/types';
+import type { ThemePageProps } from '@/pages/types';
 import type { FC, ReactNode } from 'react';
 
 /**
@@ -16,7 +16,7 @@ import type { FC, ReactNode } from 'react';
  * @returns
  */
 const PostList: FC<
-  PostListProps & {
+  ThemePageProps & {
     topSlot: ReactNode;
   }
 > = (props) => {

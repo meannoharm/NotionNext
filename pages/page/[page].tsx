@@ -6,7 +6,7 @@ import { getLayoutByTheme } from '@/themes/theme';
 import { omit } from 'lodash';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type { PageMeta, PostListIndexProps } from '../types';
+import type { PageMeta, PageIndexProps } from '../types';
 import type { PostListComponent } from '@/themes/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
@@ -20,7 +20,7 @@ export interface PageParams extends ParsedUrlQuery {
  * @param {*} props
  * @returns
  */
-const Page: FC<PostListIndexProps> = (props) => {
+const Page: FC<PageIndexProps> = (props) => {
   const { siteInfo } = props;
 
   // 根据页面路径加载不同Layout文件
@@ -50,7 +50,7 @@ export const getStaticPaths: GetStaticPaths<PageParams> = async () => {
 };
 
 export const getStaticProps: GetStaticProps<
-  PostListIndexProps,
+  PageIndexProps,
   PageParams
 > = async (context) => {
   const { page } = context.params as PageParams;

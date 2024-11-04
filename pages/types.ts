@@ -24,18 +24,24 @@ export type ArchiveIndexProps = DataBaseForProps & {
   archivePosts: Record<string, PageInfo[]>;
 };
 export type CategoryIndexProps = DataBaseForProps;
+export type CategoryDetailProps = DataBaseForProps & {
+  category: string;
+  posts: PageInfo[];
+  postCount: number;
+};
 export type HomeIndexProps = DataBaseForProps &
   PageMetaProps & {
     posts: PageInfo[];
   };
 export type PageNotFoundIndexProps = DataBaseForProps;
-export type PostListIndexProps = DataBaseForProps & {
+export type PageIndexProps = DataBaseForProps & {
   posts: PageInfo[];
   page: number;
 };
 
-export type ArchiveProps = ArchiveIndexProps & PageMetaProps;
-export type CategoryProps = CategoryIndexProps & PageMetaProps;
-export type HomeProps = HomeIndexProps;
-export type PageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
-export type PostListProps = PostListIndexProps & PageMetaProps;
+export type ThemeArchiveProps = ArchiveIndexProps & PageMetaProps;
+export type ThemeCategoryProps = CategoryIndexProps & PageMetaProps;
+export type ThemeCategoryDetailProps = CategoryDetailProps & PageMetaProps;
+export type ThemeHomeProps = HomeIndexProps;
+export type ThemePageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
+export type ThemePageProps = PageIndexProps & PageMetaProps;

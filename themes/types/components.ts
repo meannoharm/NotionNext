@@ -1,17 +1,19 @@
 import type { FC } from 'react';
 import type {
-  ArchiveProps,
-  CategoryProps,
-  HomeProps,
-  PageNotFoundProps,
-  PostListProps,
+  ThemeArchiveProps,
+  ThemeCategoryProps,
+  ThemeCategoryDetailProps,
+  ThemeHomeProps,
+  ThemePageNotFoundProps,
+  ThemePageProps,
 } from '@/pages/types';
 
-export type ArchiveComponent = FC<ArchiveProps>;
-export type CategoryComponent = FC<CategoryProps>;
-export type HomeComponent = FC<HomeProps>;
-export type PageNotFoundComponent = FC<PageNotFoundProps>;
+export type ArchiveComponent = FC<ThemeArchiveProps>;
+export type CategoryComponent = FC<ThemeCategoryProps>;
+export type CategoryDetailComponent = FC<ThemeCategoryDetailProps>;
+export type HomeComponent = FC<ThemeHomeProps>;
+export type PageNotFoundComponent = FC<ThemePageNotFoundProps>;
 export type PostComponents = FC;
-export type PostListComponent = FC<PostListProps>;
+export type PostListComponent = FC<ThemePageProps>;
 export type SearchComponent = FC;
 export type TagComponent = FC;

@@ -9,6 +9,8 @@ import type {
   ThemeCategoryPageProps,
   ThemeTagDetailProps,
   ThemeTagPageProps,
+  ThemeSearchIndexProps,
+  ThemeSearchDetailProps,
 } from '@/pages/types';
 
 export type ArchiveComponent = FC<ThemeArchiveProps>;
@@ -23,3 +25,5 @@ export type SearchComponent = FC;
 export type TagComponent = FC;
 export type TagDetailComponent = FC<ThemeTagDetailProps>;
 export type TagPageComponent = FC<ThemeTagPageProps>;
+export type SearchIndexComponent = FC<ThemeSearchIndexProps>;
+export type SearchDetailComponent = FC<ThemeSearchDetailProps>;

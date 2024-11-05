@@ -29,12 +29,11 @@ const TagIndex = (props) => {
 };
 
 export async function getStaticProps() {
-  const from = 'tag-index-props';
-  const props = await getGlobalData(from);
+  const props = await getGlobalData('tag-index-props');
   delete props.allPages;
   return {
     props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND),
+    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
 }
 

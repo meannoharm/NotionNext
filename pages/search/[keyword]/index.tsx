@@ -5,14 +5,26 @@ import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
 import { useTranslation } from 'next-i18next';
 
-const Index = (props) => {
+import type { GetStaticProps, GetStaticPaths } from 'next';
+import type { PageMeta, SearchDetailProps } from '../../types';
+import type { FC } from 'react';
+import type { ParsedUrlQuery } from 'querystring';
+import type { SearchDetailComponent } from '@/themes/types';
+import { PageInfo } from '@/lib/notion/types';
+import { isIterable } from '@/lib/utils';
+
+export interface CategoryDetailParams extends ParsedUrlQuery {
+  keyword: string;
+}
+
+const SearchDetail: FC<SearchDetailProps> = (props) => {
   const { keyword, siteInfo } = props;
   const { t } = useTranslation('nav');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter());
+  const Layout = getLayoutByTheme(useRouter()) as SearchDetailComponent;
 
-  const meta = {
+  const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,
     description: siteInfo?.title,
     image: siteInfo?.pageCover,
@@ -20,9 +32,7 @@ const Index = (props) => {
     type: 'website',
   };
 
-  props = { ...props, meta };
-
-  return <Layout {...props} />;
+  return <Layout {...props} pageMeta={pageMeta} />;
 };
 
 /**
@@ -30,33 +40,40 @@ const Index = (props) => {
  * @param {*} param0
  * @returns
  */
-export async function getStaticProps({ params: { keyword } }) {
-  const props = await getGlobalData('search-props');
-  const { allPages } = props;
+export const getStaticProps: GetStaticProps<
+  SearchDetailProps,
+  CategoryDetailParams
+> = async (context) => {
+  const { allPages, ...restProps } = await getGlobalData('search-props');
+  const { keyword } = context.params as CategoryDetailParams;
   const allPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   );
-  props.posts = await filterByMemCache(allPosts, keyword);
-  props.postCount = props.posts.length;
-  // 处理分页
-  if (BLOG.POST_LIST_STYLE === 'scroll') {
-    // 滚动列表 给前端返回所有数据
-  } else if (BLOG.POST_LIST_STYLE === 'page') {
-    props.posts = props.posts?.slice(0, BLOG.POSTS_PER_PAGE);
-  }
-  props.keyword = keyword;
-  return {
-    props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND),
-  };
-}
+  const filteredPosts = await filterByMemCache(allPosts, keyword);
+  const posts =
+    BLOG.POST_LIST_STYLE === 'page'
+      ? filteredPosts.slice(0, BLOG.POSTS_PER_PAGE)
+      : filteredPosts;
 
-export async function getStaticPaths() {
+  return {
+    props: {
+      ...restProps,
+      postCount: posts.length,
+      keyword,
+      posts,
+    },
+    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+  };
+};
+
+export const getStaticPaths: GetStaticPaths<
+  CategoryDetailParams
+> = async () => {
   return {
     paths: [{ params: { keyword: BLOG.TITLE } }],
     fallback: true,
   };
-}
+};
 
 /**
  * 将对象的指定字段拼接到字符串
@@ -95,64 +112,53 @@ function getTextContent(textArray) {
 }
 
 /**
- * 对象是否可以遍历
- * @param {*} obj
- * @returns
- */
-const isIterable = (obj) =>
-  obj != null && typeof obj[Symbol.iterator] === 'function';
-
-/**
  * 在内存缓存中进行全文索引
  * @param {*} allPosts
  * @param keyword 关键词
  * @returns
  */
-async function filterByMemCache(allPosts, keyword) {
-  const filterPosts = [];
-  if (keyword) {
-    keyword = keyword.trim();
-  }
+async function filterByMemCache(allPosts: PageInfo[], keyword: string) {
+  if (!keyword) return [];
+  const lowerKeyword = keyword.toLowerCase().trim();
+  const filterPosts: any[] = [];
+
   for (const post of allPosts) {
     const cacheKey = 'page_block_' + post.id;
     const page = await getDataFromCache(cacheKey, true);
-    const tagContent =
-      post?.tags && Array.isArray(post?.tags) ? post?.tags.join(' ') : '';
-    const categoryContent =
-      post.category && Array.isArray(post.category)
-        ? post.category.join(' ')
-        : '';
-    const articleInfo =
-      post.title + post.summary + tagContent + categoryContent;
-    let hit = articleInfo.toLowerCase().indexOf(keyword) > -1;
+    const tagContent = post?.tags?.join(' ') || '';
+    const categoryContent = post?.category || '';
+    const articleInfo = (
+      post.title +
+      post.summary +
+      tagContent +
+      categoryContent
+    ).toLowerCase();
+
+    let hit = articleInfo.includes(lowerKeyword);
     const indexContent = getPageContentText(post, page);
-    // console.log('全文搜索缓存', cacheKey, page != null)
+
     post.results = [];
     let hitCount = 0;
-    for (const i in indexContent) {
-      const c = indexContent[i];
-      if (!c) {
-        continue;
-      }
-      const index = c.toLowerCase().indexOf(keyword.toLowerCase());
+
+    for (const content of indexContent) {
+      if (!content) continue;
+      const lowerContent = content.toLowerCase();
+      const index = lowerContent.indexOf(lowerKeyword);
       if (index > -1) {
         hit = true;
         hitCount += 1;
-        post.results.push(c);
-      } else {
-        if ((post.results.length - 1) / hitCount < 3 || i === 0) {
-          post.results.push(c);
-        }
+        post.results.push(content);
+      } else if ((post.results.length - 1) / (hitCount || 1) < 3) {
+        post.results.push(content);
       }
     }
-    if (hit) {
-      filterPosts.push(post);
-    }
+
+    if (hit) filterPosts.push(post);
   }
   return filterPosts;
 }
 
-export function getPageContentText(post, pageBlockMap) {
+export function getPageContentText(post: PageInfo, pageBlockMap) {
   let indexContent = [];
   // 防止搜到加密文章的内容
   if (pageBlockMap && pageBlockMap.block && !post.password) {
@@ -166,4 +172,4 @@ export function getPageContentText(post, pageBlockMap) {
   return indexContent.join('');
 }
 
-export default Index;
+export default SearchDetail;

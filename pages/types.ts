@@ -54,6 +54,14 @@ export type TagPageProps = DataBaseForProps & {
   page: number;
   tag: string;
 };
+export type SearchIndexProps = DataBaseForProps & {
+  posts: PageInfo[];
+};
+export type SearchDetailProps = DataBaseForProps & {
+  postCount: number;
+  keyword: string;
+  posts: PageInfo[];
+};
 
 export type ThemeArchiveProps = ArchiveIndexProps & PageMetaProps;
 export type ThemeCategoryProps = CategoryIndexProps & PageMetaProps;
@@ -62,5 +70,8 @@ export type ThemeCategoryPageProps = CategoryPageProps & PageMetaProps;
 export type ThemeHomeProps = HomeIndexProps;
 export type ThemePageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
 export type ThemePageProps = PageIndexProps & PageMetaProps;
+export type ThemeTagIndexProps = TagIndexProps & PageMetaProps;
 export type ThemeTagDetailProps = TagDetailProps & PageMetaProps;
 export type ThemeTagPageProps = TagPageProps & PageMetaProps;
+export type ThemeSearchIndexProps = SearchIndexProps & PageMetaProps;
+export type ThemeSearchDetailProps = SearchDetailProps & PageMetaProps;

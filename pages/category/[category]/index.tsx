@@ -43,7 +43,9 @@ export const getStaticProps: GetStaticProps<
   CategoryDetailParams
 > = async (context) => {
   const { category } = context.params as CategoryDetailParams;
-  const { allPages, ...globalProps } = await getGlobalData('category-props');
+  const { allPages, ...globalProps } = await getGlobalData(
+    'category-detail-props',
+  );
 
   const filteredPosts = allPages.filter(
     (page) =>

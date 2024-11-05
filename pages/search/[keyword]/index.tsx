@@ -1,5 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
-import { getDataFromCache } from '@/lib/cache/cacheManager';
+import { getGlobalData, getNotionPageData } from '@/lib/notion/getNotionData';
 import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
@@ -10,8 +9,7 @@ import type { PageMeta, SearchDetailProps } from '../../types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { SearchDetailComponent } from '@/themes/types';
-import { PageInfo } from '@/lib/notion/types';
-import { isIterable } from '@/lib/utils';
+import { DataBaseInfo, PageInfo } from '@/lib/notion/types';
 
 export interface CategoryDetailParams extends ParsedUrlQuery {
   keyword: string;
@@ -44,7 +42,7 @@ export const getStaticProps: GetStaticProps<
   SearchDetailProps,
   CategoryDetailParams
 > = async (context) => {
-  const { allPages, ...restProps } = await getGlobalData('search-props');
+  const { allPages, ...restProps } = await getGlobalData('search-detail-page');
   const { keyword } = context.params as CategoryDetailParams;
   const allPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
@@ -75,23 +73,16 @@ export const getStaticPaths: GetStaticPaths<
   };
 };
 
-/**
- * 将对象的指定字段拼接到字符串
- * @param sourceTextArray
- * @param targetObj
- * @param key
- * @returns {*}
- */
-function appendText(sourceTextArray, targetObj, key) {
-  if (!targetObj) {
-    return sourceTextArray;
-  }
+function extractTextContent(
+  sourceText: string[],
+  targetObj: any,
+  key: string,
+): string[] {
+  if (!targetObj) return sourceText;
   const textArray = targetObj[key];
-  const text = textArray ? getTextContent(textArray) : '';
-  if (text && text !== 'Untitled') {
-    return sourceTextArray.concat(text);
-  }
-  return sourceTextArray;
+  const text =
+    typeof textArray === 'object' ? getTextContent(textArray) : textArray;
+  return text && text !== 'Untitled' ? sourceText.concat(text) : sourceText;
 }
 
 /**
@@ -99,16 +90,12 @@ function appendText(sourceTextArray, targetObj, key) {
  * @param {*} textArray
  * @returns
  */
-function getTextContent(textArray) {
-  if (typeof textArray === 'object' && isIterable(textArray)) {
-    let result = '';
-    for (const textObj of textArray) {
-      result = result + getTextContent(textObj);
-    }
-    return result;
-  } else if (typeof textArray === 'string') {
-    return textArray;
-  }
+function getTextContent(textArray: any): string {
+  return Array.isArray(textArray)
+    ? textArray.reduce((acc, item) => acc + getTextContent(item), '')
+    : typeof textArray === 'string'
+      ? textArray
+      : '';
 }
 
 /**
@@ -123,8 +110,7 @@ async function filterByMemCache(allPosts: PageInfo[], keyword: string) {
   const filterPosts: any[] = [];
 
   for (const post of allPosts) {
-    const cacheKey = 'page_block_' + post.id;
-    const page = await getDataFromCache(cacheKey, true);
+    const page = await getNotionPageData(post.id, 'search-detail-page');
     const tagContent = post?.tags?.join(' ') || '';
     const categoryContent = post?.category || '';
     const articleInfo = (
@@ -158,18 +144,16 @@ async function filterByMemCache(allPosts: PageInfo[], keyword: string) {
   return filterPosts;
 }
 
-export function getPageContentText(post: PageInfo, pageBlockMap) {
-  let indexContent = [];
-  // 防止搜到加密文章的内容
-  if (pageBlockMap && pageBlockMap.block && !post.password) {
-    const contentIds = Object.keys(pageBlockMap.block);
-    contentIds.forEach((id) => {
-      const properties = pageBlockMap?.block[id]?.value?.properties;
-      indexContent = appendText(indexContent, properties, 'title');
-      indexContent = appendText(indexContent, properties, 'caption');
+export function getPageContentText(post: PageInfo, dataBaseInfo: DataBaseInfo) {
+  let indexContent: string[] = [];
+  if (dataBaseInfo?.block && !post.password) {
+    Object.keys(dataBaseInfo.block).forEach((id) => {
+      const properties = dataBaseInfo.block[id]?.value?.properties;
+      indexContent = extractTextContent(indexContent, properties, 'title');
+      indexContent = extractTextContent(indexContent, properties, 'caption');
     });
   }
-  return indexContent.join('');
+  return indexContent;
 }
 
 export default SearchDetail;

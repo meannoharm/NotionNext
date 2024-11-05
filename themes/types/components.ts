@@ -7,6 +7,7 @@ import type {
   ThemePageNotFoundProps,
   ThemePageProps,
   ThemeCategoryPageProps,
+  ThemeTagIndexProps,
   ThemeTagDetailProps,
   ThemeTagPageProps,
   ThemeSearchIndexProps,
@@ -22,7 +23,7 @@ export type PageNotFoundComponent = FC<ThemePageNotFoundProps>;
 export type PostComponents = FC;
 export type PostListComponent = FC<ThemePageProps>;
 export type SearchComponent = FC;
-export type TagComponent = FC;
+export type TagIndexComponent = FC<ThemeTagIndexProps>;
 export type TagDetailComponent = FC<ThemeTagDetailProps>;
 export type TagPageComponent = FC<ThemeTagPageProps>;
 export type SearchIndexComponent = FC<ThemeSearchIndexProps>;

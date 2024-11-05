@@ -3,38 +3,42 @@ import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
 import { useTranslation } from 'next-i18next';
+import { omit } from 'lodash';
+
+import type { FC } from 'react';
+import type { PageMeta, TagIndexProps } from '@/pages/types';
+import type { TagIndexComponent } from '@/themes/types';
+import type { GetStaticProps } from 'next';
 
 /**
  * 标签首页
  * @param {*} props
  * @returns
  */
-const TagIndex = (props) => {
+const TagIndex: FC<TagIndexProps> = (props) => {
   const { siteInfo } = props;
   const { t } = useTranslation('common');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter());
+  const Layout = getLayoutByTheme(useRouter()) as TagIndexComponent;
 
-  const meta = {
+  const pageMeta: PageMeta = {
     title: `${t('tags')} | ${siteInfo?.title}`,
     description: siteInfo?.description,
     image: siteInfo?.pageCover,
     slug: 'tag',
     type: 'website',
   };
-  props = { ...props, meta };
 
-  return <Layout {...props} />;
+  return <Layout {...props} pageMeta={pageMeta} />;
 };
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<TagIndexProps> = async () => {
   const props = await getGlobalData('tag-index-props');
-  delete props.allPages;
   return {
-    props,
+    props: omit(props, 'allPages'),
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
-}
+};
 
 export default TagIndex;

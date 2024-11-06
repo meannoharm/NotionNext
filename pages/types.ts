@@ -19,9 +19,18 @@ export type PageMetaProps = {
 
 export type ThemeBaseProps = DataBaseForProps & PageMetaProps;
 
+export type HomeIndexProps = DataBaseForProps &
+  PageMetaProps & {
+    posts: PageInfo[];
+  };
+export type PageNotFoundIndexProps = DataBaseForProps;
 export type ArchiveIndexProps = DataBaseForProps & {
   posts: PageInfo[];
   archivePosts: Record<string, PageInfo[]>;
+};
+export type PageIndexProps = DataBaseForProps & {
+  posts: PageInfo[];
+  page: number;
 };
 export type CategoryIndexProps = DataBaseForProps;
 export type CategoryDetailProps = DataBaseForProps & {
@@ -33,15 +42,6 @@ export type CategoryPageProps = DataBaseForProps & {
   postCount: number;
   page: number;
   category: string;
-};
-export type HomeIndexProps = DataBaseForProps &
-  PageMetaProps & {
-    posts: PageInfo[];
-  };
-export type PageNotFoundIndexProps = DataBaseForProps;
-export type PageIndexProps = DataBaseForProps & {
-  posts: PageInfo[];
-  page: number;
 };
 export type TagIndexProps = DataBaseForProps;
 export type TagDetailProps = DataBaseForProps & {
@@ -62,16 +62,23 @@ export type SearchDetailProps = DataBaseForProps & {
   keyword: string;
   posts: PageInfo[];
 };
+export type SearchPageProps = DataBaseForProps & {
+  posts: PageInfo[];
+  postCount: number;
+  page: number;
+  keyword: string;
+};
 
+export type ThemeHomeProps = HomeIndexProps;
+export type ThemePageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
 export type ThemeArchiveProps = ArchiveIndexProps & PageMetaProps;
+export type ThemePageProps = PageIndexProps & PageMetaProps;
 export type ThemeCategoryProps = CategoryIndexProps & PageMetaProps;
 export type ThemeCategoryDetailProps = CategoryDetailProps & PageMetaProps;
 export type ThemeCategoryPageProps = CategoryPageProps & PageMetaProps;
-export type ThemeHomeProps = HomeIndexProps;
-export type ThemePageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
-export type ThemePageProps = PageIndexProps & PageMetaProps;
 export type ThemeTagIndexProps = TagIndexProps & PageMetaProps;
 export type ThemeTagDetailProps = TagDetailProps & PageMetaProps;
 export type ThemeTagPageProps = TagPageProps & PageMetaProps;
 export type ThemeSearchIndexProps = SearchIndexProps & PageMetaProps;
 export type ThemeSearchDetailProps = SearchDetailProps & PageMetaProps;
+export type ThemeSearchPageProps = SearchPageProps & PageMetaProps;

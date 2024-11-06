@@ -1,18 +1,31 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
-import { getDataFromCache } from '@/lib/cache/cache_manager';
+import { getDataFromCache } from '@/lib/cache/cacheManager';
 import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
 import { useTranslation } from 'next-i18next';
+import { isIterable } from '@/lib/utils';
 
-const Index = (props) => {
+import type { FC } from 'react';
+import type { PageMeta, SearchPageProps } from '@/pages/types';
+import type { ParsedUrlQuery } from 'querystring';
+import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { DataBaseInfo, PageInfo } from '@/lib/notion/types';
+import type { SearchPageComponent } from '@/themes/types';
+
+export interface SearchPageParams extends ParsedUrlQuery {
+  keyword: string;
+  page: string;
+}
+
+const SearchPage: FC<SearchPageProps> = (props) => {
   const { keyword, siteInfo } = props;
   const { t } = useTranslation('nav');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter());
+  const Layout = getLayoutByTheme(useRouter()) as SearchPageComponent;
 
-  const meta = {
+  const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,
     description: siteInfo?.title,
     image: siteInfo?.pageCover,
@@ -20,9 +33,7 @@ const Index = (props) => {
     type: 'website',
   };
 
-  props = { ...props, meta, currentSearch: keyword };
-
-  return <Layout {...props} />;
+  return <Layout {...props} pageMeta={pageMeta} />;
 };
 
 /**
@@ -30,34 +41,38 @@ const Index = (props) => {
  * @param {*} param0
  * @returns
  */
-export async function getStaticProps({ params: { keyword, page } }) {
-  const props = await getGlobalData('search-props');
-  const { allPages } = props;
-  const allPosts = allPages?.filter(
+export const getStaticProps: GetStaticProps<
+  SearchPageProps,
+  SearchPageParams
+> = async (context) => {
+  const { keyword, page } = context.params as SearchPageParams;
+  const { allPages, ...restProps } = await getGlobalData('search-props');
+  const pageNumber = parseInt(page, 10);
+  const filteredPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   );
-  props.posts = await filterByMemCache(allPosts, keyword);
-  props.postCount = props.posts.length;
-  // 处理分页
-  props.posts = props.posts.slice(
-    BLOG.POSTS_PER_PAGE * (page - 1),
-    BLOG.POSTS_PER_PAGE * page,
+  const posts = (await filterByMemCache(filteredPosts, keyword)).slice(
+    BLOG.POSTS_PER_PAGE * (pageNumber - 1),
+    BLOG.POSTS_PER_PAGE * pageNumber,
   );
-  props.keyword = keyword;
-  props.page = page;
-  delete props.allPages;
   return {
-    props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND),
+    props: {
+      ...restProps,
+      posts,
+      postCount: posts.length,
+      page: pageNumber,
+      keyword,
+    },
+    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
-}
+};
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths<SearchPageParams> = () => {
   return {
     paths: [{ params: { keyword: BLOG.TITLE, page: '1' } }],
     fallback: true,
   };
-}
+};
 
 /**
  * 将对象的指定字段拼接到字符串
@@ -66,10 +81,8 @@ export async function getStaticPaths() {
  * @param key
  * @returns {*}
  */
-function appendText(sourceTextArray, targetObj, key) {
-  if (!targetObj) {
-    return sourceTextArray;
-  }
+function appendText(sourceTextArray: string[], targetObj: any, key: string) {
+  if (!targetObj) return sourceTextArray;
   const textArray = targetObj[key];
   const text = textArray ? getTextContent(textArray) : '';
   if (text && text !== 'Untitled') {
@@ -83,7 +96,7 @@ function appendText(sourceTextArray, targetObj, key) {
  * @param {*} textArray
  * @returns
  */
-function getTextContent(textArray) {
+function getTextContent(textArray: any) {
   if (typeof textArray === 'object' && isIterable(textArray)) {
     let result = '';
     for (const textObj of textArray) {
@@ -96,27 +109,21 @@ function getTextContent(textArray) {
 }
 
 /**
- * 对象是否可以遍历
- * @param {*} obj
- * @returns
- */
-const isIterable = (obj) =>
-  obj != null && typeof obj[Symbol.iterator] === 'function';
-
-/**
  * 在内存缓存中进行全文索引
- * @param {*} allPosts
+ * @param {*} posts
  * @param keyword 关键词
  * @returns
  */
-async function filterByMemCache(allPosts, keyword) {
+async function filterByMemCache(posts: PageInfo[], keyword: string) {
   const filterPosts = [];
   if (keyword) {
     keyword = keyword.trim();
   }
-  for (const post of allPosts) {
-    const cacheKey = 'page_block_' + post.id;
-    const page = await getDataFromCache(cacheKey, true);
+  for (const post of posts) {
+    const page = await getDataFromCache<DataBaseInfo>(
+      `page_block_${post.id}`,
+      true,
+    );
     const tagContent =
       post?.tags && Array.isArray(post?.tags) ? post?.tags.join(' ') : '';
     const categoryContent =
@@ -138,22 +145,19 @@ async function filterByMemCache(allPosts, keyword) {
     // console.log('全文搜索缓存', cacheKey, page != null)
     post.results = [];
     let hitCount = 0;
-    for (const i in indexContent) {
-      const c = indexContent[i];
-      if (!c) {
-        continue;
-      }
-      const index = c.toLowerCase().indexOf(keyword.toLowerCase());
-      if (index > -1) {
-        hit = true;
-        hitCount += 1;
-        post.results.push(c);
-      } else {
-        if ((post.results.length - 1) / hitCount < 3 || i === 0) {
-          post.results.push(c);
+    indexContent.forEach((content, index) => {
+      if (content) {
+        if (content.toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
+          hit = true;
+          hitCount += 1;
+          post.results.push(content);
+        } else {
+          if ((post.results.length - 1) / hitCount < 3 || index === 0) {
+            post.results.push(content);
+          }
         }
       }
-    }
+    });
     if (hit) {
       filterPosts.push(post);
     }
@@ -161,4 +165,4 @@ async function filterByMemCache(allPosts, keyword) {
   return filterPosts;
 }
 
-export default Index;
+export default SearchPage;

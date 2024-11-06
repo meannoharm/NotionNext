@@ -4,12 +4,12 @@ import CommonHead from '@/components/CommonHead';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import JumpToTopButton from '../components/JumpToTopButton';
-import { NobeliumStoreProvider } from '../providers';
+import { NobeliumStoreProvider, useNobeliumStore } from '../providers';
 
-import type { FC, ReactNode } from 'react';
-import type { BaseThemeProps } from '@/pages/types';
+import { useEffect, type FC, type ReactNode } from 'react';
+import type { ThemeBaseProps } from '@/pages/types';
 
-export interface LayoutBaseProps extends BaseThemeProps {
+export interface LayoutBaseProps extends ThemeBaseProps {
   topSlot?: ReactNode;
   children: ReactNode;
 }
@@ -19,7 +19,18 @@ export interface LayoutBaseProps extends BaseThemeProps {
  * @constructor
  */
 const LayoutBase: FC<LayoutBaseProps> = (props) => {
-  const { children, topSlot, pageMeta } = props;
+  const { updateLatestPosts, updateSiteInfo } = useNobeliumStore(
+    (state) => state,
+  );
+  const { children, topSlot, pageMeta, latestPosts, siteInfo } = props;
+
+  useEffect(() => {
+    updateLatestPosts(latestPosts);
+  }, [latestPosts, updateLatestPosts]);
+
+  useEffect(() => {
+    updateSiteInfo(siteInfo);
+  }, [siteInfo, updateSiteInfo]);
 
   const { onLoading } = useGlobal();
 

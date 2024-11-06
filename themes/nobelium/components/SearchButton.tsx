@@ -1,6 +1,5 @@
-import BLOG from '@/blog.config';
+// import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
-import { useNobeliumGlobal } from '@/components/NobeliumGlobal';
 import { useTranslation } from 'next-i18next';
 
 /**
@@ -8,16 +7,16 @@ import { useTranslation } from 'next-i18next';
  * @returns
  */
 export default function SearchButton() {
-  const { searchModal } = useNobeliumGlobal();
+  // const { searchModal } = useNobeliumGlobal();
   const { t } = useTranslation('nav');
   const router = useRouter();
 
   function handleSearch() {
-    if (BLOG.ALGOLIA_APP_ID) {
-      searchModal.current.openSearch();
-    } else {
-      router.push('/search');
-    }
+    // if (BLOG.ALGOLIA_APP_ID) {
+    //   searchModal.current.openSearch();
+    // } else {
+    router.push('/search');
+    // }
   }
 
   return (

@@ -69,6 +69,8 @@ export type SearchPageProps = DataBaseForProps & {
   keyword: string;
 };
 
+export type ThemeProps<T> = Partial<T & PageMetaProps>;
+
 export type ThemeHomeProps = HomeIndexProps;
 export type ThemePageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
 export type ThemeArchiveProps = ArchiveIndexProps & PageMetaProps;

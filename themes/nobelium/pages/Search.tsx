@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { deepClone } from '@/lib/utils';
 import BLOG from '@/blog.config';
+import replaceSearchResult from '@/components/Mark';
+import { isBrowser } from '@/lib/utils';
 import LayoutBase from '../layout/LayoutBase';
 import BlogListBar from '../components/BlogListBar';
 import SearchNavBar from '../components/SearchNavBar';
 import BlogListPage from '../components/BlogListPage';
 import BlogListScroll from '../components/BlogListScroll';
-import replaceSearchResult from '@/components/Mark';
 
 import type { FC } from 'react';
 
-export interface SearchProps {}
+export type SearchProps = any;
 
 /**
  * 搜索
@@ -19,7 +20,7 @@ export interface SearchProps {}
  * @returns
  */
 const Search: FC<SearchProps> = (props) => {
-  const { keyword, posts } = props;
+  const { keyword, posts, postCount, page } = props;
   useEffect(() => {
     if (isBrowser) {
       replaceSearchResult({
@@ -54,9 +55,17 @@ const Search: FC<SearchProps> = (props) => {
     >
       <SearchNavBar {...props} />
       {BLOG.POST_LIST_STYLE === 'page' ? (
-        <BlogListPage {...props} posts={filteredBlogPosts} />
+        <BlogListPage
+          postCount={postCount}
+          page={page}
+          posts={filteredBlogPosts}
+        />
       ) : (
-        <BlogListScroll {...props} posts={filteredBlogPosts} />
+        <BlogListScroll
+          postCount={postCount}
+          page={page}
+          posts={filteredBlogPosts}
+        />
       )}
     </LayoutBase>
   );

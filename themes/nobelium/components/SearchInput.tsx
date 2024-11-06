@@ -1,58 +1,50 @@
 import { useRouter } from 'next/router';
-import { useImperativeHandle, useRef, useState } from 'react';
+import { type FC, useRef, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
-let lock = false;
+export interface SearchInputProps {
+  tag: string;
+  keyword: string;
+}
 
-const SearchInput = (props) => {
-  const { tag, keyword, cRef } = props;
+const SearchInput: FC<SearchInputProps> = ({ tag, keyword }) => {
   const router = useRouter();
-  const searchInputRef = useRef(null);
   const { t } = useTranslation('common');
-  useImperativeHandle(cRef, () => {
-    return {
-      focus: () => {
-        searchInputRef?.current?.focus();
-      },
-    };
-  });
+  const [showClean, setShowClean] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const lock = useRef(false);
+
   const handleSearch = () => {
-    const key = searchInputRef.current.value;
-    if (key && key !== '') {
-      router.push({ pathname: '/search/' + key }).then((r) => {
-        // console.log('搜索', key)
-      });
+    const key = searchInputRef.current?.value.trim();
+    if (key) {
+      router.push(`/search/${key}`);
     } else {
-      router.push({ pathname: '/' }).then((r) => {});
+      router.push('/');
     }
   };
-  const handleKeyUp = (e) => {
-    if (e.keyCode === 13) {
-      // 回车
-      handleSearch(searchInputRef.current.value);
-    } else if (e.keyCode === 27) {
-      // ESC
-      cleanSearch();
-    }
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') handleSearch();
+    else if (e.key === 'Escape') cleanSearch();
   };
+
   const cleanSearch = () => {
-    searchInputRef.current.value = '';
+    (searchInputRef.current as HTMLInputElement).value = '';
     setShowClean(false);
   };
+
   function lockSearchInput() {
-    lock = true;
+    lock.current = true;
   }
 
   function unLockSearchInput() {
-    lock = false;
+    lock.current = false;
   }
-  const [showClean, setShowClean] = useState(false);
-  const updateSearchKey = (val) => {
-    if (lock) {
+  const updateSearchKey = () => {
+    if (lock.current) {
       return;
     }
-    searchInputRef.current.value = val;
-    if (val) {
+    if (searchInputRef.current?.value) {
       setShowClean(true);
     } else {
       setShowClean(false);
@@ -72,7 +64,7 @@ const SearchInput = (props) => {
         onCompositionStart={lockSearchInput}
         onCompositionUpdate={lockSearchInput}
         onCompositionEnd={unLockSearchInput}
-        onChange={(e) => updateSearchKey(e.target.value)}
+        onChange={updateSearchKey}
         defaultValue={keyword || ''}
       />
 

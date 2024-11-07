@@ -8,6 +8,7 @@ import BlogListBar from '../components/BlogListBar';
 import SearchNavBar from '../components/SearchNavBar';
 import BlogListPage from '../components/BlogListPage';
 import BlogListScroll from '../components/BlogListScroll';
+import { ContextWrapper } from '../providers/index';
 
 import type { FC } from 'react';
 
@@ -71,4 +72,4 @@ const Search: FC<SearchProps> = (props) => {
   );
 };
 
-export default Search;
+export default ContextWrapper(Search);

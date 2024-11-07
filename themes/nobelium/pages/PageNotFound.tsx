@@ -1,4 +1,5 @@
 import LayoutBase from '../layout/LayoutBase';
+import { ContextWrapper } from '../providers';
 
 import type { PageNotFoundComponent } from '@/themes/types';
 
@@ -11,4 +12,4 @@ const PageNotFound: PageNotFoundComponent = (props) => {
   return <LayoutBase {...props}>404 Not found.</LayoutBase>;
 };
 
-export default PageNotFound;
+export default ContextWrapper(PageNotFound);

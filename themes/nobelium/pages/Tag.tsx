@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import LayoutBase from '../layout/LayoutBase';
+import { ContextWrapper } from '../providers/index';
 
 import type { FC } from 'react';
 
@@ -39,4 +40,4 @@ const Tag: FC<TagProps> = (props) => {
   );
 };
 
-export default Tag;
+export default ContextWrapper(Tag);

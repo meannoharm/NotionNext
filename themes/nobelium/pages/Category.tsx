@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import LayoutBase from '../layout/LayoutBase';
+import { ContextWrapper } from '../providers';
 
 import type { CategoryComponent } from '@/themes/types';
 
@@ -38,4 +39,4 @@ const Category: CategoryComponent = (props) => {
   );
 };
 
-export default Category;
+export default ContextWrapper(Category);

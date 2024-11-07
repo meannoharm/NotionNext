@@ -1,4 +1,9 @@
-import { type ReactNode, createContext, useRef, useContext } from 'react';
+import React, {
+  type ReactNode,
+  createContext,
+  useRef,
+  useContext,
+} from 'react';
 import { useStore } from 'zustand';
 
 import { type NobeliumStore, createNobeliumStore } from '../stores';
@@ -40,4 +45,16 @@ export const useNobeliumStore = <T,>(
   }
 
   return useStore(nobeliumStoreContext, selector);
+};
+
+export const ContextWrapper = <P extends object>(
+  Component: React.ComponentType<P>,
+): React.FC<P> => {
+  const WrappedComponent: React.FC<P> = (props) => (
+    <NobeliumStoreProvider>
+      <Component {...props} />
+    </NobeliumStoreProvider>
+  );
+
+  return WrappedComponent;
 };

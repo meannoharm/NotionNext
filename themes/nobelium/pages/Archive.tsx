@@ -1,5 +1,6 @@
 import LayoutBase from '../layout/LayoutBase';
 import BlogArchiveItem from '../components/BlogArchiveItem';
+import { ContextWrapper } from '../providers';
 
 import type { ArchiveComponent } from '@/themes/types';
 
@@ -25,4 +26,4 @@ const Archive: ArchiveComponent = (props) => {
   );
 };
 
-export default Archive;
+export default ContextWrapper(Archive);

@@ -1,5 +1,6 @@
 import Announcement from '../components/Announcement';
 import PostList from './PostList';
+import { ContextWrapper } from '../providers';
 
 import type { HomeComponent } from '@/themes/types';
 
@@ -14,4 +15,4 @@ const Home: HomeComponent = (props) => {
   return <PostList {...props} topSlot={<Announcement {...props} />} />;
 };
 
-export default Home;
+export default ContextWrapper(Home);

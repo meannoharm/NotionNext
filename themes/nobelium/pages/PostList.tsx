@@ -5,6 +5,7 @@ import { deepClone } from '@/lib/utils';
 import BlogListPage from '../components/BlogListPage';
 import BlogListScroll from '../components/BlogListScroll';
 import BlogListBar from '../components/BlogListBar';
+import { ContextWrapper } from '../providers';
 
 import type { PageInfo } from '@/lib/notion/types';
 import type { ThemePageProps } from '@/pages/types';
@@ -57,4 +58,4 @@ const PostList: FC<
   );
 };
 
-export default PostList;
+export default ContextWrapper(PostList);

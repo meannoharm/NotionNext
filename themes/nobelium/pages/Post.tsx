@@ -6,6 +6,7 @@ import ArticleFooter from '../components/ArticleFooter';
 import NotionPage from '@/components/NotionPage';
 import ShareBar from '@/components/ShareBar';
 import Comment from '@/components/Comment';
+import { ContextWrapper } from '../providers';
 
 import type { FC } from 'react';
 
@@ -35,4 +36,4 @@ const Post: FC<LayoutSlugProps> = (props) => {
   );
 };
 
-export default Post;
+export default ContextWrapper(Post);

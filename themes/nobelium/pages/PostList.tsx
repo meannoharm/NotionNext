@@ -58,4 +58,5 @@ const PostList: FC<
   );
 };
 
+export const OriginPostList = PostList;
 export default ContextWrapper(PostList);

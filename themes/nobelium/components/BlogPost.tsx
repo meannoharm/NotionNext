@@ -1,8 +1,15 @@
 import Link from 'next/link';
 import BLOG from '@/blog.config';
-import formatDate from '@/lib/formatDate';
+import dayjs from 'dayjs';
 
-const BlogPost = ({ post }) => {
+import type { FC } from 'react';
+import type { PageInfo } from '@/lib/notion/types';
+
+export interface BlogPostProps {
+  post: PageInfo;
+}
+const BlogPost: FC<PageInfo> = ({ post }) => {
+  console.log(post);
   return (
     <Link href={`${BLOG.SUB_PATH}/${post.slug}`}>
       <article key={post.id} className="mb-6 md:mb-8">
@@ -11,7 +18,7 @@ const BlogPost = ({ post }) => {
             {post.title}
           </h2>
           <time className="flex-shrink-0 text-gray-600 dark:text-gray-400">
-            {formatDate(post?.publishDay || post.createdTime, BLOG.LANG)}
+            {dayjs(post?.publishDate).format('YYYY-MM-DD')}
           </time>
         </header>
         <main>

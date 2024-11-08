@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
 /**
@@ -11,13 +11,14 @@ import { useTranslation } from 'next-i18next';
  */
 const JumpToTopButton = () => {
   const { t } = useTranslation('common');
-  const jumpToTopButtonRef = React.useRef<HTMLDivElement>(null);
+  const [isShowButton, setIsShowButton] = useState(false);
 
   useEffect(() => {
     const scrollHandler = () => {
-      if (jumpToTopButtonRef.current) {
-        jumpToTopButtonRef.current.style.display =
-          window.scrollY > 500 ? 'block' : 'none';
+      if (window.scrollY > 500) {
+        setIsShowButton(true);
+      } else {
+        setIsShowButton(false);
       }
     };
     window.addEventListener('scroll', scrollHandler);
@@ -26,9 +27,8 @@ const JumpToTopButton = () => {
 
   return (
     <div
-      ref={jumpToTopButtonRef}
       title={t('top')}
-      className="cursor-pointer"
+      className={`cursor-pointer transition-all ${isShowButton ? 'opacity-100' : 'opacity-0'}`}
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       <i className="fas fa-angle-up text-2xl" />

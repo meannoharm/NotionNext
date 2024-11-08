@@ -1,0 +1,8 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-direction: column;
+}

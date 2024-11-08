@@ -46,11 +46,11 @@
   .stickyNavFull {
     @apply max-w-full border-b border-gray-200 border-opacity-50 dark:border-gray-600 dark:border-opacity-50;
   }
-  .header-name {
+  .headerName {
     display: block;
     transition: all 0.5s cubic-bezier(0.4, 0, 0, 1);
   }
-  .stickyNavFull .header-name {
+  .stickyNavFull .headerName {
     @apply text-gray-600 dark:text-gray-300;
   }
 }

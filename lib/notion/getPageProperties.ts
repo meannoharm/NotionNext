@@ -11,6 +11,7 @@ import type {
   CollectionPropertySchemaMap,
   Decoration,
 } from './types';
+import dayjs from 'dayjs';
 
 type TempPageInfo = {
   id: string;
@@ -90,7 +91,9 @@ export default async function getPageProperties(
   // 映射值：用户个性化type和status字段的下拉框选项，在此映射回代码的英文标识
   mapProperties(pageInfo);
 
-  pageInfo.publishDate = pageInfo?.date?.start_date || block.created_time;
+  pageInfo.publishDate = dayjs(
+    pageInfo?.date?.start_date || block.created_time,
+  ).valueOf();
   pageInfo.lastEditedDate = block?.last_edited_time;
   pageInfo.pageIcon = mapImgUrl(block?.format?.page_icon, block.id);
   pageInfo.pageCover = mapImgUrl(block?.format?.page_cover, block.id);

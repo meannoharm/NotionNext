@@ -8,7 +8,7 @@ import type { PageInfo } from '@/lib/notion/types';
 export interface BlogPostProps {
   post: PageInfo;
 }
-const BlogPost: FC<PageInfo> = ({ post }) => {
+const BlogPost: FC<BlogPostProps> = ({ post }) => {
   console.log(post);
   return (
     <Link href={`${BLOG.SUB_PATH}/${post.slug}`}>

@@ -3,7 +3,6 @@ import { NotionAPI } from 'notion-client';
 import BLOG from '@/blog.config';
 import md5 from 'js-md5';
 import { mapImgUrl } from './mapImage';
-import dayjs from 'dayjs';
 import { PagePropertiesType, PagePropertiesStatus } from './types';
 
 import type {

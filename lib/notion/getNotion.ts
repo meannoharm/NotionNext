@@ -1,6 +1,5 @@
 import BLOG from '@/blog.config';
 import { idToUuid } from 'notion-utils';
-import formatDate from '../formatDate';
 import { getPostBlocks } from './getPostBlocks';
 import { defaultMapImageUrl } from 'react-notion-x';
 
@@ -26,20 +25,11 @@ export async function getNotion(pageId: string) {
     tags: [],
     title: postInfo?.properties?.title?.[0],
     status: 'Published',
-    createdTime: formatDate(
-      new Date(postInfo.created_time).toString(),
-      BLOG.LANG,
-    ),
-    lastEditedDay: formatDate(
-      new Date(postInfo?.last_edited_time).toString(),
-      BLOG.LANG,
-    ),
-    page_cover: getPageCover(postInfo),
+    createdTime: postInfo.created_time,
+    lastEditedDay: postInfo?.last_edited_time,
+    pageCover: getPageCover(postInfo),
     date: {
-      start_date: formatDate(
-        new Date(postInfo?.last_edited_time).toString(),
-        BLOG.LANG,
-      ),
+      startDate: postInfo?.last_edited_time,
     },
     blockMap,
   };

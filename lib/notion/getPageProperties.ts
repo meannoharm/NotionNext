@@ -91,15 +91,8 @@ export default async function getPageProperties(
   // 映射值：用户个性化type和status字段的下拉框选项，在此映射回代码的英文标识
   mapProperties(pageInfo);
 
-  pageInfo.publishDate = dayjs(
-    pageInfo?.date?.start_date || block.created_time,
-  ).format();
-  // pageInfo.publishDay = formatDate(pageInfo.publishDate, BLOG.LANG);
-  pageInfo.lastEditedDate = dayjs(block?.last_edited_time).format();
-  // pageInfo.lastEditedDay = formatDate(
-  //   new Date(block?.last_edited_time),
-  //   BLOG.LANG,
-  // );
+  pageInfo.publishDate = pageInfo?.date?.start_date || block.created_time;
+  pageInfo.lastEditedDate = block?.last_edited_time;
   pageInfo.pageIcon = mapImgUrl(block?.format?.page_icon, block.id);
   pageInfo.pageCover = mapImgUrl(block?.format?.page_cover, block.id);
   pageInfo.pageCoverThumbnail = mapImgUrl(

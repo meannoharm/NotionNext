@@ -1,22 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import BLOG from '@/blog.config';
-import CONFIG from '../theme.config';
-import { SvgIcon } from './SvgIcon';
-import { MenuItemDrop } from './MenuItemDrop';
+import CONFIG from '../../theme.config';
+import { SvgIcon } from '../SvgIcon';
+import { MenuItemDrop } from '../MenuItemDrop';
 import Collapse from '@/components/Collapse';
-import { MenuItemCollapse } from './MenuItemCollapse';
+import { MenuItemCollapse } from '../MenuItemCollapse';
 import LazyImage from '@/components/LazyImage';
-import DarkModeButton from './DarkModeButton';
-import RandomPostButton from './RandomPostButton';
-import SearchButton from './SearchButton';
-import LanguageSwitchButton from './LanguageSwitchButton';
+import DarkModeButton from '../DarkModeButton';
+import RandomPostButton from '../RandomPostButton';
+import SearchButton from '../SearchButton';
+import LanguageSwitchButton from '../LanguageSwitchButton';
 import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
 import { useTranslation } from 'next-i18next';
-import { useNobeliumStore } from '../providers';
+import { useNobeliumStore } from '../../providers';
+import styles from './Nav.module.css';
 
 import type { FC } from 'react';
-import type { NavLink } from '../types/nav';
+import type { NavLink } from '../../types/nav';
 import type { CollapseHandle } from '@/components/Collapse';
 
 const Nav: FC = () => {
@@ -27,9 +28,9 @@ const Nav: FC = () => {
   const handler: IntersectionObserverCallback = ([entry]) => {
     if (navRef && navRef.current) {
       if (!entry.isIntersecting && entry !== undefined) {
-        navRef.current?.classList.add('sticky-nav-full');
+        navRef.current?.classList.add(styles.stickyNavFull);
       } else {
-        navRef.current?.classList.remove('sticky-nav-full');
+        navRef.current?.classList.remove(styles.stickyNavFull);
       }
     } else {
       navRef.current?.classList.add('remove-sticky');
@@ -47,13 +48,9 @@ const Nav: FC = () => {
 
   return (
     <>
+      <div className="h-4 md:h-12" ref={sentinelRef} />
       <div
-        className="observer-element absolute top-0 h-4 md:h-12"
-        ref={sentinelRef}
-      ></div>
-      <div
-        className="sticky-nav m-auto mb-2 flex h-6 w-full max-w-3xl flex-row items-center justify-between bg-opacity-60 px-4 py-8 md:mb-12"
-        id="sticky-nav"
+        className={`${styles.stickyNav} m-auto mb-2 flex h-6 w-full max-w-3xl flex-row items-center justify-between bg-opacity-60 px-4 py-8 md:mb-12`}
         ref={navRef}
       >
         <Link className="flex items-center" href="/" aria-label={BLOG.TITLE}>
@@ -70,7 +67,9 @@ const Nav: FC = () => {
               <SvgIcon />
             )}
           </div>
-          <p className="header-name ml-2 font-medium text-gray-800 dark:text-gray-300">
+          <p
+            className={`${styles.headerName} ml-2 font-medium text-gray-800 dark:text-gray-300`}
+          >
             {siteInfo?.title}
           </p>
         </Link>

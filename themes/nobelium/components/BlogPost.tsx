@@ -9,7 +9,6 @@ export interface BlogPostProps {
   post: PageInfo;
 }
 const BlogPost: FC<BlogPostProps> = ({ post }) => {
-  console.log(post);
   return (
     <Link href={`${BLOG.SUB_PATH}/${post.slug}`}>
       <article key={post.id} className="mb-6 md:mb-8">

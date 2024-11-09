@@ -13,11 +13,11 @@ import type {
   CustomNav,
   PageInfo,
   BlockMap,
-  Collection,
   CollectionPropertySchemaMap,
   SelectOption,
   SiteInfo,
   DataBaseInfo,
+  PatchedCollection,
 } from './types';
 
 /**
@@ -158,14 +158,15 @@ function getCategoryOptions(
  * @param from
  * @returns {Promise<{title,description,pageCover,icon}>}
  */
-function getSiteInfo(collection: Collection, block: BlockMap): SiteInfo {
+function getSiteInfo(collection: PatchedCollection, block: BlockMap): SiteInfo {
   const title = collection.name[0][0] || BLOG.TITLE;
+
   const description = collection.description
     ? Object.assign(collection).description[0][0]
     : BLOG.DESCRIPTION;
-  const pageCover = collection?.cover
+  const pageCover = collection.cover
     ? mapImgUrl(
-        collection?.cover,
+        collection.cover,
         block[idToUuid(BLOG.NOTION_PAGE_ID)]?.value.id,
       )
     : BLOG.HOME_BANNER_IMAGE;
@@ -223,7 +224,8 @@ async function getDataBaseInfoByNotionAPI(
     // return EmptyData(pageUuid);
   }
   const collection = Object.values(pageRecordMap.collection)[0].value || {};
-  const siteInfo = getSiteInfo(collection, blockMap);
+  console.log(collection);
+  const siteInfo = getSiteInfo(collection as PatchedCollection, blockMap);
 
   const collectionId = rawBlockData.collection_id || null;
   const viewIds = rawBlockData.view_ids;

@@ -105,3 +105,10 @@ export interface DataBaseInfo {
   pageIds: string[];
   latestPosts: PageInfo[];
 }
+
+// property description and cover are not included in the original Collection type, but it definitely return these property.
+// so use this interface to patch.
+export interface PatchedCollection extends Collection {
+  description: [[string]];
+  cover: string;
+}

@@ -19,9 +19,9 @@ export function getAllCategories(
   sliceCount = 0,
 ): CategoryInfo[] {
   // 计数
-  const categories = publishedPosts.map((p) => p.category).flat();
   const countMap: { [key: string]: number } = {};
-  categories.forEach((category) => {
+  publishedPosts.forEach(({ category }) => {
+    if (!category) return;
     if (category in countMap) {
       countMap[category]++;
     } else {

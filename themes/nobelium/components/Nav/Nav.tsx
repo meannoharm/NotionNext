@@ -152,7 +152,7 @@ const NavBar: FC = () => {
       {CONFIG.MENU_RANDOM_POST && <RandomPostButton />}
       {CONFIG.MENU_SEARCH_BUTTON && <SearchButton />}
       {CONFIG.MENU_LANGUAGE_SWITCH && <LanguageSwitchButton />}
-      <DarkModeButton />
+      {CONFIG.MENU_DARK_MODE_SWITCH && <DarkModeButton />}
 
       {/* 移动端菜单按钮 */}
       <div

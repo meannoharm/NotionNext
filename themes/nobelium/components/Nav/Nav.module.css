@@ -11,10 +11,6 @@
   @apply border-b border-gray-200 border-opacity-50 dark:border-gray-600 dark:border-opacity-50;
 }
 
-.headerName {
-  overflow: hidden;
-}
-
 .article-tags::-webkit-scrollbar {
   width: 0 !important;
 }

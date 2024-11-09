@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import styles from './MenuItemDrop.module.css';
 
 import type { FC } from 'react';
-import type { NavLink } from '../../types';
+import type { NavLink } from '../types';
 
 export interface MenuItemDropProps {
   link: NavLink;
@@ -35,7 +35,7 @@ export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
     >
       {!hasSubMenu && (
         <Link
-          className={`${styles.nav} block text-black dark:text-gray-50`}
+          className={`block text-black dark:text-gray-50`}
           href={link?.to}
           target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
         >
@@ -45,7 +45,7 @@ export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
 
       {hasSubMenu && (
         <div
-          className={`${styles.nav} block text-black dark:text-gray-50`}
+          className={`block text-black dark:text-gray-50`}
           onClick={toggleShow}
         >
           {link?.icon && <i className={link?.icon} />} {link?.name}

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import BLOG from '@/blog.config';
 import CONFIG from '../../theme.config';
 import { SvgIcon } from '../SvgIcon';
-import { MenuItemDrop } from '../MenuItemDrop/MenuItemDrop';
+import { MenuItemDrop } from '../MenuItemDrop';
 import Collapse from '@/components/Collapse';
 import { MenuItemCollapse } from '../MenuItemCollapse';
 import LazyImage from '@/components/LazyImage';
@@ -53,7 +53,11 @@ const Nav: FC = () => {
         className={`${styles.stickyNav} m-auto mb-2 flex h-6 w-full max-w-3xl flex-row items-center justify-between bg-opacity-60 px-4 py-8 md:mb-12`}
         ref={navRef}
       >
-        <Link className="flex items-center" href="/" aria-label={BLOG.TITLE}>
+        <Link
+          className="flex items-center rounded-full px-3 py-2 hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10"
+          href="/"
+          aria-label={BLOG.TITLE}
+        >
           <div className="h-6 w-6">
             {/* <SvgIcon/> */}
             {CONFIG.NAV_NOTION_ICON ? (
@@ -68,7 +72,7 @@ const Nav: FC = () => {
             )}
           </div>
           <p
-            className={`${styles.headerName} ml-2 font-medium text-gray-800 dark:text-gray-300`}
+            className={`${styles.headerName} ml-2 overflow-hidden font-medium text-gray-800 dark:text-gray-300`}
           >
             {siteInfo?.title}
           </p>

@@ -16,7 +16,7 @@ import type { GetStaticProps } from 'next';
  * @param {*} props
  * @returns
  */
-export const Category: FC<CategoryIndexProps> = (props) => {
+const Category: FC<CategoryIndexProps> = (props) => {
   const { siteInfo } = props;
   const { t } = useTranslation('common');
 
@@ -41,3 +41,5 @@ export const getStaticProps: GetStaticProps<CategoryIndexProps> = async () => {
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
 };
+
+export default Category;

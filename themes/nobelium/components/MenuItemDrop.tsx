@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
+import { useTranslation } from 'next-i18next';
 import { useRef } from 'react';
-import styles from './MenuItemDrop.module.css';
 
 import type { FC } from 'react';
 import type { NavLink } from '../types';
@@ -13,6 +13,7 @@ export interface MenuItemDropProps {
 export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
   const [show, changeShow] = useState(false);
   const menuRef = useRef(null);
+  const { t } = useTranslation('nav');
 
   useToggleClickOutSide(menuRef, () => {
     changeShow(false);
@@ -39,7 +40,7 @@ export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
           href={link?.to}
           target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
         >
-          {link?.icon && <i className={link?.icon} />} {link?.name}
+          {link?.icon && <i className={link?.icon} />} {t(link.name)}
         </Link>
       )}
 

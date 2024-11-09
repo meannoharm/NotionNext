@@ -12,7 +12,6 @@ import RandomPostButton from '../RandomPostButton';
 import SearchButton from '../SearchButton';
 import LanguageSwitchButton from '../LanguageSwitchButton';
 import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
-import { useTranslation } from 'next-i18next';
 import { useNobeliumStore } from '../../providers';
 import styles from './Nav.module.css';
 
@@ -84,7 +83,6 @@ const Nav: FC = () => {
 };
 
 const NavBar: FC = () => {
-  const { t } = useTranslation('nav');
   const [isOpen, changeOpen] = useState(false);
   const collapseRef = useRef<CollapseHandle>(null);
   const mobileMenuRef = useRef(null);
@@ -102,7 +100,7 @@ const NavBar: FC = () => {
     {
       id: 'rss',
       icon: 'fas fa-rss',
-      name: t('rss'),
+      name: 'rss',
       to: '/feed',
       show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
       target: '_blank',
@@ -110,28 +108,28 @@ const NavBar: FC = () => {
     {
       id: 'search',
       icon: 'fas fa-search',
-      name: t('search'),
+      name: 'search',
       to: '/search',
       show: CONFIG.MENU_SEARCH,
     },
     {
       id: 'archive',
       icon: 'fas fa-archive',
-      name: t('archive'),
+      name: 'archive',
       to: '/archive',
       show: CONFIG.MENU_ARCHIVE,
     },
     {
       id: 'category',
       icon: 'fas fa-folder',
-      name: t('category'),
+      name: 'category',
       to: '/category',
       show: CONFIG.MENU_CATEGORY,
     },
     {
       id: 'tags',
       icon: 'fas fa-tag',
-      name: t('tags'),
+      name: 'tags',
       to: '/tag',
       show: CONFIG.MENU_TAG,
     },

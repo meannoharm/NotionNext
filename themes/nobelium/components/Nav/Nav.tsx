@@ -97,6 +97,7 @@ const NavBar: FC = () => {
   const links: NavLink[] = [
     {
       id: 'rss',
+      icon: 'fas fa-rss',
       name: t('rss'),
       to: '/feed',
       show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
@@ -146,7 +147,7 @@ const NavBar: FC = () => {
 
       {CONFIG.MENU_RANDOM_POST && <RandomPostButton />}
       {CONFIG.MENU_SEARCH_BUTTON && <SearchButton />}
-      {/* <LanguageSwitchButton /> */}
+      {CONFIG.MENU_LANGUAGE_SWITCH && <LanguageSwitchButton />}
       <DarkModeButton />
 
       {/* 移动端菜单按钮 */}

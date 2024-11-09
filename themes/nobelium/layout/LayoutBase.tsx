@@ -5,7 +5,6 @@ import Nav from '../components/Nav/Nav';
 import Footer from '../components/Footer';
 import JumpToTopButton from '../components/JumpToTopButton';
 import { useNobeliumStore } from '../providers';
-import styles from './LayoutBaseStyle.module.css';
 
 import { useEffect, type FC, type ReactNode } from 'react';
 import type { ThemeBaseProps } from '@/pages/types';
@@ -39,7 +38,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
   return (
     <div
       id="theme-nobelium"
-      className={`nobelium ${styles.wrapper} bg-white dark:bg-black dark:text-gray-300`}
+      className="nobelium flex min-h-screen flex-col flex-nowrap items-stretch justify-start bg-white dark:bg-black dark:text-gray-300"
     >
       {/* SEO相关 */}
       <CommonHead pageMeta={pageMeta} />

@@ -20,6 +20,7 @@ export const ArticleFooter = () => {
           onClick={() => router.push(BLOG.path || '/')}
           className="mt-2 cursor-pointer hover:text-black dark:hover:text-gray-100"
         >
+          <i className="fas fa-angle-left mr-1" />
           {t('back')}
         </button>
       </a>
@@ -28,6 +29,7 @@ export const ArticleFooter = () => {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="mt-2 cursor-pointer hover:text-black dark:hover:text-gray-100"
         >
+          <i className="fas fa-angle-up mr-1" />
           {t('top')}
         </button>
       </a>

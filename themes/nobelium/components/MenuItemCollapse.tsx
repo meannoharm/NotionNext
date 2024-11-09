@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import type { FC } from 'react';
-import type { NavLink } from '../types/nav';
+import type { NavLink } from '../types';
 
 export interface MenuItemCollapseProps {
   link: NavLink;

@@ -3,7 +3,7 @@ const CONFIG = {
 
   // 特殊菜单
   MENU_RANDOM_POST: true, // 是否显示随机跳转文章按钮
-  MENU_SEARCH_BUTTON: true, // 是否显示搜索按钮，该按钮支持Algolia搜索
+  MENU_SEARCH_BUTTON: false, // 是否显示搜索按钮，该按钮支持Algolia搜索
   MENU_LANGUAGE_SWITCH: true,
 
   // 默认菜单配置 （开启自定义菜单后，以下配置则失效，请在Notion中自行配置菜单）

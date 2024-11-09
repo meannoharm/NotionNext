@@ -3,7 +3,7 @@ import Link from 'next/link';
 import BLOG from '@/blog.config';
 import CONFIG from '../../theme.config';
 import { SvgIcon } from '../SvgIcon';
-import { MenuItemDrop } from '../MenuItemDrop';
+import { MenuItemDrop } from '../MenuItemDrop/MenuItemDrop';
 import Collapse from '@/components/Collapse';
 import { MenuItemCollapse } from '../MenuItemCollapse';
 import LazyImage from '@/components/LazyImage';
@@ -17,7 +17,7 @@ import { useNobeliumStore } from '../../providers';
 import styles from './Nav.module.css';
 
 import type { FC } from 'react';
-import type { NavLink } from '../../types/nav';
+import type { NavLink } from '../../types';
 import type { CollapseHandle } from '@/components/Collapse';
 
 const Nav: FC = () => {
@@ -144,6 +144,20 @@ const NavBar: FC = () => {
         ))}
       </ul>
 
+      {CONFIG.MENU_RANDOM_POST && <RandomPostButton />}
+      {CONFIG.MENU_SEARCH_BUTTON && <SearchButton />}
+      {/* <LanguageSwitchButton /> */}
+      <DarkModeButton />
+
+      {/* 移动端菜单按钮 */}
+      <div
+        onClick={toggleOpen}
+        ref={mobileMenuToggleButtonRef}
+        className="flex h-10 w-10 cursor-pointer items-center justify-center md:hidden"
+      >
+        <i className="fas fa-bars"></i>
+      </div>
+
       {/* 移动端使用的菜单 */}
       <div className="md:hidden" ref={mobileMenuRef}>
         <Collapse
@@ -162,20 +176,6 @@ const NavBar: FC = () => {
             ))}
           </div>
         </Collapse>
-      </div>
-
-      {CONFIG.MENU_RANDOM_POST && <RandomPostButton />}
-      {CONFIG.MENU_SEARCH_BUTTON && <SearchButton />}
-      <LanguageSwitchButton />
-      <DarkModeButton />
-
-      {/* 移动端菜单按钮 */}
-      <div
-        onClick={toggleOpen}
-        ref={mobileMenuToggleButtonRef}
-        className="flex h-10 w-10 cursor-pointer items-center justify-center md:hidden"
-      >
-        <i className="fas fa-bars"></i>
       </div>
     </div>
   );

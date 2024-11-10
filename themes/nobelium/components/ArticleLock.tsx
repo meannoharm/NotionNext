@@ -1,6 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 
+import type { FC } from 'react';
+import type { PageInfo } from '@/lib/notion/types';
+
+export interface ArticleInfoProps {
+  post: PageInfo;
+}
+
 /**
  * 加密文章校验组件
  * @param {password, validPassword} props

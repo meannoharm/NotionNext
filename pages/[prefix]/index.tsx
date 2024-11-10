@@ -117,7 +117,7 @@ export const getStaticPaths: GetStaticPaths<SlugIndexParams> = async () => {
     };
   }
 
-  const { allPages } = await getGlobalData('slug-paths');
+  const { allPages } = await getGlobalData('slug-index');
   return {
     paths: allPages
       .filter(
@@ -136,10 +136,9 @@ export const getStaticProps: GetStaticProps<
   const { prefix } = context.params as SlugIndexParams;
   const fullSlug =
     BLOG.PSEUDO_STATIC && !prefix.endsWith('.html') ? `${prefix}.html` : prefix;
+  const from = `slug-index-${fullSlug}`;
 
-  const { allPages, ...restProps } = await getGlobalData(
-    `slug-props-${fullSlug}`,
-  );
+  const { allPages, ...restProps } = await getGlobalData(from);
 
   // 在列表内查找文章
   let post = allPages.find((p) => {
@@ -150,7 +149,7 @@ export const getStaticProps: GetStaticProps<
   if (!post) {
     const pageId = prefix;
     if (pageId.length >= 32) {
-      post = await getPageInfoOfPostPage(pageId, fullSlug);
+      post = await getPageInfoOfPostPage(pageId, from);
     }
   }
 
@@ -170,7 +169,7 @@ export const getStaticProps: GetStaticProps<
 
   // 文章内容加载
   if (!post.blockMap) {
-    post.blockMap = await getPostBlocks(post.id, fullSlug);
+    post.blockMap = await getPostBlocks(post.id, from);
   }
 
   // 生成全文索引 && process.env.npm_lifecycle_event === 'build' && JSON.parse(BLOG.ALGOLIA_RECREATE_DATA)
@@ -196,7 +195,7 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-const findRelatedPosts: (
+export const findRelatedPosts: (
   post: PageInfo,
   allPosts: PageInfo[],
   count?: number,

@@ -74,6 +74,7 @@ export type SlugIndexProps = DataBaseForProps & {
   next: PageInfo | null;
   recommendPosts: PageInfo[];
 };
+export type PrefixSlugProps = SlugIndexProps;
 
 export type ThemeProps<T> = Partial<T & PageMetaProps>;
 
@@ -95,3 +96,4 @@ export type ThemeSlugIndexProps = SlugIndexProps &
     isLock: boolean;
     validPassword: (passInput: string) => boolean;
   };
+export type ThemePrefixSlugProps = ThemeSlugIndexProps;

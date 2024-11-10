@@ -13,11 +13,7 @@ import type {
 } from './types';
 import dayjs from 'dayjs';
 
-type TempPageInfo = {
-  id: string;
-  [key: string]: any;
-};
-
+type TempPageInfo = Partial<PageInfo>;
 const excludeProperties = ['date', 'select', 'multi_select', 'person'];
 
 export default async function getPageProperties(
@@ -85,9 +81,12 @@ export default async function getPageProperties(
   }
 
   // type\status\category 是单选下拉框 取数组第一个
-  if (pageInfo.type && pageInfo.type[0]) pageInfo.type = pageInfo.type[0];
-  if (pageInfo.status && pageInfo.status[0])
-    pageInfo.status = pageInfo.status[0];
+  if (pageInfo.type && pageInfo.type[0]) {
+    pageInfo.type = pageInfo.type[0] as PagePropertiesType;
+  }
+  if (pageInfo.status && pageInfo.status[0]) {
+    pageInfo.status = pageInfo.status[0] as PagePropertiesStatus;
+  }
   if (pageInfo.category && pageInfo.category[0])
     pageInfo.category = pageInfo.category[0];
 

@@ -7,6 +7,7 @@ import type {
   CollectionViewMap,
   CollectionViewPageBlock,
   ExtendedRecordMap,
+  FormattedDate,
 } from 'notion-types';
 
 export type * from 'notion-types';
@@ -17,15 +18,14 @@ export interface PageInfo {
   type?: PagePropertiesType;
   status?: PagePropertiesStatus;
   category?: string;
-  publishDate: string;
-  latestEditedDate: string;
+  publishDate: number;
+  lastEditedDate: number;
   pageIcon: string;
   pageCover: string;
   pageCoverThumbnail: string;
   content: string[];
-
   blockMap?: ExtendedRecordMap;
-  date: string;
+  date: FormattedDate;
   icon: string;
   tags: string[];
   summary: string;

@@ -3,9 +3,14 @@ import BLOG from '@/blog.config';
 import TagItem from './TagItem';
 import md5 from 'js-md5';
 
-export const ArticleInfo = (props) => {
-  const { post } = props;
+import type { FC } from 'react';
+import type { PageInfo } from '@/lib/notion/types';
 
+export interface ArticleInfoProps {
+  post: PageInfo;
+}
+
+export const ArticleInfo: FC<ArticleInfoProps> = ({ post }) => {
   const emailHash = md5(BLOG.CONTACT_EMAIL);
 
   return (

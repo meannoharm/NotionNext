@@ -1,5 +1,5 @@
 import { getTextContent, getDateValue } from 'notion-utils';
-import { NotionAPI } from 'notion-client';
+// import { NotionAPI } from 'notion-client';
 import BLOG from '@/blog.config';
 import md5 from 'js-md5';
 import { mapImgUrl } from './mapImage';
@@ -24,54 +24,57 @@ export default async function getPageProperties(
   id: string,
   blockMap: BlockMap,
   schemaMap: CollectionPropertySchemaMap,
-  authToken?: string,
+  // authToken?: string,
 ): Promise<PageInfo> {
   const pageInfo: TempPageInfo = { id: id };
   const block = blockMap[id].value;
 
-  Object.entries<Decoration[]>(block.properties).forEach(async ([key, val]) => {
-    const schema = schemaMap[key];
-    if (schema.type && !excludeProperties.includes(schema.type)) {
-      pageInfo[schema.name] = getTextContent(val);
-    } else {
-      switch (schema.type) {
-        case 'date': {
-          pageInfo[schema.name] = getDateValue(val);
-          break;
-        }
-        case 'select':
-        case 'multi_select': {
-          pageInfo[schema.name] = getTextContent(val).split(',');
-          break;
-        }
-        case 'person': {
-          const rawUsers = val.flat();
-          const users = [];
-          const api = new NotionAPI({ authToken });
-
-          for (let i = 0; i < rawUsers.length; i++) {
-            if (rawUsers[i][0][1]) {
-              const userId = rawUsers[i][0];
-              const res = await api.getUsers(userId);
-              const resValue =
-                res?.recordMapWithRoles?.notion_user?.[userId[1]]?.value;
-              const user = {
-                id: resValue?.id,
-                first_name: resValue?.given_name,
-                last_name: resValue?.family_name,
-                profile_photo: resValue?.profile_photo,
-              };
-              users.push(user);
-            }
+  Object.entries<Decoration[]>(block.properties).forEach(
+    async ([key, value]) => {
+      const schema = schemaMap[key];
+      if (schema.type && !excludeProperties.includes(schema.type)) {
+        pageInfo[schema.name] = getTextContent(value);
+      } else {
+        switch (schema.type) {
+          case 'date': {
+            pageInfo[schema.name] = getDateValue(value);
+            break;
           }
-          pageInfo[schema.name] = users;
-          break;
+          case 'select':
+          case 'multi_select': {
+            pageInfo[schema.name] = getTextContent(value).split(',');
+            break;
+          }
+          case 'person': {
+            // TODO 这段没看懂，以后再研究
+            // const rawUsers = value.flat();
+            // const users = [];
+            // const api = new NotionAPI({ authToken });
+
+            // for (let i = 0; i < rawUsers.length; i++) {
+            //   if (rawUsers[i][0][1]) {
+            //     const userId = rawUsers[i][0];
+            //     const res = await api.getUsers(userId);
+            //     const resValue =
+            //       res?.recordMapWithRoles?.notion_user?.[userId[1]]?.value;
+            //     const user = {
+            //       id: resValue?.id,
+            //       first_name: resValue?.given_name,
+            //       last_name: resValue?.family_name,
+            //       profile_photo: resValue?.profile_photo,
+            //     };
+            //     users.push(user);
+            //   }
+            // }
+            // pageInfo[schema.name] = users;
+            break;
+          }
+          default:
+            break;
         }
-        default:
-          break;
       }
-    }
-  });
+    },
+  );
 
   // 映射键：用户自定义表头名
   const fieldNames = BLOG.NOTION_PROPERTY_NAME;

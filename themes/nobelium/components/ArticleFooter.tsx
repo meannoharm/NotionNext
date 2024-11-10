@@ -1,4 +1,3 @@
-import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
@@ -17,7 +16,7 @@ export const ArticleFooter = () => {
     <div className="flex justify-between font-medium text-gray-500 dark:text-gray-400">
       <a>
         <button
-          onClick={() => router.push(BLOG.path || '/')}
+          onClick={() => router.back()}
           className="mt-2 cursor-pointer hover:text-black dark:hover:text-gray-100"
         >
           <i className="fas fa-angle-left mr-1" />

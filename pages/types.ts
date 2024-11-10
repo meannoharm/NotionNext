@@ -8,7 +8,7 @@ export type PageMeta = {
   type: string;
   publishDay?: string;
   category?: string;
-  tags?: string;
+  tags?: string[];
 };
 
 export type DataBaseForProps = Omit<DataBaseInfo, 'allPages'>;
@@ -68,6 +68,12 @@ export type SearchPageProps = DataBaseForProps & {
   page: number;
   keyword: string;
 };
+export type SlugIndexProps = DataBaseForProps & {
+  post: PageInfo | null;
+  prev: PageInfo | null;
+  next: PageInfo | null;
+  recommendPosts: PageInfo[];
+};
 
 export type ThemeProps<T> = Partial<T & PageMetaProps>;
 
@@ -84,3 +90,8 @@ export type ThemeTagPageProps = TagPageProps & PageMetaProps;
 export type ThemeSearchIndexProps = SearchIndexProps & PageMetaProps;
 export type ThemeSearchDetailProps = SearchDetailProps & PageMetaProps;
 export type ThemeSearchPageProps = SearchPageProps & PageMetaProps;
+export type ThemeSlugIndexProps = SlugIndexProps &
+  PageMetaProps & {
+    isLock: boolean;
+    validPassword: (passInput: string) => boolean;
+  };

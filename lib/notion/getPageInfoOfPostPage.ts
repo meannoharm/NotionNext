@@ -2,37 +2,50 @@ import BLOG from '@/blog.config';
 import { idToUuid } from 'notion-utils';
 import { getPostBlocks } from './getPostBlocks';
 import { defaultMapImageUrl } from 'react-notion-x';
+import dayjs from 'dayjs';
 
-import type { Block } from './types';
+import {
+  Block,
+  PageInfo,
+  PagePropertiesType,
+  PagePropertiesStatus,
+} from './types';
 
 /**
- * 根据页面ID获取内容
+ * formate from postBlock to pageInfo
  * @param {*} pageId
  * @returns
  */
-export async function getNotion(pageId: string) {
-  const blockMap = await getPostBlocks(pageId, 'slug');
+export async function getPageInfoOfPostPage(pageId: string, from: string) {
+  const blockMap = await getPostBlocks(pageId, from);
   if (!blockMap) {
-    return null;
+    return;
   }
 
   const postInfo = blockMap?.block?.[idToUuid(pageId)].value;
 
   return {
     id: pageId,
-    type: postInfo,
+    type: PagePropertiesType.Post,
     category: '',
     tags: [],
     title: postInfo?.properties?.title?.[0],
-    status: 'Published',
-    createdTime: postInfo.created_time,
-    lastEditedDay: postInfo?.last_edited_time,
+    status: PagePropertiesStatus.Published,
     pageCover: getPageCover(postInfo),
     date: {
-      startDate: postInfo?.last_edited_time,
+      type: 'date',
+      start_date: dayjs(postInfo.last_edited_time).format('yyyy-MM-dd'),
     },
     blockMap,
-  };
+    publishDate: dayjs(postInfo.created_time).valueOf(),
+    lastEditedDate: dayjs(postInfo.last_edited_time).valueOf(),
+    pageIcon: '',
+    pageCoverThumbnail: '',
+    content: [],
+    icon: '',
+    summary: '',
+    slug: '',
+  } as PageInfo;
 }
 
 function getPageCover(postInfo: Block) {

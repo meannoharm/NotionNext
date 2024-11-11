@@ -1,23 +1,21 @@
+import { PageInfo } from '@/lib/notion/types';
 import dynamic from 'next/dynamic';
 import type { FC } from 'react';
 
 const NotionPage = dynamic(() => import('@/components/NotionPage'));
 
 export interface AnnouncementProps {
-  notice?: any;
-  className?: string;
+  notice: PageInfo | null;
 }
 
-const Announcement: FC<AnnouncementProps> = ({ notice, className }) => {
-  if (notice?.blockMap) {
+const Announcement: FC<AnnouncementProps> = ({ notice }) => {
+  if (notice && notice?.blockMap) {
     return (
-      <div className={className}>
+      <div>
         <section id="announcement-wrapper" className="mb-10">
-          {notice && (
-            <div id="announcement-content">
-              <NotionPage post={notice} className="text-center " />
-            </div>
-          )}
+          <div id="announcement-content">
+            <NotionPage post={notice} className="text-center " />
+          </div>
         </section>
       </div>
     );
@@ -25,4 +23,5 @@ const Announcement: FC<AnnouncementProps> = ({ notice, className }) => {
     return null;
   }
 };
+
 export default Announcement;

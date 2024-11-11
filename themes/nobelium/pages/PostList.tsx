@@ -48,11 +48,7 @@ const PostList: FC<
           posts={filteredBlogPosts}
         />
       ) : (
-        <BlogListScroll
-          postCount={postCount}
-          page={page}
-          posts={filteredBlogPosts}
-        />
+        <BlogListScroll posts={filteredBlogPosts} />
       )}
     </LayoutBase>
   );

@@ -12,7 +12,10 @@ import type { HomeComponent } from '@/themes/types';
  */
 
 const Home: HomeComponent = (props) => {
-  return <OriginPostList {...props} topSlot={<Announcement {...props} />} />;
+  const { notice } = props;
+  return (
+    <OriginPostList {...props} topSlot={<Announcement notice={notice} />} />
+  );
 };
 
 export default ContextWrapper(Home);

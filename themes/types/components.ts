@@ -14,6 +14,7 @@ import type {
   ThemeSearchDetailProps,
   ThemeSearchPageProps,
   ThemeSlugIndexProps,
+  ThemePrefixSlugProps,
 } from '@/pages/types';
 
 export type HomeComponent = FC<ThemeHomeProps>;
@@ -30,4 +31,4 @@ export type SearchIndexComponent = FC<ThemeSearchIndexProps>;
 export type SearchDetailComponent = FC<ThemeSearchDetailProps>;
 export type SearchPageComponent = FC<ThemeSearchPageProps>;
 export type SlugIndexComponent = FC<ThemeSlugIndexProps>;
-export type PostComponents = FC;
+export type PrefixSlugComponent = FC<ThemePrefixSlugProps>;

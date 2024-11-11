@@ -1,11 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import type { PageInfo } from '@/lib/notion/types';
 
 export interface ArticleInfoProps {
-  post: PageInfo;
+  validPassword: (password: string) => boolean;
 }
 
 /**
@@ -15,25 +14,33 @@ export interface ArticleInfoProps {
  * @param validPassword(bool) 回调函数，校验正确回调入参为true
  * @returns
  */
-const ArticleLock = (props) => {
+const ArticleLock: FC<ArticleInfoProps> = (props) => {
   const { validPassword } = props;
   const { t } = useTranslation('common');
+  const [password, setPassword] = useState('');
+  const [isShowTip, setIsShowTip] = useState(false);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
 
-  const submitPassword = () => {
-    const p = document.getElementById('password');
-    if (!validPassword(p?.value)) {
-      const tips = document.getElementById('tips');
-      if (tips) {
-        tips.innerHTML = '';
-        tips.innerHTML = `<div class='text-red-500 animate__shakeX animate__animated'>${t('password-error')}</div>`;
-      }
+  const submitPassword = useCallback(() => {
+    if (!validPassword(password)) {
+      setIsShowTip(true);
+    } else {
+      setIsShowTip(false);
+    }
+  }, [password, validPassword]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      submitPassword();
     }
   };
 
-  const passwordInputRef = useRef(null);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value);
+
   useEffect(() => {
     // 选中密码输入框并将其聚焦
-    passwordInputRef.current.focus();
+    passwordInputRef.current?.focus();
   }, []);
 
   return (
@@ -47,11 +54,9 @@ const ArticleLock = (props) => {
           <input
             id="password"
             type="password"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                submitPassword();
-              }
-            }}
+            value={password}
+            onKeyDown={handleKeyDown}
+            onChange={handleChange}
             ref={passwordInputRef} // 绑定ref到passwordInputRef变量
             className="w-full rounded-l bg-gray-50 pl-5 text-sm font-light leading-10 text-black outline-none transition focus:shadow-lg dark:bg-gray-500"
           ></input>
@@ -64,11 +69,15 @@ const ArticleLock = (props) => {
                 'fas fa-key cursor-pointer duration-200 dark:text-black'
               }
             >
-              &nbsp;{t('submit')}
+              {t('submit')}
             </i>
           </div>
         </div>
-        <div id="tips"></div>
+        {isShowTip && (
+          <div className="animate__shakeX animate__animated text-red-500">
+            ${t('password-error')}
+          </div>
+        )}
       </div>
     </div>
   );

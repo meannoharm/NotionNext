@@ -2,7 +2,7 @@ import Announcement from '../components/Announcement';
 import { OriginPostList } from './PostList';
 import { ContextWrapper } from '../providers';
 
-import type { HomeComponent } from '@/themes/types';
+import type { HomeComponent } from '@/theme/types';
 
 /**
  * 首页

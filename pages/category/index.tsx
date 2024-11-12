@@ -2,7 +2,7 @@ import { getGlobalData } from '@/lib/notion/getNotionData';
 import React from 'react';
 import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/theme/getLayout';
+import { getLayoutByTheme } from '@/theme';
 import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 

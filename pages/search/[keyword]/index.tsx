@@ -1,7 +1,7 @@
 import { getGlobalData, getNotionPageData } from '@/lib/notion/getNotionData';
 import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/theme/getLayout';
+import { getLayoutByTheme } from '@/theme';
 import { useTranslation } from 'next-i18next';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';

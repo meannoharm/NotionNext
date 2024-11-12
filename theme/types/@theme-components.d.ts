@@ -1,7 +1,7 @@
 declare module '@theme-components' {
   export const Home: import('./components').HomeComponent;
+  export const Page: import('./components').PageComponent;
   export const Archive: import('./components').ArchiveComponent;
-  export const PostList: import('./components').PostListComponent;
   export const Category: import('./components').CategoryComponent;
   export const CategoryDetail: import('./components').CategoryDetailComponent;
   export const CategoryPage: import('./components').CategoryPageComponent;
@@ -11,7 +11,7 @@ declare module '@theme-components' {
   export const Search: import('./components').SearchComponent;
   export const SearchDetail: import('./components').SearchDetailComponent;
   export const SearchPage: import('./components').SearchPageComponent;
+  export const Slug: import('./components').PrefixComponent;
+  export const PrefixSlug: import('./components').PrefixSlugComponent;
   export const PageNotFound: import('./components').PageNotFoundComponent;
-  export const PageNotFoundComponent: import('./components').PageNotFoundComponent;
-  export const Post: import('./components').PostComponent;
 }

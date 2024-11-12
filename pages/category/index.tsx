@@ -9,7 +9,7 @@ import type { FC } from 'react';
 import type {
   PageMeta,
   CategoryIndexProps,
-  ThemeCategoryIndexProps,
+  ThemeCategoryProps,
 } from '@/pages/types';
 import type { GetStaticProps } from 'next';
 
@@ -23,7 +23,7 @@ const Category: FC<CategoryIndexProps> = (props) => {
   const { t } = useTranslation('common');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeCategoryIndexProps>;
+  const Layout = useLayout() as FC<ThemeCategoryProps>;
 
   const pageMeta: PageMeta = {
     title: `${t('category')} | ${siteInfo?.title}`,

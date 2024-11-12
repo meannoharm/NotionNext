@@ -81,19 +81,19 @@ export type ThemeProps<T> = Partial<T & PageMetaProps>;
 export type ThemeHomeProps = HomeIndexProps;
 export type ThemePageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
 export type ThemeArchiveProps = ArchiveIndexProps & PageMetaProps;
-export type ThemePageIndexProps = PageIndexProps & PageMetaProps;
-export type ThemeCategoryIndexProps = CategoryIndexProps & PageMetaProps;
+export type ThemePageProps = PageIndexProps & PageMetaProps;
+export type ThemeCategoryProps = CategoryIndexProps & PageMetaProps;
 export type ThemeCategoryDetailProps = CategoryDetailProps & PageMetaProps;
 export type ThemeCategoryPageProps = CategoryPageProps & PageMetaProps;
-export type ThemeTagIndexProps = TagIndexProps & PageMetaProps;
+export type ThemeTagProps = TagIndexProps & PageMetaProps;
 export type ThemeTagDetailProps = TagDetailProps & PageMetaProps;
 export type ThemeTagPageProps = TagPageProps & PageMetaProps;
-export type ThemeSearchIndexProps = SearchIndexProps & PageMetaProps;
+export type ThemeSearchProps = SearchIndexProps & PageMetaProps;
 export type ThemeSearchDetailProps = SearchDetailProps & PageMetaProps;
 export type ThemeSearchPageProps = SearchPageProps & PageMetaProps;
-export type ThemeSlugIndexProps = SlugIndexProps &
+export type ThemePrefixProps = SlugIndexProps &
   PageMetaProps & {
     isLock: boolean;
     validPassword: (passInput: string) => boolean;
   };
-export type ThemePrefixSlugProps = ThemeSlugIndexProps;
+export type ThemePrefixSlugProps = ThemePrefixProps;

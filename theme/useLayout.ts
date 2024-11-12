@@ -6,35 +6,34 @@ import * as ThemeComponents from '@theme-components';
 /**
  * Route path-to-layout mapping
  */
-const layoutMapping: Record<string, string> = {
+const layoutNameMapping: Record<string, string> = {
   '/': 'Home',
   '/archive': 'Archive',
-  '/page/[page]': 'PostList',
+  '/page/[page]': 'Page',
   '/category': 'Category',
-  '/category/[category]': 'PostList',
-  '/category/[category]/page/[page]': 'PostList',
+  '/category/[category]': 'CategoryDetail',
+  '/category/[category]/page/[page]': 'CategoryPage',
   '/tag': 'Tag',
   '/tag/[tag]': 'PostList',
   '/tag/[tag]/page/[page]': 'PostList',
   '/search': 'Search',
   '/search/[keyword]': 'Search',
   '/search/[keyword]/page/[page]': 'Search',
+  '/[prefix]': 'Prefix',
+  '/[prefix]/[slug]': 'PrefixSlug',
   '/404': 'PageNotFound',
 };
-
-export const getLayoutNameByPathName = (pathname: string): string =>
-  layoutMapping[pathname] || 'Post';
 
 export const useLayout = (): React.ComponentType => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const theme = searchParams.get('theme') || BLOG.THEME;
-  const layout = getLayoutNameByPathName(pathname);
+  const layoutName = layoutNameMapping[pathname];
 
   return theme !== BLOG.THEME
-    ? dynamic(() => import(`@/themes/${theme}`).then((m) => m[layout]), {
+    ? dynamic(() => import(`@/themes/${theme}`).then((m) => m[layoutName]), {
         ssr: true,
       })
-    : ThemeComponents[layout];
+    : ThemeComponents[layoutName];
 };

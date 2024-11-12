@@ -13,11 +13,7 @@ import { uploadDataToAlgolia } from '@/lib/algolia';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type {
-  PageMeta,
-  SlugIndexProps,
-  ThemeSlugIndexProps,
-} from '@/pages/types';
+import type { PageMeta, SlugIndexProps, ThemePrefixProps } from '@/pages/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import { PageInfo, PagePropertiesType } from '@/lib/notion/types';
 
@@ -100,7 +96,7 @@ const Slug: FC<SlugIndexProps> = (props) => {
   };
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeSlugIndexProps>;
+  const Layout = useLayout() as FC<ThemePrefixProps>;
 
   return (
     <Layout

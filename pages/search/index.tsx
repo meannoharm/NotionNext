@@ -8,7 +8,7 @@ import type { FC } from 'react';
 import type {
   PageMeta,
   SearchIndexProps,
-  ThemeSearchIndexProps,
+  ThemeSearchProps,
 } from '@/pages/types';
 import type { GetStaticProps } from 'next';
 
@@ -24,7 +24,7 @@ const SearchIndex: FC<SearchIndexProps> = (props) => {
   const keyword = router.query.s ? String(router.query.s) : '';
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeSearchIndexProps>;
+  const Layout = useLayout() as FC<ThemeSearchProps>;
 
   const filteredPosts = keyword
     ? posts.filter((post) => {

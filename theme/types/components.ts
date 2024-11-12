@@ -1,34 +1,34 @@
 import type { FC } from 'react';
 import type {
-  ThemeArchiveProps,
-  ThemeCategoryIndexProps,
-  ThemeCategoryDetailProps,
   ThemeHomeProps,
+  ThemeArchiveProps,
+  ThemeCategoryProps,
+  ThemeCategoryDetailProps,
   ThemePageNotFoundProps,
-  ThemePageIndexProps,
+  ThemePageProps,
   ThemeCategoryPageProps,
-  ThemeTagIndexProps,
+  ThemeTagProps,
   ThemeTagDetailProps,
   ThemeTagPageProps,
-  ThemeSearchIndexProps,
+  ThemeSearchProps,
   ThemeSearchDetailProps,
   ThemeSearchPageProps,
-  ThemeSlugIndexProps,
+  ThemePrefixProps,
   ThemePrefixSlugProps,
 } from '@/pages/types';
 
 export type HomeComponent = FC<ThemeHomeProps>;
-export type PageNotFoundComponent = FC<ThemePageNotFoundProps>;
+export type PageComponent = FC<ThemePageProps>;
 export type ArchiveComponent = FC<ThemeArchiveProps>;
-export type PostListComponent = FC<ThemePageIndexProps>;
-export type CategoryComponent = FC<ThemeCategoryIndexProps>;
+export type CategoryComponent = FC<ThemeCategoryProps>;
 export type CategoryDetailComponent = FC<ThemeCategoryDetailProps>;
 export type CategoryPageComponent = FC<ThemeCategoryPageProps>;
-export type TagIndexComponent = FC<ThemeTagIndexProps>;
+export type TagComponent = FC<ThemeTagProps>;
 export type TagDetailComponent = FC<ThemeTagDetailProps>;
 export type TagPageComponent = FC<ThemeTagPageProps>;
-export type SearchIndexComponent = FC<ThemeSearchIndexProps>;
+export type SearchComponent = FC<ThemeSearchProps>;
 export type SearchDetailComponent = FC<ThemeSearchDetailProps>;
 export type SearchPageComponent = FC<ThemeSearchPageProps>;
-export type SlugIndexComponent = FC<ThemeSlugIndexProps>;
+export type PrefixComponent = FC<ThemePrefixProps>;
 export type PrefixSlugComponent = FC<ThemePrefixSlugProps>;
+export type PageNotFoundComponent = FC<ThemePageNotFoundProps>;

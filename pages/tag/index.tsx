@@ -5,11 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 
 import type { FC } from 'react';
-import type {
-  PageMeta,
-  TagIndexProps,
-  ThemeTagIndexProps,
-} from '@/pages/types';
+import type { PageMeta, TagIndexProps, ThemeTagProps } from '@/pages/types';
 import type { GetStaticProps } from 'next';
 
 /**
@@ -22,7 +18,7 @@ const TagIndex: FC<TagIndexProps> = (props) => {
   const { t } = useTranslation('common');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeTagIndexProps>;
+  const Layout = useLayout() as FC<ThemeTagProps>;
 
   const pageMeta: PageMeta = {
     title: `${t('tags')} | ${siteInfo?.title}`,

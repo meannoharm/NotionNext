@@ -1,7 +1,7 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import BLOG from '@/blog.config';
 import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/themes/theme';
+import { getLayoutByTheme } from '@/theme/getLayout';
 import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 

@@ -6,7 +6,7 @@ import { idToUuid } from 'notion-utils';
 import { useRouter } from 'next/router';
 import { getPageInfoOfPostPage } from '@/lib/notion/getPageInfoOfPostPage';
 import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
-import { getLayoutByTheme } from '@/themes/theme';
+import { getLayoutByTheme } from '@/theme/getLayout';
 import md5 from 'js-md5';
 import { isBrowser } from '@/lib/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';

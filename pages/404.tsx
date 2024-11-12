@@ -1,6 +1,6 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/themes/theme';
+import { getLayoutByTheme } from '@/theme/getLayout';
 
 import type { FC } from 'react';
 import type {

@@ -2,7 +2,7 @@ import BLOG from '@/blog.config';
 import { getPostBlocks } from '@/lib/notion';
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/themes/theme';
+import { getLayoutByTheme } from '@/theme/getLayout';
 import { omit } from 'lodash';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';

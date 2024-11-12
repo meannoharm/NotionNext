@@ -4,7 +4,7 @@ import { getGlobalData } from '@/lib/notion/getNotionData';
 import { generateRss } from '@/lib/rss';
 import { generateRobotsTxt } from '@/lib/robots.txt';
 import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/themes/theme';
+import { getLayoutByTheme } from '@/theme/getLayout';
 import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';

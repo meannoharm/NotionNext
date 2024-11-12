@@ -9,9 +9,8 @@ import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
-import type { HomeIndexProps } from '@/pages/types';
+import type { HomeIndexProps, ThemeHomeProps } from '@/pages/types';
 import type { PageInfo } from '@/lib/notion/types';
-import { HomeComponent } from '@/themes/types';
 
 /**
  * 首页布局
@@ -20,7 +19,7 @@ import { HomeComponent } from '@/themes/types';
  */
 const Index: FC<HomeIndexProps> = (props) => {
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as HomeComponent;
+  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeHomeProps>;
   return <Layout {...props} />;
 };
 

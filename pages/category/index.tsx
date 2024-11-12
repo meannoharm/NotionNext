@@ -7,8 +7,11 @@ import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 
 import type { FC } from 'react';
-import type { PageMeta, CategoryIndexProps } from '@/pages/types';
-import type { CategoryComponent } from '@/themes/types';
+import type {
+  PageMeta,
+  CategoryIndexProps,
+  ThemeCategoryIndexProps,
+} from '@/pages/types';
 import type { GetStaticProps } from 'next';
 
 /**
@@ -21,7 +24,7 @@ const Category: FC<CategoryIndexProps> = (props) => {
   const { t } = useTranslation('common');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as CategoryComponent;
+  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeCategoryIndexProps>;
 
   const pageMeta: PageMeta = {
     title: `${t('category')} | ${siteInfo?.title}`,

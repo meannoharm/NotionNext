@@ -6,8 +6,7 @@ import { getLayoutByTheme } from '@/themes/theme';
 import { omit } from 'lodash';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type { PageMeta, PageIndexProps } from '../types';
-import type { PostListComponent } from '@/themes/types';
+import type { PageMeta, PageIndexProps, ThemePageIndexProps } from '../types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 
@@ -24,7 +23,7 @@ const Page: FC<PageIndexProps> = (props) => {
   const { siteInfo } = props;
 
   // 根据页面路径加载不同Layout文件
-  const PostList = getLayoutByTheme(useRouter()) as PostListComponent;
+  const PostList = getLayoutByTheme(useRouter()) as FC<ThemePageIndexProps>;
   const pageMeta: PageMeta = {
     title: `${props?.page} | Page | ${siteInfo?.title}`,
     description: siteInfo?.description,

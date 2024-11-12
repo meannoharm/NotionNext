@@ -5,10 +5,13 @@ import { getLayoutByTheme } from '@/themes/theme';
 import { useTranslation } from 'next-i18next';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type { PageMeta, SearchDetailProps } from '../../types';
+import type {
+  PageMeta,
+  SearchDetailProps,
+  ThemeSearchDetailProps,
+} from '../../types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type { SearchDetailComponent } from '@/themes/types';
 import { DataBaseInfo, PageInfo } from '@/lib/notion/types';
 
 export interface CategoryDetailParams extends ParsedUrlQuery {
@@ -20,7 +23,7 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
   const { t } = useTranslation('nav');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as SearchDetailComponent;
+  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeSearchDetailProps>;
 
   const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,

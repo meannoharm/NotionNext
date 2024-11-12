@@ -7,11 +7,14 @@ import { useTranslation } from 'next-i18next';
 import { isIterable } from '@/lib/utils';
 
 import type { FC } from 'react';
-import type { PageMeta, SearchPageProps } from '@/pages/types';
+import type {
+  PageMeta,
+  SearchPageProps,
+  ThemeSearchPageProps,
+} from '@/pages/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { DataBaseInfo, PageInfo } from '@/lib/notion/types';
-import type { SearchPageComponent } from '@/themes/types';
 
 export interface SearchPageParams extends ParsedUrlQuery {
   keyword: string;
@@ -23,7 +26,7 @@ const SearchPage: FC<SearchPageProps> = (props) => {
   const { t } = useTranslation('nav');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as SearchPageComponent;
+  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeSearchPageProps>;
 
   const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,

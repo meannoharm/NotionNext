@@ -5,8 +5,11 @@ import { getLayoutByTheme } from '@/themes/theme';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import type { PageMeta, TagDetailProps } from '@/pages/types';
-import type { TagDetailComponent } from '@/themes/types';
+import type {
+  PageMeta,
+  TagDetailProps,
+  ThemeTagDetailProps,
+} from '@/pages/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 
@@ -24,7 +27,7 @@ const TagIndex: FC<TagDetailProps> = (props) => {
   const { t } = useTranslation('common');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as TagDetailComponent;
+  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeTagDetailProps>;
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,

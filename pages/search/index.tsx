@@ -5,8 +5,11 @@ import { getLayoutByTheme } from '@/themes/theme';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import type { PageMeta, SearchIndexProps } from '@/pages/types';
-import type { SearchIndexComponent } from '@/themes/types';
+import type {
+  PageMeta,
+  SearchIndexProps,
+  ThemeSearchIndexProps,
+} from '@/pages/types';
 import type { GetStaticProps } from 'next';
 
 /**
@@ -21,7 +24,7 @@ const SearchIndex: FC<SearchIndexProps> = (props) => {
   const keyword = router.query.s ? String(router.query.s) : '';
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as SearchIndexComponent;
+  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeSearchIndexProps>;
 
   const filteredPosts = keyword
     ? posts.filter((post) => {

@@ -3,8 +3,11 @@ import { useRouter } from 'next/router';
 import { getLayoutByTheme } from '@/themes/theme';
 
 import type { FC } from 'react';
-import type { PageNotFoundIndexProps, PageMeta } from '@/pages/types';
-import type { PageNotFoundComponent } from '@/themes/types';
+import type {
+  PageNotFoundIndexProps,
+  PageMeta,
+  ThemePageNotFoundProps,
+} from '@/pages/types';
 import type { GetStaticProps } from 'next';
 
 /**
@@ -23,7 +26,7 @@ const NoFound: FC<PageNotFoundIndexProps> = (props) => {
   };
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as PageNotFoundComponent;
+  const Layout = getLayoutByTheme(useRouter()) as FC<ThemePageNotFoundProps>;
 
   return <Layout pageMeta={pageMeta} {...props} />;
 };

@@ -6,10 +6,13 @@ import { getLayoutByTheme } from '@/themes/theme';
 import { useTranslation } from 'next-i18next';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type { PageMeta, CategoryDetailProps } from '../../types';
+import type {
+  PageMeta,
+  CategoryDetailProps,
+  ThemeCategoryDetailProps,
+} from '../../types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type { CategoryDetailComponent } from '@/themes/types';
 
 export interface CategoryDetailParams extends ParsedUrlQuery {
   category: string;
@@ -25,7 +28,7 @@ const CategoryDetail: FC<CategoryDetailProps> = (props) => {
   const { t } = useTranslation('common');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as CategoryDetailComponent;
+  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeCategoryDetailProps>;
 
   const pageMeta: PageMeta = {
     title: `${props.category} | ${t('category')} | ${siteInfo?.title || ''}`,

@@ -5,8 +5,7 @@ import { getLayoutByTheme } from '@/themes/theme';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import type { PageMeta, TagPageProps } from '@/pages/types';
-import type { TagPageComponent } from '@/themes/types';
+import type { PageMeta, TagPageProps, ThemeTagPageProps } from '@/pages/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 
@@ -20,7 +19,7 @@ const TagPage: FC<TagPageProps> = (props) => {
   const { t } = useTranslation('common');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as TagPageComponent;
+  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeTagPageProps>;
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,

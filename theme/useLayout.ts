@@ -1,6 +1,6 @@
 import BLOG from '@/blog.config';
 import dynamic from 'next/dynamic';
-import { useSearchParams, usePathname } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import * as ThemeComponents from '@theme-components';
 import { useRouter } from 'next/router';
 

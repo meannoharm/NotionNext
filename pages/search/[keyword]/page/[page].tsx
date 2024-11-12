@@ -1,8 +1,7 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { getDataFromCache } from '@/lib/cache/cacheManager';
 import BLOG from '@/blog.config';
-import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/theme';
+import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
 import { isIterable } from '@/lib/utils';
 
@@ -26,7 +25,7 @@ const SearchPage: FC<SearchPageProps> = (props) => {
   const { t } = useTranslation('nav');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeSearchPageProps>;
+  const Layout = useLayout() as FC<ThemeSearchPageProps>;
 
   const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,

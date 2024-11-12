@@ -1,8 +1,7 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useEffect, type FC } from 'react';
 import BLOG from '@/blog.config';
-import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/theme';
+import { useLayout } from '@/theme';
 import { isBrowser } from '@/lib/utils';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
@@ -21,7 +20,7 @@ const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   const { t } = useTranslation('nav');
 
   // 根据页面路径加载不同Layout文件
-  const Archive = getLayoutByTheme(useRouter()) as FC<ThemeSearchIndexProps>;
+  const Archive = useLayout() as FC<ThemeSearchIndexProps>;
 
   useEffect(() => {
     if (isBrowser) {

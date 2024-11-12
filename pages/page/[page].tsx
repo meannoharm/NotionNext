@@ -1,8 +1,7 @@
 import BLOG from '@/blog.config';
 import { getPostBlocks } from '@/lib/notion';
 import { getGlobalData } from '@/lib/notion/getNotionData';
-import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/theme';
+import { useLayout } from '@/theme';
 import { omit } from 'lodash';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
@@ -23,7 +22,7 @@ const Page: FC<PageIndexProps> = (props) => {
   const { siteInfo } = props;
 
   // 根据页面路径加载不同Layout文件
-  const PostList = getLayoutByTheme(useRouter()) as FC<ThemePageIndexProps>;
+  const PostList = useLayout() as FC<ThemePageIndexProps>;
   const pageMeta: PageMeta = {
     title: `${props?.page} | Page | ${siteInfo?.title}`,
     description: siteInfo?.description,

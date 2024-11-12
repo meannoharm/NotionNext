@@ -6,7 +6,7 @@ import { idToUuid } from 'notion-utils';
 import { useRouter } from 'next/router';
 import { getPageInfoOfPostPage } from '@/lib/notion/getPageInfoOfPostPage';
 import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
-import { getLayoutByTheme } from '@/theme';
+import { useLayout } from '@/theme';
 import md5 from 'js-md5';
 import { isBrowser } from '@/lib/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';
@@ -100,7 +100,7 @@ const Slug: FC<SlugIndexProps> = (props) => {
   };
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(router) as FC<ThemeSlugIndexProps>;
+  const Layout = useLayout() as FC<ThemeSlugIndexProps>;
 
   return (
     <Layout

@@ -3,8 +3,7 @@ import { getPostBlocks } from '@/lib/notion';
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { generateRss } from '@/lib/rss';
 import { generateRobotsTxt } from '@/lib/robots.txt';
-import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/theme';
+import { useLayout } from '@/theme';
 import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';
@@ -19,7 +18,7 @@ import type { PageInfo } from '@/lib/notion/types';
  */
 const Index: FC<HomeIndexProps> = (props) => {
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeHomeProps>;
+  const Layout = useLayout() as FC<ThemeHomeProps>;
   return <Layout {...props} />;
 };
 

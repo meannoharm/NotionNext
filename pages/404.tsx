@@ -1,6 +1,5 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
-import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/theme';
+import { useLayout } from '@/theme';
 
 import type { FC } from 'react';
 import type {
@@ -26,7 +25,7 @@ const NoFound: FC<PageNotFoundIndexProps> = (props) => {
   };
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as FC<ThemePageNotFoundProps>;
+  const Layout = useLayout() as FC<ThemePageNotFoundProps>;
 
   return <Layout pageMeta={pageMeta} {...props} />;
 };

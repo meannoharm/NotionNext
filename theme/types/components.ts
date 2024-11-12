@@ -1,11 +1,11 @@
 import type { FC } from 'react';
 import type {
   ThemeArchiveProps,
-  ThemeCategoryProps,
+  ThemeCategoryIndexProps,
   ThemeCategoryDetailProps,
   ThemeHomeProps,
   ThemePageNotFoundProps,
-  ThemePageProps,
+  ThemePageIndexProps,
   ThemeCategoryPageProps,
   ThemeTagIndexProps,
   ThemeTagDetailProps,
@@ -20,8 +20,8 @@ import type {
 export type HomeComponent = FC<ThemeHomeProps>;
 export type PageNotFoundComponent = FC<ThemePageNotFoundProps>;
 export type ArchiveComponent = FC<ThemeArchiveProps>;
-export type PostListComponent = FC<ThemePageProps>;
-export type CategoryComponent = FC<ThemeCategoryProps>;
+export type PostListComponent = FC<ThemePageIndexProps>;
+export type CategoryComponent = FC<ThemeCategoryIndexProps>;
 export type CategoryDetailComponent = FC<ThemeCategoryDetailProps>;
 export type CategoryPageComponent = FC<ThemeCategoryPageProps>;
 export type TagIndexComponent = FC<ThemeTagIndexProps>;

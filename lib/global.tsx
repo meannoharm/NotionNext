@@ -7,7 +7,7 @@ import {
   initDarkMode,
   operateDarkMode,
   saveDarkModeToLocalStorage,
-} from '@/theme/getLayout';
+} from '@/theme';
 import { getQueryVariable } from './utils';
 import { progressStart, progressDone } from '@/components/NProgress';
 

@@ -1,7 +1,7 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useRouter } from 'next/router';
 import BLOG from '@/blog.config';
-import { getLayoutByTheme } from '@/theme';
+import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
@@ -24,7 +24,7 @@ const SearchIndex: FC<SearchIndexProps> = (props) => {
   const keyword = router.query.s ? String(router.query.s) : '';
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeSearchIndexProps>;
+  const Layout = useLayout() as FC<ThemeSearchIndexProps>;
 
   const filteredPosts = keyword
     ? posts.filter((post) => {

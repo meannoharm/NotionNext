@@ -1,7 +1,6 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import BLOG from '@/blog.config';
-import { useRouter } from 'next/router';
-import { getLayoutByTheme } from '@/theme';
+import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 
@@ -23,7 +22,7 @@ const TagIndex: FC<TagIndexProps> = (props) => {
   const { t } = useTranslation('common');
 
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme(useRouter()) as FC<ThemeTagIndexProps>;
+  const Layout = useLayout() as FC<ThemeTagIndexProps>;
 
   const pageMeta: PageMeta = {
     title: `${t('tags')} | ${siteInfo?.title}`,

@@ -1,4 +1,4 @@
-export * from './getLayout';
+export * from './useLayout';
 export * from './utils';
 import getConfig from 'next/config';
 

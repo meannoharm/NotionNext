@@ -22,18 +22,9 @@ const layoutMapping: Record<string, string> = {
   '/404': 'PageNotFound',
 };
 
-/**
- * Gets the layout name by the provided route path.
- * @param pathname The route pathname
- * @returns Corresponding layout name
- */
 export const getLayoutNameByPathName = (pathname: string): string =>
   layoutMapping[pathname] || 'Post';
 
-/**
- * Loads the theme layout component based on the current theme.
- * @returns Layout component
- */
 export const useLayout = (): React.ComponentType => {
   const pathname = usePathname();
   const searchParams = useSearchParams();

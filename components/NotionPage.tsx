@@ -1,7 +1,7 @@
 import { NotionRenderer } from 'react-notion-x';
 import dynamic from 'next/dynamic';
-import mediumZoom from '@fisch0920/medium-zoom';
-import React, { useEffect, useRef } from 'react';
+import mediumZoom from 'medium-zoom';
+import React, { type FC, useEffect, useRef } from 'react';
 // import { Code } from 'react-notion-x/build/third-party/code'
 import TweetEmbed from 'react-tweet-embed';
 
@@ -9,6 +9,8 @@ import BLOG from '@/blog.config';
 import 'katex/dist/katex.min.css';
 import { mapImgUrl } from '@/lib/notion/mapImage';
 import { isBrowser } from '@/lib/utils';
+
+import type { PageInfo } from '@/lib/notion/types';
 
 const Code = dynamic(
   () =>
@@ -54,11 +56,16 @@ const Modal = dynamic(
   { ssr: false },
 );
 
-const Tweet = ({ id }) => {
+const Tweet: FC<{
+  id: string;
+}> = ({ id }) => {
   return <TweetEmbed tweetId={id} />;
 };
 
-const NotionPage = ({ post, className }) => {
+const NotionPage: FC<{
+  post: PageInfo;
+  className: string;
+}> = ({ post, className }) => {
   useEffect(() => {
     autoScrollToTarget();
   }, []);
@@ -74,7 +81,7 @@ const NotionPage = ({ post, className }) => {
 
   useEffect(() => {
     // 将相册gallery下的图片加入放大功能
-    if (JSON.parse(BLOG.POST_DISABLE_GALLERY_CLICK)) {
+    if (BLOG.POST_DISABLE_GALLERY_CLICK) {
       setTimeout(() => {
         if (isBrowser) {
           const imgList = document?.querySelectorAll(
@@ -82,7 +89,7 @@ const NotionPage = ({ post, className }) => {
           );
           if (imgList && zoomRef.current) {
             for (let i = 0; i < imgList.length; i++) {
-              zoomRef.current.attach(imgList[i]);
+              zoomRef.current.attach(imgList[i] as HTMLElement);
             }
           }
 
@@ -173,7 +180,7 @@ const autoScrollToTarget = () => {
  * @param {*} id
  * @returns
  */
-const mapPageUrl = (id) => {
+const mapPageUrl = (id: string) => {
   // return 'https://www.notion.so/' + id.replace(/-/g, '')
   return '/' + id.replace(/-/g, '');
 };

@@ -1,4 +1,84 @@
 import BLOG from '@/blog.config';
+import type { Block } from 'notion-types';
+
+/**
+ * 图片映射
+ *
+ * @param {*} img 图片地址，可能是相对路径，可能是外链
+ * @param {*} block 数据块，可能是单个内容块，可能是Page
+ * @param {*} type block 单个内容块 ； collection 集合列表
+ * @param {*} from 来自
+ * @returns
+ */
+export const mapImgUrl = (
+  img: string,
+  block: Block,
+  type = 'block',
+  needCompress = true,
+) => {
+  if (!img) {
+    return '';
+  }
+
+  let ret = '';
+  // 相对目录，则视为notion的自带图片
+  if (img.startsWith('/')) {
+    ret = BLOG.NOTION_HOST + img;
+  } else {
+    ret = img;
+  }
+
+  // Notion 图床转换为永久地址
+  const hasConverted =
+    ret.indexOf('https://www.notion.so/image') === 0 ||
+    ret.includes('notion.site/images/page-cover/');
+
+  // 需要转化的URL ; 识别aws图床地址，或者bookmark类型的外链图片
+  const needConvert =
+    !hasConverted &&
+    (block.type === 'bookmark' ||
+      ret.includes('secure.notion-static.com') ||
+      ret.includes('prod-files-secure'));
+
+  // 使用Notion图传
+  if (needConvert) {
+    ret =
+      BLOG.NOTION_HOST +
+      '/image/' +
+      encodeURIComponent(ret) +
+      '?table=' +
+      type +
+      '&id=' +
+      block.id;
+  }
+
+  if (!isEmoji(ret) && ret.indexOf('notion.so/images/page-cover') < 0) {
+    // 图片url优化，确保每一篇文章的图片url唯一
+    if (
+      ret &&
+      ret.length > 4 &&
+      !ret.includes('https://www.notion.so/images/')
+    ) {
+      // 图片接口拼接唯一识别参数，防止请求的图片被缓，而导致随机结果相同
+      const separator = ret.includes('?') ? '&' : '?';
+      ret = `${ret.trim()}${separator}t=${block.id}`;
+    }
+  }
+
+  // 统一压缩图片
+  if (needCompress) {
+    const width = block?.format?.block_width;
+    ret = compressImage(ret, width);
+  }
+
+  return ret;
+};
+
+function isEmoji(str: string) {
+  const emojiRegex =
+    /[\u{1F300}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F018}-\u{1F270}\u{238C}\u{2B06}\u{2B07}\u{2B05}\u{27A1}\u{2194}-\u{2199}\u{2194}\u{21A9}\u{21AA}\u{2934}\u{2935}\u{25AA}\u{25AB}\u{25FE}\u{25FD}\u{25FB}\u{25FC}\u{25B6}\u{25C0}\u{1F200}-\u{1F251}]/u;
+  return emojiRegex.test(str);
+}
 
 /**
  * 压缩图片
@@ -46,61 +126,4 @@ export const compressImage = (
   }
 
   return image;
-};
-
-/**
- * 图片映射
- * 1. 如果是 /xx.xx 相对路径格式，则转化为 完整notion域名图片
- * 2. 如果是 bookmark类型的block 图片封面无需处理
- * @param {*} img
- * @param {*} value
- * @returns
- */
-export const mapImgUrl = (
-  img: string,
-  blockId: string,
-  type = 'block',
-  from?: string,
-) => {
-  if (!img) {
-    return '';
-  }
-  let ret = '';
-  // 相对目录，则视为notion的自带图片
-  if (img.startsWith('/')) {
-    ret = BLOG.NOTION_HOST + img;
-  } else {
-    ret = img;
-  }
-
-  // Notion 图床转换为永久地址
-  const isNotionImg =
-    ret.indexOf('secure.notion-static.com') > 0 ||
-    ret.indexOf('prod-files-secure') > 0;
-  const isImgBlock = BLOG.IMG_URL_TYPE === 'Notion' || type === 'block';
-  if (isNotionImg && isImgBlock) {
-    ret =
-      BLOG.NOTION_HOST +
-      '/image/' +
-      encodeURIComponent(ret) +
-      '?table=' +
-      type +
-      '&id=' +
-      blockId;
-  }
-
-  // UnSplash 随机图片接口优化
-  if (ret.includes('source.unsplash.com/random')) {
-    // 检查原始URL是否已经包含参数
-    const separator = ret.includes('?') ? '&' : '?';
-    // 拼接唯一识别参数，防止请求的图片被缓存
-    ret = `${ret}${separator}random=${blockId}`;
-  }
-
-  // 文章封面
-  if (from === 'pageCoverThumbnail') {
-    ret = compressImage(ret);
-  }
-
-  return ret;
 };

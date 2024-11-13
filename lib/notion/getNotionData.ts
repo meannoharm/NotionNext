@@ -29,7 +29,7 @@ import type {
  */
 export async function getGlobalData(from: string) {
   // 从notion获取
-  const data = await getNotionPageData(BLOG.NOTION_PAGE_ID, from);
+  const data = await getNotionPageData(idToUuid(BLOG.NOTION_PAGE_ID), from);
   return data;
   // const db = cloneDeep(data);
   // 不返回的敏感数据
@@ -208,16 +208,15 @@ async function getDataBaseInfoByNotionAPI(
     throw Error('can`t get Notion Data');
     // return {};
   }
-  const pageUuid = idToUuid(pageId);
   const blockMap = pageRecordMap.block || {};
-  const rawBlockData = blockMap[pageUuid].value;
+  const rawBlockData = blockMap[pageId].value;
   // Check Type Page-Database和Inline-Database
   if (
     rawBlockData.type !== 'collection_view_page' &&
     rawBlockData.type !== 'collection_view'
   ) {
-    console.error(`pageId "${pageUuid}" is not a database`);
-    throw Error(`pageId "${pageUuid}" is not a database`);
+    console.error(`pageId "${pageId}" is not a database`);
+    throw Error(`pageId "${pageId}" is not a database`);
     // return EmptyData(pageUuid);
   }
   const collection = Object.values(pageRecordMap.collection)[0].value || {};

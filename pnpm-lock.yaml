@@ -36,7 +36,7 @@ importers:
         specifier: 3.0.0-beta.6
         version: 3.0.0-beta.6
       axios:
-        specifier: ^1.7.7
+        specifier: '>=0.21.1'
         version: 1.7.7
       canvas:
         specifier: ^2.11.2

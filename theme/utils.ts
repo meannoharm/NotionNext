@@ -12,9 +12,9 @@ export const initDarkMode = () => {
   let isDarkMode = isPreferDark();
 
   // 查看cookie中是否用户强制设置深色模式
-  const cookieDarkMode = loadDarkModeFromLocalStorage();
-  if (cookieDarkMode) {
-    isDarkMode = JSON.parse(cookieDarkMode);
+  const storageDarkMode = loadDarkModeFromLocalStorage();
+  if (storageDarkMode) {
+    isDarkMode = JSON.parse(storageDarkMode);
   }
 
   // url查询条件中是否深色模式

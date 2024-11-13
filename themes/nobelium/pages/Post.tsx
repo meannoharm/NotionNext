@@ -21,7 +21,7 @@ const Post: FC<ThemePrefixProps & ThemePrefixSlugProps> = (props) => {
       {!isLock && (
         <div id="article-wrapper" className="px-2">
           {post && <ArticleInfo post={post} />}
-          <NotionPage post={post} />
+          {post && <NotionPage post={post} />}
           <ShareBar post={post} />
           <Comment frontMatter={post} />
           <ArticleFooter />

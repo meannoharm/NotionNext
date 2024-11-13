@@ -64,8 +64,8 @@ const Tweet: FC<{
 
 const NotionPage: FC<{
   post: PageInfo;
-  className: string;
-}> = ({ post, className }) => {
+  className?: string;
+}> = ({ post, className = '' }) => {
   useEffect(() => {
     autoScrollToTarget();
   }, []);
@@ -134,10 +134,7 @@ const NotionPage: FC<{
   }
 
   return (
-    <div
-      id="notion-article"
-      className={`mx-auto overflow-hidden ${className || ''}`}
-    >
+    <div id="notion-article" className={`mx-auto overflow-hidden ${className}`}>
       <NotionRenderer
         recordMap={post.blockMap}
         mapPageUrl={mapPageUrl}

@@ -26,14 +26,16 @@ import type { FC, ReactNode } from 'react';
  */
 const PostList: FC<
   ThemeHomeProps &
-    ThemeCategoryDetailProps &
-    ThemeCategoryPageProps &
-    ThemeTagDetailProps &
-    ThemeTagPageProps &
-    ThemeSearchDetailProps &
-    ThemeSearchPageProps & {
-      topSlot: ReactNode;
-    }
+    Partial<
+      ThemeCategoryDetailProps &
+        ThemeCategoryPageProps &
+        ThemeTagDetailProps &
+        ThemeTagPageProps &
+        ThemeSearchDetailProps &
+        ThemeSearchPageProps & {
+          topSlot: ReactNode;
+        }
+    >
 > = (props) => {
   const { posts, postCount, page, topSlot } = props;
 

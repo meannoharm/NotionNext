@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useGlobal } from '@/lib/global';
-import { saveDarkModeToCookies, THEMES } from '@/theme';
+import { saveDarkModeToLocalStorage, THEMES } from '@/theme';
 import BLOG from '@/blog.config';
 import useWindowSize from '@/hooks/useWindowSize';
 import { useTranslation } from 'next-i18next';
@@ -111,7 +111,7 @@ export default function CustomContextMenu(props) {
 
   function handleChangeDarkMode() {
     const newStatus = !isDarkMode;
-    saveDarkModeToCookies(newStatus);
+    saveDarkModeToLocalStorage(newStatus);
     updateDarkMode(newStatus);
     const htmlElement = document.getElementsByTagName('html')[0];
     htmlElement.classList?.remove(newStatus ? 'light' : 'dark');

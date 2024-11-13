@@ -8,7 +8,7 @@ import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
-import type { HomeIndexProps, ThemeHomeProps } from '@/pages/types';
+import type { HomeIndexProps, ThemeHomeProps } from '@/types';
 import type { PageInfo } from '@/lib/notion/types';
 
 /**

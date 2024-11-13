@@ -16,7 +16,7 @@ import type {
   ThemeTagPageProps,
   ThemeSearchDetailProps,
   ThemeSearchPageProps,
-} from '@/pages/types';
+} from '@/types';
 import type { FC, ReactNode } from 'react';
 
 /**

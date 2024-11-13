@@ -5,7 +5,7 @@ import { useLayout } from '@/theme';
 import { omit } from 'lodash';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type { PageMeta, PageIndexProps, ThemePageProps } from '../types';
+import type { PageMeta, PageIndexProps, ThemePageProps } from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 

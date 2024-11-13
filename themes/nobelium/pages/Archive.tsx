@@ -3,7 +3,7 @@ import BlogArchiveItem from '../components/BlogArchiveItem';
 import { ContextWrapper } from '../providers';
 
 import type { FC } from 'react';
-import type { ThemeArchiveProps } from '@/pages/types';
+import type { ThemeArchiveProps } from '@/types';
 
 /**
  * 归档

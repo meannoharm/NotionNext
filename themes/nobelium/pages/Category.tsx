@@ -3,7 +3,7 @@ import LayoutBase from '../layout/LayoutBase';
 import { ContextWrapper } from '../providers';
 
 import type { FC } from 'react';
-import type { ThemeCategoryProps } from '@/pages/types';
+import type { ThemeCategoryProps } from '@/types';
 
 /**
  * 文章分类列表

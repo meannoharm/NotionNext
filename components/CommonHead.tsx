@@ -2,7 +2,7 @@ import BLOG from '@/blog.config';
 import Head from 'next/head';
 
 import type { FC } from 'react';
-import type { PageMeta } from '@/pages/types';
+import type { PageMeta } from '@/types';
 
 export interface CommonHeadProps {
   pageMeta?: PageMeta;

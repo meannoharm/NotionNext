@@ -6,7 +6,7 @@ import type {
   PageNotFoundIndexProps,
   PageMeta,
   ThemePageNotFoundProps,
-} from '@/pages/types';
+} from '@/types';
 import type { GetStaticProps } from 'next';
 
 /**

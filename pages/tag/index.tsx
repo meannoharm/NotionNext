@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 
 import type { FC } from 'react';
-import type { PageMeta, TagIndexProps, ThemeTagProps } from '@/pages/types';
+import type { PageMeta, TagIndexProps, ThemeTagProps } from '@/types';
 import type { GetStaticProps } from 'next';
 
 /**

@@ -8,7 +8,7 @@ import type {
   PageMeta,
   SearchDetailProps,
   ThemeSearchDetailProps,
-} from '../../types';
+} from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import { DataBaseInfo, PageInfo } from '@/lib/notion/types';

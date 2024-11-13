@@ -9,7 +9,7 @@ import Comment from '@/components/Comment';
 import { ContextWrapper } from '../providers';
 
 import type { FC } from 'react';
-import type { ThemePrefixProps, ThemePrefixSlugProps } from '@/pages/types';
+import type { ThemePrefixProps, ThemePrefixSlugProps } from '@/types';
 
 const Post: FC<ThemePrefixProps & ThemePrefixSlugProps> = (props) => {
   const { post, isLock, validPassword } = props;

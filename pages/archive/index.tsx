@@ -8,7 +8,11 @@ import dayjs from 'dayjs';
 import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';
-import type { PageMeta, ArchiveIndexProps, ThemeArchiveProps } from '../types';
+import type {
+  PageMeta,
+  ArchiveIndexProps,
+  ThemeArchiveProps,
+} from '../../types/page';
 import type { PageInfo } from '@/lib/notion/types';
 
 const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {

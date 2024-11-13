@@ -6,11 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 
 import type { FC } from 'react';
-import type {
-  PageMeta,
-  CategoryIndexProps,
-  ThemeCategoryProps,
-} from '@/pages/types';
+import type { PageMeta, CategoryIndexProps, ThemeCategoryProps } from '@/types';
 import type { GetStaticProps } from 'next';
 
 /**

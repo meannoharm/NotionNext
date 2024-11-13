@@ -5,11 +5,7 @@ import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import type {
-  PageMeta,
-  SearchIndexProps,
-  ThemeSearchProps,
-} from '@/pages/types';
+import type { PageMeta, SearchIndexProps, ThemeSearchProps } from '@/types';
 import type { GetStaticProps } from 'next';
 
 /**

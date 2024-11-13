@@ -7,7 +7,7 @@ import JumpToTopButton from '../components/JumpToTopButton';
 import { useNobeliumStore } from '../providers';
 
 import { useEffect, type FC, type ReactNode } from 'react';
-import type { ThemeBaseProps } from '@/pages/types';
+import type { ThemeBaseProps } from '@/types';
 
 export interface LayoutBaseProps extends ThemeBaseProps {
   topSlot?: ReactNode;

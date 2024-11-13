@@ -11,7 +11,7 @@ import BlogListScroll from '../components/BlogListScroll';
 import { ContextWrapper } from '../providers/index';
 
 import type { FC } from 'react';
-import type { ThemeSearchProps } from '@/pages/types';
+import type { ThemeSearchProps } from '@/types';
 
 /**
  * 搜索

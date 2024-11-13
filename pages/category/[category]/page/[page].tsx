@@ -9,7 +9,7 @@ import type {
   PageMeta,
   CategoryPageProps,
   ThemeCategoryPageProps,
-} from '../../../types';
+} from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 

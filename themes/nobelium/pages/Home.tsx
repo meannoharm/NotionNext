@@ -3,7 +3,7 @@ import { OriginPostList } from './PostList';
 import { ContextWrapper } from '../providers';
 
 import type { FC } from 'react';
-import type { ThemeHomeProps } from '@/pages/types';
+import type { ThemeHomeProps } from '@/types';
 
 /**
  * 首页

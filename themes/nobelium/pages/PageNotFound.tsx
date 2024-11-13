@@ -2,7 +2,7 @@ import LayoutBase from '../layout/LayoutBase';
 import { ContextWrapper } from '../providers';
 
 import type { FC } from 'react';
-import type { ThemePageNotFoundProps } from '@/pages/types';
+import type { ThemePageNotFoundProps } from '@/types';
 /**
  * 404 页面
  * @param {*} props

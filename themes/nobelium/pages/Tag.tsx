@@ -3,7 +3,7 @@ import LayoutBase from '../layout/LayoutBase';
 import { ContextWrapper } from '../providers/index';
 
 import type { FC } from 'react';
-import type { ThemeTagProps } from '@/pages/types';
+import type { ThemeTagProps } from '@/types';
 
 /**
  * 文章标签列表

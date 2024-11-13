@@ -4,11 +4,7 @@ import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import type {
-  PageMeta,
-  TagDetailProps,
-  ThemeTagDetailProps,
-} from '@/pages/types';
+import type { PageMeta, TagDetailProps, ThemeTagDetailProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 

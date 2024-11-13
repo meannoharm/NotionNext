@@ -9,7 +9,7 @@ import { uploadDataToAlgolia } from '@/lib/algolia';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type { PrefixSlugProps } from '@/pages/types';
+import type { PrefixSlugProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 
 export interface PrefixSlugParams extends ParsedUrlQuery {

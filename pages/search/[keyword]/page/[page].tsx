@@ -6,11 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { isIterable } from '@/lib/utils';
 
 import type { FC } from 'react';
-import type {
-  PageMeta,
-  SearchPageProps,
-  ThemeSearchPageProps,
-} from '@/pages/types';
+import type { PageMeta, SearchPageProps, ThemeSearchPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { DataBaseInfo, PageInfo } from '@/lib/notion/types';

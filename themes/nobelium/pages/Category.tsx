@@ -2,14 +2,15 @@ import Link from 'next/link';
 import LayoutBase from '../layout/LayoutBase';
 import { ContextWrapper } from '../providers';
 
-import type { CategoryComponent } from '@/themes/types';
+import type { FC } from 'react';
+import type { ThemeCategoryProps } from '@/pages/types';
 
 /**
  * 文章分类列表
  * @param {*} props
  * @returns
  */
-const Category: CategoryComponent = (props) => {
+const Category: FC<ThemeCategoryProps> = (props) => {
   const { categoryOptions } = props;
 
   return (

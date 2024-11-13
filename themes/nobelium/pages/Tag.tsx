@@ -3,15 +3,14 @@ import LayoutBase from '../layout/LayoutBase';
 import { ContextWrapper } from '../providers/index';
 
 import type { FC } from 'react';
-
-export interface TagProps {}
+import type { ThemeTagProps } from '@/pages/types';
 
 /**
  * 文章标签列表
  * @param {*} props
  * @returns
  */
-const Tag: FC<TagProps> = (props) => {
+const Tag: FC<ThemeTagProps> = (props) => {
   const { tagOptions } = props;
   return (
     <LayoutBase {...props}>
@@ -21,7 +20,7 @@ const Tag: FC<TagProps> = (props) => {
             return (
               <div key={tag.name} className="p-2">
                 <Link
-                  key={tag}
+                  key={tag.id}
                   href={`/tag/${encodeURIComponent(tag.name)}`}
                   passHref
                   className={`mr-2 inline-block cursor-pointer whitespace-nowrap rounded px-2 py-1 text-xs text-gray-600 duration-200 hover:bg-gray-500 hover:text-white hover:shadow-xl dark:border-gray-400 dark:hover:text-white notion-${tag.color}_background dark:bg-gray-800`}

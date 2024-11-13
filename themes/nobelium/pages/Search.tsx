@@ -11,8 +11,7 @@ import BlogListScroll from '../components/BlogListScroll';
 import { ContextWrapper } from '../providers/index';
 
 import type { FC } from 'react';
-
-export type SearchProps = any;
+import type { ThemeSearchProps } from '@/pages/types';
 
 /**
  * 搜索
@@ -20,7 +19,7 @@ export type SearchProps = any;
  * @param {*} props
  * @returns
  */
-const Search: FC<SearchProps> = (props) => {
+const Search: FC<ThemeSearchProps> = (props) => {
   const { keyword, posts, postCount, page } = props;
   useEffect(() => {
     if (isBrowser) {
@@ -62,11 +61,7 @@ const Search: FC<SearchProps> = (props) => {
           posts={filteredBlogPosts}
         />
       ) : (
-        <BlogListScroll
-          postCount={postCount}
-          page={page}
-          posts={filteredBlogPosts}
-        />
+        <BlogListScroll posts={filteredBlogPosts} />
       )}
     </LayoutBase>
   );

@@ -9,23 +9,18 @@ import Comment from '@/components/Comment';
 import { ContextWrapper } from '../providers';
 
 import type { FC } from 'react';
+import type { ThemePrefixProps, ThemePrefixSlugProps } from '@/pages/types';
 
-export interface LayoutSlugProps {
-  post: any;
-  lock: any;
-  validPassword: any;
-}
-
-const Post: FC<LayoutSlugProps> = (props) => {
-  const { post, lock, validPassword } = props;
+const Post: FC<ThemePrefixProps & ThemePrefixSlugProps> = (props) => {
+  const { post, isLock, validPassword } = props;
 
   return (
     <LayoutBase {...props}>
-      {lock && <ArticleLock validPassword={validPassword} />}
+      {isLock && <ArticleLock validPassword={validPassword} />}
 
-      {!lock && (
+      {!isLock && (
         <div id="article-wrapper" className="px-2">
-          <ArticleInfo post={post} />
+          {post && <ArticleInfo post={post} />}
           <NotionPage post={post} />
           <ShareBar post={post} />
           <Comment frontMatter={post} />

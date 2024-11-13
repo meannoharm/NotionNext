@@ -8,7 +8,15 @@ import BlogListBar from '../components/BlogListBar';
 import { ContextWrapper } from '../providers';
 
 import type { PageInfo } from '@/lib/notion/types';
-import type { ThemePageProps } from '@/pages/types';
+import type {
+  ThemeHomeProps,
+  ThemeCategoryDetailProps,
+  ThemeCategoryPageProps,
+  ThemeTagDetailProps,
+  ThemeTagPageProps,
+  ThemeSearchDetailProps,
+  ThemeSearchPageProps,
+} from '@/pages/types';
 import type { FC, ReactNode } from 'react';
 
 /**
@@ -17,9 +25,15 @@ import type { FC, ReactNode } from 'react';
  * @returns
  */
 const PostList: FC<
-  ThemePageProps & {
-    topSlot: ReactNode;
-  }
+  ThemeHomeProps &
+    ThemeCategoryDetailProps &
+    ThemeCategoryPageProps &
+    ThemeTagDetailProps &
+    ThemeTagPageProps &
+    ThemeSearchDetailProps &
+    ThemeSearchPageProps & {
+      topSlot: ReactNode;
+    }
 > = (props) => {
   const { posts, postCount, page, topSlot } = props;
 

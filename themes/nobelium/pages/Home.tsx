@@ -2,7 +2,8 @@ import Announcement from '../components/Announcement';
 import { OriginPostList } from './PostList';
 import { ContextWrapper } from '../providers';
 
-import type { HomeComponent } from '@/theme/types';
+import type { FC } from 'react';
+import type { ThemeHomeProps } from '@/pages/types';
 
 /**
  * 首页
@@ -11,7 +12,7 @@ import type { HomeComponent } from '@/theme/types';
  * @returns
  */
 
-const Home: HomeComponent = (props) => {
+const Home: FC<ThemeHomeProps> = (props) => {
   const { notice } = props;
   return (
     <OriginPostList {...props} topSlot={<Announcement notice={notice} />} />

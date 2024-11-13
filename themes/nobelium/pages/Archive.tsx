@@ -2,14 +2,15 @@ import LayoutBase from '../layout/LayoutBase';
 import BlogArchiveItem from '../components/BlogArchiveItem';
 import { ContextWrapper } from '../providers';
 
-import type { ArchiveComponent } from '@/themes/types';
+import type { FC } from 'react';
+import type { ThemeArchiveProps } from '@/pages/types';
 
 /**
  * 归档
  * @param {*} props
  * @returns
  */
-const Archive: ArchiveComponent = (props) => {
+const Archive: FC<ThemeArchiveProps> = (props) => {
   const { archivePosts } = props;
   return (
     <LayoutBase {...props}>

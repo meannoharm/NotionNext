@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';
-import type { PageMeta, ArchiveIndexProps, ThemeSearchProps } from '../types';
+import type { PageMeta, ArchiveIndexProps, ThemeArchiveProps } from '../types';
 import type { PageInfo } from '@/lib/notion/types';
 
 const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
@@ -16,7 +16,7 @@ const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   const { t } = useTranslation('nav');
 
   // 根据页面路径加载不同Layout文件
-  const Archive = useLayout() as FC<ThemeSearchProps>;
+  const Archive = useLayout() as FC<ThemeArchiveProps>;
 
   useEffect(() => {
     if (isBrowser) {

@@ -97,13 +97,12 @@ export default async function getPageProperties(
     pageInfo?.date?.start_date || block.created_time,
   ).valueOf();
   pageInfo.lastEditedDate = block?.last_edited_time;
-  pageInfo.pageIcon = mapImgUrl(block?.format?.page_icon, block.id);
-  pageInfo.pageCover = mapImgUrl(block?.format?.page_cover, block.id);
+  pageInfo.pageIcon = mapImgUrl(block?.format?.page_icon, block);
+  pageInfo.pageCover = mapImgUrl(block?.format?.page_cover, block);
   pageInfo.pageCoverThumbnail = mapImgUrl(
     block?.format?.page_cover,
-    block.id,
+    block,
     'block',
-    'pageCoverThumbnail',
   );
 
   // 处理URL

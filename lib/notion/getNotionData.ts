@@ -12,12 +12,12 @@ import dayjs from 'dayjs';
 import type {
   CustomNav,
   PageInfo,
-  BlockMap,
   CollectionPropertySchemaMap,
   SelectOption,
   SiteInfo,
   DataBaseInfo,
   PatchedCollection,
+  Block,
 } from './types';
 
 /**
@@ -158,20 +158,17 @@ function getCategoryOptions(
  * @param from
  * @returns {Promise<{title,description,pageCover,icon}>}
  */
-function getSiteInfo(collection: PatchedCollection, block: BlockMap): SiteInfo {
+function getSiteInfo(collection: PatchedCollection, block: Block): SiteInfo {
   const title = collection.name[0][0] || BLOG.TITLE;
 
   const description = collection.description
     ? Object.assign(collection).description[0][0]
     : BLOG.DESCRIPTION;
   const pageCover = collection.cover
-    ? mapImgUrl(
-        collection.cover,
-        block[idToUuid(BLOG.NOTION_PAGE_ID)]?.value.id,
-      )
+    ? mapImgUrl(collection.cover, block, 'collection')
     : BLOG.HOME_BANNER_IMAGE;
   let icon = collection?.icon
-    ? mapImgUrl(collection?.icon, collection.id, 'collection')
+    ? mapImgUrl(collection?.icon, block, 'collection')
     : BLOG.AVATAR;
 
   // 用户头像压缩一下
@@ -225,7 +222,7 @@ async function getDataBaseInfoByNotionAPI(
   }
   const collection = Object.values(pageRecordMap.collection)[0].value || {};
   console.log(collection);
-  const siteInfo = getSiteInfo(collection as PatchedCollection, blockMap);
+  const siteInfo = getSiteInfo(collection as PatchedCollection, rawBlockData);
 
   const collectionId = rawBlockData.collection_id || null;
   const viewIds = rawBlockData.view_ids;

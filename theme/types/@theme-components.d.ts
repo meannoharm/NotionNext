@@ -1,17 +1,29 @@
 declare module '@theme-components' {
-  export const Home: import('./components').HomeComponent;
-  export const Page: import('./components').PageComponent;
-  export const Archive: import('./components').ArchiveComponent;
-  export const Category: import('./components').CategoryComponent;
-  export const CategoryDetail: import('./components').CategoryDetailComponent;
-  export const CategoryPage: import('./components').CategoryPageComponent;
-  export const Tag: import('./components').TagComponent;
-  export const TagDetail: import('./components').TagDetailComponent;
-  export const TagPage: import('./components').TagPageComponent;
-  export const Search: import('./components').SearchComponent;
-  export const SearchDetail: import('./components').SearchDetailComponent;
-  export const SearchPage: import('./components').SearchPageComponent;
-  export const Slug: import('./components').PrefixComponent;
-  export const PrefixSlug: import('./components').PrefixSlugComponent;
-  export const PageNotFound: import('./components').PageNotFoundComponent;
+  export const Home: React.FC<import('@/pages/types').ThemeHomeProps>;
+  export const Page: React.FC<import('@/pages/types').ThemePageProps>;
+  export const Archive: React.FC<import('@/pages/types').ThemeArchiveProps>;
+  export const Category: React.FC<import('@/pages/types').ThemeCategoryProps>;
+  export const CategoryDetail: React.FC<
+    import('@/pages/types').ThemeCategoryDetailProps
+  >;
+  export const CategoryPage: React.FC<
+    import('@/pages/types').ThemeCategoryPageCoProps
+  >;
+  export const Tag: React.FC<import('@/pages/types').ThemeTagProps>;
+  export const TagDetail: React.FC<import('@/pages/types').ThemeTagDetailProps>;
+  export const TagPage: React.FC<import('@/pages/types').ThemeTagPageProps>;
+  export const Search: React.FC<import('@/pages/types').ThemeSearchProps>;
+  export const SearchDetail: React.FC<
+    import('@/pages/types').ThemeSearchDetailProps
+  >;
+  export const SearchPage: React.FC<
+    import('@/pages/types').ThemeSearchPageProps
+  >;
+  export const Slug: React.FC<import('@/pages/types').ThemePrefixProps>;
+  export const PrefixSlug: React.FC<
+    import('@/pages/types').ThemePrefixSlugProps
+  >;
+  export const PageNotFound: React.FC<
+    import('@/pages/types').ThemePageNotFoundProps
+  >;
 }

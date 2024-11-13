@@ -43,7 +43,14 @@ const SearchIndex: FC<SearchIndexProps> = (props) => {
     type: 'website',
   };
 
-  return <Layout {...props} pageMeta={pageMeta} posts={filteredPosts} />;
+  return (
+    <Layout
+      {...props}
+      pageMeta={pageMeta}
+      posts={filteredPosts}
+      keyword={keyword}
+    />
+  );
 };
 
 /**

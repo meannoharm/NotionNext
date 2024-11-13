@@ -88,7 +88,10 @@ export type ThemeCategoryPageProps = CategoryPageProps & PageMetaProps;
 export type ThemeTagProps = TagIndexProps & PageMetaProps;
 export type ThemeTagDetailProps = TagDetailProps & PageMetaProps;
 export type ThemeTagPageProps = TagPageProps & PageMetaProps;
-export type ThemeSearchProps = SearchIndexProps & PageMetaProps;
+export type ThemeSearchProps = SearchIndexProps &
+  PageMetaProps & {
+    keyword: string;
+  };
 export type ThemeSearchDetailProps = SearchDetailProps & PageMetaProps;
 export type ThemeSearchPageProps = SearchPageProps & PageMetaProps;
 export type ThemePrefixProps = SlugIndexProps &

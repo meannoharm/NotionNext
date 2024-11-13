@@ -20,7 +20,7 @@ import type { ThemeSearchProps } from '@/pages/types';
  * @returns
  */
 const Search: FC<ThemeSearchProps> = (props) => {
-  const { keyword, posts, postCount, page } = props;
+  const { keyword, posts, postCount } = props;
   useEffect(() => {
     if (isBrowser) {
       replaceSearchResult({
@@ -46,7 +46,6 @@ const Search: FC<ThemeSearchProps> = (props) => {
   } else {
     filteredBlogPosts = deepClone(posts);
   }
-  console.log('posts', props, posts, filteredBlogPosts);
 
   return (
     <LayoutBase
@@ -55,11 +54,7 @@ const Search: FC<ThemeSearchProps> = (props) => {
     >
       <SearchNavBar {...props} />
       {BLOG.POST_LIST_STYLE === 'page' ? (
-        <BlogListPage
-          postCount={postCount}
-          page={page}
-          posts={filteredBlogPosts}
-        />
+        <BlogListPage postCount={postCount} posts={filteredBlogPosts} />
       ) : (
         <BlogListScroll posts={filteredBlogPosts} />
       )}

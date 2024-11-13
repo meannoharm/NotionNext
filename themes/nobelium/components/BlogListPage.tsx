@@ -9,7 +9,7 @@ import { PageInfo } from '@/lib/notion/types';
 
 export interface BlogListPageProps {
   posts: PageInfo[];
-  page: number;
+  page?: number;
   postCount: number;
 }
 

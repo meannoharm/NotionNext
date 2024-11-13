@@ -25,12 +25,13 @@ const layoutNameMapping: Record<string, string> = {
   '/404': 'PageNotFound',
 };
 
-export const useLayout = (): React.ComponentType => {
+export const useLayout = (): React.ComponentType<any> => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const theme = searchParams.get('theme') || BLOG.THEME;
-  const layoutName = layoutNameMapping[router.pathname];
+  const layoutName = (layoutNameMapping[router.pathname] ||
+    'PageNotFound') as keyof typeof ThemeComponents;
 
   return theme !== BLOG.THEME
     ? dynamic(() => import(`@/themes/${theme}`).then((m) => m[layoutName]), {

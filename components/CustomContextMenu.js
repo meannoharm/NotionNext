@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useGlobal } from '@/lib/global';
-import { saveDarkModeToCookies, THEMES } from '@/themes/theme';
+import { saveDarkModeToCookies, THEMES } from '@/theme';
 import BLOG from '@/blog.config';
 import useWindowSize from '@/hooks/useWindowSize';
 import { useTranslation } from 'next-i18next';

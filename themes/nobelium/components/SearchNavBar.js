@@ -13,7 +13,7 @@ export default function SearchNavBar(props) {
         <SearchInput {...props} />
       </div>
 
-      <Tags {...props} />
+      <Tags tagOptions={props.tagOptions} tag={props.keyword} />
     </>
   );
 }

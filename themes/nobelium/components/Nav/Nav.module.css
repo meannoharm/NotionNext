@@ -1,0 +1,50 @@
+.stickyNav {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  backdrop-filter: blur(5px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0, 1);
+  border-bottom-color: transparent;
+}
+
+.stickyNavFull {
+  @apply border-b border-gray-200 border-opacity-50 dark:border-gray-600 dark:border-opacity-50;
+}
+
+.article-tags::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+.tag-container ul::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+.tag-container ul {
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .stickyNavFull {
+    @apply max-w-full border-b border-gray-200 border-opacity-50 dark:border-gray-600 dark:border-opacity-50;
+  }
+  .headerName {
+    display: block;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0, 1);
+  }
+  .stickyNavFull .headerName {
+    @apply text-gray-600 dark:text-gray-300;
+  }
+}
+
+@supports not (backdrop-filter: none) {
+  .stickyNav {
+    backdrop-filter: none;
+    @apply bg-day dark:bg-gray-800;
+  }
+}

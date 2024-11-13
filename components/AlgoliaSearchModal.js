@@ -32,8 +32,8 @@ export default function AlgoliaSearchModal({ cRef }) {
   });
 
   const client = algoliasearch(
-    BLOG.ALGOLIA_APP_ID,
-    BLOG.ALGOLIA_SEARCH_ONLY_APP_KEY,
+    BLOG.ALGOLIA_APP_ID || '',
+    BLOG.ALGOLIA_SEARCH_ONLY_APP_KEY || '',
   );
   const index = client.initIndex(BLOG.ALGOLIA_INDEX);
 

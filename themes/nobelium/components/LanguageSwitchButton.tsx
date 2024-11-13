@@ -39,7 +39,7 @@ export default function LanguageSwitchButton() {
         <Language className="h-5 w-5" />
       </div>
       <div
-        className={`${isOpen ? 'visible top-10 opacity-100 ' : 'invisible top-8 opacity-0 '} absolute w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
+        className={`${isOpen ? 'top-10 block opacity-100 ' : 'none top-8 opacity-0 '} absolute w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
       >
         <Collapse isOpen={isOpen}>
           {locales.map((locale) => (

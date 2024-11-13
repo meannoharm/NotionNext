@@ -3,7 +3,7 @@ import type { RefObject } from 'react';
 
 export default function useToggleClickOutSide(
   targetRef: RefObject<HTMLElement> | RefObject<HTMLElement>[],
-  callback: Function,
+  callback: (...arg: any) => any,
 ) {
   useEffect(() => {
     let targetRefs: RefObject<HTMLElement>[] = [];

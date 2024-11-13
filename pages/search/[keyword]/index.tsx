@@ -1,4 +1,4 @@
-import { getGlobalData, getNotionPageData } from '@/lib/notion/getNotionData';
+import { getGlobalData } from '@/lib/notion/getNotionData';
 import BLOG from '@/blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
@@ -12,6 +12,7 @@ import type {
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import { DataBaseInfo, PageInfo } from '@/lib/notion/types';
+import { getDataFromCache } from '@/lib/cache/cacheManager';
 
 export interface CategoryDetailParams extends ParsedUrlQuery {
   keyword: string;
@@ -102,17 +103,20 @@ function getTextContent(textArray: any): string {
 
 /**
  * 在内存缓存中进行全文索引
- * @param {*} allPosts
+ * @param {*} posts
  * @param keyword 关键词
  * @returns
  */
-async function filterByMemCache(allPosts: PageInfo[], keyword: string) {
+async function filterByMemCache(posts: PageInfo[], keyword: string) {
   if (!keyword) return [];
   const lowerKeyword = keyword.toLowerCase().trim();
   const filterPosts: any[] = [];
 
-  for (const post of allPosts) {
-    const page = await getNotionPageData(post.id, 'search-detail-page');
+  for (const post of posts) {
+    const page = await getDataFromCache<DataBaseInfo>(
+      `page_block_${post.id}`,
+      true,
+    );
     const tagContent = post?.tags?.join(' ') || '';
     const categoryContent = post?.category || '';
     const articleInfo = (
@@ -123,7 +127,8 @@ async function filterByMemCache(allPosts: PageInfo[], keyword: string) {
     ).toLowerCase();
 
     let hit = articleInfo.includes(lowerKeyword);
-    const indexContent = getPageContentText(post, page);
+
+    const indexContent = page ? getPageContentText(post, page) : [];
 
     post.results = [];
     let hitCount = 0;
@@ -148,7 +153,7 @@ async function filterByMemCache(allPosts: PageInfo[], keyword: string) {
 
 export function getPageContentText(post: PageInfo, dataBaseInfo: DataBaseInfo) {
   let indexContent: string[] = [];
-  if (dataBaseInfo?.block && !post.password) {
+  if (dataBaseInfo && dataBaseInfo?.block && !post.password) {
     Object.keys(dataBaseInfo.block).forEach((id) => {
       const properties = dataBaseInfo.block[id]?.value?.properties;
       indexContent = extractTextContent(indexContent, properties, 'title');

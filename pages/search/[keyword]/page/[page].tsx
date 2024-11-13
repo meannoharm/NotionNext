@@ -113,24 +113,26 @@ function getTextContent(textArray: any) {
  * @returns
  */
 async function filterByMemCache(posts: PageInfo[], keyword: string) {
-  const filterPosts = [];
-  if (keyword) {
-    keyword = keyword.trim();
-  }
+  if (!keyword) return [];
+  const lowerKeyword = keyword.toLowerCase().trim();
+  const filterPosts: any[] = [];
+
   for (const post of posts) {
     const page = await getDataFromCache<DataBaseInfo>(
       `page_block_${post.id}`,
       true,
     );
-    const tagContent =
-      post?.tags && Array.isArray(post?.tags) ? post?.tags.join(' ') : '';
-    const categoryContent =
-      post.category && Array.isArray(post.category)
-        ? post.category.join(' ')
-        : '';
-    const articleInfo =
-      post.title + post.summary + tagContent + categoryContent;
-    let hit = articleInfo.indexOf(keyword) > -1;
+    const tagContent = post?.tags?.join(' ') || '';
+    const categoryContent = post?.category || '';
+    const articleInfo = (
+      post.title +
+      post.summary +
+      tagContent +
+      categoryContent
+    ).toLowerCase();
+
+    let hit = articleInfo.includes(lowerKeyword);
+
     let indexContent = [post.summary];
     if (page && page.block) {
       const contentIds = Object.keys(page.block);
@@ -140,9 +142,11 @@ async function filterByMemCache(posts: PageInfo[], keyword: string) {
         indexContent = appendText(indexContent, properties, 'caption');
       });
     }
+
     // console.log('全文搜索缓存', cacheKey, page != null)
     post.results = [];
     let hitCount = 0;
+
     indexContent.forEach((content, index) => {
       if (content) {
         if (content.toLowerCase().indexOf(keyword.toLowerCase()) > -1) {

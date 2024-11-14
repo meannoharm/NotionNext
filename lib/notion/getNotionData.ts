@@ -218,7 +218,7 @@ async function getDataBaseInfoByNotionAPI(
     // return EmptyData(pageUuid);
   }
   const collection = Object.values(pageRecordMap.collection)[0].value || {};
-  const siteInfo = getSiteInfo(collection as PatchedCollection, rawBlockData);
+  const siteInfo = getSiteInfo(collection as PatchedCollection);
 
   const collectionId = rawBlockData.collection_id || null;
   const viewIds = rawBlockData.view_ids;

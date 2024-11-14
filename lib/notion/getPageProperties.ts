@@ -90,6 +90,8 @@ export default async function getPageProperties(
   if (pageInfo.category && pageInfo.category[0])
     pageInfo.category = pageInfo.category[0];
 
+  if (!pageInfo.tags) pageInfo.tags = [];
+
   // 映射值：用户个性化type和status字段的下拉框选项，在此映射回代码的英文标识
   mapProperties(pageInfo);
 

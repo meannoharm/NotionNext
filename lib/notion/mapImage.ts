@@ -1,5 +1,6 @@
 import BLOG from '@/blog.config';
 import type { Block } from 'notion-types';
+import { PatchedCollection } from './types';
 
 /**
  * 图片映射
@@ -12,7 +13,7 @@ import type { Block } from 'notion-types';
  */
 export const mapImgUrl = (
   img: string,
-  block: Block,
+  block: Block | PatchedCollection,
   type = 'block',
   needCompress = true,
 ) => {
@@ -36,7 +37,7 @@ export const mapImgUrl = (
   // 需要转化的URL ; 识别aws图床地址，或者bookmark类型的外链图片
   const needConvert =
     !hasConverted &&
-    (block.type === 'bookmark' ||
+    ((block as Block).type === 'bookmark' ||
       ret.includes('secure.notion-static.com') ||
       ret.includes('prod-files-secure'));
 

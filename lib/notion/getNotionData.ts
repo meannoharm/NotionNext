@@ -17,7 +17,6 @@ import type {
   SiteInfo,
   DataBaseInfo,
   PatchedCollection,
-  Block,
 } from './types';
 
 /**
@@ -158,17 +157,16 @@ function getCategoryOptions(
  * @param from
  * @returns {Promise<{title,description,pageCover,icon}>}
  */
-function getSiteInfo(collection: PatchedCollection, block: Block): SiteInfo {
+function getSiteInfo(collection: PatchedCollection): SiteInfo {
   const title = collection.name[0][0] || BLOG.TITLE;
-
   const description = collection.description
     ? Object.assign(collection).description[0][0]
     : BLOG.DESCRIPTION;
   const pageCover = collection.cover
-    ? mapImgUrl(collection.cover, block, 'collection')
+    ? mapImgUrl(collection.cover, collection, 'collection')
     : BLOG.HOME_BANNER_IMAGE;
   let icon = collection?.icon
-    ? mapImgUrl(collection?.icon, block, 'collection')
+    ? mapImgUrl(collection?.icon, collection, 'collection')
     : BLOG.AVATAR;
 
   // 用户头像压缩一下

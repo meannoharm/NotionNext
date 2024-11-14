@@ -3,6 +3,7 @@ import { getTextContent, getDateValue } from 'notion-utils';
 import BLOG from '@/blog.config';
 import md5 from 'js-md5';
 import { mapImgUrl } from './mapImage';
+import dayjs from 'dayjs';
 import { PagePropertiesType, PagePropertiesStatus } from './types';
 
 import type {
@@ -11,9 +12,8 @@ import type {
   CollectionPropertySchemaMap,
   Decoration,
 } from './types';
-import dayjs from 'dayjs';
 
-type TempPageInfo = Partial<PageInfo>;
+type TempPageInfo = Partial<PageInfo> & { [key: string]: any };
 const excludeProperties = ['date', 'select', 'multi_select', 'person'];
 
 export default async function getPageProperties(
@@ -132,9 +132,11 @@ export default async function getPageProperties(
       pageInfo.slug += '.html';
     }
   }
+
   pageInfo.password = pageInfo.password
     ? md5(pageInfo.slug + pageInfo.password)
     : '';
+
   return pageInfo as PageInfo;
 }
 

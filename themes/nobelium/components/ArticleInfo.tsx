@@ -2,6 +2,7 @@ import Image from 'next/image';
 import BLOG from '@/blog.config';
 import TagItem from './TagItem';
 import md5 from 'js-md5';
+import dayjs from 'dayjs';
 
 import type { FC } from 'react';
 import type { PageInfo } from '@/lib/notion/types';
@@ -35,7 +36,9 @@ export const ArticleInfo: FC<ArticleInfoProps> = ({ post }) => {
               </a>
               <span className="mx-1 block">/</span>
             </div>
-            <div className="mb-4 mr-2 md:ml-0">{post?.publishDay}</div>
+            <div className="mb-4 mr-2 md:ml-0">
+              {dayjs(post?.publishDate).format('YYYY-MM-DD')}
+            </div>
             {post?.tags && (
               <div className="article-tags mr-2 flex max-w-full flex-nowrap overflow-x-auto">
                 {post?.tags.map((tag) => <TagItem key={tag} tag={tag} />)}

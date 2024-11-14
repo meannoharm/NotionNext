@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import { throttle } from 'lodash';
 import { useTranslation } from 'next-i18next';
+import dayjs from 'dayjs';
 
 import type { FC } from 'react';
 import { PageInfo } from '@/lib/notion/types';
@@ -53,14 +54,14 @@ const BlogListScroll: FC<BlogListScrollProps> = (props) => {
 
   return (
     <div id="posts-wrapper" className="mb-12 w-full md:pr-12" ref={targetRef}>
-      {postsToShow.map((p) => (
-        <article key={p.id} className="mb-12">
+      {postsToShow.map((post) => (
+        <article key={post.id} className="mb-12">
           <h2 className="mb-4">
             <Link
-              href={`/${p.slug}`}
+              href={`/${post.slug}`}
               className="text-xl text-black no-underline hover:underline md:text-2xl"
             >
-              {p.title}
+              {post.title}
             </Link>
           </h2>
 
@@ -69,16 +70,16 @@ const BlogListScroll: FC<BlogListScrollProps> = (props) => {
             <a href="#" className="text-gray-700">
               {BLOG.AUTHOR}
             </a>
-            on {p.date?.start_date || p.createdTime}
+            on {dayjs(post.publishDate).format('YYYY-MM-DD')}
             <span className="mx-1 font-bold"> | </span>
             <a href="#" className="text-gray-700">
-              {p.category}
+              {post.category}
             </a>
             <span className="mx-1 font-bold"> | </span>
             {/* <a href="#" className="text-gray-700">2 Comments</a> */}
           </div>
 
-          <p className="leading-normal text-gray-700">{p.summary}</p>
+          <p className="leading-normal text-gray-700">{post.summary}</p>
         </article>
       ))}
 

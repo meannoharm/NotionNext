@@ -110,9 +110,9 @@ function getTextContent(textArray: any): string {
 async function filterByMemCache(posts: PageInfo[], keyword: string) {
   if (!keyword) return [];
   const lowerKeyword = keyword.toLowerCase().trim();
-  const filterPosts: any[] = [];
+  const filterPosts: PageInfo[] = [];
 
-  for (const post of posts) {
+  posts.forEach(async (post) => {
     const page = await getDataFromCache<DataBaseInfo>(
       `page_block_${post.id}`,
       true,
@@ -126,18 +126,14 @@ async function filterByMemCache(posts: PageInfo[], keyword: string) {
       categoryContent
     ).toLowerCase();
 
-    let hit = articleInfo.includes(lowerKeyword);
-
-    const indexContent = page ? getPageContentText(post, page) : [];
-
     post.results = [];
+    let hit = articleInfo.includes(lowerKeyword);
     let hitCount = 0;
 
+    const indexContent = page ? getPageContentText(post, page) : [];
     for (const content of indexContent) {
       if (!content) continue;
-      const lowerContent = content.toLowerCase();
-      const index = lowerContent.indexOf(lowerKeyword);
-      if (index > -1) {
+      if (content.toLowerCase().includes(lowerKeyword)) {
         hit = true;
         hitCount += 1;
         post.results.push(content);
@@ -147,7 +143,7 @@ async function filterByMemCache(posts: PageInfo[], keyword: string) {
     }
 
     if (hit) filterPosts.push(post);
-  }
+  });
   return filterPosts;
 }
 

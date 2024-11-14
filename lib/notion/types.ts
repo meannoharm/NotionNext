@@ -8,6 +8,8 @@ import type {
   CollectionViewPageBlock,
   ExtendedRecordMap,
   FormattedDate,
+  ID,
+  BlockType,
 } from 'notion-types';
 
 export type * from 'notion-types';
@@ -30,7 +32,9 @@ export interface PageInfo {
   tags: string[];
   summary: string;
   slug: string;
-  [key: string]: any;
+  results?: string[];
+  password?: string;
+  toc?: TableOfContentsEntry[];
 }
 
 export enum PagePropertiesType {
@@ -111,4 +115,11 @@ export interface DataBaseInfo {
 export interface PatchedCollection extends Collection {
   description: [[string]];
   cover: string;
+}
+
+export interface TableOfContentsEntry {
+  id: ID;
+  type: BlockType;
+  text: string;
+  indentLevel: number;
 }

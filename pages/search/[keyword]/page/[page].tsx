@@ -115,9 +115,9 @@ function getTextContent(textArray: any) {
 async function filterByMemCache(posts: PageInfo[], keyword: string) {
   if (!keyword) return [];
   const lowerKeyword = keyword.toLowerCase().trim();
-  const filterPosts: any[] = [];
+  const filterPosts: PageInfo[] = [];
 
-  for (const post of posts) {
+  posts.forEach(async (post) => {
     const page = await getDataFromCache<DataBaseInfo>(
       `page_block_${post.id}`,
       true,
@@ -131,39 +131,35 @@ async function filterByMemCache(posts: PageInfo[], keyword: string) {
       categoryContent
     ).toLowerCase();
 
+    post.results = [];
     let hit = articleInfo.includes(lowerKeyword);
+    let hitCount = 0;
 
     let indexContent = [post.summary];
     if (page && page.block) {
-      const contentIds = Object.keys(page.block);
-      contentIds.forEach((id) => {
-        const properties = page?.block[id]?.value?.properties;
+      Object.values(page.block).forEach((block) => {
+        const properties = block.value.properties;
         indexContent = appendText(indexContent, properties, 'title');
         indexContent = appendText(indexContent, properties, 'caption');
       });
     }
 
-    // console.log('全文搜索缓存', cacheKey, page != null)
-    post.results = [];
-    let hitCount = 0;
-
     indexContent.forEach((content, index) => {
-      if (content) {
-        if (content.toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
+      if (content && post.results) {
+        if (content.toLowerCase().includes(lowerKeyword)) {
           hit = true;
           hitCount += 1;
           post.results.push(content);
-        } else {
-          if ((post.results.length - 1) / hitCount < 3 || index === 0) {
-            post.results.push(content);
-          }
+        } else if ((post.results.length - 1) / hitCount < 3 || index === 0) {
+          post.results.push(content);
         }
       }
     });
+
     if (hit) {
       filterPosts.push(post);
     }
-  }
+  });
   return filterPosts;
 }
 

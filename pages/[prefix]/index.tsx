@@ -31,7 +31,7 @@ const Slug: FC<SlugIndexProps> = (props) => {
   const router = useRouter();
 
   // 文章锁🔐
-  const [isLock, setIsLock] = useState(post?.password && post?.password !== '');
+  const [isLock, setIsLock] = useState<boolean>(!!(post && post.password));
 
   /**
    * 验证文章密码

@@ -7,6 +7,11 @@ import nextI18NextConfig from '@/next-i18next.config.js';
 
 import type { RefObject } from 'react';
 
+const displayMap: Record<string, string> = {
+  'zh-CN': '简体中文',
+  en: 'English',
+};
+
 /**
  * 语言切换
  */
@@ -39,16 +44,16 @@ export default function LanguageSwitchButton() {
         <Language className="h-5 w-5" />
       </div>
       <div
-        className={`${isOpen ? 'top-10 block opacity-100 ' : 'none top-8 opacity-0 '} absolute w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
+        className={`${isOpen ? 'top-10 block' : 'top-8 hidden'} absolute right-0 w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
       >
         <Collapse isOpen={isOpen}>
           {locales.map((locale) => (
             <div
-              className="p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
+              className="cursor p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
               key={locale}
               onClick={() => changeLanguage(locale)}
             >
-              {locale}
+              {displayMap[locale] || locale}
             </div>
           ))}
         </Collapse>

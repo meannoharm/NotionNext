@@ -1,6 +1,7 @@
 import BLOG from '@/blog.config';
 // import DarkModeButton from '@/components/DarkModeButton'
 import Vercel from '@/components/Vercel';
+import { Trans } from 'next-i18next';
 
 const Footer = () => {
   const d = new Date();
@@ -23,7 +24,16 @@ const Footer = () => {
             © {BLOG.AUTHOR} {copyrightDate}.
           </div>
           <div className="mb-2 mr-0 md:mb-0 md:mr-auto">
-            Licensed under <a href={BLOG.LICENSE_URL}>{BLOG.LICENSE}</a>.
+            <Trans
+              i18nKey={'copyright-notice'}
+              components={{
+                link: (
+                  <a href={BLOG.LICENSE_URL} target="_blank">
+                    {BLOG.LICENSE}
+                  </a>
+                ),
+              }}
+            />
           </div>
           <Vercel />
         </div>

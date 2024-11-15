@@ -1,4 +1,4 @@
-import BLOG from '@/blog.config';
+import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useNobeliumStore } from '../providers';

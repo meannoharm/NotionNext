@@ -1,4 +1,4 @@
-import BLOG from '@/blog.config';
+import BLOG from 'blog.config';
 // import DarkModeButton from '@/components/DarkModeButton'
 import Vercel from '@/components/Vercel';
 import { Trans } from 'next-i18next';

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import BLOG from '@/blog.config';
+import BLOG from 'blog.config';
 import TagItem from './TagItem';
 import md5 from 'js-md5';
 import dayjs from 'dayjs';

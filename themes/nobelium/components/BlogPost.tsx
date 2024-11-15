@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import BLOG from '@/blog.config';
+import BLOG from 'blog.config';
 import dayjs from 'dayjs';
 
 import type { FC } from 'react';

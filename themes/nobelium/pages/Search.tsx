@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { deepClone } from '@/lib/utils';
-import BLOG from '@/blog.config';
+import BLOG from 'blog.config';
 import replaceSearchResult from '@/components/Mark';
 import { isBrowser } from '@/lib/utils';
 import LayoutBase from '../layout/LayoutBase';

@@ -3,7 +3,7 @@ import Collapse from '@/components/Collapse';
 import { useRef, useState } from 'react';
 import { Language } from '@/components/HeroIcons';
 import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
-import nextI18NextConfig from '@/next-i18next.config.js';
+import nextI18NextConfig from 'next-i18next.config.js';
 
 import type { RefObject } from 'react';
 

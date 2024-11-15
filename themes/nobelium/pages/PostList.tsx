@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BLOG from '@/blog.config';
+import BLOG from 'blog.config';
 import LayoutBase from '../layout/LayoutBase';
 import { deepClone } from '@/lib/utils';
 import BlogListPage from '../components/BlogListPage';

@@ -8,7 +8,6 @@ import '@/styles/notion.css'; //  重写部分样式
 
 import { GlobalContextProvider } from '@/lib/global';
 import { appWithTranslation } from 'next-i18next';
-
 import dynamic from 'next/dynamic';
 import { isBrowser, loadExternalResource } from '@/lib/utils';
 import BLOG from '@/blog.config';
@@ -17,10 +16,12 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 import { initNProgress } from '@/components/NProgress';
 import '@/styles/nprogress.css';
 
+import type { AppProps } from 'next/app';
+
 // 各种扩展插件 动画等
 const ExternalPlugins = dynamic(() => import('@/components/ExternalPlugins'));
 
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   if (isBrowser) {
     AOS.init();
     initNProgress();

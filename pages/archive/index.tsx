@@ -6,6 +6,7 @@ import { isBrowser } from '@/lib/utils';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
 import { omit } from 'lodash';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { GetStaticProps } from 'next';
 import type {
@@ -50,7 +51,9 @@ const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   return <Archive pageMeta={pageMeta} {...props} />;
 };
 
-export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async () => {
+export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async ({
+  locale,
+}) => {
   const globalData = await getGlobalData('archive-index');
 
   const posts = globalData.allPages?.filter(
@@ -71,6 +74,7 @@ export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async () => {
       ...omit(globalData, 'allPages'),
       posts,
       archivePosts,
+      ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };

@@ -1,5 +1,6 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useLayout } from '@/theme';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
 import type {
@@ -30,11 +31,16 @@ const NoFound: FC<PageNotFoundIndexProps> = (props) => {
   return <Layout pageMeta={pageMeta} {...props} />;
 };
 
-export const getStaticProps: GetStaticProps<
-  PageNotFoundIndexProps
-> = async () => {
+export const getStaticProps: GetStaticProps<PageNotFoundIndexProps> = async ({
+  locale,
+}) => {
   const props = (await getGlobalData('404')) || {};
-  return { props };
+  return {
+    props: {
+      ...props,
+      ...(await serverSideTranslations(locale as string)),
+    },
+  };
 };
 
 export default NoFound;

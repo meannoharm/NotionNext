@@ -10,6 +10,7 @@ import { useLayout } from '@/theme';
 import md5 from 'js-md5';
 import { isBrowser } from '@/lib/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
@@ -131,8 +132,8 @@ export const getStaticPaths: GetStaticPaths<SlugIndexParams> = async () => {
 export const getStaticProps: GetStaticProps<
   SlugIndexProps,
   SlugIndexParams
-> = async (context) => {
-  const { prefix } = context.params as SlugIndexParams;
+> = async ({ params, locale }) => {
+  const { prefix } = params as SlugIndexParams;
   const fullSlug =
     BLOG.PSEUDO_STATIC && !prefix.endsWith('.html') ? `${prefix}.html` : prefix;
   const from = `slug-index-${fullSlug}`;
@@ -161,6 +162,7 @@ export const getStaticProps: GetStaticProps<
         prev: null,
         next: null,
         recommendPosts: [],
+        ...(await serverSideTranslations(locale as string)),
       },
       revalidate: BLOG.NEXT_REVALIDATE_SECOND,
     };

@@ -3,6 +3,7 @@ import { getPostBlocks } from '@/lib/notion';
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useLayout } from '@/theme';
 import { omit } from 'lodash';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, PageIndexProps, ThemePageProps } from '@/types';
@@ -50,8 +51,8 @@ export const getStaticPaths: GetStaticPaths<PageParams> = async () => {
 export const getStaticProps: GetStaticProps<
   PageIndexProps,
   PageParams
-> = async (context) => {
-  const { page } = context.params as PageParams;
+> = async ({ params, locale }) => {
+  const { page } = params as PageParams;
   const pageNumber = parseInt(page, 10);
   const props = await getGlobalData(`page-${pageNumber}`);
   const { allPages } = props;
@@ -85,6 +86,7 @@ export const getStaticProps: GetStaticProps<
       ...props,
       posts,
       page: pageNumber,
+      ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };

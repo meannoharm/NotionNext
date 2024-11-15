@@ -3,6 +3,7 @@ import React from 'react';
 import BLOG from '@/blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type {
@@ -43,8 +44,8 @@ const CategoryDetail: FC<CategoryDetailProps> = (props) => {
 export const getStaticProps: GetStaticProps<
   CategoryDetailProps,
   CategoryDetailParams
-> = async (context) => {
-  const { category } = context.params as CategoryDetailParams;
+> = async ({ params, locale }) => {
+  const { category } = params as CategoryDetailParams;
   const { allPages, ...globalProps } = await getGlobalData(
     'category-detail-props',
   );
@@ -66,6 +67,7 @@ export const getStaticProps: GetStaticProps<
       category,
       posts,
       postCount: posts.length,
+      ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };

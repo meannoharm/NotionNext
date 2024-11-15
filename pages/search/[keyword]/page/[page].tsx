@@ -4,6 +4,7 @@ import BLOG from '@/blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
 import { isIterable } from '@/lib/utils';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
 import type { PageMeta, SearchPageProps, ThemeSearchPageProps } from '@/types';
@@ -42,8 +43,8 @@ const SearchPage: FC<SearchPageProps> = (props) => {
 export const getStaticProps: GetStaticProps<
   SearchPageProps,
   SearchPageParams
-> = async (context) => {
-  const { keyword, page } = context.params as SearchPageParams;
+> = async ({ params, locale }) => {
+  const { keyword, page } = params as SearchPageParams;
   const { allPages, ...restProps } = await getGlobalData('search-props');
   const pageNumber = parseInt(page, 10);
   const filteredPosts = allPages?.filter(
@@ -60,6 +61,7 @@ export const getStaticProps: GetStaticProps<
       postCount: posts.length,
       page: pageNumber,
       keyword,
+      ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };

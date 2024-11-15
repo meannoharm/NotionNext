@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import BLOG from '@/blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
 import type { PageMeta, SearchIndexProps, ThemeSearchProps } from '@/types';
@@ -52,7 +53,9 @@ const SearchIndex: FC<SearchIndexProps> = (props) => {
 /**
  * 浏览器前端搜索
  */
-export const getStaticProps: GetStaticProps<SearchIndexProps> = async () => {
+export const getStaticProps: GetStaticProps<SearchIndexProps> = async ({
+  locale,
+}) => {
   const { allPages, ...restProps } = await getGlobalData('search-props');
   const posts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
@@ -61,6 +64,7 @@ export const getStaticProps: GetStaticProps<SearchIndexProps> = async () => {
     props: {
       ...restProps,
       posts,
+      ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };

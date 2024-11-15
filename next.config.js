@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { i18n } = require('./next-i18next.config');
 const { THEME } = require('./blog.config');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
+const { i18n } = require('./next-i18next.config');
 
 /**
  * 扫描指定目录下的文件夹名，用于获取当前有几个主题

@@ -2,6 +2,7 @@ import { getGlobalData } from '@/lib/notion/getNotionData';
 import BLOG from '@/blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type {
@@ -44,9 +45,9 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
 export const getStaticProps: GetStaticProps<
   SearchDetailProps,
   CategoryDetailParams
-> = async (context) => {
+> = async ({ params, locale }) => {
   const { allPages, ...restProps } = await getGlobalData('search-detail-page');
-  const { keyword } = context.params as CategoryDetailParams;
+  const { keyword } = params as CategoryDetailParams;
   const allPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   );
@@ -62,6 +63,7 @@ export const getStaticProps: GetStaticProps<
       postCount: posts.length,
       keyword,
       posts,
+      ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };

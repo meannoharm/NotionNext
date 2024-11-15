@@ -4,6 +4,7 @@ import BLOG from '@/blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
 import type { PageMeta, CategoryIndexProps, ThemeCategoryProps } from '@/types';
@@ -32,10 +33,15 @@ const Category: FC<CategoryIndexProps> = (props) => {
   return <Layout pageMeta={pageMeta} {...props} />;
 };
 
-export const getStaticProps: GetStaticProps<CategoryIndexProps> = async () => {
+export const getStaticProps: GetStaticProps<CategoryIndexProps> = async ({
+  locale,
+}) => {
   const globalData = await getGlobalData('category-index-props');
   return {
-    props: omit(globalData, 'allPages'),
+    props: {
+      ...omit(globalData, 'allPages'),
+      ...(await serverSideTranslations(locale as string)),
+    },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
 };

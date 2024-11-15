@@ -3,6 +3,7 @@ import BLOG from '@/blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
 import type { PageMeta, TagIndexProps, ThemeTagProps } from '@/types';
@@ -31,10 +32,15 @@ const TagIndex: FC<TagIndexProps> = (props) => {
   return <Layout {...props} pageMeta={pageMeta} />;
 };
 
-export const getStaticProps: GetStaticProps<TagIndexProps> = async () => {
+export const getStaticProps: GetStaticProps<TagIndexProps> = async ({
+  locale,
+}) => {
   const props = await getGlobalData('tag-index-props');
   return {
-    props: omit(props, 'allPages'),
+    props: {
+      ...omit(props, 'allPages'),
+      ...(await serverSideTranslations(locale as string)),
+    },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
 };

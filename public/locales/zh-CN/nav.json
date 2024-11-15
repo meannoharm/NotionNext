@@ -3,7 +3,9 @@
   "rss": "订阅",
   "search": "搜索",
   "about": "关于",
-  "navigator": "导航",
   "mail": "邮箱",
-  "archive": "归档"
+  "archive": "归档",
+  "navigator": "导航",
+  "category": "分类",
+  "tags": "标签"
 }

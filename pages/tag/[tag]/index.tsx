@@ -2,6 +2,7 @@ import { getGlobalData } from '@/lib/notion/getNotionData';
 import BLOG from '@/blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
 import type { PageMeta, TagDetailProps, ThemeTagDetailProps } from '@/types';
@@ -37,8 +38,8 @@ const TagIndex: FC<TagDetailProps> = (props) => {
 export const getStaticProps: GetStaticProps<
   TagDetailProps,
   TagIndexParams
-> = async (context) => {
-  const { tag } = context.params as TagIndexParams;
+> = async ({ params, locale }) => {
+  const { tag } = params as TagIndexParams;
   const { allPages, ...globalProps } = await getGlobalData('tag-props');
 
   const filteredPosts = allPages
@@ -56,6 +57,7 @@ export const getStaticProps: GetStaticProps<
       postCount: posts.length,
       tag,
       posts,
+      ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };

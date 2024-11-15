@@ -5,6 +5,7 @@ import { generateRss } from '@/lib/rss';
 import { generateRobotsTxt } from '@/lib/robots.txt';
 import { useLayout } from '@/theme';
 import { omit } from 'lodash';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -26,7 +27,9 @@ const Index: FC<HomeIndexProps> = (props) => {
  * SSG 获取数据
  * @returns
  */
-export const getStaticProps: GetStaticProps<HomeIndexProps> = async () => {
+export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
+  locale,
+}) => {
   const globalData = await getGlobalData('index');
 
   const { siteInfo } = globalData;
@@ -73,13 +76,12 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async () => {
     generateRss(globalData?.latestPosts || []);
   }
 
-  // 生成全文索引 - 仅在 yarn build 时执行 && process.env.npm_lifecycle_event === 'build'
-
   return {
     props: {
       pageMeta,
       posts,
       ...omit(globalData, 'allPages'),
+      ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };

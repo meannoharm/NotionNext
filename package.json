@@ -8,7 +8,7 @@
     "url": "https://github.com/czgaotian/NotionNextBlogBase.git"
   },
   "author": {
-    "name": "czgaotian",
+    "name": "czgotian",
     "email": "me@04.lu",
     "url": "http://04.lu"
   },
@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
+    "@types/aos": "^3.0.7",
     "@types/js-md5": "^0.7.2",
     "@types/lodash": "^4.17.7",
     "@types/memory-cache": "^0.2.6",

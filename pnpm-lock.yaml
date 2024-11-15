@@ -123,6 +123,9 @@ importers:
       '@eslint/js':
         specifier: ^9.3.0
         version: 9.3.0
+      '@types/aos':
+        specifier: ^3.0.7
+        version: 3.0.7
       '@types/js-md5':
         specifier: ^0.7.2
         version: 0.7.2
@@ -752,6 +755,9 @@ packages:
 
   '@tanstack/virtual-core@3.2.0':
     resolution: {integrity: sha512-P5XgYoAw/vfW65byBbJQCw+cagdXDT/qH6wmABiLt4v4YBT2q2vqCOhihe+D1Nt325F/S/0Tkv6C5z0Lv+VBQQ==}
+
+  '@types/aos@3.0.7':
+    resolution: {integrity: sha512-sEhyFqvKauUJZDbvAB3Pggynrq6g+2PS4XB3tmUr+mDL1gfDJnwslUC4QQ7/l8UD+LWpr3RxZVR/rHoZrLqZVg==}
 
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
@@ -4508,6 +4514,8 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
 
   '@tanstack/virtual-core@3.2.0': {}
+
+  '@types/aos@3.0.7': {}
 
   '@types/cacheable-request@6.0.3':
     dependencies:

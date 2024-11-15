@@ -1,4 +1,4 @@
-import BLOG from '@/blog.config';
+import BLOG from 'blog.config';
 import Live2D from '@/components/Live2D';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';

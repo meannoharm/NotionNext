@@ -1,4 +1,4 @@
-import BLOG from '@/blog.config';
+import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import BlogPost from './BlogPost';

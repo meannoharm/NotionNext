@@ -1,4 +1,4 @@
-import BLOG from '@/blog.config'
+import BLOG from 'blog.config';
 
 /**
  * 标题栏
@@ -6,14 +6,14 @@ import BLOG from '@/blog.config'
  * @returns
  */
 export const Title = (props) => {
-  const { siteInfo, post } = props
-  const title = post?.title || siteInfo?.description
-  const description = post?.description || BLOG.AUTHOR
+  const { siteInfo, post } = props;
+  const title = post?.title || siteInfo?.description;
+  const description = post?.description || BLOG.AUTHOR;
 
-  return <div className="text-center px-6 py-12 mb-6 bg-gray-100 dark:bg-hexo-black-gray dark:border-hexo-black-gray border-b">
-        <h1 className=" text-xl md:text-4xl pb-4">{title}</h1>
-        <p className="leading-loose text-gray-dark">
-            {description}
-        </p>
+  return (
+    <div className="mb-6 border-b bg-gray-100 px-6 py-12 text-center dark:border-hexo-black-gray dark:bg-hexo-black-gray">
+      <h1 className=" pb-4 text-xl md:text-4xl">{title}</h1>
+      <p className="text-gray-dark leading-loose">{description}</p>
     </div>
-}
+  );
+};

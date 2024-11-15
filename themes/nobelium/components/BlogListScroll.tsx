@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import BLOG from '@/blog.config';
+import BLOG from 'blog.config';
 import Link from 'next/link';
 import React from 'react';
 import { throttle } from 'lodash';

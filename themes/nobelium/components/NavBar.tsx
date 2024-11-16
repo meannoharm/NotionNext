@@ -3,14 +3,14 @@ import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
 import BLOG from 'blog.config';
 import { type FC, useRef, useState } from 'react';
 import CONFIG from 'themes/nobelium/theme.config';
-
-import type { NavLink } from 'themes/nobelium/types';
 import { MenuItemDrop } from './MenuItemDrop';
 import RandomPostButton from './RandomPostButton';
 import SearchButton from './SearchButton';
 import LanguageSwitchButton from './LanguageSwitchButton';
 import DarkModeButton from './DarkModeButton';
 import { MenuItemCollapse } from './MenuItemCollapse';
+
+import type { NavLink } from 'themes/nobelium/types';
 
 const NavBar: FC = () => {
   const [isOpen, changeOpen] = useState(false);

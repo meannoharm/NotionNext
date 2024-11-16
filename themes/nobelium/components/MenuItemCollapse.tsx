@@ -37,7 +37,7 @@ export const MenuItemCollapse: FC<MenuItemCollapseProps> = (props) => {
         <Link
           href={link?.to}
           target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
-          className="cursor flex p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
+          className="cursor flex p-3 text-gray-800 transition-all duration-200  hover:bg-gray-200  dark:text-gray-200 dark:hover:bg-gray-800"
         >
           {link?.icon && (
             <div className="mr-2">

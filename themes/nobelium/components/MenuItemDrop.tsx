@@ -31,7 +31,7 @@ export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
 
   return (
     <div
-      className="relative cursor-pointer rounded-full px-3 py-2 hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10"
+      className="relative cursor-pointer rounded-full px-3 py-2 text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
       ref={menuRef}
     >
       {!hasSubMenu && (

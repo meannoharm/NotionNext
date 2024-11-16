@@ -83,14 +83,14 @@ const NavBar: FC = () => {
         <div
           onClick={toggleOpen}
           ref={mobileMenuToggleButtonRef}
-          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-black hover:bg-opacity-10 dark:text-gray-200 dark:hover:bg-white dark:hover:bg-opacity-10"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
         >
           <i className="fas fa-bars"></i>
         </div>
 
         <div
           ref={mobileMenuRef}
-          className={`${isOpen ? 'block' : 'hidden'} absolute right-0 w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
+          className={`${isOpen ? 'block' : 'hidden'} absolute right-0 w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-900 dark:bg-black`}
         >
           <Collapse collapseRef={collapseRef} isOpen={isOpen} type="vertical">
             {links.map((link) => (

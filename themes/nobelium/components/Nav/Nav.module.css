@@ -8,7 +8,7 @@
 }
 
 .stickyNavFull {
-  @apply border-b border-gray-200 border-opacity-50 dark:border-gray-600 dark:border-opacity-50;
+  @apply border-b border-gray-400  dark:border-gray-600;
 }
 
 .article-tags::-webkit-scrollbar {
@@ -31,20 +31,13 @@
 
 @media (min-width: 768px) {
   .stickyNavFull {
-    @apply max-w-full border-b border-gray-200 border-opacity-50 dark:border-gray-600 dark:border-opacity-50;
-  }
-  .headerName {
-    display: block;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0, 1);
-  }
-  .stickyNavFull .headerName {
-    @apply text-gray-600 dark:text-gray-300;
+    @apply max-w-full border-b border-gray-200 border-opacity-50 dark:border-gray-800;
   }
 }
 
 @supports not (backdrop-filter: none) {
   .stickyNav {
     backdrop-filter: none;
-    @apply bg-day dark:bg-gray-800;
+    @apply bg-gray-200 dark:bg-gray-800;
   }
 }

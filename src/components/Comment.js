@@ -97,7 +97,7 @@ const Comment = ({ siteInfo, frontMatter, className }) => {
     <div
       key={frontMatter?.id}
       id="comment"
-      className={`comment mt-5 text-gray-800 dark:text-gray-300 ${className || ''}`}
+      className={`comment mt-5 text-gray-800 dark:text-gray-200 ${className || ''}`}
     >
       <Tabs>
         {BLOG.COMMENT_ARTALK_SERVER && (

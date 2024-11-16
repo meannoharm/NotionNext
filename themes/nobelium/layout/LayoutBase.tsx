@@ -47,7 +47,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
       <Nav />
 
       {/* 主区 */}
-      <main className="max-w-2xl flex-grow self-center px-4 transition-all">
+      <main className="w-full max-w-2xl flex-grow self-center px-4 transition-all">
         <Transition
           show={!onLoading}
           appear={true}

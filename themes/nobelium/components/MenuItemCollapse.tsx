@@ -1,6 +1,7 @@
 import Collapse from '@/components/Collapse';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
 import type { NavLink } from '../types';
@@ -18,6 +19,7 @@ export interface MenuItemCollapseProps {
 export const MenuItemCollapse: FC<MenuItemCollapseProps> = (props) => {
   const { link } = props;
   const [isOpen, changeIsOpen] = useState(false);
+  const { t } = useTranslation('nav');
 
   const hasSubMenu = link?.subMenus?.length && link?.subMenus?.length > 0;
 
@@ -30,19 +32,19 @@ export const MenuItemCollapse: FC<MenuItemCollapseProps> = (props) => {
   }
 
   return (
-    <div className="mb-2 transition-all duration-200  last:mb-0 dark:border-black dark:bg-hexo-black-gray">
+    <>
       {!hasSubMenu && (
         <Link
           href={link?.to}
           target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
-          className="flex px-4 dark:text-gray-200 "
+          className="cursor flex p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
         >
           {link?.icon && (
             <div className="mr-2">
               <i className={link.icon} />
             </div>
           )}
-          <div>{link?.name}</div>
+          <div className="font-medium">{t(link.name)}</div>
         </Link>
       )}
       {hasSubMenu && (
@@ -78,7 +80,7 @@ export const MenuItemCollapse: FC<MenuItemCollapseProps> = (props) => {
                     target={
                       link?.to?.indexOf('http') === 0 ? '_blank' : '_self'
                     }
-                    className="mt-2 px-12"
+                    className="mt-2 px-12 font-medium"
                   >
                     {sLink.title}
                   </Link>
@@ -87,6 +89,6 @@ export const MenuItemCollapse: FC<MenuItemCollapseProps> = (props) => {
           </div>
         </Collapse>
       )}
-    </div>
+    </>
   );
 };

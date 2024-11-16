@@ -40,7 +40,8 @@ export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
           href={link?.to}
           target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
         >
-          {link?.icon && <i className={link?.icon} />} {t(link.name)}
+          {link?.icon && <i className={link?.icon} />}{' '}
+          <span className="font-medium">{t(link.name)}</span>
         </Link>
       )}
 

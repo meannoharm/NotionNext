@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async ({
   posts
     .sort((a, b) => (dayjs(b.publishDate).isAfter(a.publishDate) ? 1 : -1))
     .forEach((post) => {
-      const date = dayjs(post.publishDate).format('yyyy-MM');
+      const date = dayjs(post.publishDate).format('YYYY-MM');
       if (!archivePosts[date]) archivePosts[date] = [];
       archivePosts[date].push(post);
     });

@@ -10,7 +10,7 @@ export type PageMeta = {
   category?: string;
   tags?: string[];
 };
-
+export type ArchivePosts = Record<string, PageInfo[]>;
 export type DataBaseForProps = Omit<DataBaseInfo, 'allPages'>;
 
 export type PageMetaProps = {
@@ -26,7 +26,7 @@ export type HomeIndexProps = DataBaseForProps &
 export type PageNotFoundIndexProps = DataBaseForProps;
 export type ArchiveIndexProps = DataBaseForProps & {
   posts: PageInfo[];
-  archivePosts: Record<string, PageInfo[]>;
+  archivePosts: ArchivePosts;
 };
 export type PageIndexProps = DataBaseForProps & {
   posts: PageInfo[];

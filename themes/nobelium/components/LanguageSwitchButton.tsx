@@ -44,12 +44,12 @@ export default function LanguageSwitchButton() {
         <Language className="h-5 w-5" />
       </div>
       <div
-        className={`${isOpen ? 'top-10 block' : 'top-8 hidden'} absolute right-0 w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
+        className={`${isOpen ? 'block' : 'hidden'} absolute right-0 w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
       >
         <Collapse isOpen={isOpen}>
           {locales.map((locale) => (
             <div
-              className="cursor p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
+              className="cursor-pointer p-3 font-medium text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
               key={locale}
               onClick={() => changeLanguage(locale)}
             >

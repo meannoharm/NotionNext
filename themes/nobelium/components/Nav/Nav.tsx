@@ -135,10 +135,6 @@ const NavBar: FC = () => {
     },
   ];
 
-  if (!links || links.length === 0) {
-    return null;
-  }
-
   return (
     <div className="flex flex-shrink-0">
       <ul className="hidden flex-row md:flex">
@@ -153,32 +149,29 @@ const NavBar: FC = () => {
       {CONFIG.MENU_DARK_MODE_SWITCH && <DarkModeButton />}
 
       {/* 移动端菜单按钮 */}
-      <div
-        onClick={toggleOpen}
-        ref={mobileMenuToggleButtonRef}
-        className="flex h-10 w-10 cursor-pointer items-center justify-center md:hidden"
-      >
-        <i className="fas fa-bars"></i>
-      </div>
-
-      {/* 移动端使用的菜单 */}
-      <div className="md:hidden" ref={mobileMenuRef}>
-        <Collapse
-          collapseRef={collapseRef}
-          isOpen={isOpen}
-          type="vertical"
-          className="fixed right-6 top-16"
+      <div className="relative md:hidden">
+        <div
+          onClick={toggleOpen}
+          ref={mobileMenuToggleButtonRef}
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-black hover:bg-opacity-10 dark:text-gray-200 dark:hover:bg-white dark:hover:bg-opacity-10"
         >
-          <div className="flex w-48 flex-col rounded border bg-white py-2 text-sm dark:border-black dark:bg-black">
+          <i className="fas fa-bars"></i>
+        </div>
+
+        <div
+          ref={mobileMenuRef}
+          className={`${isOpen ? 'block' : 'hidden'} absolute right-0 w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
+        >
+          <Collapse collapseRef={collapseRef} isOpen={isOpen} type="vertical">
             {links.map((link) => (
               <MenuItemCollapse
-                key={link?.id}
+                key={link.id}
                 link={link}
                 onHeightChange={collapseRef.current?.updateCollapseHeight}
               />
             ))}
-          </div>
-        </Collapse>
+          </Collapse>
+        </div>
       </div>
     </div>
   );

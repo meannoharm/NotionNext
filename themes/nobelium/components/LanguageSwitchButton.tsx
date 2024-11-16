@@ -39,17 +39,17 @@ export default function LanguageSwitchButton() {
   return (
     <div className="relative" onClick={() => setIsOpen(!isOpen)} ref={menuRef}>
       <div
-        className={`flex h-10 w-10 transform cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-black hover:bg-opacity-10 dark:text-gray-200 dark:hover:bg-white dark:hover:bg-opacity-10`}
+        className={`flex h-10 w-10 transform cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800`}
       >
         <Language className="h-5 w-5" />
       </div>
       <div
-        className={`${isOpen ? 'block' : 'hidden'} absolute right-0 w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-800 dark:bg-black`}
+        className={`${isOpen ? 'block' : 'hidden'} absolute right-0 w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-900 dark:bg-black`}
       >
         <Collapse isOpen={isOpen}>
           {locales.map((locale) => (
             <div
-              className="cursor-pointer p-3 font-medium text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
+              className="cursor-pointer p-3 font-medium text-gray-800 transition-all duration-200  hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
               key={locale}
               onClick={() => changeLanguage(locale)}
             >

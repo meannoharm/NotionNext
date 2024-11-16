@@ -44,7 +44,7 @@ const Nav: FC = () => {
         ref={navRef}
       >
         <Link
-          className="flex items-center rounded-full px-3 py-2 hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10"
+          className="flex items-center rounded-full px-3 py-2 text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
           href="/"
           aria-label={BLOG.TITLE}
         >
@@ -62,7 +62,7 @@ const Nav: FC = () => {
             )}
           </div>
           <p
-            className={`${styles.headerName} ml-2 overflow-hidden font-medium text-gray-800 dark:text-gray-300`}
+            className={`${styles.headerName} ml-2 overflow-hidden font-medium text-gray-800  dark:text-gray-200`}
           >
             {siteInfo?.title}
           </p>

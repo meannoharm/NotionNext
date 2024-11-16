@@ -22,7 +22,7 @@ export default function RandomPostButton() {
   return (
     <div
       title={t('walk-around')}
-      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-black hover:bg-opacity-10 dark:text-gray-200 dark:hover:bg-white dark:hover:bg-opacity-100"
+      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
       onClick={handleClick}
     >
       <i className="fa-solid fa-podcast"></i>

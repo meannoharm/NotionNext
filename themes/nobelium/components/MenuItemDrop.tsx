@@ -66,7 +66,7 @@ export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
             return (
               <Link
                 key={sLink.id}
-                className="p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-900"
+                className="p-3 text-gray-700 transition-all duration-200  hover:bg-gray-50 dark:border-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
                 href={sLink.to}
                 target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
               >

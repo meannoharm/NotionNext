@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import BLOG from 'blog.config';
-import CONFIG from '../../theme.config';
-import { SvgIcon } from '../SvgIcon';
+import CONFIG from '@themes/nobelium/theme.config';
+import { SvgIcon } from './components/SvgIcon';
 import LazyImage from '@/components/LazyImage';
-import { useNobeliumStore } from '../../providers';
-import NavBar from '../NavBar';
+import { useNobeliumStore } from '@themes/nobelium/providers';
+import NavBar from './components/NavBar/NavBar';
 import styles from './Nav.module.css';
 
 import type { FC } from 'react';
@@ -49,7 +49,6 @@ const Nav: FC = () => {
           aria-label={BLOG.TITLE}
         >
           <div className="h-6 w-6">
-            {/* <SvgIcon/> */}
             {CONFIG.NAV_NOTION_ICON ? (
               <LazyImage
                 src={siteInfo?.icon}

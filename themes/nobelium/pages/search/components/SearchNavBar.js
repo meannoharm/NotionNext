@@ -1,5 +1,5 @@
 import SearchInput from './SearchInput';
-import Tags from './Tags';
+import Tags from '@themes/nobelium/components/Tags';
 
 /**
  * 搜索页面上方嵌入内容

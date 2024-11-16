@@ -3,12 +3,12 @@ import { deepClone } from '@/lib/utils';
 import BLOG from 'blog.config';
 import replaceSearchResult from '@/components/Mark';
 import { isBrowser } from '@/lib/utils';
-import LayoutBase from '../layout/LayoutBase';
-import BlogListBar from '../components/BlogListBar';
-import SearchNavBar from '../components/SearchNavBar';
-import BlogListPage from '../components/BlogListPage';
-import BlogListScroll from '../components/BlogListScroll';
-import { ContextWrapper } from '../providers/index';
+import LayoutBase from '@themes/nobelium/layout/LayoutBase';
+import BlogListBar from '@themes/nobelium/components/BlogListBar';
+import SearchNavBar from './components/SearchNavBar';
+import BlogListPage from '@themes/nobelium/components/BlogListPage';
+import BlogListScroll from '@themes/nobelium/components/BlogListScroll';
+import { ContextWrapper } from '@themes/nobelium/providers/index';
 
 import type { FC } from 'react';
 import type { ThemeSearchProps } from '@/types';

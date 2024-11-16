@@ -1,10 +1,10 @@
 import { Transition } from '@headlessui/react';
 import { useGlobal } from '@/lib/global';
 import CommonHead from '@/components/CommonHead';
-import Nav from '../components/Nav/Nav';
-import Footer from '../components/Footer';
-import JumpToTopButton from '../components/JumpToTopButton';
-import { useNobeliumStore } from '../providers';
+import Nav from './components/Nav/Nav';
+import Footer from './components/Footer';
+import JumpToTopButton from './components/JumpToTopButton';
+import { useNobeliumStore } from '@themes/nobelium/providers';
 
 import { useEffect, type FC, type ReactNode } from 'react';
 import type { ThemeBaseProps } from '@/types';

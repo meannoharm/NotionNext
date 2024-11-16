@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { useNobeliumStore } from '../providers';
+import { useNobeliumStore } from '@themes/nobelium/providers';
 
 /**
  * 随机跳转到一个文章

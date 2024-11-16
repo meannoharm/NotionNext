@@ -1,6 +1,6 @@
-import LayoutBase from '../layout/LayoutBase';
-import BlogArchiveItem from '../components/BlogArchiveItem';
-import { ContextWrapper } from '../providers';
+import LayoutBase from '@themes/nobelium/layout/LayoutBase';
+import BlogArchiveItem from './components/BlogArchiveItem';
+import { ContextWrapper } from '@themes/nobelium/providers';
 
 import type { FC } from 'react';
 import type { ThemeArchiveProps } from '@/types';

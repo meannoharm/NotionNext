@@ -7,8 +7,9 @@ import type { PageInfo } from '@/lib/notion/types';
 
 export interface BlogPostProps {
   post: PageInfo;
+  isShowSummary?: boolean;
 }
-const BlogPost: FC<BlogPostProps> = ({ post }) => {
+const BlogPost: FC<BlogPostProps> = ({ post, isShowSummary = true }) => {
   return (
     <Link href={`${BLOG.SUB_PATH}/${post.slug}`}>
       <article
@@ -23,7 +24,7 @@ const BlogPost: FC<BlogPostProps> = ({ post }) => {
             {dayjs(post?.publishDate).format('YYYY-MM-DD')}
           </time>
         </header>
-        {post.summary && (
+        {isShowSummary && post.summary && (
           <div className="mb-2 hidden leading-8 text-gray-700 md:block dark:text-gray-300">
             {post.summary}
           </div>

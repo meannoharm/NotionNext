@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { useRef } from 'react';
 
 import type { FC } from 'react';
-import type { NavLink } from '../types';
+import type { NavLink } from '@themes/nobelium/types';
 
 export interface MenuItemDropProps {
   link: NavLink;

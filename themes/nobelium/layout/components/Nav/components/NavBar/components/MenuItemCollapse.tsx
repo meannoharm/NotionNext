@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import type { NavLink } from '../types';
+import type { NavLink } from '@themes/nobelium/types';
 
 export interface MenuItemCollapseProps {
   link: NavLink;

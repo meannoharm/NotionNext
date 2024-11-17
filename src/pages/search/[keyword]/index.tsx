@@ -1,8 +1,9 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getGlobalData } from '@/lib/notion';
 import BLOG from 'blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { getDataFromCache } from '@/lib/cache/cacheManager';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type {
@@ -12,8 +13,7 @@ import type {
 } from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import { DataBaseInfo, PageInfo } from '@/lib/notion/types';
-import { getDataFromCache } from '@/lib/cache/cacheManager';
+import type { DataBaseInfo, PageInfo } from '@/lib/notion';
 
 export interface CategoryDetailParams extends ParsedUrlQuery {
   keyword: string;

@@ -7,7 +7,7 @@ import BlogListScroll from '../components/BlogListScroll';
 import BlogListBar from '../components/BlogListBar';
 import { ContextWrapper } from '../providers';
 
-import type { PageInfo } from '@/lib/notion/types';
+import type { PageInfo } from '@/lib/notion';
 import type {
   ThemeHomeProps,
   ThemeCategoryDetailProps,

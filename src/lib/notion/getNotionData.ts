@@ -1,6 +1,6 @@
 import BLOG from 'blog.config';
 import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
-import { getPostBlocks } from '@/lib/notion/getPostBlocks';
+import { getPostBlocks } from '@/lib/notion';
 import { idToUuid } from 'notion-utils';
 import { getAllCategories } from './getAllCategories';
 import getAllPageIds from './getAllPageIds';

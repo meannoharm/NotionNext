@@ -1,6 +1,5 @@
 import BLOG from 'blog.config';
-import { getPostBlocks } from '@/lib/notion';
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getPostBlocks, getGlobalData } from '@/lib/notion';
 import { useLayout } from '@/theme';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

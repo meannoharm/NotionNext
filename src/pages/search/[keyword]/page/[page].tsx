@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getGlobalData } from '@/lib/notion';
 import { getDataFromCache } from '@/lib/cache/cacheManager';
 import BLOG from 'blog.config';
 import { useLayout } from '@/theme';
@@ -10,7 +10,7 @@ import type { FC } from 'react';
 import type { PageMeta, SearchPageProps, ThemeSearchPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { DataBaseInfo, PageInfo } from '@/lib/notion/types';
+import type { DataBaseInfo, PageInfo } from '@/lib/notion';
 
 export interface SearchPageParams extends ParsedUrlQuery {
   keyword: string;

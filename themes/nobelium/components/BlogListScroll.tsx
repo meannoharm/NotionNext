@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
 
 import type { FC } from 'react';
-import { PageInfo } from '@/lib/notion/types';
+import { PageInfo } from '@/lib/notion';
 
 export interface BlogListScrollProps {
   posts: PageInfo[];

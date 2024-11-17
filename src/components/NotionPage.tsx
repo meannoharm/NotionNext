@@ -4,6 +4,8 @@ import mediumZoom from 'medium-zoom';
 import React, { type FC, useEffect, useRef } from 'react';
 // import { Code } from 'react-notion-x/build/third-party/code'
 import TweetEmbed from 'react-tweet-embed';
+import Image from 'next/image';
+import Link from 'next/link';
 
 import BLOG from 'blog.config';
 import 'katex/dist/katex.min.css';
@@ -146,6 +148,8 @@ const NotionPage: FC<{
           Modal,
           Pdf,
           Tweet,
+          nextImage: Image,
+          nextLink: Link,
         }}
       />
 

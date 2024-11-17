@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion';
+import { getGlobalData } from '@/lib/notion/getNotionData';
 import { getDataFromCache } from '@/lib/cache/cacheManager';
 import BLOG from 'blog.config';
 import { useLayout } from '@/theme';

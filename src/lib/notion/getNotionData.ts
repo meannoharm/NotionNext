@@ -1,6 +1,6 @@
 import BLOG from 'blog.config';
 import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
-import { getPostBlocks } from '@/lib/notion';
+import { getPostBlocks } from './getPostBlocks';
 import { idToUuid } from 'notion-utils';
 import { getAllCategories } from './getAllCategories';
 import getAllPageIds from './getAllPageIds';
@@ -21,6 +21,7 @@ import type {
 
 /**
  * 获取博客数据
+ * get the content of entire page in notion, it is the base table page
  * @param {*} pageId
  * @param {*} from
  * @returns

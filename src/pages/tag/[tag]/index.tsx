@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion';
+import { getGlobalData } from '@/lib/notion/getNotionData';
 import BLOG from 'blog.config';
 import { useLayout } from '@/theme';
 import { useTranslation } from 'next-i18next';

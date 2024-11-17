@@ -2,7 +2,7 @@ import fs from 'fs';
 import { Feed } from 'feed';
 import BLOG from 'blog.config';
 import ReactDOMServer from 'react-dom/server';
-import { getPostBlocks } from '@/lib/notion';
+import { getPostBlocks } from './notion/getPostBlocks';
 import NotionPage from '@/components/NotionPage';
 
 /**

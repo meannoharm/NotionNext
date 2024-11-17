@@ -4,6 +4,7 @@ import {
   getGlobalData,
   getPageInfoOfPostPage,
   getPageTableOfContents,
+  PagePropertiesType,
 } from '@/lib/notion';
 import { useCallback, useEffect, useState } from 'react';
 import { idToUuid } from 'notion-utils';
@@ -18,7 +19,7 @@ import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, SlugIndexProps, ThemePrefixProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type { PageInfo, PagePropertiesType } from '@/lib/notion';
+import type { PageInfo } from '@/lib/notion';
 
 export interface SlugIndexParams extends ParsedUrlQuery {
   prefix: string;

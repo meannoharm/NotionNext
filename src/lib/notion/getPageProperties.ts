@@ -4,14 +4,14 @@ import BLOG from 'blog.config';
 import md5 from 'js-md5';
 import { mapImgUrl } from './mapImage';
 import dayjs from 'dayjs';
-import { PagePropertiesType, PagePropertiesStatus } from './types';
+import { PagePropertiesType, PagePropertiesStatus } from '@/types/notion';
 
 import type {
   BlockMap,
   PageInfo,
   CollectionPropertySchemaMap,
   Decoration,
-} from './types';
+} from '@/types/notion';
 
 type TempPageInfo = Partial<PageInfo> & { [key: string]: any };
 const excludeProperties = ['date', 'select', 'multi_select', 'person'];
@@ -111,7 +111,7 @@ export default async function getPageProperties(
   if (pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_post) {
     pageInfo.slug = BLOG.POST_URL_PREFIX
       ? generateCustomizeUrl(pageInfo)
-      : pageInfo.slug ?? pageInfo.id;
+      : (pageInfo.slug ?? pageInfo.id);
   } else if (pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_page) {
     pageInfo.slug = pageInfo.slug ?? pageInfo.id;
   } else if (

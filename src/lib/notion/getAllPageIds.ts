@@ -1,4 +1,4 @@
-import type { CollectionQueryResult, CollectionViewMap } from './types';
+import type { CollectionQueryResult, CollectionViewMap } from '@/types/notion';
 
 type Query = {
   [collectionId: string]: {

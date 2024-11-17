@@ -1,6 +1,6 @@
 import BLOG from 'blog.config';
 import type { Block } from 'notion-types';
-import { PatchedCollection } from './types';
+import { PatchedCollection } from '@/types/notion';
 
 /**
  * 图片映射

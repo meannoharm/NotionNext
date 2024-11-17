@@ -17,7 +17,7 @@ import type {
   SiteInfo,
   DataBaseInfo,
   PatchedCollection,
-} from './types';
+} from '@/types/notion';
 
 /**
  * 获取博客数据

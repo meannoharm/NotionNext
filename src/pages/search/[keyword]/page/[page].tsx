@@ -7,10 +7,15 @@ import { isIterable } from '@/lib/utils';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
-import type { PageMeta, SearchPageProps, ThemeSearchPageProps } from '@/types';
+import type {
+  PageMeta,
+  SearchPageProps,
+  ThemeSearchPageProps,
+  DataBaseInfo,
+  PageInfo,
+} from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { DataBaseInfo, PageInfo } from '@/lib/notion';
 
 export interface SearchPageParams extends ParsedUrlQuery {
   keyword: string;

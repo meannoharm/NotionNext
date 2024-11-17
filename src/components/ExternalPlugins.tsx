@@ -2,17 +2,6 @@ import BLOG from 'blog.config';
 import dynamic from 'next/dynamic';
 import WebWhiz from './Webwhiz';
 
-// import TwikooCommentCounter from '@/components/TwikooCommentCounter'
-// import { DebugPanel } from '@/components/DebugPanel'
-// import { ThemeSwitch } from '@/components/ThemeSwitch'
-// import { Fireworks } from '@/components/Fireworks'
-// import { Nest } from '@/components/Nest'
-// import { FlutteringRibbon } from '@/components/FlutteringRibbon'
-// import { Ribbon } from '@/components/Ribbon'
-// import { Sakura } from '@/components/Sakura'
-// import { StarrySky } from '@/components/StarrySky'
-// import { Analytics } from '@vercel/analytics/react'
-
 const TwikooCommentCounter = dynamic(
   () => import('@/components/TwikooCommentCounter'),
   { ssr: false },

@@ -16,6 +16,7 @@ export async function getCache(key: string) {
     json = JSON.parse(data.toString());
   } catch (error) {
     console.error('读取JSON缓存文件失败', data);
+    console.error(error);
     return null;
   }
   // 缓存超过有效期就作废

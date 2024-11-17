@@ -20,5 +20,6 @@ export async function generateRobotsTxt() {
   } catch (error) {
     // 在vercel运行环境是只读的，这里会报错；
     // 但在vercel编译阶段、或VPS等其他平台这行代码会成功执行
+    console.log(error);
   }
 }

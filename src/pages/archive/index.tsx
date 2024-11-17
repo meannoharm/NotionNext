@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getGlobalData } from '@/lib/notion';
 import { useEffect, type FC } from 'react';
 import BLOG from 'blog.config';
 import { useLayout } from '@/theme';
@@ -14,7 +14,7 @@ import type {
   ArchiveIndexProps,
   ThemeArchiveProps,
 } from '../../types/page';
-import type { PageInfo } from '@/lib/notion/types';
+import type { PageInfo } from '@/lib/notion';
 
 const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   const { siteInfo } = props;

@@ -1,6 +1,5 @@
 import BLOG from 'blog.config';
-import { getPostBlocks } from '@/lib/notion';
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getPostBlocks, getGlobalData } from '@/lib/notion';
 import { generateRss } from '@/lib/rss';
 import { generateRobotsTxt } from '@/lib/robots.txt';
 import { useLayout } from '@/theme';
@@ -10,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
 import type { HomeIndexProps, ThemeHomeProps } from '@/types';
-import type { PageInfo } from '@/lib/notion/types';
+import type { PageInfo } from '@/lib/notion';
 
 /**
  * 首页布局

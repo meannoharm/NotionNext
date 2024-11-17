@@ -1,5 +1,6 @@
-import { PageInfo } from '@/lib/notion/types';
 import dynamic from 'next/dynamic';
+
+import type { PageInfo } from '@/lib/notion';
 import type { FC } from 'react';
 
 const NotionPage = dynamic(() => import('@/components/NotionPage'));

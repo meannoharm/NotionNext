@@ -5,6 +5,8 @@ import '@/styles/utility-patterns.css';
 // core styles shared by all of react-notion-x (required)
 import 'react-notion-x/src/styles.css';
 import '@/styles/notion.css'; //  重写部分样式
+// used for rendering equations (optional)
+import 'katex/dist/katex.min.css';
 
 import { GlobalContextProvider } from '@/lib/global';
 import { appWithTranslation } from 'next-i18next';

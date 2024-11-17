@@ -1,4 +1,4 @@
-import { DataBaseInfo, PageInfo } from '@/lib/notion/types';
+import type { DataBaseInfo, PageInfo } from '@/lib/notion';
 
 export type PageMeta = {
   title: string;

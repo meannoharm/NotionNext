@@ -5,7 +5,7 @@ import md5 from 'js-md5';
 import dayjs from 'dayjs';
 
 import type { FC } from 'react';
-import type { PageInfo } from '@/lib/notion/types';
+import type { PageInfo } from '@/lib/notion';
 
 export interface ArticleInfoProps {
   post: PageInfo;

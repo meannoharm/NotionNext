@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { TagInfo } from '@/lib/notion/types';
+import type { TagInfo } from '@/lib/notion';
 import type { FC } from 'react';
 
 export interface TagsProps {

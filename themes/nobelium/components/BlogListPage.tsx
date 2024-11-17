@@ -5,7 +5,7 @@ import BlogPost from './BlogPost';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import { PageInfo } from '@/lib/notion/types';
+import { PageInfo } from '@/lib/notion';
 
 export interface BlogListPageProps {
   posts: PageInfo[];

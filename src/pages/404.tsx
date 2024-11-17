@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getGlobalData } from '@/lib/notion';
 import { useLayout } from '@/theme';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 

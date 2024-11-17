@@ -1,11 +1,13 @@
 import BLOG from 'blog.config';
-import { getPostBlocks } from '@/lib/notion';
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import {
+  getPostBlocks,
+  getGlobalData,
+  getPageInfoOfPostPage,
+  getPageTableOfContents,
+} from '@/lib/notion';
 import { useCallback, useEffect, useState } from 'react';
 import { idToUuid } from 'notion-utils';
 import { useRouter } from 'next/router';
-import { getPageInfoOfPostPage } from '@/lib/notion/getPageInfoOfPostPage';
-import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
 import { useLayout } from '@/theme';
 import md5 from 'js-md5';
 import { isBrowser } from '@/lib/utils';
@@ -16,7 +18,7 @@ import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, SlugIndexProps, ThemePrefixProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import { PageInfo, PagePropertiesType } from '@/lib/notion/types';
+import type { PageInfo, PagePropertiesType } from '@/lib/notion';
 
 export interface SlugIndexParams extends ParsedUrlQuery {
   prefix: string;

@@ -112,12 +112,13 @@ const Collapse: FC<CollapseProps> = (props) => {
       if (ref.current) collapseSection(ref.current);
     }
     // 通知父组件高度变化
-    onHeightChange &&
+    if (onHeightChange) {
       onHeightChange({
         height: ref.current?.scrollHeight || 0,
         width: ref.current?.scrollWidth || 0,
         increase: isOpen,
       });
+    }
   }, [isOpen]);
 
   return (

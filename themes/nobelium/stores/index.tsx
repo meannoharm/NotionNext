@@ -1,6 +1,6 @@
 import { createStore } from 'zustand';
 
-import { SiteInfo, PageInfo } from '@/lib/notion/types';
+import { SiteInfo, PageInfo } from '@/lib/notion';
 
 export interface NobeliumState {
   siteInfo: SiteInfo;

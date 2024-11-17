@@ -8,6 +8,7 @@ import type { ExtendedRecordMap } from '@/types/notion';
 
 /**
  * 获取文章内容
+ * get the content of line Block which type is 'Post'
  * @param {*} id
  * @param {*} from
  * @param {*} slice

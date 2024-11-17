@@ -1,10 +1,8 @@
 import BLOG from 'blog.config';
-import {
-  getPostBlocks,
-  getGlobalData,
-  getPageInfoOfPostPage,
-  getPageTableOfContents,
-} from '@/lib/notion';
+import { getPostBlocks } from '@/lib/notion/getPostBlocks';
+import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getPageInfoOfPostPage } from '@/lib/notion/getPageInfoOfPostPage';
+import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
 import { useCallback, useEffect, useState } from 'react';
 import { idToUuid } from 'notion-utils';
 import { useRouter } from 'next/router';

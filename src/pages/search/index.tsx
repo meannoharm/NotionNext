@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion';
+import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useRouter } from 'next/router';
 import BLOG from 'blog.config';
 import { useLayout } from '@/theme';

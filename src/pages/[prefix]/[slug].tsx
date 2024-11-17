@@ -1,9 +1,7 @@
 import BLOG from 'blog.config';
-import {
-  getPostBlocks,
-  getGlobalData,
-  getPageInfoOfPostPage,
-} from '@/lib/notion';
+import { getPostBlocks } from '@/lib/notion/getPostBlocks';
+import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getPageInfoOfPostPage } from '@/lib/notion/getPageInfoOfPostPage';
 import { idToUuid } from 'notion-utils';
 import Slug, { findRelatedPosts } from '.';
 import { uploadDataToAlgolia } from '@/lib/algolia';

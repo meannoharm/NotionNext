@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion';
+import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useEffect, type FC } from 'react';
 import BLOG from 'blog.config';
 import { useLayout } from '@/theme';

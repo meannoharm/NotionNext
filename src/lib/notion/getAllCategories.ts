@@ -1,4 +1,4 @@
-import type { CategoryInfo, PageInfo, SelectOption } from './types';
+import type { CategoryInfo, PageInfo, SelectOption } from '@/types/notion';
 
 /**
  * 获取所有文章的标签

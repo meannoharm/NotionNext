@@ -1,5 +1,5 @@
 import { isIterable } from '../utils';
-import type { PageInfo, SelectOption, TagInfo } from './types';
+import type { PageInfo, SelectOption, TagInfo } from '@/types/notion';
 
 /**
  * 获取所有文章的标签

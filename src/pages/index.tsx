@@ -9,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
 import type { HomeIndexProps, ThemeHomeProps } from '@/types';
-import type { PageInfo } from '@/lib/notion';
+import type { PageInfo } from '@/types/notion';
 
 /**
  * 首页布局

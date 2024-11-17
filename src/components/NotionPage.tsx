@@ -12,7 +12,7 @@ import 'katex/dist/katex.min.css';
 import { mapImgUrl } from '@/lib/notion/mapImage';
 import { isBrowser } from '@/lib/utils';
 
-import type { PageInfo } from '@/lib/notion/types';
+import type { PageInfo } from '@/types/notion';
 
 const Code = dynamic(
   () =>

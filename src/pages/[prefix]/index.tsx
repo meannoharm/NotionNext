@@ -4,7 +4,6 @@ import {
   getGlobalData,
   getPageInfoOfPostPage,
   getPageTableOfContents,
-  PagePropertiesType,
 } from '@/lib/notion';
 import { useCallback, useEffect, useState } from 'react';
 import { idToUuid } from 'notion-utils';
@@ -14,12 +13,17 @@ import md5 from 'js-md5';
 import { isBrowser } from '@/lib/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { PagePropertiesType } from '@/types/notion';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type { PageMeta, SlugIndexProps, ThemePrefixProps } from '@/types';
+import type {
+  PageMeta,
+  SlugIndexProps,
+  ThemePrefixProps,
+  PageInfo,
+} from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type { PageInfo } from '@/lib/notion';
 
 export interface SlugIndexParams extends ParsedUrlQuery {
   prefix: string;

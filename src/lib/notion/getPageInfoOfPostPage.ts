@@ -9,7 +9,7 @@ import {
   PageInfo,
   PagePropertiesType,
   PagePropertiesStatus,
-} from './types';
+} from '@/types/notion';
 
 /**
  * formate from postBlock to pageInfo

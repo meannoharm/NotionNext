@@ -10,10 +10,11 @@ import type {
   PageMeta,
   SearchDetailProps,
   ThemeSearchDetailProps,
+  DataBaseInfo,
+  PageInfo,
 } from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type { DataBaseInfo, PageInfo } from '@/lib/notion';
 
 export interface CategoryDetailParams extends ParsedUrlQuery {
   keyword: string;

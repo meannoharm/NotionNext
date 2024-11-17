@@ -4,7 +4,7 @@ import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
 import { delay } from '../utils';
 import { cloneDeep } from 'lodash';
 
-import type { ExtendedRecordMap } from './types';
+import type { ExtendedRecordMap } from '@/types/notion';
 
 /**
  * 获取文章内容

@@ -4,7 +4,7 @@ import type {
   TableOfContentsEntry,
   PageInfo,
   ExtendedRecordMap,
-} from './types';
+} from '@/types/notion';
 
 const indentLevels = {
   header: 0,

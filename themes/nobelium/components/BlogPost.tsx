@@ -3,7 +3,7 @@ import BLOG from 'blog.config';
 import dayjs from 'dayjs';
 
 import type { FC } from 'react';
-import type { PageInfo } from '@/lib/notion';
+import type { PageInfo } from '@/types';
 
 export interface BlogPostProps {
   post: PageInfo;

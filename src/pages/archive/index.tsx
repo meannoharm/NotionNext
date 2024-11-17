@@ -14,7 +14,7 @@ import type {
   ArchiveIndexProps,
   ThemeArchiveProps,
 } from '../../types/page';
-import type { PageInfo } from '@/lib/notion';
+import type { PageInfo } from '@/types/notion';
 
 const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   const { siteInfo } = props;

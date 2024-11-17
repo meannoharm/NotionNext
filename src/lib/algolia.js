@@ -36,6 +36,7 @@ const uploadDataToAlgolia = async (post) => {
   try {
     existed = await index.getObject(post.id);
   } catch (error) {
+    console.error(error);
     // 通常是不存在索引
   }
 

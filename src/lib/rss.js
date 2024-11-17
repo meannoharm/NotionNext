@@ -59,5 +59,6 @@ export async function generateRss(posts) {
     // 在vercel运行环境是只读的，这里会报错；
     // 但在vercel编译阶段、或VPS等其他平台这行代码会成功执行
     // RSS被高频词访问将大量消耗服务端资源，故作为静态文件
+    console.log(error);
   }
 }

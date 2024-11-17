@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import getAllPageIds from './getAllPageIds';
 import getPageProperties from './getPageProperties';
-import { getNotionPageData } from '@/lib/notion/getNotionData';
+import { getNotionPageData } from '@/lib/notion';
 import { delCacheData } from '@/lib/cache/cache_manager';
 
 /**

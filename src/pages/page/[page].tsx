@@ -1,5 +1,5 @@
 import BLOG from 'blog.config';
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { useLayout } from '@/lib/theme';
 import { omit } from 'lodash';
@@ -37,7 +37,7 @@ const Page: FC<PageIndexProps> = (props) => {
 
 export const getStaticPaths: GetStaticPaths<PageParams> = async () => {
   const from = 'page-paths';
-  const { postCount } = await getGlobalData(from);
+  const { postCount } = await getSiteData(from);
   const totalPages = Math.ceil(postCount / BLOG.POSTS_PER_PAGE);
   return {
     // remove first page, we 're not gonna handle that.
@@ -54,7 +54,7 @@ export const getStaticProps: GetStaticProps<
 > = async ({ params, locale }) => {
   const { page } = params as PageParams;
   const pageNumber = parseInt(page, 10);
-  const props = await getGlobalData(`page-${pageNumber}`);
+  const props = await getSiteData(`page-${pageNumber}`);
   const { allPages } = props;
   const allPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',

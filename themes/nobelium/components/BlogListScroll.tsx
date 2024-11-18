@@ -7,10 +7,10 @@ import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
 
 import type { FC } from 'react';
-import type { PageInfo } from '@/types';
+import type { Page } from '@/types';
 
 export interface BlogListScrollProps {
-  posts: PageInfo[];
+  posts: Page[];
 }
 
 const BlogListScroll: FC<BlogListScrollProps> = (props) => {

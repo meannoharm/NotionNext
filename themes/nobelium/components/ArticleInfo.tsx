@@ -5,10 +5,10 @@ import md5 from 'js-md5';
 import dayjs from 'dayjs';
 
 import type { FC } from 'react';
-import type { PageInfo } from '@/types';
+import type { Page } from '@/types';
 
 export interface ArticleInfoProps {
-  post: PageInfo;
+  post: Page;
 }
 
 export const ArticleInfo: FC<ArticleInfoProps> = ({ post }) => {

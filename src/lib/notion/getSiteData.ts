@@ -9,27 +9,28 @@ import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
 import dayjs from 'dayjs';
 
-import type {
-  CustomNav,
-  PageInfo,
-  CollectionPropertySchemaMap,
-  SelectOption,
-  SiteInfo,
-  DataBaseInfo,
-  PatchedCollection,
+import {
+  type CustomNav,
+  type Page,
+  type CollectionPropertySchemaMap,
+  type SelectOption,
+  type SiteInfo,
+  type Site,
+  type PatchedCollection,
+  PagePropertiesStatus,
+  PagePropertiesType,
 } from '@/types/notion';
+import getConfig from './getConfig';
 
 /**
- * 获取博客数据
- * get the content of entire page in notion, it is the base table page
- * @param {*} pageId
+ * 获取站点数据
  * @param {*} from
  * @returns
  *
  */
-export async function getGlobalData(from: string) {
+export async function getSiteData(from: string) {
   // 从notion获取
-  const data = await getNotionPageData(idToUuid(BLOG.NOTION_PAGE_ID), from);
+  const data = await getSiteDataFromCache(idToUuid(BLOG.NOTION_PAGE_ID), from);
   return data;
   // const db = cloneDeep(data);
   // 不返回的敏感数据
@@ -47,50 +48,46 @@ export async function getGlobalData(from: string) {
 
 /**
  * 获取最新文章 根据最后修改时间倒序排列
- * @param {*}} param0
- * @returns
+ * @param {*} allPages
+ * @param {*} latestPostCount
+ * @returns {Page[]}
  */
-function getLatestPosts(
-  allPages: PageInfo[],
-  latestPostCount: number,
-): PageInfo[] {
+function getLatestPosts(allPages: Page[], latestPostCount: number): Page[] {
   const allPosts = allPages.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   );
 
-  const latestPosts = Object.create(allPosts).sort(
-    (a: PageInfo, b: PageInfo) => {
-      const dateA = dayjs(a?.lastEditedDate || a?.publishDate);
-      const dateB = dayjs(b?.lastEditedDate || b?.publishDate);
-      return dateB.isAfter(dateA) ? 1 : -1;
-    },
-  );
+  const latestPosts = Object.create(allPosts).sort((a: Page, b: Page) => {
+    const dateA = dayjs(a?.lastEditedDate || a?.publishDate);
+    const dateB = dayjs(b?.lastEditedDate || b?.publishDate);
+    return dateB.isAfter(dateA) ? 1 : -1;
+  });
   return latestPosts.slice(0, latestPostCount);
 }
 
 /**
- * 获取指定notion的collection数据
+ * whole notion template
  * @param pageId
  * @param from 请求来源
  * @returns {Promise<JSX.Element|*|*[]>}
  */
-export async function getNotionPageData(
+export async function getSiteDataFromCache(
   pageId: string,
   from: string,
-): Promise<DataBaseInfo> {
+): Promise<Site> {
   // 尝试从缓存获取
   const cacheKey = 'page_block_' + pageId;
-  const data = await getDataFromCache<DataBaseInfo>(cacheKey);
+  const data = await getDataFromCache<Site>(cacheKey);
   if (data && data.pageIds?.length > 0) {
     console.log('[缓存]:', `from:${from}`, `root-page-id:${pageId}`);
     return data;
   }
-  const dataBaseInfo = await getDataBaseInfoByNotionAPI(pageId, from);
+  const siteData = await getWholeSiteData(pageId, from);
   // 存入缓存
-  if (dataBaseInfo) {
-    await setDataToCache(cacheKey, dataBaseInfo);
+  if (siteData) {
+    await setDataToCache(cacheKey, siteData);
   }
-  return dataBaseInfo;
+  return siteData;
 }
 
 /**
@@ -98,10 +95,10 @@ export async function getNotionPageData(
  * @param notionPageData
  * @returns {Promise<[]|*[]>}
  */
-function getCustomNav(allPages: PageInfo[]) {
+function getCustomNav(allPages: Page[]) {
   const customNav: CustomNav[] = [];
   if (allPages && allPages.length > 0) {
-    allPages.forEach((p: PageInfo) => {
+    allPages.forEach((p: Page) => {
       if (p?.slug?.indexOf('http') === 0) {
         customNav.push({
           icon: p.icon || '',
@@ -184,7 +181,7 @@ function getSiteInfo(collection: PatchedCollection): SiteInfo {
 /**
  * 获取公告
  */
-async function getNotice(post: PageInfo) {
+async function getNotice(post: Page) {
   if (!post) {
     return null;
   }
@@ -197,10 +194,7 @@ async function getNotice(post: PageInfo) {
  * 调用NotionAPI获取Page数据
  * @returns {Promise<JSX.Element|null|*>}
  */
-async function getDataBaseInfoByNotionAPI(
-  pageId: string,
-  from: string,
-): Promise<DataBaseInfo> {
+async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const pageRecordMap = await getPostBlocks(pageId, from);
   if (!pageRecordMap) {
     console.error('can`t get Notion Data ; Which id is: ', pageId);
@@ -208,11 +202,11 @@ async function getDataBaseInfoByNotionAPI(
     // return {};
   }
   const blockMap = pageRecordMap.block || {};
-  const rawBlockData = blockMap[pageId].value;
+  const block = blockMap[pageId].value;
   // Check Type Page-Database和Inline-Database
   if (
-    rawBlockData.type !== 'collection_view_page' &&
-    rawBlockData.type !== 'collection_view'
+    block.type !== 'collection_view_page' &&
+    block.type !== 'collection_view'
   ) {
     console.error(`pageId "${pageId}" is not a database`);
     throw Error(`pageId "${pageId}" is not a database`);
@@ -221,8 +215,8 @@ async function getDataBaseInfoByNotionAPI(
   const collection = Object.values(pageRecordMap.collection)[0].value || {};
   const siteInfo = getSiteInfo(collection as PatchedCollection);
 
-  const collectionId = rawBlockData.collection_id || null;
-  const viewIds = rawBlockData.view_ids;
+  const collectionId = block.collection_id || null;
+  const viewIds = block.view_ids;
 
   const collectionQuery = pageRecordMap.collection_query;
   const collectionView = pageRecordMap.collection_view;
@@ -248,7 +242,7 @@ async function getDataBaseInfoByNotionAPI(
     );
   }
 
-  const pageProperties: PageInfo[] = (
+  const itemProperties: Page[] = (
     await Promise.all(
       pageIds.map(async (pageId) => {
         if (blockMap[pageId]?.value) {
@@ -270,21 +264,25 @@ async function getDataBaseInfoByNotionAPI(
         return null;
       }),
     )
-  ).filter(Boolean) as PageInfo[];
+  ).filter(Boolean) as Page[];
 
   // 查找所有的Post和Page
-  const allPages: PageInfo[] = [];
-  const publishedPosts: PageInfo[] = [];
+  const allPages: Page[] = [];
+  const publishedPosts: Page[] = [];
 
-  pageProperties.forEach((page) => {
-    if (page.type === 'Post' && page.status === 'Published') {
+  itemProperties.forEach((page) => {
+    if (
+      page.type === PagePropertiesType.Post &&
+      page.status === PagePropertiesStatus.Published
+    ) {
       publishedPosts.push(page);
     }
     if (
       page &&
       page.slug &&
       !page.slug?.startsWith('http') &&
-      (page.status === 'Invisible' || page.status === 'Published')
+      (page.status === PagePropertiesStatus.Invisible ||
+        page.status === PagePropertiesStatus.Published)
     ) {
       allPages.push(page);
     }
@@ -298,21 +296,29 @@ async function getDataBaseInfoByNotionAPI(
   }
 
   const notice = await getNotice(
-    pageProperties.filter(
+    itemProperties.filter(
       (post) =>
         post &&
         post.type &&
-        post.type === 'Notice' &&
+        post.type === PagePropertiesType.Notice &&
         post.status &&
-        post.status === 'Published',
+        post.status === PagePropertiesStatus.Published,
     )[0],
   );
+
+  // load config
+  const config = await getConfig(
+    itemProperties.find((post) => post.type === PagePropertiesType.Config),
+  );
+
   const categories = getAllCategories(publishedPosts, categoryOptions);
   const tags = getAllTags(publishedPosts, tagOptions);
   // 旧的菜单
   const customNav = getCustomNav(
-    pageProperties.filter(
-      (post) => post?.type === 'Page' && post.status === 'Published',
+    itemProperties.filter(
+      (post) =>
+        post?.type === PagePropertiesType.Page &&
+        post.status === PagePropertiesStatus.Published,
     ),
   );
 
@@ -327,11 +333,11 @@ async function getDataBaseInfoByNotionAPI(
     collectionId,
     collectionView,
     viewIds,
-    block: blockMap,
+    blockMap,
+    block,
     schema: schemaMap,
     tagOptions: tags,
     categoryOptions: categories,
-    rawMetadata: rawBlockData,
     customNav,
     postCount: publishedPosts.length,
     publishedPosts,

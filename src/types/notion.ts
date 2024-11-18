@@ -1,11 +1,10 @@
 import type {
+  Block,
   BlockMap,
   Collection,
   CollectionPropertySchemaMap,
   CollectionQueryResult,
-  CollectionViewBlock,
   CollectionViewMap,
-  CollectionViewPageBlock,
   ExtendedRecordMap,
   FormattedDate,
   ID,
@@ -14,7 +13,7 @@ import type {
 
 export type * from 'notion-types';
 
-export interface PageInfo {
+export interface Page {
   id: string;
   title: string;
   type?: PagePropertiesType;
@@ -41,6 +40,7 @@ export enum PagePropertiesType {
   Post = 'Post',
   Page = 'Page',
   Notice = 'Notice',
+  Config = 'Config',
 }
 
 export enum PagePropertiesStatus {
@@ -71,24 +71,24 @@ export interface SiteInfo {
   icon: string;
 }
 
-export interface CategoryInfo {
+export interface Category {
   id: string;
   name: string;
   color: string;
   count: number;
 }
 
-export interface TagInfo {
+export interface Tag {
   id: string;
   name: string;
   color: string;
   count: number;
 }
 
-export interface DataBaseInfo {
-  notice: PageInfo | null;
+export interface Site {
+  notice: Page | null;
   siteInfo: SiteInfo;
-  allPages: PageInfo[];
+  allPages: Page[];
   collection: Collection;
   collectionQuery: {
     [collectionId: string]: {
@@ -98,16 +98,16 @@ export interface DataBaseInfo {
   collectionId: string | null;
   collectionView: CollectionViewMap;
   viewIds: string[];
-  block: BlockMap;
+  block: Block;
+  blockMap: BlockMap;
   schema: CollectionPropertySchemaMap;
-  tagOptions: TagInfo[];
-  categoryOptions: CategoryInfo[];
-  rawMetadata: CollectionViewBlock | CollectionViewPageBlock;
+  tagOptions: Tag[];
+  categoryOptions: Category[];
   customNav: CustomNav[];
   postCount: number;
-  publishedPosts: PageInfo[];
+  publishedPosts: Page[];
   pageIds: string[];
-  latestPosts: PageInfo[];
+  latestPosts: Page[];
 }
 
 // property description and cover are not included in the original Collection type, but it definitely return these property.

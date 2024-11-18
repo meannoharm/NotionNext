@@ -1,5 +1,5 @@
 import BLOG from 'blog.config';
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { generateRss } from '@/lib/rss';
 import { generateRobotsTxt } from '@/lib/robots.txt';
@@ -10,7 +10,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
 import type { HomeIndexProps, ThemeHomeProps } from '@/types';
-import type { PageInfo } from '@/types/notion';
+import type { Page } from '@/types/notion';
 
 /**
  * 首页布局
@@ -30,10 +30,10 @@ const Index: FC<HomeIndexProps> = (props) => {
 export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
   locale,
 }) => {
-  const globalData = await getGlobalData('index');
+  const globalData = await getSiteData('index');
 
   const { siteInfo } = globalData;
-  let posts: PageInfo[] = globalData.allPages?.filter(
+  let posts: Page[] = globalData.allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   );
 

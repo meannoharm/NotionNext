@@ -1,6 +1,6 @@
 import BLOG from 'blog.config';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPageInfoOfPostPage } from '@/lib/notion/getPageInfoOfPostPage';
 import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
 import { useCallback, useEffect, useState } from 'react';
@@ -15,12 +15,7 @@ import { PagePropertiesType } from '@/types/notion';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type {
-  PageMeta,
-  SlugIndexProps,
-  ThemePrefixProps,
-  PageInfo,
-} from '@/types';
+import type { PageMeta, SlugIndexProps, ThemePrefixProps, Page } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 
 export interface SlugIndexParams extends ParsedUrlQuery {
@@ -122,7 +117,7 @@ export const getStaticPaths: GetStaticPaths<SlugIndexParams> = async () => {
     };
   }
 
-  const { allPages } = await getGlobalData('slug-index');
+  const { allPages } = await getSiteData('slug-index');
   return {
     paths: allPages
       .filter(
@@ -143,7 +138,7 @@ export const getStaticProps: GetStaticProps<
     BLOG.PSEUDO_STATIC && !prefix.endsWith('.html') ? `${prefix}.html` : prefix;
   const from = `slug-index-${fullSlug}`;
 
-  const { allPages, ...restProps } = await getGlobalData(from);
+  const { allPages, ...restProps } = await getSiteData(from);
 
   // 在列表内查找文章
   let post = allPages.find((p) => {
@@ -202,13 +197,13 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const findRelatedPosts: (
-  post: PageInfo,
-  allPosts: PageInfo[],
+  post: Page,
+  allPosts: Page[],
   count?: number,
 ) => {
-  prev: PageInfo | null;
-  next: PageInfo | null;
-  recommendPosts: PageInfo[];
+  prev: Page | null;
+  next: Page | null;
+  recommendPosts: Page[];
 } = (post, allPosts, count = 6) => {
   if (!allPosts.length || !post) {
     return { prev: null, next: null, recommendPosts: [] };

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 
 import {
   Block,
-  PageInfo,
+  Page,
   PagePropertiesType,
   PagePropertiesStatus,
 } from '@/types/notion';
@@ -45,7 +45,7 @@ export async function getPageInfoOfPostPage(pageId: string, from: string) {
     icon: '',
     summary: '',
     slug: '',
-  } as PageInfo;
+  } as Page;
 }
 
 function getPageCover(postInfo: Block) {

@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import type { TagInfo } from '@/types';
+import type { Tag } from '@/types';
 import type { FC } from 'react';
 
 export interface TagsProps {
-  tagOptions: TagInfo[];
+  tagOptions: Tag[];
   tag: string;
 }
 

@@ -1,4 +1,4 @@
-import type { DataBaseInfo, PageInfo } from './notion';
+import type { Site, Page } from './notion';
 
 export type PageMeta = {
   title: string;
@@ -10,8 +10,8 @@ export type PageMeta = {
   category?: string;
   tags?: string[];
 };
-export type ArchivePosts = Record<string, PageInfo[]>;
-export type DataBaseForProps = Omit<DataBaseInfo, 'allPages'>;
+export type ArchivePosts = Record<string, Page[]>;
+export type DataBaseForProps = Omit<Site, 'allPages'>;
 
 export type PageMetaProps = {
   pageMeta: PageMeta;
@@ -21,21 +21,21 @@ export type ThemeBaseProps = DataBaseForProps & PageMetaProps;
 
 export type HomeIndexProps = DataBaseForProps &
   PageMetaProps & {
-    posts: PageInfo[];
+    posts: Page[];
   };
 export type PageNotFoundIndexProps = DataBaseForProps;
 export type ArchiveIndexProps = DataBaseForProps & {
-  posts: PageInfo[];
+  posts: Page[];
   archivePosts: ArchivePosts;
 };
 export type PageIndexProps = DataBaseForProps & {
-  posts: PageInfo[];
+  posts: Page[];
   page: number;
 };
 export type CategoryIndexProps = DataBaseForProps;
 export type CategoryDetailProps = DataBaseForProps & {
   category: string;
-  posts: PageInfo[];
+  posts: Page[];
   postCount: number;
 };
 export type CategoryPageProps = DataBaseForProps & {
@@ -47,7 +47,7 @@ export type TagIndexProps = DataBaseForProps;
 export type TagDetailProps = DataBaseForProps & {
   postCount: number;
   tag: string;
-  posts: PageInfo[];
+  posts: Page[];
 };
 export type TagPageProps = DataBaseForProps & {
   postCount: number;
@@ -55,24 +55,24 @@ export type TagPageProps = DataBaseForProps & {
   tag: string;
 };
 export type SearchIndexProps = DataBaseForProps & {
-  posts: PageInfo[];
+  posts: Page[];
 };
 export type SearchDetailProps = DataBaseForProps & {
   postCount: number;
   keyword: string;
-  posts: PageInfo[];
+  posts: Page[];
 };
 export type SearchPageProps = DataBaseForProps & {
-  posts: PageInfo[];
+  posts: Page[];
   postCount: number;
   page: number;
   keyword: string;
 };
 export type SlugIndexProps = DataBaseForProps & {
-  post: PageInfo | null;
-  prev: PageInfo | null;
-  next: PageInfo | null;
-  recommendPosts: PageInfo[];
+  post: Page | null;
+  prev: Page | null;
+  next: Page | null;
+  recommendPosts: Page[];
 };
 export type PrefixSlugProps = SlugIndexProps;
 

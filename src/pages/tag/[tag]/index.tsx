@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps<
   TagIndexParams
 > = async ({ params, locale }) => {
   const { tag } = params as TagIndexParams;
-  const { allPages, ...globalProps } = await getGlobalData('tag-props');
+  const { allPages, ...globalProps } = await getSiteData('tag-props');
 
   const filteredPosts = allPages
     ?.filter((page) => page.type === 'Post' && page.status === 'Published')
@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const getStaticPaths: GetStaticPaths<TagIndexParams> = async () => {
-  const { tagOptions } = await getGlobalData('tag-static-path');
+  const { tagOptions } = await getSiteData('tag-static-path');
 
   return {
     paths: tagOptions.map((tag) => ({ params: { tag: tag.name } })),

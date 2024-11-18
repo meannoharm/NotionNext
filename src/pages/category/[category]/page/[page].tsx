@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import React from 'react';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
@@ -48,9 +48,7 @@ export const getStaticProps: GetStaticProps<
 > = async ({ params, locale }) => {
   const { category, page } = params as CategoryPageParams;
   const pageNumber = parseInt(page, 10);
-  const { allPages, ...globalProps } = await getGlobalData(
-    'category-page-props',
-  );
+  const { allPages, ...globalProps } = await getSiteData('category-page-props');
 
   // 过滤状态类型
   const posts = allPages
@@ -78,7 +76,7 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const getStaticPaths: GetStaticPaths<CategoryPageParams> = async () => {
-  const { categoryOptions, allPages } = await getGlobalData('category-paths');
+  const { categoryOptions, allPages } = await getSiteData('category-paths');
   const paths: { params: CategoryPageParams }[] = [];
 
   categoryOptions?.forEach((category) => {

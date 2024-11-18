@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import React from 'react';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
@@ -36,7 +36,7 @@ const Category: FC<CategoryIndexProps> = (props) => {
 export const getStaticProps: GetStaticProps<CategoryIndexProps> = async ({
   locale,
 }) => {
-  const globalData = await getGlobalData('category-index-props');
+  const globalData = await getSiteData('category-index-props');
   return {
     props: {
       ...omit(globalData, 'allPages'),

@@ -12,7 +12,7 @@ import 'katex/dist/katex.min.css';
 import { mapImgUrl } from '@/lib/notion/mapImage';
 import { isBrowser } from '@/lib/utils';
 
-import type { PageInfo } from '@/types/notion';
+import type { Page } from '@/types/notion';
 
 const Code = dynamic(
   () =>
@@ -65,7 +65,7 @@ const Tweet: FC<{
 };
 
 const NotionPage: FC<{
-  post: PageInfo;
+  post: Page;
   className?: string;
 }> = ({ post, className = '' }) => {
   useEffect(() => {

@@ -2,7 +2,7 @@ import { getTextContent } from 'notion-utils';
 
 import type {
   TableOfContentsEntry,
-  PageInfo,
+  Page,
   ExtendedRecordMap,
 } from '@/types/notion';
 
@@ -18,7 +18,7 @@ const indentLevels = {
  * H1, H2, and H3 elements.
  */
 export const getPageTableOfContents = (
-  page: PageInfo,
+  page: Page,
   recordMap: ExtendedRecordMap,
 ): TableOfContentsEntry[] => {
   const contents = page.content ?? [];

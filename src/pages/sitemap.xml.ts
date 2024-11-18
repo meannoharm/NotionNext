@@ -1,5 +1,5 @@
 import { getServerSideSitemap } from 'next-sitemap';
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import dayjs from 'dayjs';
 import BLOG from 'blog.config';
 
@@ -7,7 +7,7 @@ import type { ISitemapField } from 'next-sitemap';
 import type { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { allPages } = await getGlobalData('rss');
+  const { allPages } = await getSiteData('rss');
   const lastmod = dayjs().format('YYYY-MM-DD');
   const defaultFields: ISitemapField[] = [
     {

@@ -8,7 +8,7 @@ import BlogListBar from '../components/BlogListBar';
 import { ContextWrapper } from '../providers';
 
 import type {
-  PageInfo,
+  Page,
   ThemeHomeProps,
   ThemeCategoryDetailProps,
   ThemeCategoryPageProps,
@@ -41,7 +41,7 @@ const PostList: FC<
 
   // 在列表中进行实时过滤
   const [filterKey, setFilterKey] = useState('');
-  let filteredBlogPosts: PageInfo[] = [];
+  let filteredBlogPosts: Page[] = [];
   if (filterKey && posts) {
     filteredBlogPosts = posts.filter((post) => {
       const tagContent = post?.tags ? post?.tags.join(' ') : '';

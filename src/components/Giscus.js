@@ -1,5 +1,5 @@
 import BLOG from 'blog.config';
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 import Giscus from '@giscus/react';
 
 /**

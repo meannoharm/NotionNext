@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import BLOG from 'blog.config';
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 import { loadExternalResource } from '@/lib/utils';
 import { useEffect } from 'react';
 

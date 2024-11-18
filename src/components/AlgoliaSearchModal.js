@@ -3,7 +3,7 @@ import BLOG from 'blog.config';
 import algoliasearch from 'algoliasearch';
 import replaceSearchResult from '@/components/Mark';
 import Link from 'next/link';
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 import throttle from 'lodash/throttle';
 
 /**

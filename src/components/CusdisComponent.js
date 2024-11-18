@@ -1,4 +1,4 @@
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';

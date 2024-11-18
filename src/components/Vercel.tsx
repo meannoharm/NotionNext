@@ -1,4 +1,4 @@
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 
 const Vercel = () => {
   const { isDarkMode } = useGlobal();

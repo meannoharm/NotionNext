@@ -15,7 +15,7 @@ import { useTranslation } from 'next-i18next';
 export default function CustomContextMenu(props) {
   const [position, setPosition] = useState({ x: '0px', y: '0px' });
   const [show, setShow] = useState(false);
-  const { isDarkMode, updateDarkMode } = useGlobal();
+  const { isDarkMode, setIsDarkMode } = useGlobal();
   const menuRef = useRef(null);
   const windowSize = useWindowSize();
   const [width, setWidth] = useState(0);
@@ -112,7 +112,7 @@ export default function CustomContextMenu(props) {
   function handleChangeDarkMode() {
     const newStatus = !isDarkMode;
     saveDarkModeToLocalStorage(newStatus);
-    updateDarkMode(newStatus);
+    setIsDarkMode(newStatus);
     const htmlElement = document.getElementsByTagName('html')[0];
     htmlElement.classList?.remove(newStatus ? 'light' : 'dark');
     htmlElement.classList?.add(newStatus ? 'dark' : 'light');

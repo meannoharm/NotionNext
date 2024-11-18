@@ -5,29 +5,12 @@ import ReactDOMServer from 'react-dom/server';
 import { getPostBlocks } from './notion/getPostBlocks';
 import NotionPage from '@/components/NotionPage';
 
-/**
- * 生成RSS内容
- * @param {*} post
- * @returns
- */
-const createFeedContent = async (post) => {
-  // 加密的文章内容只返回摘要
-  if (post.password && post.password !== '') {
-    return post.summary;
-  }
-  const blockMap = await getPostBlocks(post.id, 'rss-content');
-  if (blockMap) {
-    post.blockMap = blockMap;
-    const content = ReactDOMServer.renderToString(<NotionPage post={post} />);
-    const regexExp =
-      /<div class="notion-collection-row"><div class="notion-collection-row-body"><div class="notion-collection-row-property"><div class="notion-collection-column-title"><svg.*?class="notion-collection-column-title-icon">.*?<\/svg><div class="notion-collection-column-title-body">.*?<\/div><\/div><div class="notion-collection-row-value">.*?<\/div><\/div><\/div><\/div>/g;
-    return content.replace(regexExp, '');
-  }
-};
+import type { PageInfo } from '@/types';
 
-export async function generateRss(posts) {
+export async function generateRss(posts: PageInfo[]) {
   const year = new Date().getFullYear();
   const feed = new Feed({
+    id: BLOG.LINK,
     title: BLOG.TITLE,
     description: BLOG.DESCRIPTION,
     link: `${BLOG.LINK}/${BLOG.SUB_PATH}`,
@@ -46,7 +29,7 @@ export async function generateRss(posts) {
       link: `${BLOG.LINK}/${post.slug}`,
       description: post.summary,
       content: await createFeedContent(post),
-      date: new Date(post?.publishDay),
+      date: new Date(post.publishDate),
     });
   }
 
@@ -62,3 +45,23 @@ export async function generateRss(posts) {
     console.log(error);
   }
 }
+
+/**
+ * 生成RSS内容
+ * @param {*} post
+ * @returns
+ */
+const createFeedContent = async (post: PageInfo) => {
+  // 加密的文章内容只返回摘要
+  if (post.password && post.password !== '') {
+    return post.summary;
+  }
+  const blockMap = await getPostBlocks(post.id, 'rss-content');
+  if (blockMap) {
+    post.blockMap = blockMap;
+    const content = ReactDOMServer.renderToString(<NotionPage post={post} />);
+    const regexExp =
+      /<div class="notion-collection-row"><div class="notion-collection-row-body"><div class="notion-collection-row-property"><div class="notion-collection-column-title"><svg.*?class="notion-collection-column-title-icon">.*?<\/svg><div class="notion-collection-column-title-body">.*?<\/div><\/div><div class="notion-collection-row-value">.*?<\/div><\/div><\/div><\/div>/g;
+    return content.replace(regexExp, '');
+  }
+};

@@ -31,8 +31,8 @@ export const mapImgUrl = (
 
   // Notion 图床转换为永久地址
   const hasConverted =
-    ret.indexOf('https://www.notion.so/image') === 0 ||
-    ret.includes('notion.site/images/page-cover/');
+    ret.includes('https://www.notion.so/image') ||
+    ret.includes('notion.site/images/page-cover');
 
   // 需要转化的URL ; 识别aws图床地址，或者bookmark类型的外链图片
   const needConvert =
@@ -53,17 +53,17 @@ export const mapImgUrl = (
       block.id;
   }
 
-  if (!isEmoji(ret) && ret.indexOf('notion.so/images/page-cover') < 0) {
+  if (
+    ret &&
+    ret.length > 4 &&
+    !isEmoji(ret) &&
+    !ret.includes('notion.so/images/page-cover') &&
+    !ret.includes('https://www.notion.so/images/')
+  ) {
     // 图片url优化，确保每一篇文章的图片url唯一
-    if (
-      ret &&
-      ret.length > 4 &&
-      !ret.includes('https://www.notion.so/images/')
-    ) {
-      // 图片接口拼接唯一识别参数，防止请求的图片被缓，而导致随机结果相同
-      const separator = ret.includes('?') ? '&' : '?';
-      ret = `${ret.trim()}${separator}t=${block.id}`;
-    }
+    // 图片接口拼接唯一识别参数，防止请求的图片被缓，而导致随机结果相同
+    const separator = ret.includes('?') ? '&' : '?';
+    ret = `${ret.trim()}${separator}t=${block.id}`;
   }
 
   // 统一压缩图片
@@ -98,7 +98,7 @@ export const compressImage = (
   }
   if (
     image.indexOf(BLOG.NOTION_HOST) === 0 &&
-    image.indexOf('amazonaws.com') > 0
+    image.includes('amazonaws.com')
   ) {
     return `${image}&width=${width}`;
   }

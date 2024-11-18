@@ -33,7 +33,6 @@ const GlobalContext = createContext<GlobalContextProps>({
 });
 
 /**
- * 全局变量Provider，包括语言本地化、样式主题、搜索词
  * @param children
  * @returns {JSX.Element}
  * @constructor
@@ -45,8 +44,6 @@ export const GlobalContextProvider: FunctionComponent<
 > = (props) => {
   const { children } = props;
   const router = useRouter();
-  // lang 为所选语言，如 zh-CN,
-  // locale 为对应语言的配置对象
   const [theme, setTheme] = useState(BLOG.THEME); // 默认博客主题
   const [isDarkMode, setIsDarkMode] = useState(BLOG.APPEARANCE === 'dark'); // 默认深色模式
   const [isLoading, setIsLoading] = useState(false); // 抓取文章数据

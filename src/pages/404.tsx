@@ -1,5 +1,5 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
-import { useLayout } from '@/theme';
+import { useLayout } from '@/lib/theme';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';

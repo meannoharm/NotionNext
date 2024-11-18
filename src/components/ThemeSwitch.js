@@ -1,7 +1,7 @@
 import { useGlobal } from '@/lib/global';
 import React, { useState } from 'react';
 import { Draggable } from './Draggable';
-import { THEMES } from '@/theme';
+import { THEMES } from '@/lib/theme';
 import { useRouter } from 'next/router';
 /**
  *

@@ -1,5 +1,5 @@
 import store from 'store';
-import { getQueryVariable, isBrowser } from '../lib/utils';
+import { getQueryVariable, isBrowser } from '../utils';
 import BLOG from 'blog.config';
 
 /**

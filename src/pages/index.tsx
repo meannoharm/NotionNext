@@ -3,7 +3,7 @@ import { getGlobalData } from '@/lib/notion/getNotionData';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { generateRss } from '@/lib/rss';
 import { generateRobotsTxt } from '@/lib/robots.txt';
-import { useLayout } from '@/theme';
+import { useLayout } from '@/lib/theme';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 

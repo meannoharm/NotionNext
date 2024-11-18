@@ -1,13 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import BLOG from 'blog.config';
+import { THEMES, initTheme } from '@/lib/theme';
 import {
-  THEMES,
-  initTheme,
   initDarkMode,
   operateDarkMode,
   saveDarkModeToLocalStorage,
-} from '@/lib/theme';
+} from '@/lib/darkmode';
 import { getQueryVariable } from './utils';
 import { progressStart, progressDone } from '@/components/NProgress';
 
@@ -16,27 +15,21 @@ import type { FunctionComponent, ReactNode } from 'react';
 export interface GlobalContextProps {
   theme: string;
   isDarkMode: boolean;
-  onLoading: boolean;
-  siteInfo: unknown;
-  categoryOptions: unknown;
-  tagOptions: unknown;
+  isLoading: boolean;
   switchTheme: (theme: string) => void;
   setTheme: (theme: string) => void;
-  updateDarkMode: (isDarkMode: boolean) => void;
-  setOnLoading: (onLoading: boolean) => void;
+  setIsDarkMode: (isDarkMode: boolean) => void;
+  setIsLoading: (isLoading: boolean) => void;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
   theme: BLOG.THEME,
   isDarkMode: false,
-  onLoading: false,
-  siteInfo: {},
-  categoryOptions: [],
-  tagOptions: [],
+  isLoading: false,
   switchTheme: () => {},
   setTheme: () => {},
-  updateDarkMode: () => {},
-  setOnLoading: () => {},
+  setIsDarkMode: () => {},
+  setIsLoading: () => {},
 });
 
 /**
@@ -50,16 +43,16 @@ export const GlobalContextProvider: FunctionComponent<
     children: ReactNode;
   }
 > = (props) => {
-  const { children, siteInfo, categoryOptions, tagOptions } = props;
+  const { children } = props;
   const router = useRouter();
   // lang 为所选语言，如 zh-CN,
   // locale 为对应语言的配置对象
   const [theme, setTheme] = useState(BLOG.THEME); // 默认博客主题
-  const [isDarkMode, updateDarkMode] = useState(BLOG.APPEARANCE === 'dark'); // 默认深色模式
-  const [onLoading, setOnLoading] = useState(false); // 抓取文章数据
+  const [isDarkMode, setIsDarkMode] = useState(BLOG.APPEARANCE === 'dark'); // 默认深色模式
+  const [isLoading, setIsLoading] = useState(false); // 抓取文章数据
 
   useEffect(() => {
-    updateDarkMode(initDarkMode());
+    setIsDarkMode(initDarkMode());
     initTheme();
   }, []);
 
@@ -77,11 +70,11 @@ export const GlobalContextProvider: FunctionComponent<
         const newUrl = `${url}${url.includes('?') ? '&' : '?'}theme=${theme}`;
         router.push(newUrl);
       }
-      setOnLoading(true);
+      setIsLoading(true);
     };
     const handleStop = () => {
       progressDone();
-      setOnLoading(false);
+      setIsLoading(false);
     };
     const queryTheme = getQueryVariable('theme') || BLOG.THEME;
     setTheme(queryTheme);
@@ -109,16 +102,13 @@ export const GlobalContextProvider: FunctionComponent<
   return (
     <GlobalContext.Provider
       value={{
-        onLoading,
-        setOnLoading,
+        isLoading,
+        setIsLoading,
         isDarkMode,
-        updateDarkMode,
+        setIsDarkMode,
         theme,
         setTheme,
         switchTheme,
-        siteInfo,
-        categoryOptions,
-        tagOptions,
       }}
     >
       {children}

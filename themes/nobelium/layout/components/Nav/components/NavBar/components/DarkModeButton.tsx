@@ -14,7 +14,7 @@ export interface DarkModeButtonProps {
  */
 const DarkModeButton: FC<DarkModeButtonProps> = (props) => {
   const { cRef, className } = props;
-  const { isDarkMode, updateDarkMode } = useGlobal();
+  const { isDarkMode, setIsDarkMode } = useGlobal();
 
   /**
    * 对外暴露方法
@@ -30,7 +30,7 @@ const DarkModeButton: FC<DarkModeButtonProps> = (props) => {
   // 用户手动设置主题
   const handleChangeDarkMode = () => {
     const newStatus = !isDarkMode;
-    updateDarkMode(newStatus);
+    setIsDarkMode(newStatus);
   };
 
   return (

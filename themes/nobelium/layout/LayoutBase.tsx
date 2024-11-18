@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react';
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 import CommonHead from '@/components/CommonHead';
 import Nav from './components/Nav/Nav';
 import Footer from './components/Footer';

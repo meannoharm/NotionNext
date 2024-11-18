@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import { useEffect, useState } from 'react';
 import Select from './Select';
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 import { THEMES } from '@/lib/theme';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';

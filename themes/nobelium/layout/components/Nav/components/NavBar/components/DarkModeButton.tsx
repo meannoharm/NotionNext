@@ -1,4 +1,4 @@
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 import { Moon, Sun } from '@/components/HeroIcons';
 import { useImperativeHandle } from 'react';
 

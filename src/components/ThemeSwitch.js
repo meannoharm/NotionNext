@@ -1,4 +1,4 @@
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 import React, { useState } from 'react';
 import { Draggable } from './Draggable';
 import { THEMES } from '@/lib/theme';

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 import { saveDarkModeToLocalStorage, THEMES } from '@/lib/theme';
 import BLOG from 'blog.config';
 import useWindowSize from '@/hooks/useWindowSize';

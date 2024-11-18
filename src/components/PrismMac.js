@@ -13,7 +13,7 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import BLOG from 'blog.config';
 import { loadExternalResource } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import { useGlobal } from '@/lib/global';
+import { useGlobal } from '@/context/global';
 
 /**
  * 代码美化相关

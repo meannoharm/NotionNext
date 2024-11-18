@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { getSiteData } from '@/lib/notion/getSiteData';
-import { getPageInfoOfPostPage } from '@/lib/notion/getPageInfoOfPostPage';
+import { getIndependentPage } from '@/lib/notion/getIndependentPage';
 import { idToUuid } from 'notion-utils';
 import Slug, { findRelatedPosts } from '.';
 import { uploadDataToAlgolia } from '@/lib/algolia';
@@ -74,7 +74,7 @@ export const getStaticProps: GetStaticProps<
   if (!post) {
     const pageId = slug.slice(-1)[0];
     if (pageId.length >= 32) {
-      post = await getPageInfoOfPostPage(pageId, fullSlug);
+      post = await getIndependentPage(pageId, fullSlug);
     }
   }
 

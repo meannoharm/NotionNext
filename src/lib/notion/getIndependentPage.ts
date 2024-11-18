@@ -16,7 +16,7 @@ import {
  * @param {*} pageId
  * @returns
  */
-export async function getPageInfoOfPostPage(pageId: string, from: string) {
+export async function getIndependentPage(pageId: string, from: string) {
   const blockMap = await getPostBlocks(pageId, from);
   if (!blockMap) {
     return;

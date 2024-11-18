@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { getSiteData } from '@/lib/notion/getSiteData';
-import { getPageInfoOfPostPage } from '@/lib/notion/getPageInfoOfPostPage';
+import { getIndependentPage } from '@/lib/notion/getIndependentPage';
 import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
 import { useCallback, useEffect, useState } from 'react';
 import { idToUuid } from 'notion-utils';
@@ -149,7 +149,7 @@ export const getStaticProps: GetStaticProps<
   if (!post) {
     const pageId = prefix;
     if (pageId.length >= 32) {
-      post = await getPageInfoOfPostPage(pageId, from);
+      post = await getIndependentPage(pageId, from);
     }
   }
 

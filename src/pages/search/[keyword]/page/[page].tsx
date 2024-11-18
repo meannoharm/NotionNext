@@ -1,7 +1,7 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { getDataFromCache } from '@/lib/cache/cacheManager';
 import BLOG from 'blog.config';
-import { useLayout } from '@/theme';
+import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { isIterable } from '@/lib/utils';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

@@ -1,7 +1,7 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import { useEffect, type FC } from 'react';
 import BLOG from 'blog.config';
-import { useLayout } from '@/theme';
+import { useLayout } from '@/lib/theme';
 import { isBrowser } from '@/lib/utils';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';

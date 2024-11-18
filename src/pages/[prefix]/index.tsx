@@ -6,7 +6,7 @@ import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
 import { useCallback, useEffect, useState } from 'react';
 import { idToUuid } from 'notion-utils';
 import { useRouter } from 'next/router';
-import { useLayout } from '@/theme';
+import { useLayout } from '@/lib/theme';
 import md5 from 'js-md5';
 import { isBrowser } from '@/lib/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';

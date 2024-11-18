@@ -1,6 +1,6 @@
 import { getGlobalData } from '@/lib/notion/getNotionData';
 import BLOG from 'blog.config';
-import { useLayout } from '@/theme';
+import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 

@@ -71,9 +71,10 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
 
   // 生成robotTxt
   generateRobotsTxt();
+
   // 生成Feed订阅
   if (BLOG.ENABLE_RSS) {
-    generateRss(globalData?.latestPosts || []);
+    generateRss(globalData.latestPosts);
   }
 
   return {

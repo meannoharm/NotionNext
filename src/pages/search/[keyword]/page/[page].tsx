@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import { getDataFromCache } from '@/lib/cache/cacheManager';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
@@ -11,8 +11,8 @@ import type {
   PageMeta,
   SearchPageProps,
   ThemeSearchPageProps,
-  DataBaseInfo,
-  PageInfo,
+  Site,
+  Page,
 } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticPaths, GetStaticProps } from 'next';
@@ -50,7 +50,7 @@ export const getStaticProps: GetStaticProps<
   SearchPageParams
 > = async ({ params, locale }) => {
   const { keyword, page } = params as SearchPageParams;
-  const { allPages, ...restProps } = await getGlobalData('search-props');
+  const { allPages, ...restProps } = await getSiteData('search-props');
   const pageNumber = parseInt(page, 10);
   const filteredPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
@@ -119,16 +119,13 @@ function getTextContent(textArray: any) {
  * @param keyword 关键词
  * @returns
  */
-async function filterByMemCache(posts: PageInfo[], keyword: string) {
+async function filterByMemCache(posts: Page[], keyword: string) {
   if (!keyword) return [];
   const lowerKeyword = keyword.toLowerCase().trim();
-  const filterPosts: PageInfo[] = [];
+  const filterPosts: Page[] = [];
 
   posts.forEach(async (post) => {
-    const page = await getDataFromCache<DataBaseInfo>(
-      `page_block_${post.id}`,
-      true,
-    );
+    const page = await getDataFromCache<Site>(`page_block_${post.id}`, true);
     const tagContent = post?.tags?.join(' ') || '';
     const categoryContent = post?.category || '';
     const articleInfo = (

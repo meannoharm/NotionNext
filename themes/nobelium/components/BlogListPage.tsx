@@ -5,10 +5,10 @@ import BlogPost from './BlogPost';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import type { PageInfo } from '@/types';
+import type { Page } from '@/types';
 
 export interface BlogListPageProps {
-  posts: PageInfo[];
+  posts: Page[];
   page?: number;
   postCount: number;
 }

@@ -1,6 +1,6 @@
 import BLOG from 'blog.config';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPageInfoOfPostPage } from '@/lib/notion/getPageInfoOfPostPage';
 import { idToUuid } from 'notion-utils';
 import Slug, { findRelatedPosts } from '.';
@@ -34,7 +34,7 @@ export const getStaticPaths: GetStaticPaths<PrefixSlugParams> = async () => {
     };
   }
 
-  const { allPages } = await getGlobalData('slug-detail');
+  const { allPages } = await getSiteData('slug-detail');
   return {
     paths: allPages
       .filter(
@@ -63,7 +63,7 @@ export const getStaticProps: GetStaticProps<
   }
 
   const from = `slug-detail-${fullSlug}`;
-  const { allPages, ...restProps } = await getGlobalData(from);
+  const { allPages, ...restProps } = await getSiteData(from);
 
   // 在列表内查找文章
   let post = allPages.find((p) => {

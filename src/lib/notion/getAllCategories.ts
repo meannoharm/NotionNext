@@ -1,11 +1,11 @@
-import type { CategoryInfo, PageInfo, SelectOption } from '@/types/notion';
+import type { Category, Page, SelectOption } from '@/types/notion';
 
 /**
  * 获取所有文章的标签
  * @param allPosts
  * @param sliceCount 默认截取数量为12，若为0则返回全部
  * @param tagOptions tags的下拉选项
- * @returns {CategoryInfo[]}
+ * @returns {Category[]}
  */
 
 /**
@@ -14,10 +14,10 @@ import type { CategoryInfo, PageInfo, SelectOption } from '@/types/notion';
  * @returns {Promise<{}|*[]>}
  */
 export function getAllCategories(
-  publishedPosts: PageInfo[],
+  publishedPosts: Page[],
   categoryOptions: SelectOption[],
   sliceCount = 0,
-): CategoryInfo[] {
+): Category[] {
   // 计数
   const countMap: { [key: string]: number } = {};
   publishedPosts.forEach(({ category }) => {
@@ -28,7 +28,7 @@ export function getAllCategories(
       countMap[category] = 1;
     }
   });
-  const list: CategoryInfo[] = [];
+  const list: Category[] = [];
   for (const categoryOption of categoryOptions) {
     const count = countMap[categoryOption.value];
     if (count) {

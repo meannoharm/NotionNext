@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import { useRouter } from 'next/router';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
@@ -56,7 +56,7 @@ const SearchIndex: FC<SearchIndexProps> = (props) => {
 export const getStaticProps: GetStaticProps<SearchIndexProps> = async ({
   locale,
 }) => {
-  const { allPages, ...restProps } = await getGlobalData('search-props');
+  const { allPages, ...restProps } = await getSiteData('search-props');
   const posts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   );

@@ -1,10 +1,10 @@
 import { createStore } from 'zustand';
 
-import { SiteInfo, PageInfo } from '@/types';
+import { SiteInfo, Page } from '@/types';
 
 export interface NobeliumState {
   siteInfo: SiteInfo;
-  latestPosts: PageInfo[];
+  latestPosts: Page[];
 }
 
 export interface NobeliumAction {

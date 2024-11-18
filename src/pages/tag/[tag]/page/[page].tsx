@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps<
   TagPageParams
 > = async ({ params, locale }) => {
   const { tag, page } = params as TagPageParams;
-  const props = await getGlobalData('tag-page-props');
+  const props = await getSiteData('tag-page-props');
 
   const pageNumber = parseInt(page, 10);
 
@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const getStaticPaths: GetStaticPaths<TagPageParams> = async () => {
-  const { tagOptions, allPages } = await getGlobalData('tag-page-static-path');
+  const { tagOptions, allPages } = await getSiteData('tag-page-static-path');
   const paths: {
     params: TagPageParams;
   }[] = [];

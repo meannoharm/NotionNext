@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
@@ -10,8 +10,8 @@ import type {
   PageMeta,
   SearchDetailProps,
   ThemeSearchDetailProps,
-  DataBaseInfo,
-  PageInfo,
+  Site,
+  Page,
 } from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
@@ -47,7 +47,7 @@ export const getStaticProps: GetStaticProps<
   SearchDetailProps,
   CategoryDetailParams
 > = async ({ params, locale }) => {
-  const { allPages, ...restProps } = await getGlobalData('search-detail-page');
+  const { allPages, ...restProps } = await getSiteData('search-detail-page');
   const { keyword } = params as CategoryDetailParams;
   const allPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
@@ -110,16 +110,13 @@ function getTextContent(textArray: any): string {
  * @param keyword 关键词
  * @returns
  */
-async function filterByMemCache(posts: PageInfo[], keyword: string) {
+async function filterByMemCache(posts: Page[], keyword: string) {
   if (!keyword) return [];
   const lowerKeyword = keyword.toLowerCase().trim();
-  const filterPosts: PageInfo[] = [];
+  const filterPosts: Page[] = [];
 
   posts.forEach(async (post) => {
-    const page = await getDataFromCache<DataBaseInfo>(
-      `page_block_${post.id}`,
-      true,
-    );
+    const page = await getDataFromCache<Site>(`page_block_${post.id}`, true);
     const tagContent = post?.tags?.join(' ') || '';
     const categoryContent = post?.category || '';
     const articleInfo = (
@@ -150,11 +147,11 @@ async function filterByMemCache(posts: PageInfo[], keyword: string) {
   return filterPosts;
 }
 
-export function getPageContentText(post: PageInfo, dataBaseInfo: DataBaseInfo) {
+export function getPageContentText(post: Page, dataBaseInfo: Site) {
   let indexContent: string[] = [];
   if (dataBaseInfo && dataBaseInfo?.block && !post.password) {
     Object.keys(dataBaseInfo.block).forEach((id) => {
-      const properties = dataBaseInfo.block[id]?.value?.properties;
+      const properties = dataBaseInfo.blockMap[id]?.value?.properties;
       indexContent = extractTextContent(indexContent, properties, 'title');
       indexContent = extractTextContent(indexContent, properties, 'caption');
     });

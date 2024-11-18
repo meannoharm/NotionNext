@@ -5,9 +5,9 @@ import ReactDOMServer from 'react-dom/server';
 import { getPostBlocks } from './notion/getPostBlocks';
 import NotionPage from '@/components/NotionPage';
 
-import type { PageInfo } from '@/types';
+import type { Page } from '@/types';
 
-export async function generateRss(posts: PageInfo[]) {
+export async function generateRss(posts: Page[]) {
   const year = new Date().getFullYear();
   const feed = new Feed({
     id: BLOG.LINK,
@@ -51,7 +51,7 @@ export async function generateRss(posts: PageInfo[]) {
  * @param {*} post
  * @returns
  */
-const createFeedContent = async (post: PageInfo) => {
+const createFeedContent = async (post: Page) => {
   // 加密的文章内容只返回摘要
   if (post.password && post.password !== '') {
     return post.summary;

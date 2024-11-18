@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import { useLayout } from '@/lib/theme';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -34,7 +34,7 @@ const NoFound: FC<PageNotFoundIndexProps> = (props) => {
 export const getStaticProps: GetStaticProps<PageNotFoundIndexProps> = async ({
   locale,
 }) => {
-  const props = (await getGlobalData('404')) || {};
+  const props = (await getSiteData('404')) || {};
   return {
     props: {
       ...props,

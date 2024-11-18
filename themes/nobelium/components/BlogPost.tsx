@@ -3,10 +3,10 @@ import BLOG from 'blog.config';
 import dayjs from 'dayjs';
 
 import type { FC } from 'react';
-import type { PageInfo } from '@/types';
+import type { Page } from '@/types';
 
 export interface BlogPostProps {
-  post: PageInfo;
+  post: Page;
   isShowSummary?: boolean;
 }
 const BlogPost: FC<BlogPostProps> = ({ post, isShowSummary = true }) => {

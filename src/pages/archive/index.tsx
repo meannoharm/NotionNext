@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import { useEffect, type FC } from 'react';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
@@ -14,7 +14,7 @@ import type {
   ArchiveIndexProps,
   ThemeArchiveProps,
 } from '../../types/page';
-import type { PageInfo } from '@/types/notion';
+import type { Page } from '@/types/notion';
 
 const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   const { siteInfo } = props;
@@ -54,13 +54,13 @@ const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
 export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async ({
   locale,
 }) => {
-  const globalData = await getGlobalData('archive-index');
+  const globalData = await getSiteData('archive-index');
 
   const posts = globalData.allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
-  ) as PageInfo[];
+  ) as Page[];
 
-  const archivePosts: Record<string, PageInfo[]> = {};
+  const archivePosts: Record<string, Page[]> = {};
   posts
     .sort((a, b) => (dayjs(b.publishDate).isAfter(a.publishDate) ? 1 : -1))
     .forEach((post) => {

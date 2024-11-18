@@ -1,12 +1,12 @@
 import dynamic from 'next/dynamic';
 
-import type { PageInfo } from '@/types';
+import type { Page } from '@/types';
 import type { FC } from 'react';
 
 const NotionPage = dynamic(() => import('@/components/NotionPage'));
 
 export interface AnnouncementProps {
-  notice: PageInfo | null;
+  notice: Page | null;
 }
 
 const Announcement: FC<AnnouncementProps> = ({ notice }) => {

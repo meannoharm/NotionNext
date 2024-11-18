@@ -1,5 +1,5 @@
 import { isIterable } from '../utils';
-import type { PageInfo, SelectOption, TagInfo } from '@/types/notion';
+import type { Page, SelectOption, Tag } from '@/types/notion';
 
 /**
  * 获取所有文章的标签
@@ -9,10 +9,10 @@ import type { PageInfo, SelectOption, TagInfo } from '@/types/notion';
  * @returns {Promise<{}|*[]>}
  */
 export function getAllTags(
-  publishedPosts: PageInfo[],
+  publishedPosts: Page[],
   tagOptions: SelectOption[],
   sliceCount = 0,
-): TagInfo[] {
+): Tag[] {
   // 计数
   const tags = publishedPosts?.map((p) => p.tags).flat();
   const countMap: { [key: string]: number } = {};
@@ -23,7 +23,7 @@ export function getAllTags(
       countMap[tag] = 1;
     }
   });
-  const list: TagInfo[] = [];
+  const list: Tag[] = [];
   if (isIterable(tagOptions)) {
     tagOptions.forEach((tag) => {
       const count = countMap[tag.value];

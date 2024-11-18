@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
@@ -35,7 +35,7 @@ const TagIndex: FC<TagIndexProps> = (props) => {
 export const getStaticProps: GetStaticProps<TagIndexProps> = async ({
   locale,
 }) => {
-  const props = await getGlobalData('tag-index-props');
+  const props = await getSiteData('tag-index-props');
   return {
     props: {
       ...omit(props, 'allPages'),

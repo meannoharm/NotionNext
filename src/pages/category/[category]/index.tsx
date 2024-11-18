@@ -1,4 +1,4 @@
-import { getGlobalData } from '@/lib/notion/getNotionData';
+import { getSiteData } from '@/lib/notion/getSiteData';
 import React from 'react';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps<
   CategoryDetailParams
 > = async ({ params, locale }) => {
   const { category } = params as CategoryDetailParams;
-  const { allPages, ...globalProps } = await getGlobalData(
+  const { allPages, ...globalProps } = await getSiteData(
     'category-detail-props',
   );
 
@@ -77,7 +77,7 @@ export const getStaticPaths: GetStaticPaths<
   CategoryDetailParams
 > = async () => {
   const from = 'category-paths';
-  const { categoryOptions } = await getGlobalData(from);
+  const { categoryOptions } = await getSiteData(from);
   return {
     paths: categoryOptions.map((category) => ({
       params: { category: category.name },

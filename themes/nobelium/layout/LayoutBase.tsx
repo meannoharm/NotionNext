@@ -33,7 +33,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
     updateSiteInfo(siteInfo);
   }, [siteInfo, updateSiteInfo]);
 
-  const { onLoading } = useGlobal();
+  const { isLoading } = useGlobal();
 
   return (
     <div
@@ -49,7 +49,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
       {/* 主区 */}
       <main className="w-full max-w-2xl flex-grow self-center px-4 transition-all">
         <Transition
-          show={!onLoading}
+          show={!isLoading}
           appear={true}
           enter="transition ease-in-out duration-700 transform order-first"
           enterFrom="opacity-0 translate-y-16"

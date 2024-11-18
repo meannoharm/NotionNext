@@ -1,4 +1,5 @@
 import { getQueryVariable } from '../utils';
+import store from 'store';
 import BLOG from 'blog.config';
 
 /**

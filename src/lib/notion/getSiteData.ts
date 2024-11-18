@@ -2,9 +2,9 @@ import BLOG from 'blog.config';
 import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
 import { getPostBlocks } from './getPostBlocks';
 import { idToUuid } from 'notion-utils';
-import { getAllCategories } from './getAllCategories';
+import { getCategories } from './getCategories';
 import getAllPageIds from './getAllPageIds';
-import { getAllTags } from './getAllTags';
+import { getTags } from './getTags';
 import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
 import dayjs from 'dayjs';
@@ -12,8 +12,6 @@ import dayjs from 'dayjs';
 import {
   type CustomNav,
   type Page,
-  type CollectionPropertySchemaMap,
-  type SelectOption,
   type SiteInfo,
   type Site,
   type PatchedCollection,
@@ -122,34 +120,6 @@ function getCustomNav(allPages: Page[]) {
 }
 
 /**
- * 获取标签选项
- * @param schemaMap
- * @returns {undefined}
- */
-function getTagOptions(schemaMap: CollectionPropertySchemaMap): SelectOption[] {
-  if (!schemaMap) return [];
-  const tagSchema = Object.values(schemaMap).find(
-    (e) => e.name === BLOG.NOTION_PROPERTY_NAME.tags,
-  );
-  return tagSchema?.options || [];
-}
-
-/**
- * 获取分类选项
- * @param schemaMap
- * @returns {{}|*|*[]}
- */
-function getCategoryOptions(
-  schemaMap: CollectionPropertySchemaMap,
-): SelectOption[] {
-  if (!schemaMap) return [];
-  const categorySchema = Object.values(schemaMap).find(
-    (e) => e.name === BLOG.NOTION_PROPERTY_NAME.category,
-  );
-  return categorySchema?.options || [];
-}
-
-/**
  * 站点信息
  * @param notionPageData
  * @param from
@@ -222,8 +192,6 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const collectionView = pageRecordMap.collection_view;
 
   const schemaMap = collection.schema;
-  const tagOptions = getTagOptions(schemaMap);
-  const categoryOptions = getCategoryOptions(schemaMap);
 
   const pageIds = getAllPageIds(
     collectionQuery,
@@ -311,8 +279,8 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
     itemProperties.find((post) => post.type === PagePropertiesType.Config),
   );
 
-  const categories = getAllCategories(publishedPosts, categoryOptions);
-  const tags = getAllTags(publishedPosts, tagOptions);
+  const categoryOptions = getCategories(publishedPosts, schemaMap);
+  const tagOptions = getTags(publishedPosts, schemaMap);
   // 旧的菜单
   const customNav = getCustomNav(
     itemProperties.filter(
@@ -336,8 +304,8 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
     blockMap,
     block,
     schema: schemaMap,
-    tagOptions: tags,
-    categoryOptions: categories,
+    tagOptions,
+    categoryOptions,
     customNav,
     postCount: publishedPosts.length,
     publishedPosts,

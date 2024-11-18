@@ -1,5 +1,6 @@
+import BLOG from 'blog.config';
 import { isIterable } from '../utils';
-import type { Page, SelectOption, Tag } from '@/types/notion';
+import type { CollectionPropertySchemaMap, Page, Tag } from '@/types/notion';
 
 /**
  * 获取所有文章的标签
@@ -8,11 +9,16 @@ import type { Page, SelectOption, Tag } from '@/types/notion';
  * @param tagOptions tags的下拉选项
  * @returns {Promise<{}|*[]>}
  */
-export function getAllTags(
+export function getTags(
   publishedPosts: Page[],
-  tagOptions: SelectOption[],
+  schemaMap: CollectionPropertySchemaMap,
   sliceCount = 0,
 ): Tag[] {
+  if (!schemaMap) return [];
+  const tagSchema = Object.values(schemaMap).find(
+    (e) => e.name === BLOG.NOTION_PROPERTY_NAME.tags,
+  );
+  const tagOptions = tagSchema?.options || [];
   // 计数
   const tags = publishedPosts?.map((p) => p.tags).flat();
   const countMap: { [key: string]: number } = {};

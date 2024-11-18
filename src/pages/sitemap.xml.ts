@@ -4,8 +4,9 @@ import dayjs from 'dayjs';
 import BLOG from 'blog.config';
 
 import type { ISitemapField } from 'next-sitemap';
+import type { GetServerSideProps } from 'next';
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { allPages } = await getGlobalData('rss');
   const lastmod = dayjs().format('YYYY-MM-DD');
   const defaultFields: ISitemapField[] = [

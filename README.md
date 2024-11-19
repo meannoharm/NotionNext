@@ -6,7 +6,8 @@ A static blog system built with Next.js and the Notion API, deployed on Vercel
 
 TODO:
 
-- config from Notion Database
+- usage and document
+- config from Notion
 - new theme **material**
 - monorepo directory for theme module
 

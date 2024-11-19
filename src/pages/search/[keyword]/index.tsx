@@ -150,8 +150,8 @@ async function filterByMemCache(posts: Page[], keyword: string) {
 export function getPageContentText(post: Page, dataBaseInfo: Site) {
   let indexContent: string[] = [];
   if (dataBaseInfo && dataBaseInfo?.block && !post.password) {
-    Object.keys(dataBaseInfo.block).forEach((id) => {
-      const properties = dataBaseInfo.blockMap[id]?.value?.properties;
+    Object.values(dataBaseInfo.block).forEach((block) => {
+      const properties = block.value?.properties;
       indexContent = extractTextContent(indexContent, properties, 'title');
       indexContent = extractTextContent(indexContent, properties, 'caption');
     });

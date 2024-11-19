@@ -1,10 +1,6 @@
 import type {
   Block,
-  BlockMap,
   Collection,
-  CollectionPropertySchemaMap,
-  CollectionQueryResult,
-  CollectionViewMap,
   ExtendedRecordMap,
   FormattedDate,
   ID,
@@ -92,28 +88,17 @@ export interface Tag {
 }
 
 export interface Site {
+  id: string;
   notice: Page | null;
   config: Config;
   siteInfo: SiteInfo;
   allPages: Page[];
-  collection: Collection;
-  collectionQuery: {
-    [collectionId: string]: {
-      [collectionViewId: string]: CollectionQueryResult;
-    };
-  };
-  collectionId: string | null;
-  collectionView: CollectionViewMap;
-  viewIds: string[];
   block: Block;
-  blockMap: BlockMap;
-  schema: CollectionPropertySchemaMap;
   tagOptions: Tag[];
   categoryOptions: Category[];
   customNav: CustomNav[];
   postCount: number;
   publishedPosts: Page[];
-  pageIds: string[];
   latestPosts: Page[];
 }
 

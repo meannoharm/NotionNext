@@ -1,5 +1,6 @@
 import { RawPage } from '@/types';
 import { getPostBlocks } from './getPostBlocks';
+import getAllPageIds from './getAllPageIds';
 
 // get config from notion page
 const getConfig = async (configPage?: RawPage) => {
@@ -7,8 +8,7 @@ const getConfig = async (configPage?: RawPage) => {
     return {};
   }
   const configPageId = configPage.id;
-  const pageRecordMap = await getPostBlocks(configPageId, 'config-table');
-  // content is list block id in config page
+  const pageRecordMap = await getPostBlocks(configPageId, 'config');
   const { content } = pageRecordMap.block[configPageId].value;
 
   if (!content) {
@@ -23,8 +23,28 @@ const getConfig = async (configPage?: RawPage) => {
     return {};
   }
 
-  const configDatabaseBlock = pageRecordMap.block[configTableId].value;
-  console.log(configDatabaseBlock);
+  const configBlock = pageRecordMap.block[configTableId].value;
+
+  if (
+    configBlock.type !== 'collection_view_page' &&
+    configBlock.type !== 'collection_view'
+  ) {
+    console.error(`pageId "${configPageId}" is not a database`);
+    throw Error(`pageId "${configPageId}" is not a database`);
+    // return EmptyData(pageUuid);
+  }
+
+  const collectionId = configBlock?.collection_id || null;
+  const viewIds = configBlock?.view_ids;
+
+  const pageIds = getAllPageIds(
+    collectionId,
+    pageRecordMap.collection_query,
+    pageRecordMap.collection_view,
+    viewIds,
+  );
+
+  console.log(pageIds);
 
   return {};
 };

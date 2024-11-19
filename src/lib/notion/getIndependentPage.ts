@@ -4,12 +4,7 @@ import { getPostBlocks } from './getPostBlocks';
 import { defaultMapImageUrl } from 'react-notion-x';
 import dayjs from 'dayjs';
 
-import {
-  Block,
-  Page,
-  PagePropertiesType,
-  PagePropertiesStatus,
-} from '@/types/notion';
+import { Block, Page, PageType, PageStatus } from '@/types/notion';
 
 /**
  * formate from postBlock to pageInfo
@@ -26,11 +21,11 @@ export async function getIndependentPage(pageId: string, from: string) {
 
   return {
     id: pageId,
-    type: PagePropertiesType.Post,
+    type: PageType.Post,
     category: '',
     tags: [],
     title: postInfo?.properties?.title?.[0],
-    status: PagePropertiesStatus.Published,
+    status: PageStatus.Published,
     pageCover: getPageCover(postInfo),
     date: {
       type: 'date',

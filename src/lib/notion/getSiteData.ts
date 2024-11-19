@@ -7,12 +7,12 @@ import getAllPageIds from './getAllPageIds';
 import { getTags } from './getTags';
 import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
-import { PagePropertiesStatus, PagePropertiesType } from '@/types/notion';
+import { PageStatus, PageType } from '@/types/notion';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
 
 import type {
-  CustomNav,
+  Nav,
   Page,
   SiteInfo,
   Site,
@@ -68,14 +68,33 @@ function getLatestPosts(
  * @param notionPageData
  * @returns {Promise<[]|*[]>}
  */
-function getCustomNav(allPages: Page[]): CustomNav[] {
-  return allPages.map((page) => ({
-    icon: page.icon || '',
-    name: page.title,
-    to: page.slug?.startsWith('http') ? page.slug : `/${page.slug}`,
-    target: page.slug?.startsWith('http') ? '_blank' : '_self',
-    show: true,
-  }));
+function getNavList(navPages: Page[]): Nav[] {
+  console.log(navPages);
+
+  const menus: Nav[] = [];
+  for (const page of navPages) {
+    const nav: Nav = {
+      show: true,
+      icon: page.icon,
+      name: page.title,
+      to: page.slug?.startsWith('http') ? page.slug : `/${page.slug}`,
+      target: page.slug?.startsWith('http') ? '_blank' : '_self',
+    };
+
+    if (page.type === PageType.Page) {
+      menus.push(nav);
+    } else if (page.type === PageType.SubPage) {
+      // Find the last added menu, which should be the parent for submenus
+      const parentMenu = menus[menus.length - 1];
+
+      if (parentMenu) {
+        // If the parent menu exists, ensure it has subMenus and add the current page
+        parentMenu.subMenus = parentMenu.subMenus || [];
+        parentMenu.subMenus.push(nav);
+      }
+    }
+  }
+  return menus;
 }
 
 /**
@@ -149,7 +168,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   // 查找所有的Post和Page
   const allPages: Page[] = [];
   const publishedPosts: Page[] = [];
-  const navMenuPageList: Page[] = [];
+  const navPageList: Page[] = [];
   let config: Config = {};
   let notice: Page | null = null;
 
@@ -161,8 +180,8 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
 
         // for published post
         if (
-          page.type === PagePropertiesType.Post &&
-          page.status === PagePropertiesStatus.Published
+          page.type === PageType.Post &&
+          page.status === PageStatus.Published
         ) {
           publishedPosts.push(page as Page);
         }
@@ -171,25 +190,25 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
         if (
           page.slug &&
           !page.slug?.startsWith('http') &&
-          (page.status === PagePropertiesStatus.Invisible ||
-            page.status === PagePropertiesStatus.Published)
+          (page.status === PageStatus.Invisible ||
+            page.status === PageStatus.Published)
         ) {
           allPages.push(page as Page);
         }
 
         // custom nav menu
         if (
-          page.type === PagePropertiesType.Page &&
-          page.status === PagePropertiesStatus.Published
+          (page.type === PageType.Page || page.type === PageType.SubPage) &&
+          page.status === PageStatus.Published
         ) {
-          navMenuPageList.push(page as Page);
+          navPageList.push(page as Page);
         }
 
         // The Config page is unique; only the first one is selected.
         if (
           isEmpty(config) &&
-          page.type === PagePropertiesType.Config &&
-          page.status === PagePropertiesStatus.Published
+          page.type === PageType.Config &&
+          page.status === PageStatus.Published
         ) {
           config = await getConfig(page);
         }
@@ -197,8 +216,8 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
         // The Notice page is unique; only the first one is selected
         if (
           !notice &&
-          page.type === PagePropertiesType.Notice &&
-          page.status === PagePropertiesStatus.Published
+          page.type === PageType.Notice &&
+          page.status === PageStatus.Published
         ) {
           notice = await getNotice(page as Page);
         }
@@ -220,7 +239,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const categoryOptions = getCategories(publishedPosts, schemaMap);
   const tagOptions = getTags(publishedPosts, schemaMap);
   const latestPosts = getLatestPosts(publishedPosts, 6);
-  const customNav = getCustomNav(navMenuPageList);
+  const navList = getNavList(navPageList);
 
   return {
     id: pageId,
@@ -231,7 +250,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
     block,
     tagOptions,
     categoryOptions,
-    customNav,
+    navList,
     postCount: publishedPosts.length,
     publishedPosts,
     latestPosts,

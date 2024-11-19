@@ -13,8 +13,8 @@ export type * from 'notion-types';
 export interface RawPage {
   id: string;
   title: string;
-  type?: PagePropertiesType;
-  status?: PagePropertiesStatus;
+  type?: PageType;
+  status?: PageStatus;
   category?: string;
   publishDate: number;
   lastEditedDate: number;
@@ -34,18 +34,19 @@ export interface RawPage {
 }
 
 export interface Page extends RawPage {
-  type: PagePropertiesType;
+  type: PageType;
   slug: string;
 }
 
-export enum PagePropertiesType {
+export enum PageType {
   Post = 'Post',
   Page = 'Page',
+  SubPage = 'SubPage',
   Notice = 'Notice',
   Config = 'Config',
 }
 
-export enum PagePropertiesStatus {
+export enum PageStatus {
   Published = 'Published',
   Invisible = 'Invisible',
   Draft = 'Draft',
@@ -58,12 +59,13 @@ export interface User {
   profile_photo: string;
 }
 
-export interface CustomNav {
+export interface Nav {
   icon: string;
   name: string;
   to: string;
   target: string;
   show: boolean;
+  subMenus?: Nav[];
 }
 
 export interface SiteInfo {
@@ -96,7 +98,7 @@ export interface Site {
   block: Block;
   tagOptions: Tag[];
   categoryOptions: Category[];
-  customNav: CustomNav[];
+  navList: Nav[];
   postCount: number;
   publishedPosts: Page[];
   latestPosts: Page[];

@@ -9,6 +9,7 @@ import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
 import { PagePropertiesStatus, PagePropertiesType } from '@/types/notion';
 import dayjs from 'dayjs';
+import { isEmpty } from 'lodash';
 
 import type {
   CustomNav,
@@ -21,43 +22,17 @@ import type { Config } from '@/types/config';
 import getConfig from './getConfig';
 
 /**
- * 获取站点数据
- * @param {*} from
- * @returns
- *
- */
-export async function getSiteData(from: string) {
-  // 从notion获取
-  const data = await getSiteDataFromCache(idToUuid(BLOG.NOTION_PAGE_ID), from);
-  return data;
-  // const db = cloneDeep(data);
-  // 不返回的敏感数据
-  // delete db.block;
-  // delete db.schema;
-  // delete db.rawMetadata;
-  // delete db.pageIds;
-  // delete db.viewIds;
-  // delete db.collection;
-  // delete db.collectionQuery;
-  // delete db.collectionId;
-  // delete db.collectionView;
-  // return db;
-}
-
-/**
- * whole notion template
- * @param pageId
- * @param from 请求来源
+ * whole site info
+ * @param pageId notion page id
+ * @param from request from
  * @returns {Promise<JSX.Element|*|*[]>}
  */
-export async function getSiteDataFromCache(
-  pageId: string,
-  from: string,
-): Promise<Site> {
+export async function getSiteData(from: string): Promise<Site> {
+  const pageId = idToUuid(BLOG.NOTION_PAGE_ID);
   // 尝试从缓存获取
   const cacheKey = 'page_block_' + pageId;
   const data = await getDataFromCache<Site>(cacheKey);
-  if (data && data.pageIds?.length > 0) {
+  if (data) {
     console.log('[缓存]:', `from:${from}`, `root-page-id:${pageId}`);
     return data;
   }
@@ -166,27 +141,16 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const siteInfo = getSiteInfo(collection as PatchedCollection);
   const collectionId = block.collection_id || null;
   const viewIds = block.view_ids;
-  const collectionQuery = pageRecordMap.collection_query;
-  const collectionView = pageRecordMap.collection_view;
+  // const collectionQuery = pageRecordMap.collection_query;
+  // const collectionView = pageRecordMap.collection_view;
   const schemaMap = collection.schema;
 
   const pageIds = getAllPageIds(
-    collectionQuery,
     collectionId,
-    collectionView,
+    pageRecordMap.collection_query,
+    pageRecordMap.collection_view,
     viewIds,
   );
-
-  if (pageIds.length === 0) {
-    console.error(
-      '获取到的文章列表为空，请检查notion模板',
-      collectionQuery,
-      collection,
-      collectionView,
-      viewIds,
-      pageRecordMap,
-    );
-  }
 
   // 查找所有的Post和Page
   const allPages: Page[] = [];
@@ -197,59 +161,57 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
 
   await Promise.all(
     pageIds.map(async (pageId) => {
-      if (blockMap[pageId].value) {
-        try {
-          const page = await getPageProperties(pageId, blockMap, schemaMap);
-          if (!page.type) return;
+      try {
+        const page = await getPageProperties(pageId, blockMap, schemaMap);
+        if (!page.type) return;
 
-          // for published post
-          if (
-            page.type === PagePropertiesType.Post &&
-            page.status === PagePropertiesStatus.Published
-          ) {
-            publishedPosts.push(page as Page);
-          }
-
-          // for all page
-          if (
-            page.slug &&
-            !page.slug?.startsWith('http') &&
-            (page.status === PagePropertiesStatus.Invisible ||
-              page.status === PagePropertiesStatus.Published)
-          ) {
-            allPages.push(page as Page);
-          }
-
-          // custom nav menu
-          if (
-            page.type === PagePropertiesType.Page &&
-            page.status === PagePropertiesStatus.Published
-          ) {
-            navMenuPageList.push(page as Page);
-          }
-
-          // The Config page is unique; only the first one is selected.
-          if (
-            !config &&
-            page.type === PagePropertiesType.Config &&
-            page.status === PagePropertiesStatus.Published
-          ) {
-            config = await getConfig(page);
-          }
-
-          // The Notice page is unique; only the first one is selected
-          if (
-            !notice &&
-            page.type === PagePropertiesType.Notice &&
-            page.status === PagePropertiesStatus.Published
-          ) {
-            notice = await getNotice(page as Page);
-          }
-          return page;
-        } catch (error) {
-          console.error(`Error getting properties for page ${pageId}:`, error);
-          return null;
+        // for published post
+        if (
+          page.type === PagePropertiesType.Post &&
+          page.status === PagePropertiesStatus.Published
+        ) {
+          publishedPosts.push(page as Page);
         }
+
+        // for all page
+        if (
+          page.slug &&
+          !page.slug?.startsWith('http') &&
+          (page.status === PagePropertiesStatus.Invisible ||
+            page.status === PagePropertiesStatus.Published)
+        ) {
+          allPages.push(page as Page);
+        }
+
+        // custom nav menu
+        if (
+          page.type === PagePropertiesType.Page &&
+          page.status === PagePropertiesStatus.Published
+        ) {
+          navMenuPageList.push(page as Page);
+        }
+
+        // The Config page is unique; only the first one is selected.
+        if (
+          isEmpty(config) &&
+          page.type === PagePropertiesType.Config &&
+          page.status === PagePropertiesStatus.Published
+        ) {
+          config = await getConfig(page);
+        }
+
+        // The Notice page is unique; only the first one is selected
+        if (
+          !notice &&
+          page.type === PagePropertiesType.Notice &&
+          page.status === PagePropertiesStatus.Published
+        ) {
+          notice = await getNotice(page as Page);
+        }
+        return page;
+      } catch (error) {
+        console.error(`Error getting properties for page ${pageId}:`, error);
+        return null;
       }
     }),
   );
@@ -267,24 +229,17 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const customNav = getCustomNav(navMenuPageList);
 
   return {
+    id: pageId,
     notice,
     config,
     siteInfo,
     allPages,
-    collection,
-    collectionQuery,
-    collectionId,
-    collectionView,
-    viewIds,
-    blockMap,
     block,
-    schema: schemaMap,
     tagOptions,
     categoryOptions,
     customNav,
     postCount: publishedPosts.length,
     publishedPosts,
-    pageIds,
     latestPosts,
   };
 }

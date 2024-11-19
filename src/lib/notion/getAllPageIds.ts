@@ -7,8 +7,8 @@ type Query = {
 };
 
 export default function getAllPageIds(
-  collectionQuery: Query,
   collectionId: string | null,
+  collectionQuery: Query,
   collectionView: CollectionViewMap,
   viewIds: string[],
 ) {
@@ -38,5 +38,6 @@ export default function getAllPageIds(
     });
     pageIds = [...pageSet];
   }
+
   return pageIds;
 }

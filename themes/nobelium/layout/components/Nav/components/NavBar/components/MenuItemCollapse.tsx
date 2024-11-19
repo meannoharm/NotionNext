@@ -44,7 +44,7 @@ export const MenuItemCollapse: FC<MenuItemCollapseProps> = (props) => {
               <i className={link.icon} />
             </div>
           )}
-          <div className="font-medium">{t(link.name)}</div>
+          <div className="font-medium">{t(link.title)}</div>
         </Link>
       )}
       {hasSubMenu && (
@@ -57,7 +57,7 @@ export const MenuItemCollapse: FC<MenuItemCollapseProps> = (props) => {
               <i className={link.icon} />
             </div>
           )}
-          <div className="mr-auto">{link?.name}</div>
+          <div className="mr-auto">{link?.title}</div>
           <div className="flex items-center">
             {isOpen ? (
               <i className="fa fa-minus" />

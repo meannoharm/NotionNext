@@ -128,21 +128,17 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   }
   const blockMap = pageRecordMap.block;
   const block = blockMap[pageId].value;
-  // Check Type Page-Database和Inline-Database
   if (
     block.type !== 'collection_view_page' &&
     block.type !== 'collection_view'
   ) {
     console.error(`pageId "${pageId}" is not a database`);
     throw Error(`pageId "${pageId}" is not a database`);
-    // return EmptyData(pageUuid);
   }
   const collection = Object.values(pageRecordMap.collection)[0].value;
   const siteInfo = getSiteInfo(collection as PatchedCollection);
   const collectionId = block.collection_id || null;
   const viewIds = block.view_ids;
-  // const collectionQuery = pageRecordMap.collection_query;
-  // const collectionView = pageRecordMap.collection_view;
   const schemaMap = collection.schema;
 
   const pageIds = getAllPageIds(

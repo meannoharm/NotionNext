@@ -28,18 +28,18 @@ export default async function getPageProperties(
 
   Object.entries<Decoration[]>(block.properties).forEach(
     async ([key, value]) => {
-      const schema = schemaMap[key];
-      if (schema.type && !excludeProperties.includes(schema.type)) {
-        pageInfo[schema.name] = getTextContent(value);
+      const { name, type } = schemaMap[key];
+      if (type && !excludeProperties.includes(type)) {
+        pageInfo[name] = getTextContent(value);
       } else {
-        switch (schema.type) {
+        switch (type) {
           case 'date': {
-            pageInfo[schema.name] = getDateValue(value);
+            pageInfo[name] = getDateValue(value);
             break;
           }
           case 'select':
           case 'multi_select': {
-            pageInfo[schema.name] = getTextContent(value).split(',');
+            pageInfo[name] = getTextContent(value).split(',');
             break;
           }
           case 'person': {
@@ -63,7 +63,7 @@ export default async function getPageProperties(
             //     users.push(user);
             //   }
             // }
-            // pageInfo[schema.name] = users;
+            // pageInfo[name] = users;
             break;
           }
           default:

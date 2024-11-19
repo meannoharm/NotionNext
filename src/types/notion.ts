@@ -10,6 +10,7 @@ import type {
   ID,
   BlockType,
 } from 'notion-types';
+import { Config } from './config';
 
 export type * from 'notion-types';
 
@@ -30,7 +31,7 @@ export interface Page {
   icon: string;
   tags: string[];
   summary: string;
-  slug: string;
+  slug?: string;
   results?: string[];
   password?: string;
   toc?: TableOfContentsEntry[];
@@ -87,6 +88,7 @@ export interface Tag {
 
 export interface Site {
   notice: Page | null;
+  config: Config;
   siteInfo: SiteInfo;
   allPages: Page[];
   collection: Collection;

@@ -1,16 +1,15 @@
-# 个人博客
+# Notion Next Base
 
-基于 Notion 和 Next.js 的博客<br>
-forked from [tangly1024/NotionNext](https://github.com/tangly1024/NotionNext)<br>
-由于原项目过于花哨，所以fork过来自己精简修改<br>
+A static blog system built with Next.js and the Notion API, deployed on Vercel
+
+---
 
 TODO:
 
-全部ts化
-主题部分改版
-新主题：innocent 和 colorful
+- config from Notion Database
+- new theme **material**
+- monorepo directory for theme module
 
-small TODO:
-fix style bug
-? state management for Notion Data
-? dev local cache
+---
+
+Forked from [tangly1024/NotionNext](https://github.com/tangly1024/NotionNext), thanks for the inspiration.

@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
-import type { NavLink } from '@themes/nobelium/types';
+import type { Nav } from '@/types/notion';
 
 export interface MenuItemCollapseProps {
-  link: NavLink;
+  link: Nav;
   onHeightChange?: (params: { height: number }) => void;
 }
 

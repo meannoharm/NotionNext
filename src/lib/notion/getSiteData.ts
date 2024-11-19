@@ -10,7 +10,6 @@ import { mapImgUrl, compressImage } from './mapImage';
 import { PagePropertiesStatus, PagePropertiesType } from '@/types/notion';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
-import { getPageProperty as get } from 'notion-utils';
 
 import type {
   CustomNav,

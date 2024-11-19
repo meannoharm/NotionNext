@@ -38,16 +38,12 @@ export const getStaticPaths: GetStaticPaths<PrefixSlugParams> = async () => {
   return {
     paths: allPages
       .filter(
-        (row) =>
-          row.slug &&
-          row.slug.indexOf('/') > 0 &&
-          row.type &&
-          row.type.indexOf('Menu') < 0,
+        (row) => row.slug.indexOf('/') > 0 && row.type.indexOf('Menu') < 0,
       )
       .map((row) => ({
         params: {
-          prefix: (row.slug as string).split('/')[0],
-          slug: (row.slug as string).split('/')[1],
+          prefix: row.slug.split('/')[0],
+          slug: row.slug.split('/')[1],
         },
       })),
     fallback: true,

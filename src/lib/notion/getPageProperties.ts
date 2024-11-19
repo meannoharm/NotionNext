@@ -8,12 +8,12 @@ import { PagePropertiesType, PagePropertiesStatus } from '@/types/notion';
 
 import type {
   BlockMap,
-  Page,
+  RawPage,
   CollectionPropertySchemaMap,
   Decoration,
 } from '@/types/notion';
 
-type TempPageInfo = Partial<Page> & { [key: string]: any };
+type TempPageInfo = Partial<RawPage> & { [key: string]: any };
 const excludeProperties = ['date', 'select', 'multi_select', 'person'];
 
 // get properties for each line in collection
@@ -22,7 +22,7 @@ export default async function getPageProperties(
   blockMap: BlockMap,
   schemaMap: CollectionPropertySchemaMap,
   // authToken?: string,
-): Promise<Page> {
+): Promise<RawPage> {
   const pageInfo: TempPageInfo = { id: id };
   const block = blockMap[id].value;
 
@@ -138,7 +138,7 @@ export default async function getPageProperties(
     ? md5(pageInfo.slug + pageInfo.password)
     : '';
 
-  return pageInfo as Page;
+  return pageInfo as RawPage;
 }
 
 /**

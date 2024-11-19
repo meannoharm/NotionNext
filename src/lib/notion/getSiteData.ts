@@ -193,7 +193,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const publishedPosts: Page[] = [];
   const navMenuPageList: Page[] = [];
   let config: Config = {};
-  let notice: RawPage | null = null;
+  let notice: Page | null = null;
 
   await Promise.all(
     pageIds.map(async (pageId) => {

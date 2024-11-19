@@ -30,7 +30,7 @@ import getConfig from './getConfig';
 export async function getSiteData(from: string): Promise<Site> {
   const pageId = idToUuid(BLOG.NOTION_PAGE_ID);
   // 尝试从缓存获取
-  const cacheKey = 'page_block_' + pageId;
+  const cacheKey = `site_data_${pageId}`;
   const data = await getDataFromCache<Site>(cacheKey);
   if (data) {
     console.log('[缓存]:', `from:${from}`, `root-page-id:${pageId}`);

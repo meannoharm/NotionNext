@@ -19,7 +19,7 @@ export async function getPostBlocks(
   from: string,
   slice?: number,
 ): Promise<ExtendedRecordMap> {
-  const cacheKey = 'page_block_' + id;
+  const cacheKey = `post_block_${id}`;
 
   try {
     const pageBlockMapFromCache =

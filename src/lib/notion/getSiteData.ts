@@ -136,7 +136,6 @@ function getSiteInfo(collection: PatchedCollection): SiteInfo {
  * 获取公告
  */
 async function getNotice(post: Page) {
-  if (!post) return null;
   post.blockMap = await getPostBlocks(post.id, 'data-notice');
   return post;
 }
@@ -194,7 +193,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const publishedPosts: Page[] = [];
   const navMenuPageList: Page[] = [];
   let config: Config = {};
-  let notice: Page | null = null;
+  let notice: RawPage | null = null;
 
   await Promise.all(
     pageIds.map(async (pageId) => {
@@ -235,7 +234,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
             page.type === PagePropertiesType.Config &&
             page.status === PagePropertiesStatus.Published
           ) {
-            config = await getConfig(page as Page);
+            config = await getConfig(page);
           }
 
           // The Notice page is unique; only the first one is selected

@@ -1,8 +1,8 @@
-import { Page } from '@/types';
+import { RawPage } from '@/types';
 import { getPostBlocks } from './getPostBlocks';
 
 // get config from notion page
-const getConfig = async (configPage?: Page) => {
+const getConfig = async (configPage?: RawPage) => {
   if (!configPage) {
     return {};
   }

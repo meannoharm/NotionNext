@@ -190,6 +190,7 @@ export const getStaticProps: GetStaticProps<
       prev,
       next,
       recommendPosts,
+      ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };

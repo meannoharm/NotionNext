@@ -60,11 +60,12 @@ export interface User {
 }
 
 export interface Nav {
+  id: string;
   icon: string;
-  name: string;
   to: string;
   target: string;
   show: boolean;
+  title: string;
   subMenus?: Nav[];
 }
 

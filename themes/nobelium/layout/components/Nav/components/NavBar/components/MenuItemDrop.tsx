@@ -5,10 +5,10 @@ import { useTranslation } from 'next-i18next';
 import { useRef } from 'react';
 
 import type { FC } from 'react';
-import type { NavLink } from '@themes/nobelium/types';
+import type { Nav } from '@/types/notion';
 
 export interface MenuItemDropProps {
-  link: NavLink;
+  link: Nav;
 }
 export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
   const [show, changeShow] = useState(false);
@@ -41,7 +41,7 @@ export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
           target={link?.to?.indexOf('http') === 0 ? '_blank' : '_self'}
         >
           {link?.icon && <i className={link?.icon} />}{' '}
-          <span className="font-medium">{t(link.name)}</span>
+          <span className="font-medium">{t(link.title)}</span>
         </Link>
       )}
 
@@ -50,7 +50,7 @@ export const MenuItemDrop: FC<MenuItemDropProps> = ({ link }) => {
           className={`block text-black dark:text-gray-50`}
           onClick={toggleShow}
         >
-          {link?.icon && <i className={link?.icon} />} {link?.name}
+          {link?.icon && <i className={link?.icon} />} {link?.title}
           <i
             className={`fas fa-chevron-down px-2 transition-all duration-500 ${show ? ' rotate-180' : ''}`}
           ></i>

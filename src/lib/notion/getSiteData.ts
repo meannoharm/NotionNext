@@ -69,14 +69,13 @@ function getLatestPosts(
  * @returns {Promise<[]|*[]>}
  */
 function getNavList(navPages: Page[]): Nav[] {
-  console.log(navPages);
-
   const menus: Nav[] = [];
   for (const page of navPages) {
     const nav: Nav = {
+      id: page.id,
       show: true,
       icon: page.icon,
-      name: page.title,
+      title: page.title,
       to: page.slug?.startsWith('http') ? page.slug : `/${page.slug}`,
       target: page.slug?.startsWith('http') ? '_blank' : '_self',
     };

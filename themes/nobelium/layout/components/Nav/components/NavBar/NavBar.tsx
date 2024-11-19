@@ -9,14 +9,17 @@ import SearchButton from './components/SearchButton';
 import LanguageSwitchButton from './components/LanguageSwitchButton';
 import DarkModeButton from './components/DarkModeButton';
 import { MenuItemCollapse } from './components/MenuItemCollapse';
+import { useNobeliumStore } from '@themes/nobelium/providers';
+import { isEmpty } from 'lodash';
 
-import type { NavLink } from '@themes/nobelium/types';
+import type { Nav } from '@/types/notion';
 
 const NavBar: FC = () => {
   const [isOpen, changeOpen] = useState(false);
   const collapseRef = useRef<CollapseHandle>(null);
   const mobileMenuRef = useRef(null);
   const mobileMenuToggleButtonRef = useRef(null);
+  const { navList } = useNobeliumStore((store) => store);
 
   const toggleOpen = () => {
     changeOpen(!isOpen);
@@ -26,44 +29,50 @@ const NavBar: FC = () => {
     changeOpen(false);
   });
 
-  const links: NavLink[] = [
-    {
-      id: 'rss',
-      icon: 'fas fa-rss',
-      name: 'rss',
-      to: '/feed',
-      show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
-      target: '_blank',
-    },
-    {
-      id: 'search',
-      icon: 'fas fa-search',
-      name: 'search',
-      to: '/search',
-      show: CONFIG.MENU_SEARCH,
-    },
-    {
-      id: 'archive',
-      icon: 'fas fa-archive',
-      name: 'archive',
-      to: '/archive',
-      show: CONFIG.MENU_ARCHIVE,
-    },
-    {
-      id: 'category',
-      icon: 'fas fa-folder',
-      name: 'category',
-      to: '/category',
-      show: CONFIG.MENU_CATEGORY,
-    },
-    {
-      id: 'tags',
-      icon: 'fas fa-tag',
-      name: 'tags',
-      to: '/tag',
-      show: CONFIG.MENU_TAG,
-    },
-  ];
+  const links: Nav[] = !isEmpty(navList)
+    ? navList
+    : [
+        {
+          id: 'rss',
+          icon: 'fas fa-rss',
+          title: 'rss',
+          to: '/feed',
+          show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
+          target: '_blank',
+        },
+        {
+          id: 'search',
+          icon: 'fas fa-search',
+          title: 'search',
+          to: '/search',
+          show: CONFIG.MENU_SEARCH,
+          target: '_self',
+        },
+        {
+          id: 'archive',
+          icon: 'fas fa-archive',
+          title: 'archive',
+          to: '/archive',
+          show: CONFIG.MENU_ARCHIVE,
+          target: '_self',
+        },
+        {
+          id: 'category',
+          icon: 'fas fa-folder',
+          title: 'category',
+          to: '/category',
+          show: CONFIG.MENU_CATEGORY,
+          target: '_self',
+        },
+        {
+          id: 'tags',
+          icon: 'fas fa-tag',
+          title: 'tags',
+          to: '/tag',
+          show: CONFIG.MENU_TAG,
+          target: '_self',
+        },
+      ];
 
   return (
     <div className="flex flex-shrink-0">

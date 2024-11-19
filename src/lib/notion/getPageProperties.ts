@@ -137,6 +137,9 @@ export default async function getPageProperties(
     ? md5(pageInfo.slug + pageInfo.password)
     : '';
 
+  // fallback for type checking
+  pageInfo.icon = pageInfo.icon || '';
+
   return pageInfo as RawPage;
 }
 

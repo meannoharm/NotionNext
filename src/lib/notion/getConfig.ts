@@ -25,6 +25,8 @@ const getConfig = async (configPage?: Page) => {
 
   const configDatabaseBlock = pageRecordMap.block[configTableId].value;
   console.log(configDatabaseBlock);
+
+  return {};
 };
 
 export default getConfig;

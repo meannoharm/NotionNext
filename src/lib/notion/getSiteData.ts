@@ -10,6 +10,7 @@ import { mapImgUrl, compressImage } from './mapImage';
 import { PagePropertiesStatus, PagePropertiesType } from '@/types/notion';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
+import { getPageProperty as get } from 'notion-utils';
 
 import type {
   CustomNav,
@@ -137,15 +138,13 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   }
   const collection = Object.values(pageRecordMap.collection)[0].value;
   const siteInfo = getSiteInfo(collection as PatchedCollection);
-  const collectionId = block.collection_id || null;
-  const viewIds = block.view_ids;
   const schemaMap = collection.schema;
 
   const pageIds = getAllPageIds(
-    collectionId,
+    block.collection_id || null,
     pageRecordMap.collection_query,
     pageRecordMap.collection_view,
-    viewIds,
+    block.view_ids,
   );
 
   // 查找所有的Post和Page

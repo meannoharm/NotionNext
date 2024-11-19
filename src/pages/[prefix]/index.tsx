@@ -11,7 +11,7 @@ import md5 from 'js-md5';
 import { isBrowser } from '@/lib/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { PagePropertiesType } from '@/types/notion';
+import { PageType } from '@/types/notion';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
@@ -210,7 +210,7 @@ export const findRelatedPosts: (
   const relatedPosts = allPosts.filter(
     (p) =>
       p.id !== post.id &&
-      p.type === PagePropertiesType.Post &&
+      p.type === PageType.Post &&
       post.tags.some((tag) => p.tags.includes(tag)),
   );
 

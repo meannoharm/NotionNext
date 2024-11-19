@@ -1,10 +1,9 @@
 import { getTextContent, getDateValue } from 'notion-utils';
-// import { NotionAPI } from 'notion-client';
 import BLOG from 'blog.config';
 import md5 from 'js-md5';
 import { mapImgUrl } from './mapImage';
 import dayjs from 'dayjs';
-import { PagePropertiesType, PagePropertiesStatus } from '@/types/notion';
+import { PageType, PageStatus } from '@/types/notion';
 
 import type {
   BlockMap,
@@ -83,10 +82,10 @@ export default async function getPageProperties(
 
   // type\status\category 是单选下拉框 取数组第一个
   if (pageInfo.type && pageInfo.type[0]) {
-    pageInfo.type = pageInfo.type[0] as PagePropertiesType;
+    pageInfo.type = pageInfo.type[0] as PageType;
   }
   if (pageInfo.status && pageInfo.status[0]) {
-    pageInfo.status = pageInfo.status[0] as PagePropertiesStatus;
+    pageInfo.status = pageInfo.status[0] as PageStatus;
   }
   if (pageInfo.category && pageInfo.category[0])
     pageInfo.category = pageInfo.category[0];
@@ -146,19 +145,19 @@ export default async function getPageProperties(
  */
 function mapProperties(properties: TempPageInfo) {
   if (properties.type === BLOG.NOTION_PROPERTY_NAME.type_post) {
-    properties.type = PagePropertiesType.Post;
+    properties.type = PageType.Post;
   }
   if (properties.type === BLOG.NOTION_PROPERTY_NAME.type_page) {
-    properties.type = PagePropertiesType.Page;
+    properties.type = PageType.Page;
   }
   if (properties.type === BLOG.NOTION_PROPERTY_NAME.type_notice) {
-    properties.type = PagePropertiesType.Notice;
+    properties.type = PageType.Notice;
   }
   if (properties.status === BLOG.NOTION_PROPERTY_NAME.status_publish) {
-    properties.status = PagePropertiesStatus.Published;
+    properties.status = PageStatus.Published;
   }
   if (properties.status === BLOG.NOTION_PROPERTY_NAME.status_invisible) {
-    properties.status = PagePropertiesStatus.Invisible;
+    properties.status = PageStatus.Invisible;
   }
 }
 

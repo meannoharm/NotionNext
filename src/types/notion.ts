@@ -14,7 +14,7 @@ import { Config } from './config';
 
 export type * from 'notion-types';
 
-export interface Page {
+export interface RawPage {
   id: string;
   title: string;
   type?: PagePropertiesType;
@@ -35,6 +35,11 @@ export interface Page {
   results?: string[];
   password?: string;
   toc?: TableOfContentsEntry[];
+}
+
+export interface Page extends RawPage {
+  type: PagePropertiesType;
+  slug: string;
 }
 
 export enum PagePropertiesType {

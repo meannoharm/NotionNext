@@ -50,8 +50,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const postFields: ISitemapField[] = allPages
     ?.filter((p) => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish)
     ?.map((post) => {
-      const slugWithoutLeadingSlash = post?.slug.startsWith('/')
-        ? post?.slug?.slice(1)
+      const slugWithoutLeadingSlash = post.slug.startsWith('/')
+        ? post.slug.slice(1)
         : post.slug;
       return {
         loc: `${BLOG.LINK}/${slugWithoutLeadingSlash}`,

@@ -121,13 +121,9 @@ export const getStaticPaths: GetStaticPaths<SlugIndexParams> = async () => {
   return {
     paths: allPages
       .filter(
-        (row) =>
-          row.slug &&
-          row.slug.indexOf('/') < 0 &&
-          row.type &&
-          row.type.indexOf('Menu') < 0,
+        (row) => row.slug.indexOf('/') < 0 && row.type.indexOf('Menu') < 0,
       )
-      .map((row) => ({ params: { prefix: row.slug as string } })),
+      .map((row) => ({ params: { prefix: row.slug } })),
     fallback: true,
   };
 };

@@ -208,7 +208,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
             page.type === PagePropertiesType.Post &&
             page.status === PagePropertiesStatus.Published
           ) {
-            publishedPosts.push(page);
+            publishedPosts.push(page as Page);
           }
 
           // for all page
@@ -218,7 +218,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
             (page.status === PagePropertiesStatus.Invisible ||
               page.status === PagePropertiesStatus.Published)
           ) {
-            allPages.push(page);
+            allPages.push(page as Page);
           }
 
           // custom nav menu
@@ -226,12 +226,16 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
             page.type === PagePropertiesType.Page &&
             page.status === PagePropertiesStatus.Published
           ) {
-            navMenuPageList.push(page);
+            navMenuPageList.push(page as Page);
           }
 
           // The Config page is unique; only the first one is selected.
-          if (!config && page.type === PagePropertiesType.Config) {
-            config = await getConfig(page);
+          if (
+            !config &&
+            page.type === PagePropertiesType.Config &&
+            page.status === PagePropertiesStatus.Published
+          ) {
+            config = await getConfig(page as Page);
           }
 
           // The Notice page is unique; only the first one is selected
@@ -240,7 +244,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
             page.type === PagePropertiesType.Notice &&
             page.status === PagePropertiesStatus.Published
           ) {
-            notice = await getNotice(page);
+            notice = await getNotice(page as Page);
           }
           return page;
         } catch (error) {

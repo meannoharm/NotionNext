@@ -29,7 +29,7 @@ export async function generateRss(posts: Page[]) {
       link: `${BLOG.LINK}/${post.slug}`,
       description: post.summary,
       content: await createFeedContent(post),
-      date: new Date(post.publishDate),
+      date: new Date(post.date),
     });
   }
 

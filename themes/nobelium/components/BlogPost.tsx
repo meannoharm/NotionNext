@@ -21,7 +21,7 @@ const BlogPost: FC<BlogPostProps> = ({ post, isShowSummary = true }) => {
             {post.title}
           </div>
           <time className="flex-shrink-0 text-gray-600 dark:text-gray-400">
-            {dayjs(post?.publishDate).format('YYYY-MM-DD')}
+            {dayjs(post?.date).format('YYYY-MM-DD')}
           </time>
         </header>
         {isShowSummary && post.summary && (

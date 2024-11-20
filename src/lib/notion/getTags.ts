@@ -1,6 +1,10 @@
-import BLOG from 'blog.config';
 import { isIterable } from '../utils';
-import type { CollectionPropertySchemaMap, Page, Tag } from '@/types/notion';
+import {
+  PagePropertyName,
+  type CollectionPropertySchemaMap,
+  type Page,
+  type Tag,
+} from '@/types/notion';
 
 /**
  * 获取所有文章的标签
@@ -16,7 +20,7 @@ export function getTags(
 ): Tag[] {
   if (!schemaMap) return [];
   const tagSchema = Object.values(schemaMap).find(
-    (e) => e.name === BLOG.NOTION_PROPERTY_NAME.tags,
+    (e) => e.name === PagePropertyName.Tags,
   );
   const tagOptions = tagSchema?.options || [];
   // 计数

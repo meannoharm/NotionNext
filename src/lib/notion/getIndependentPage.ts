@@ -32,7 +32,7 @@ export async function getIndependentPage(pageId: string, from: string) {
       start_date: dayjs(postInfo.last_edited_time).format('yyyy-MM-dd'),
     },
     blockMap,
-    publishDate: dayjs(postInfo.created_time).valueOf(),
+    date: dayjs(postInfo.created_time).valueOf(),
     lastEditedDate: dayjs(postInfo.last_edited_time).valueOf(),
     pageIcon: '',
     pageCoverThumbnail: '',

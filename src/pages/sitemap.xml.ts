@@ -5,6 +5,7 @@ import BLOG from 'blog.config';
 
 import type { ISitemapField } from 'next-sitemap';
 import type { GetServerSideProps } from 'next';
+import { PageStatus, PageType } from '@/types';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { allPages } = await getSiteData('rss');
@@ -48,14 +49,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   ];
   const postFields: ISitemapField[] = allPages
-    ?.filter((p) => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish)
+    ?.filter((p) => p.status === PageStatus.Published)
     ?.map((post) => {
       const slugWithoutLeadingSlash = post.slug.startsWith('/')
         ? post.slug.slice(1)
         : post.slug;
       return {
         loc: `${BLOG.LINK}/${slugWithoutLeadingSlash}`,
-        lastmod: dayjs(post.publishDate).format('YYYY-MM-DD'),
+        lastmod: dayjs(post.date).format('YYYY-MM-DD'),
         changefreq: 'daily',
         priority: 0.7,
       };

@@ -56,9 +56,7 @@ function getLatestPosts(
 ): Page[] {
   return [...publishedPosts]
     .sort((a, b) =>
-      dayjs(b.lastEditedDate || b.publishDate).diff(
-        a.lastEditedDate || a.publishDate,
-      ),
+      dayjs(b.lastEditedDate || b.date).diff(a.lastEditedDate || a.date),
     )
     .slice(0, latestPostCount);
 }
@@ -175,14 +173,14 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
     pageIds.map(async (pageId) => {
       try {
         const page = await getPageProperties(pageId, blockMap, schemaMap);
-        if (!page.type) return;
+        if (!page || !page.type) return;
 
         // for published post
         if (
           page.type === PageType.Post &&
           page.status === PageStatus.Published
         ) {
-          publishedPosts.push(page as Page);
+          publishedPosts.push(page);
         }
 
         // for all page
@@ -192,7 +190,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
           (page.status === PageStatus.Invisible ||
             page.status === PageStatus.Published)
         ) {
-          allPages.push(page as Page);
+          allPages.push(page);
         }
 
         // custom nav menu
@@ -200,7 +198,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
           (page.type === PageType.Page || page.type === PageType.SubPage) &&
           page.status === PageStatus.Published
         ) {
-          navPageList.push(page as Page);
+          navPageList.push(page);
         }
 
         // The Config page is unique; only the first one is selected.
@@ -218,7 +216,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
           page.type === PageType.Notice &&
           page.status === PageStatus.Published
         ) {
-          notice = await getNotice(page as Page);
+          notice = await getNotice(page);
         }
         return page;
       } catch (error) {
@@ -231,7 +229,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   // Sort by date
   if (BLOG.POSTS_SORT_BY === 'date') {
     allPages.sort((a, b) => {
-      return dayjs(b.publishDate).isAfter(a.publishDate) ? 1 : -1;
+      return dayjs(b.date).isAfter(a.date) ? 1 : -1;
     });
   }
 

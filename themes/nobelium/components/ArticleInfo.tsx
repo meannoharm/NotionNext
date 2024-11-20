@@ -37,7 +37,7 @@ export const ArticleInfo: FC<ArticleInfoProps> = ({ post }) => {
               <span className="mx-1 block">/</span>
             </div>
             <div className="mb-4 mr-2 md:ml-0">
-              {dayjs(post?.publishDate).format('YYYY-MM-DD')}
+              {dayjs(post?.date).format('YYYY-MM-DD')}
             </div>
             {post?.tags && (
               <div className="article-tags mr-2 flex max-w-full flex-nowrap overflow-x-auto">

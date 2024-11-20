@@ -2,10 +2,10 @@ import { getPostBlocks } from './getPostBlocks';
 import getAllPageIds from './getAllPageIds';
 import { getTextContent } from 'notion-utils';
 
-import type { Config, Decoration, RawPage } from '@/types';
+import type { Config, Decoration, Page } from '@/types';
 
 // get config from notion page
-const getConfig = async (configPage?: RawPage): Promise<Config> => {
+const getConfig = async (configPage?: Page): Promise<Config> => {
   if (!configPage) {
     return {} as Config;
   }

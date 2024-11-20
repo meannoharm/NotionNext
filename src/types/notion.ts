@@ -2,7 +2,6 @@ import type {
   Block,
   Collection,
   ExtendedRecordMap,
-  FormattedDate,
   ID,
   BlockType,
 } from 'notion-types';
@@ -10,32 +9,41 @@ import { Config } from './config';
 
 export type * from 'notion-types';
 
-export interface RawPage {
+export interface Page {
   id: string;
+  type: PageType | null;
   title: string;
-  type?: PageType;
-  status?: PageStatus;
-  category?: string;
-  publishDate: number;
+  status: PageStatus | null;
+  category: string;
+  icon: string;
+  date: number;
   lastEditedDate: number;
   pageIcon: string;
   pageCover: string;
   pageCoverThumbnail: string;
   content: string[];
-  blockMap?: ExtendedRecordMap;
-  date: FormattedDate;
-  icon: string;
   tags: string[];
   summary: string;
-  slug?: string;
-  results?: string[];
+  slug: string;
   password?: string;
+  blockMap?: ExtendedRecordMap;
+  results?: string[];
   toc?: TableOfContentsEntry[];
+  // for subPage
+  to?: string;
 }
 
-export interface Page extends RawPage {
-  type: PageType;
-  slug: string;
+export enum PagePropertyName {
+  Type = 'type',
+  Title = 'title',
+  Summary = 'summary',
+  Status = 'status',
+  Category = 'category',
+  Tags = 'tags',
+  Slug = 'slug',
+  Date = 'date',
+  Password = 'password',
+  Icon = 'icon',
 }
 
 export enum PageType {

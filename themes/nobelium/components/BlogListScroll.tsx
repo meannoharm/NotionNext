@@ -70,7 +70,7 @@ const BlogListScroll: FC<BlogListScrollProps> = (props) => {
             <a href="#" className="text-gray-700">
               {BLOG.AUTHOR}
             </a>
-            on {dayjs(post.publishDate).format('YYYY-MM-DD')}
+            on {dayjs(post.date).format('YYYY-MM-DD')}
             <span className="mx-1 font-bold"> | </span>
             <a href="#" className="text-gray-700">
               {post.category}

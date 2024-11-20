@@ -7,13 +7,10 @@ import { PageType, PageStatus } from '@/types/notion';
 
 import type {
   BlockMap,
-  RawPage,
+  Page,
   CollectionPropertySchemaMap,
   Decoration,
 } from '@/types/notion';
-
-type TempPageInfo = Partial<RawPage> & { [key: string]: any };
-const excludeProperties = ['date', 'select', 'multi_select', 'person'];
 
 // get properties for each line in collection
 export default async function getPageProperties(
@@ -21,83 +18,39 @@ export default async function getPageProperties(
   blockMap: BlockMap,
   schemaMap: CollectionPropertySchemaMap,
   // authToken?: string,
-): Promise<RawPage> {
-  const pageInfo: TempPageInfo = { id: id };
+): Promise<Page> {
+  const pageInfo: Partial<Page> = {};
   const block = blockMap[id].value;
 
   Object.entries<Decoration[]>(block.properties).forEach(
     async ([key, value]) => {
       const { name, type } = schemaMap[key];
-      if (type && !excludeProperties.includes(type)) {
-        pageInfo[name] = getTextContent(value);
-      } else {
-        switch (type) {
-          case 'date': {
-            pageInfo[name] = getDateValue(value);
-            break;
-          }
-          case 'select':
-          case 'multi_select': {
-            pageInfo[name] = getTextContent(value).split(',');
-            break;
-          }
-          case 'person': {
-            // TODO 这段没看懂，以后再研究
-            // const rawUsers = value.flat();
-            // const users = [];
-            // const api = new NotionAPI({ authToken });
 
-            // for (let i = 0; i < rawUsers.length; i++) {
-            //   if (rawUsers[i][0][1]) {
-            //     const userId = rawUsers[i][0];
-            //     const res = await api.getUsers(userId);
-            //     const resValue =
-            //       res?.recordMapWithRoles?.notion_user?.[userId[1]]?.value;
-            //     const user = {
-            //       id: resValue?.id,
-            //       first_name: resValue?.given_name,
-            //       last_name: resValue?.family_name,
-            //       profile_photo: resValue?.profile_photo,
-            //     };
-            //     users.push(user);
-            //   }
-            // }
-            // pageInfo[name] = users;
-            break;
-          }
-          default:
-            break;
+      if (type === 'date') {
+        const formatDate = getDateValue(value);
+        if (formatDate && formatDate.type === 'datetime') {
+          pageInfo[name] = dayjs(
+            `${formatDate.start_date} ${formatDate.start_time}`,
+          ).valueOf();
+        } else if (formatDate && formatDate.type === 'date') {
+          pageInfo[name] = dayjs(formatDate.start_date).valueOf();
         }
+      } else if (type === 'multi_select') {
+        pageInfo[name] = getTextContent(value).split(',');
+      } else {
+        pageInfo[name] = getTextContent(value);
       }
     },
   );
 
-  // 映射键：用户自定义表头名
-  const fieldNames = BLOG.NOTION_PROPERTY_NAME;
-  if (fieldNames) {
-    for (const [key, value] of Object.entries(fieldNames)) {
-      if (value && pageInfo[value]) pageInfo[key] = pageInfo[value];
-    }
-  }
-
-  // type\status\category 是单选下拉框 取数组第一个
-  if (pageInfo.type && pageInfo.type[0]) {
-    pageInfo.type = pageInfo.type[0] as PageType;
-  }
-  if (pageInfo.status && pageInfo.status[0]) {
-    pageInfo.status = pageInfo.status[0] as PageStatus;
-  }
-  if (pageInfo.category && pageInfo.category[0])
-    pageInfo.category = pageInfo.category[0];
-
-  if (!pageInfo.tags) pageInfo.tags = [];
-
-  // 映射值：用户个性化type和status字段的下拉框选项，在此映射回代码的英文标识
-  mapProperties(pageInfo);
-
-  pageInfo.publishDate = dayjs(
-    pageInfo?.date?.start_date || block.created_time,
-  ).valueOf();
+  // fallback for type checking
+  pageInfo.id = id;
+  pageInfo.type = pageInfo?.type || null;
+  pageInfo.title = pageInfo?.title || '';
+  pageInfo.status = pageInfo?.status || null;
+  pageInfo.category = pageInfo?.category || '';
+  pageInfo.icon = pageInfo?.icon || '';
+  pageInfo.date = pageInfo?.date || dayjs(block.created_time).valueOf();
   pageInfo.lastEditedDate = block?.last_edited_time;
   pageInfo.pageIcon = mapImgUrl(block?.format?.page_icon, block);
   pageInfo.pageCover = mapImgUrl(block?.format?.page_cover, block);
@@ -106,21 +59,19 @@ export default async function getPageProperties(
     block,
     'block',
   );
-
-  // 处理URL
-  if (pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_post) {
+  pageInfo.tags = pageInfo?.tags || [];
+  pageInfo.summary = pageInfo?.summary || '';
+  // handle slug
+  if (pageInfo.type === PageType.Post) {
     pageInfo.slug = BLOG.POST_URL_PREFIX
       ? generateCustomizeUrl(pageInfo)
       : (pageInfo.slug ?? pageInfo.id);
-  } else if (pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_page) {
+  } else if (pageInfo.type === PageType.Page) {
     pageInfo.slug = pageInfo.slug ?? pageInfo.id;
-  } else if (
-    pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_menu ||
-    pageInfo.type === BLOG.NOTION_PROPERTY_NAME.type_sub_menu
-  ) {
+    pageInfo.to = pageInfo.slug ?? '#';
+  } else if (pageInfo.type === PageType.SubPage) {
     // 菜单路径为空、作为可展开菜单使用
     pageInfo.to = pageInfo.slug ?? '#';
-    pageInfo.name = pageInfo.title ?? '';
   }
 
   // 开启伪静态路径
@@ -132,36 +83,13 @@ export default async function getPageProperties(
       pageInfo.slug += '.html';
     }
   }
-
   pageInfo.password = pageInfo.password
     ? md5(pageInfo.slug + pageInfo.password)
     : '';
 
-  // fallback for type checking
-  pageInfo.icon = pageInfo.icon || '';
+  console.log(pageInfo);
 
-  return pageInfo as RawPage;
-}
-
-/**
- * 映射用户自定义表头
- */
-function mapProperties(properties: TempPageInfo) {
-  if (properties.type === BLOG.NOTION_PROPERTY_NAME.type_post) {
-    properties.type = PageType.Post;
-  }
-  if (properties.type === BLOG.NOTION_PROPERTY_NAME.type_page) {
-    properties.type = PageType.Page;
-  }
-  if (properties.type === BLOG.NOTION_PROPERTY_NAME.type_notice) {
-    properties.type = PageType.Notice;
-  }
-  if (properties.status === BLOG.NOTION_PROPERTY_NAME.status_publish) {
-    properties.status = PageStatus.Published;
-  }
-  if (properties.status === BLOG.NOTION_PROPERTY_NAME.status_invisible) {
-    properties.status = PageStatus.Invisible;
-  }
+  return pageInfo as Page;
 }
 
 /**
@@ -169,7 +97,7 @@ function mapProperties(properties: TempPageInfo) {
  * @param {*} postProperties
  * @returns
  */
-function generateCustomizeUrl(postProperties: TempPageInfo) {
+function generateCustomizeUrl(postProperties: any) {
   let fullPrefix = '';
   const allSlugPatterns = BLOG.POST_URL_PREFIX.split('/');
   allSlugPatterns.forEach((pattern, idx) => {

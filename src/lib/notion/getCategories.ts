@@ -1,9 +1,9 @@
-import type {
-  Category,
-  CollectionPropertySchemaMap,
-  Page,
+import {
+  PagePropertyName,
+  type Category,
+  type CollectionPropertySchemaMap,
+  type Page,
 } from '@/types/notion';
-import BLOG from 'blog.config';
 
 /**
  * 获取所有文章的标签
@@ -25,7 +25,7 @@ export function getCategories(
 ): Category[] {
   if (!schemaMap) return [];
   const categorySchema = Object.values(schemaMap).find(
-    (e) => e.name === BLOG.NOTION_PROPERTY_NAME.category,
+    (e) => e.name === PagePropertyName.Category,
   );
   const categoryOptions = categorySchema?.options || [];
 

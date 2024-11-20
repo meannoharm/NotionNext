@@ -1,8 +1,8 @@
 import { getPostBlocks } from './getPostBlocks';
 import getAllPageIds from './getAllPageIds';
-import { getPageProperty } from 'notion-utils';
+import { getTextContent } from 'notion-utils';
 
-import type { Config, RawPage } from '@/types';
+import type { Config, Decoration, RawPage } from '@/types';
 
 // get config from notion page
 const getConfig = async (configPage?: RawPage): Promise<Config> => {
@@ -10,8 +10,8 @@ const getConfig = async (configPage?: RawPage): Promise<Config> => {
     return {} as Config;
   }
   const configPageId = configPage.id;
-  const pageRecordMap = await getPostBlocks(configPageId, 'config');
-  const configBlockMap = pageRecordMap.block;
+  const configRecordMap = await getPostBlocks(configPageId, 'config');
+  const configBlockMap = configRecordMap.block;
   const { content } = configBlockMap[configPageId].value;
 
   if (!content) {
@@ -37,37 +37,38 @@ const getConfig = async (configPage?: RawPage): Promise<Config> => {
     // return EmptyData(pageUuid);
   }
 
+  const collectionId = configBlock.collection_id as string;
+  const { schema } = configRecordMap.collection[collectionId].value;
+
   const pageIds = getAllPageIds(
-    configBlock.collection_id || null,
-    pageRecordMap.collection_query,
-    pageRecordMap.collection_view,
+    collectionId,
+    configRecordMap.collection_query,
+    configRecordMap.collection_view,
     configBlock.view_ids,
   );
 
   const config: Config = {};
 
   pageIds.forEach((id) => {
-    const enable = getPageProperty(
-      'enable',
-      configBlockMap[id].value,
-      pageRecordMap,
-    ) as boolean;
-    const name = getPageProperty(
-      'name',
-      configBlockMap[id].value,
-      pageRecordMap,
-    ) as string;
-    const rawValue = getPageProperty(
-      'value',
-      configBlockMap[id].value,
-      pageRecordMap,
-    ) as string;
-    const type = getPageProperty(
-      'type',
-      configBlockMap[id].value,
-      pageRecordMap,
-    ) as string;
+    const { properties } = configBlockMap[id].value;
+    const tempConfigItem = {
+      enable: false,
+      name: '',
+      value: '',
+      type: '',
+    };
+    Object.entries<Decoration[]>(properties).forEach(([key, value]) => {
+      const { name, type } = schema[key];
+      const content = getTextContent(value);
+      if (type === 'checkbox' && name === 'enable') {
+        tempConfigItem[name] = content === 'Yes';
+      } else if (name === 'name' || name === 'value' || name === 'type') {
+        tempConfigItem[name] = content;
+      }
+    });
+    const { enable, name, value: rawValue, type } = tempConfigItem;
 
+    // Only process selected configurations.
     if (enable) {
       let value: any;
 

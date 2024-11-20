@@ -74,15 +74,15 @@ const getConfig = async (configPage?: Page): Promise<Config> => {
 
       switch (type) {
         case 'String':
-          value = rawValue; // 字符串无需转换
+          value = rawValue;
           break;
 
         case 'Boolean':
-          value = rawValue.toLowerCase() === 'true'; // 转换为布尔值
+          value = rawValue.toLowerCase() === 'true';
           break;
 
         case 'Number':
-          value = parseFloat(rawValue); // 转换为数字
+          value = parseFloat(rawValue);
           if (isNaN(value)) {
             console.warn(`Invalid number for ${name}: ${rawValue}`);
           }
@@ -90,14 +90,14 @@ const getConfig = async (configPage?: Page): Promise<Config> => {
 
         case 'JSON':
           try {
-            value = JSON.parse(rawValue); // 尝试解析为 JSON
+            value = JSON.parse(rawValue);
           } catch (err) {
             console.error(`Invalid JSON for ${name}: ${rawValue}`, err);
           }
           break;
 
         default:
-          console.warn(`Unsupported type for ${name}: ${type}`);
+          console.warn(`Unsupported type for ${name}: ${type} in Config page`);
       }
       config[name] = value;
     }

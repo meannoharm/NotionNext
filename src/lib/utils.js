@@ -210,3 +210,13 @@ export function isUrl(website) {
   const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
   return urlPattern.test(website);
 }
+
+export function isHrefStartWithHttp(href) {
+  return href.indexOf('http:') === 0 || href.indexOf('https:') === 0;
+}
+
+export function isEmoji(str) {
+  const emojiRegex =
+    /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g;
+  return emojiRegex.test(str);
+}

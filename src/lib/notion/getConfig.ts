@@ -1,5 +1,5 @@
 import { getPostBlocks } from './getPostBlocks';
-import getAllPageIds from './getAllPageIds';
+import getPageIds from './getPageIds';
 import { getTextContent } from 'notion-utils';
 
 import type { Config, Decoration, Page } from '@/types';
@@ -10,7 +10,7 @@ const getConfig = async (configPage?: Page): Promise<Config> => {
     return {} as Config;
   }
   const configPageId = configPage.id;
-  const configRecordMap = await getPostBlocks(configPageId, 'config');
+  const configRecordMap = await getPostBlocks(configPageId, 'get-config');
   const configBlockMap = configRecordMap.block;
   const { content } = configBlockMap[configPageId].value;
 
@@ -40,7 +40,7 @@ const getConfig = async (configPage?: Page): Promise<Config> => {
   const collectionId = configBlock.collection_id as string;
   const { schema } = configRecordMap.collection[collectionId].value;
 
-  const pageIds = getAllPageIds(
+  const [configIds] = getPageIds(
     collectionId,
     configRecordMap.collection_query,
     configRecordMap.collection_view,
@@ -49,7 +49,7 @@ const getConfig = async (configPage?: Page): Promise<Config> => {
 
   const config: Config = {};
 
-  pageIds.forEach((id) => {
+  configIds.forEach((id) => {
     const { properties } = configBlockMap[id].value;
     const tempConfigItem = {
       enable: false,

@@ -1,15 +1,14 @@
 import BLOG from 'blog.config';
 import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
 import { getPostBlocks } from './getPostBlocks';
-import { idToUuid, getPageProperty } from 'notion-utils';
+import { idToUuid } from 'notion-utils';
 import { getCategories } from './getCategories';
 import getPageIds from './getPageIds';
 import { getTags } from './getTags';
 import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
-import { PagePropertyName, PageStatus, PageType } from '@/types/notion';
+import { PageStatus, PageType } from '@/types/notion';
 import dayjs from 'dayjs';
-import { isEmpty } from 'lodash';
 
 import type {
   Nav,
@@ -79,12 +78,12 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
 
   const allPages: Page[] = [];
   const publishedPosts: Page[] = [];
-  let config: Config | null = null;
+  let configPage: Partial<Config> | null = null;
   let notice: Page | null = null;
 
   if (configId) {
     try {
-      config = await getConfig(configId);
+      configPage = await getConfig(configId);
     } catch (error) {
       console.error(
         `Error getting properties for config page ${configId}:`,
@@ -92,7 +91,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
       );
     }
   }
-  config = config ? { ...BLOG, ...config } : BLOG;
+  const config = configPage ? { ...BLOG, ...configPage } : BLOG;
 
   await Promise.all(
     pageIds.map(async (pageId) => {

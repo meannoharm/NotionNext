@@ -79,16 +79,12 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
 
   const allPages: Page[] = [];
   const publishedPosts: Page[] = [];
-  const navPageList: Page[] = [];
-  let config: Config = {};
+  let CONFIG: Config | null = null;
   let notice: Page | null = null;
 
   if (configId) {
     try {
-      const configPage = await getPageProperties(configId, blockMap, schemaMap);
-      if (configPage) {
-        config = await getConfig(configPage);
-      }
+      CONFIG = await getConfig(configId);
     } catch (error) {
       console.error(
         `Error getting properties for config page ${configId}:`,
@@ -96,12 +92,27 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
       );
     }
   }
+  CONFIG = CONFIG ? { ...BLOG, ...CONFIG } : BLOG;
 
   await Promise.all(
     pageIds.map(async (pageId) => {
       try {
-        const page = await getPageProperties(pageId, blockMap, schemaMap);
+        const page = await getPageProperties(
+          pageId,
+          blockMap,
+          schemaMap,
+          CONFIG,
+        );
         if (!page || !page.type) return;
+
+        // The Notice page is unique; only the first one will be loaded
+        if (
+          !notice &&
+          page.type === PageType.Notice &&
+          page.status === PageStatus.Published
+        ) {
+          notice = await getNotice(page);
+        }
 
         // for published post
         if (
@@ -111,32 +122,14 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
           publishedPosts.push(page);
         }
 
-        // for all page
+        // custom nav menu
         if (
-          page.slug &&
-          !page.slug?.startsWith('http') &&
-          (page.status === PageStatus.Invisible ||
-            page.status === PageStatus.Published)
+          page.type === PageType.Page &&
+          page.status === PageStatus.Published
         ) {
           allPages.push(page);
         }
 
-        // custom nav menu
-        if (
-          (page.type === PageType.Page || page.type === PageType.SubPage) &&
-          page.status === PageStatus.Published
-        ) {
-          navPageList.push(page);
-        }
-
-        // The Notice page is unique; only the first one is selected
-        if (
-          !notice &&
-          page.type === PageType.Notice &&
-          page.status === PageStatus.Published
-        ) {
-          notice = await getNotice(page);
-        }
         return page;
       } catch (error) {
         console.error(`Error getting properties for page ${pageId}:`, error);
@@ -146,21 +139,20 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   );
 
   // Sort by date
-  if (BLOG.POSTS_SORT_BY === 'date') {
-    allPages.sort((a, b) => {
-      return dayjs(b.date).isAfter(a.date) ? 1 : -1;
-    });
+  if (CONFIG.POSTS_SORT_BY === 'date') {
+    allPages.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));
+    publishedPosts.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));
   }
 
   const categoryOptions = getCategories(publishedPosts, schemaMap);
   const tagOptions = getTags(publishedPosts, schemaMap);
   const latestPosts = getLatestPosts(publishedPosts, 6);
-  const navList = getNavList(navPageList);
+  const navList = getNavList(allPages);
 
   return {
     id: pageId,
     notice,
-    config,
+    config: CONFIG,
     siteInfo,
     allPages,
     block,

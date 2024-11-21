@@ -41,12 +41,7 @@ export default async function getPageProperties(
     multi_select: (value, name) => {
       pageInfo[name] = getTextContent(value).split(',');
     },
-    parent_item: (value) => {
-      pageInfo['parentId'] = getParentId(value);
-    },
-    sub_item: (value) => {
-      pageInfo['childrenIds'] = getChildrenIds(value);
-    },
+
     default: (value, name) => {
       pageInfo[name] = getTextContent(value);
     },
@@ -55,8 +50,15 @@ export default async function getPageProperties(
   Object.entries<Decoration[]>(block.properties).forEach(
     async ([key, value]) => {
       const { name, type } = schemaMap[key];
-      const action = schemaActions[type] || schemaActions.default;
-      action(value, name);
+      if (name === 'Parent item') {
+        pageInfo['parentId'] = getParentId(value);
+      }
+      if (name === 'Sub-item') {
+        pageInfo['childrenIds'] = getChildrenIds(value);
+      } else {
+        const action = schemaActions[type] || schemaActions.default;
+        action(value, name);
+      }
     },
   );
 
@@ -128,7 +130,7 @@ export default async function getPageProperties(
  */
 function generateCustomizeSlug(page: Page, config: Config) {
   // 如果是外部链接，直接返回原始链接
-  if (isHrefStartWithHttp(page.slug)) {
+  if (page.slug && isHrefStartWithHttp(page.slug)) {
     return page.slug;
   }
 

@@ -68,9 +68,8 @@ const ArticleLock: FC<ArticleInfoProps> = (props) => {
               className={
                 'fas fa-key cursor-pointer duration-200 dark:text-black'
               }
-            >
-              {t('submit')}
-            </i>
+            ></i>
+            {t('submit')}
           </div>
         </div>
         {isShowTip && (

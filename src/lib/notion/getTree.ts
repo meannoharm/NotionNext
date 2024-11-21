@@ -17,7 +17,7 @@ export const getParentId = (prop: Decoration[]): string | null => {
 };
 
 /**
- * Attempts to find parent from a given property.
+ * Attempts to find children's id from a given property.
  * type of prop like this
  * [
  *   [ '‣', ['p','parent id','space id'] ],

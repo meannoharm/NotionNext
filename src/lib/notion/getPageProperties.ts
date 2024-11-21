@@ -3,7 +3,7 @@ import BLOG from 'blog.config';
 import md5 from 'js-md5';
 import { mapImgUrl } from './mapImage';
 import dayjs from 'dayjs';
-import { PageType, PageStatus } from '@/types/notion';
+import { PageType } from '@/types/notion';
 import { getParentId, getChildrenIds } from './getTree';
 
 import type {
@@ -20,31 +20,42 @@ export default async function getPageProperties(
   schemaMap: CollectionPropertySchemaMap,
   // authToken?: string,
 ): Promise<Page> {
-  const pageInfo: Partial<Page> = {};
+  const pageInfo: Partial<Page> & { [key: string]: any } = {};
   const block = blockMap[id].value;
+
+  const schemaActions: Record<
+    string,
+    (value: Decoration[], name: string) => void
+  > = {
+    date: (value, name) => {
+      const formatDate = getDateValue(value);
+      if (formatDate?.type === 'datetime') {
+        pageInfo[name] = dayjs(
+          `${formatDate.start_date} ${formatDate.start_time}`,
+        ).valueOf();
+      } else if (formatDate?.type === 'date') {
+        pageInfo[name] = dayjs(formatDate.start_date).valueOf();
+      }
+    },
+    multi_select: (value, name) => {
+      pageInfo[name] = getTextContent(value).split(',');
+    },
+    parent_item: (value) => {
+      pageInfo['parentId'] = getParentId(value);
+    },
+    sub_item: (value) => {
+      pageInfo['childrenIds'] = getChildrenIds(value);
+    },
+    default: (value, name) => {
+      pageInfo[name] = getTextContent(value);
+    },
+  };
 
   Object.entries<Decoration[]>(block.properties).forEach(
     async ([key, value]) => {
       const { name, type } = schemaMap[key];
-
-      if (type === 'date') {
-        const formatDate = getDateValue(value);
-        if (formatDate && formatDate.type === 'datetime') {
-          pageInfo[name] = dayjs(
-            `${formatDate.start_date} ${formatDate.start_time}`,
-          ).valueOf();
-        } else if (formatDate && formatDate.type === 'date') {
-          pageInfo[name] = dayjs(formatDate.start_date).valueOf();
-        }
-      } else if (type === 'multi_select') {
-        pageInfo[name] = getTextContent(value).split(',');
-      } else if (name === 'Parent item') {
-        pageInfo['parentId'] = getParentId(value);
-      } else if (name === 'Sub-item') {
-        pageInfo['childrenIds'] = getChildrenIds(value);
-      } else {
-        pageInfo[name] = getTextContent(value);
-      }
+      const action = schemaActions[type] || schemaActions.default;
+      action(value, name);
     },
   );
 

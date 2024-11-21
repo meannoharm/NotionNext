@@ -9,6 +9,7 @@ import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
 import { PageStatus, PageType } from '@/types/notion';
 import dayjs from 'dayjs';
+import { isHrefStartWithHttp, isEmoji } from '@/lib/utils';
 
 import type {
   Nav,
@@ -76,8 +77,9 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
     block.view_ids,
   );
 
-  const allPages: Page[] = [];
+  const pages: Page[] = [];
   const publishedPosts: Page[] = [];
+  const allPages: Page[] = [];
   let configPage: Partial<Config> | null = null;
   let notice: Page | null = null;
 
@@ -95,6 +97,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
 
   await Promise.all(
     pageIds.map(async (pageId) => {
+      if (configId && pageId === configId) return;
       try {
         const page = await getPageProperties(
           pageId,
@@ -119,17 +122,17 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
           page.status === PageStatus.Published
         ) {
           publishedPosts.push(page);
+          allPages.push(page);
         }
 
-        // custom nav menu
+        // page for custom nav menu
         if (
           page.type === PageType.Page &&
           page.status === PageStatus.Published
         ) {
+          pages.push(page);
           allPages.push(page);
         }
-
-        return page;
       } catch (error) {
         console.error(`Error getting properties for page ${pageId}:`, error);
         return null;
@@ -146,7 +149,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const categoryOptions = getCategories(publishedPosts, schemaMap);
   const tagOptions = getTags(publishedPosts, schemaMap);
   const latestPosts = getLatestPosts(publishedPosts, 6);
-  const navList = getNavList(allPages);
+  const navList = getNavList(pages);
 
   return {
     id: pageId,
@@ -187,31 +190,34 @@ function getLatestPosts(
  * @returns {Promise<[]|*[]>}
  */
 function getNavList(navPages: Page[]): Nav[] {
-  const menus: Nav[] = [];
-  for (const page of navPages) {
-    const nav: Nav = {
+  const pageMap: Record<string, Nav> = {};
+  const navMenus: Nav[] = [];
+
+  navPages.forEach((page) => {
+    console.log(page);
+    pageMap[page.id] = {
       id: page.id,
       show: true,
       icon: page.icon,
       title: page.title,
-      to: page.slug?.startsWith('http') ? page.slug : `/${page.slug}`,
-      target: page.slug?.startsWith('http') ? '_blank' : '_self',
+      to: isHrefStartWithHttp(page.slug) ? page.slug : `/${page.slug}`,
+      target: isHrefStartWithHttp(page.slug) ? '_blank' : '_self',
+      subMenus: [],
     };
+  });
 
-    if (page.type === PageType.Page) {
-      menus.push(nav);
-    } else if (page.type === PageType.SubPage) {
-      // Find the last added menu, which should be the parent for submenus
-      const parentMenu = menus[menus.length - 1];
-
-      if (parentMenu) {
-        // If the parent menu exists, ensure it has subMenus and add the current page
-        parentMenu.subMenus = parentMenu.subMenus || [];
-        parentMenu.subMenus.push(nav);
+  navPages.forEach((page) => {
+    if (page.parentId) {
+      const parent = pageMap[page.parentId];
+      if (parent) {
+        parent.subMenus!.push(pageMap[page.id]);
       }
+    } else {
+      navMenus.push(pageMap[page.id]);
     }
-  }
-  return menus;
+  });
+
+  return navMenus;
 }
 
 /**
@@ -235,9 +241,8 @@ function getSiteInfo(collection: PatchedCollection): SiteInfo {
   // 用户头像压缩一下
   icon = compressImage(icon);
 
-  // 站点图标不能是emoji情
-  const emojiPattern = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g;
-  if (!icon || emojiPattern.test(icon)) {
+  // 站点图标不能是emoji
+  if (!icon || isEmoji(icon)) {
     icon = BLOG.AVATAR;
   }
   return { title, description, pageCover, icon };

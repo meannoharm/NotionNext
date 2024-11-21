@@ -4,6 +4,7 @@ import { mapImgUrl } from './mapImage';
 import dayjs from 'dayjs';
 import { PageType } from '@/types/notion';
 import { getParentId, getChildrenIds } from './getTree';
+import { isHrefStartWithHttp } from '@/lib/utils';
 
 import type {
   BlockMap,
@@ -81,19 +82,20 @@ export default async function getPageProperties(
   // handle slug and href
   if (pageInfo.type === PageType.Post) {
     // parse post's prefix from config
-    pageInfo.slug = generateCustomizeSlug(pageInfo as Page, config);
-    pageInfo.href = pageInfo.slug ?? pageInfo.id;
+    pageInfo.href = generateCustomizeSlug(pageInfo as Page, config);
   } else if (pageInfo.type === PageType.Page) {
     pageInfo.href = pageInfo.slug ?? pageInfo.id;
+    if (pageInfo.childrenIds && pageInfo.childrenIds.length > 0) {
+      // non-leaf node pages' href are set as placeholders.
+      pageInfo.slug = '#';
+      pageInfo.href = '#';
+    }
   } else {
     pageInfo.href = '';
   }
 
   // http or https 开头的视为外链
-  if (isHrefStartWithHttp(pageInfo?.href)) {
-    pageInfo.target = '_blank';
-  } else {
-    pageInfo.target = '_self';
+  if (!isHrefStartWithHttp(pageInfo?.href)) {
     // 伪静态路径右侧拼接.html
     if (config.PSEUDO_STATIC) {
       if (
@@ -174,12 +176,4 @@ function convertUrlStartWithOneSlash(href: string) {
   // Replace multiple slashes with a single slash
   href = href.replace(/\/+/g, '/');
   return href;
-}
-
-function isHrefStartWithHttp(href: string) {
-  if (href.indexOf('http:') === 0 || href.indexOf('https:') === 0) {
-    return true;
-  } else {
-    return false;
-  }
 }

@@ -1,15 +1,15 @@
 import { getPostBlocks } from './getPostBlocks';
 import getPageIds from './getPageIds';
 import { getTextContent } from 'notion-utils';
+import BLOG from 'blog.config';
 
-import type { Config, Decoration, Page } from '@/types';
+import type { Config, Decoration } from '@/types';
 
 // get config from notion page
-const getConfig = async (configPage?: Page): Promise<Config> => {
-  if (!configPage) {
+const getConfig = async (configPageId?: string): Promise<Config> => {
+  if (!configPageId) {
     return {} as Config;
   }
-  const configPageId = configPage.id;
   const configRecordMap = await getPostBlocks(configPageId, 'get-config');
   const configBlockMap = configRecordMap.block;
   const { content } = configBlockMap[configPageId].value;
@@ -103,7 +103,7 @@ const getConfig = async (configPage?: Page): Promise<Config> => {
     }
   });
 
-  return config;
+  return { ...BLOG, ...config };
 };
 
 export default getConfig;

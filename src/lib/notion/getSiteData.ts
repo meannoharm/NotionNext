@@ -79,12 +79,12 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
 
   const allPages: Page[] = [];
   const publishedPosts: Page[] = [];
-  let CONFIG: Config | null = null;
+  let config: Config | null = null;
   let notice: Page | null = null;
 
   if (configId) {
     try {
-      CONFIG = await getConfig(configId);
+      config = await getConfig(configId);
     } catch (error) {
       console.error(
         `Error getting properties for config page ${configId}:`,
@@ -92,7 +92,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
       );
     }
   }
-  CONFIG = CONFIG ? { ...BLOG, ...CONFIG } : BLOG;
+  config = config ? { ...BLOG, ...config } : BLOG;
 
   await Promise.all(
     pageIds.map(async (pageId) => {
@@ -101,7 +101,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
           pageId,
           blockMap,
           schemaMap,
-          CONFIG,
+          config,
         );
         if (!page || !page.type) return;
 
@@ -139,7 +139,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   );
 
   // Sort by date
-  if (CONFIG.POSTS_SORT_BY === 'date') {
+  if (config.POSTS_SORT_BY === 'date') {
     allPages.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));
     publishedPosts.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));
   }
@@ -152,7 +152,6 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   return {
     id: pageId,
     notice,
-    config: CONFIG,
     siteInfo,
     allPages,
     block,
@@ -162,6 +161,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
     postCount: publishedPosts.length,
     publishedPosts,
     latestPosts,
+    config,
   };
 }
 

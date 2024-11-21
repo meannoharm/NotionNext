@@ -25,6 +25,7 @@ export interface Page {
   tags: string[];
   summary: string;
   slug: string;
+  href: string;
   password?: string;
   blockMap?: ExtendedRecordMap;
   results?: string[];
@@ -32,7 +33,6 @@ export interface Page {
   // for subPage
   parentId?: string | null;
   childrenIds?: string[] | null;
-  to?: string;
 }
 
 export enum PagePropertyName {
@@ -103,7 +103,6 @@ export interface Tag {
 export interface Site {
   id: string;
   notice: Page | null;
-  config: Config;
   siteInfo: SiteInfo;
   allPages: Page[];
   block: Block;
@@ -113,6 +112,7 @@ export interface Site {
   postCount: number;
   publishedPosts: Page[];
   latestPosts: Page[];
+  config: Config;
 }
 
 // property description and cover are not included in the original Collection type, but it definitely return these property.

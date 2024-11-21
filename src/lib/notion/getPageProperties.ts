@@ -1,5 +1,4 @@
 import { getTextContent, getDateValue } from 'notion-utils';
-import BLOG from 'blog.config';
 import md5 from 'js-md5';
 import { mapImgUrl } from './mapImage';
 import dayjs from 'dayjs';
@@ -12,13 +11,14 @@ import type {
   CollectionPropertySchemaMap,
   Decoration,
 } from '@/types/notion';
+import type { Config } from '@/types';
 
 // get properties for each line in collection
 export default async function getPageProperties(
   id: string,
   blockMap: BlockMap,
   schemaMap: CollectionPropertySchemaMap,
-  // authToken?: string,
+  config: Config,
 ): Promise<Page> {
   const pageInfo: Partial<Page> & { [key: string]: any } = {};
   const block = blockMap[id].value;
@@ -78,28 +78,38 @@ export default async function getPageProperties(
   pageInfo.tags = pageInfo?.tags || [];
   pageInfo.summary = pageInfo?.summary || '';
 
-  // handle slug
+  // handle slug and href
   if (pageInfo.type === PageType.Post) {
-    pageInfo.slug = BLOG.POST_URL_PREFIX
-      ? generateCustomizeUrl(pageInfo)
-      : (pageInfo.slug ?? pageInfo.id);
+    // parse post's prefix from config
+    pageInfo.slug = generateCustomizeSlug(pageInfo as Page, config);
+    pageInfo.href = pageInfo.slug ?? pageInfo.id;
   } else if (pageInfo.type === PageType.Page) {
-    pageInfo.slug = pageInfo.slug ?? pageInfo.id;
-    pageInfo.to = pageInfo.slug ?? '#';
-  } else if (pageInfo.type === PageType.SubPage) {
-    // 菜单路径为空、作为可展开菜单使用
-    pageInfo.to = pageInfo.slug ?? '#';
+    pageInfo.href = pageInfo.slug ?? pageInfo.id;
+  } else {
+    pageInfo.href = '';
   }
 
-  // 开启伪静态路径
-  if (BLOG.PSEUDO_STATIC) {
-    if (
-      !pageInfo?.slug?.endsWith('.html') &&
-      !pageInfo?.slug?.startsWith('http')
-    ) {
-      pageInfo.slug += '.html';
+  // http or https 开头的视为外链
+  if (isHrefStartWithHttp(pageInfo?.href)) {
+    pageInfo.target = '_blank';
+  } else {
+    pageInfo.target = '_self';
+    // 伪静态路径右侧拼接.html
+    if (config.PSEUDO_STATIC) {
+      if (
+        !pageInfo?.href?.endsWith('.html') &&
+        pageInfo?.href !== '' &&
+        pageInfo?.href !== '#' &&
+        pageInfo?.href !== '/'
+      ) {
+        pageInfo.href += '.html';
+      }
     }
+
+    // 相对路径转绝对路径：url左侧拼接 /
+    pageInfo.href = convertUrlStartWithOneSlash(pageInfo?.href);
   }
+
   pageInfo.password = pageInfo.password
     ? md5(pageInfo.slug + pageInfo.password)
     : '';
@@ -109,41 +119,67 @@ export default async function getPageProperties(
 
 /**
  * 获取自定义URL
- * @param {*} postProperties
+ * 可以根据变量生成URL
+ * 支持：%category%/%year%/%month%/%day%/%slug%
+ * @param {*} page
  * @returns
  */
-function generateCustomizeUrl(postProperties: any) {
-  let fullPrefix = '';
-  const allSlugPatterns = BLOG.POST_URL_PREFIX.split('/');
-  allSlugPatterns.forEach((pattern, idx) => {
-    if (pattern === '%year%' && postProperties?.publishDay) {
-      const formatPostCreatedDate = new Date(postProperties?.publishDay);
-      fullPrefix += formatPostCreatedDate.getUTCFullYear();
-    } else if (pattern === '%month%' && postProperties?.publishDay) {
-      const formatPostCreatedDate = new Date(postProperties?.publishDay);
-      fullPrefix += String(formatPostCreatedDate.getUTCMonth() + 1).padStart(
-        2,
-        '0',
-      );
-    } else if (pattern === '%day%' && postProperties?.publishDay) {
-      const formatPostCreatedDate = new Date(postProperties?.publishDay);
-      fullPrefix += String(formatPostCreatedDate.getUTCDate()).padStart(2, '0');
+function generateCustomizeSlug(page: Page, config: Config) {
+  // 如果是外部链接，直接返回原始链接
+  if (isHrefStartWithHttp(page.slug)) {
+    return page.slug;
+  }
+
+  // 默认占位符的回退值
+  const fallbackSlug = page.slug ?? page.id ?? '';
+  const date = page.date ? dayjs(page.date) : null;
+
+  // 用于存储最终生成的路径片段
+  const segments: string[] = [];
+  const allSlugPatterns = config.POST_URL_PREFIX.split('/');
+  const categoryPrefixMap = config.POST_URL_PREFIX_MAPPING_CATEGORY;
+
+  // 遍历所有占位符模式，生成对应的URL片段
+  for (const pattern of allSlugPatterns) {
+    if (pattern === '%year%' && date) {
+      segments.push(date.year().toString());
+    } else if (pattern === '%month%' && date) {
+      segments.push(date.format('MM'));
+    } else if (pattern === '%day%' && date) {
+      segments.push(date.format('DD'));
     } else if (pattern === '%slug%') {
-      fullPrefix += postProperties.slug ?? postProperties.id;
+      segments.push(fallbackSlug);
+    } else if (pattern === '%category%' && page?.category) {
+      const category = categoryPrefixMap[page.category] ?? page.category;
+      segments.push(category);
     } else if (!pattern.includes('%')) {
-      fullPrefix += pattern;
-    } else {
-      return;
+      segments.push(pattern); // 处理非占位符的固定部分
     }
-    if (idx !== allSlugPatterns.length - 1) {
-      fullPrefix += '/';
-    }
-  });
-  if (fullPrefix.startsWith('/')) {
-    fullPrefix = fullPrefix.substring(1); // 去掉头部的"/"
   }
-  if (fullPrefix.endsWith('/')) {
-    fullPrefix = fullPrefix.substring(0, fullPrefix.length - 1); // 去掉尾部部的"/"
+
+  // 合并片段，确保没有多余的斜杠
+  const fullPrefix = segments.join('/');
+
+  // 最终拼接slug部分
+  return fullPrefix ? `${fullPrefix}/${fallbackSlug}` : fallbackSlug;
+}
+
+function convertUrlStartWithOneSlash(href: string) {
+  if (!href) {
+    return '#';
   }
-  return `${fullPrefix}/${postProperties.slug ?? postProperties.id}`;
+  if (!href.startsWith('/')) {
+    href = '/' + href;
+  }
+  // Replace multiple slashes with a single slash
+  href = href.replace(/\/+/g, '/');
+  return href;
+}
+
+function isHrefStartWithHttp(href: string) {
+  if (href.indexOf('http:') === 0 || href.indexOf('https:') === 0) {
+    return true;
+  } else {
+    return false;
+  }
 }

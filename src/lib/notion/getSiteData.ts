@@ -1,13 +1,13 @@
 import BLOG from 'blog.config';
 import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
 import { getPostBlocks } from './getPostBlocks';
-import { idToUuid } from 'notion-utils';
+import { idToUuid, getPageProperty } from 'notion-utils';
 import { getCategories } from './getCategories';
-import getAllPageIds from './getAllPageIds';
+import getPageIds from './getPageIds';
 import { getTags } from './getTags';
 import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
-import { PageStatus, PageType } from '@/types/notion';
+import { PagePropertyName, PageStatus, PageType } from '@/types/notion';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
 
@@ -42,6 +42,135 @@ export async function getSiteData(from: string): Promise<Site> {
     await setDataToCache(cacheKey, siteData);
   }
   return siteData;
+}
+
+/**
+ * 调用NotionAPI获取Page数据
+ * @returns {Promise<JSX.Element|null|*>}
+ */
+async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
+  const pageRecordMap = await getPostBlocks(pageId, from);
+  if (!pageRecordMap) {
+    console.error('can`t get Notion Data ; Which id is: ', pageId);
+    throw Error('can`t get Notion Data');
+    // return {};
+  }
+  const blockMap = pageRecordMap.block;
+  const block = blockMap[pageId].value;
+  if (
+    block.type !== 'collection_view_page' &&
+    block.type !== 'collection_view'
+  ) {
+    console.error(`pageId "${pageId}" is not a database`);
+    throw Error(`pageId "${pageId}" is not a database`);
+  }
+  const collection = Object.values(pageRecordMap.collection)[0].value;
+  const siteInfo = getSiteInfo(collection as PatchedCollection);
+  const schemaMap = collection.schema;
+
+  // the first view is all pages
+  // the second view is config
+  const [pageIds, [configId]] = getPageIds(
+    block.collection_id || null,
+    pageRecordMap.collection_query,
+    pageRecordMap.collection_view,
+    block.view_ids,
+  );
+
+  const allPages: Page[] = [];
+  const publishedPosts: Page[] = [];
+  const navPageList: Page[] = [];
+  let config: Config = {};
+  let notice: Page | null = null;
+
+  if (configId) {
+    try {
+      const configPage = await getPageProperties(configId, blockMap, schemaMap);
+      if (configPage) {
+        config = await getConfig(configPage);
+      }
+    } catch (error) {
+      console.error(
+        `Error getting properties for config page ${configId}:`,
+        error,
+      );
+    }
+  }
+
+  await Promise.all(
+    pageIds.map(async (pageId) => {
+      try {
+        const page = await getPageProperties(pageId, blockMap, schemaMap);
+        if (!page || !page.type) return;
+
+        // for published post
+        if (
+          page.type === PageType.Post &&
+          page.status === PageStatus.Published
+        ) {
+          publishedPosts.push(page);
+        }
+
+        // for all page
+        if (
+          page.slug &&
+          !page.slug?.startsWith('http') &&
+          (page.status === PageStatus.Invisible ||
+            page.status === PageStatus.Published)
+        ) {
+          allPages.push(page);
+        }
+
+        // custom nav menu
+        if (
+          (page.type === PageType.Page || page.type === PageType.SubPage) &&
+          page.status === PageStatus.Published
+        ) {
+          navPageList.push(page);
+        }
+
+        // The Notice page is unique; only the first one is selected
+        if (
+          !notice &&
+          page.type === PageType.Notice &&
+          page.status === PageStatus.Published
+        ) {
+          notice = await getNotice(page);
+        }
+        return page;
+      } catch (error) {
+        console.error(`Error getting properties for page ${pageId}:`, error);
+        return null;
+      }
+    }),
+  );
+
+  // Sort by date
+  if (BLOG.POSTS_SORT_BY === 'date') {
+    allPages.sort((a, b) => {
+      return dayjs(b.date).isAfter(a.date) ? 1 : -1;
+    });
+  }
+
+  const categoryOptions = getCategories(publishedPosts, schemaMap);
+  const tagOptions = getTags(publishedPosts, schemaMap);
+  const latestPosts = getLatestPosts(publishedPosts, 6);
+  const navList = getNavList(navPageList);
+
+  return {
+    id: pageId,
+    notice,
+    config,
+    siteInfo,
+    allPages,
+    block,
+    tagOptions,
+    categoryOptions,
+    navList,
+    postCount: publishedPosts.length,
+    publishedPosts,
+    latestPosts,
+  };
 }
 
 /**
@@ -129,127 +258,4 @@ function getSiteInfo(collection: PatchedCollection): SiteInfo {
 async function getNotice(post: Page) {
   post.blockMap = await getPostBlocks(post.id, 'data-notice');
   return post;
-}
-
-/**
- * 调用NotionAPI获取Page数据
- * @returns {Promise<JSX.Element|null|*>}
- */
-async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
-  const pageRecordMap = await getPostBlocks(pageId, from);
-  if (!pageRecordMap) {
-    console.error('can`t get Notion Data ; Which id is: ', pageId);
-    throw Error('can`t get Notion Data');
-    // return {};
-  }
-  const blockMap = pageRecordMap.block;
-  const block = blockMap[pageId].value;
-  if (
-    block.type !== 'collection_view_page' &&
-    block.type !== 'collection_view'
-  ) {
-    console.error(`pageId "${pageId}" is not a database`);
-    throw Error(`pageId "${pageId}" is not a database`);
-  }
-  const collection = Object.values(pageRecordMap.collection)[0].value;
-  const siteInfo = getSiteInfo(collection as PatchedCollection);
-  const schemaMap = collection.schema;
-
-  const pageIds = getAllPageIds(
-    block.collection_id || null,
-    pageRecordMap.collection_query,
-    pageRecordMap.collection_view,
-    block.view_ids,
-  );
-
-  // 查找所有的Post和Page
-  const allPages: Page[] = [];
-  const publishedPosts: Page[] = [];
-  const navPageList: Page[] = [];
-  let config: Config = {};
-  let notice: Page | null = null;
-
-  await Promise.all(
-    pageIds.map(async (pageId) => {
-      try {
-        const page = await getPageProperties(pageId, blockMap, schemaMap);
-        if (!page || !page.type) return;
-
-        // for published post
-        if (
-          page.type === PageType.Post &&
-          page.status === PageStatus.Published
-        ) {
-          publishedPosts.push(page);
-        }
-
-        // for all page
-        if (
-          page.slug &&
-          !page.slug?.startsWith('http') &&
-          (page.status === PageStatus.Invisible ||
-            page.status === PageStatus.Published)
-        ) {
-          allPages.push(page);
-        }
-
-        // custom nav menu
-        if (
-          (page.type === PageType.Page || page.type === PageType.SubPage) &&
-          page.status === PageStatus.Published
-        ) {
-          navPageList.push(page);
-        }
-
-        // The Config page is unique; only the first one is selected.
-        if (
-          isEmpty(config) &&
-          page.type === PageType.Config &&
-          page.status === PageStatus.Published
-        ) {
-          config = await getConfig(page);
-        }
-
-        // The Notice page is unique; only the first one is selected
-        if (
-          !notice &&
-          page.type === PageType.Notice &&
-          page.status === PageStatus.Published
-        ) {
-          notice = await getNotice(page);
-        }
-        return page;
-      } catch (error) {
-        console.error(`Error getting properties for page ${pageId}:`, error);
-        return null;
-      }
-    }),
-  );
-
-  // Sort by date
-  if (BLOG.POSTS_SORT_BY === 'date') {
-    allPages.sort((a, b) => {
-      return dayjs(b.date).isAfter(a.date) ? 1 : -1;
-    });
-  }
-
-  const categoryOptions = getCategories(publishedPosts, schemaMap);
-  const tagOptions = getTags(publishedPosts, schemaMap);
-  const latestPosts = getLatestPosts(publishedPosts, 6);
-  const navList = getNavList(navPageList);
-
-  return {
-    id: pageId,
-    notice,
-    config,
-    siteInfo,
-    allPages,
-    block,
-    tagOptions,
-    categoryOptions,
-    navList,
-    postCount: publishedPosts.length,
-    publishedPosts,
-    latestPosts,
-  };
 }

@@ -30,6 +30,8 @@ export interface Page {
   results?: string[];
   toc?: TableOfContentsEntry[];
   // for subPage
+  parentId?: string | null;
+  childrenIds?: string[] | null;
   to?: string;
 }
 

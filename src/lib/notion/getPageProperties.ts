@@ -4,6 +4,7 @@ import md5 from 'js-md5';
 import { mapImgUrl } from './mapImage';
 import dayjs from 'dayjs';
 import { PageType, PageStatus } from '@/types/notion';
+import { getParentId, getChildrenIds } from './getTree';
 
 import type {
   BlockMap,
@@ -37,6 +38,10 @@ export default async function getPageProperties(
         }
       } else if (type === 'multi_select') {
         pageInfo[name] = getTextContent(value).split(',');
+      } else if (name === 'Parent item') {
+        pageInfo['parentId'] = getParentId(value);
+      } else if (name === 'Sub-item') {
+        pageInfo['childrenIds'] = getChildrenIds(value);
       } else {
         pageInfo[name] = getTextContent(value);
       }
@@ -61,6 +66,7 @@ export default async function getPageProperties(
   );
   pageInfo.tags = pageInfo?.tags || [];
   pageInfo.summary = pageInfo?.summary || '';
+
   // handle slug
   if (pageInfo.type === PageType.Post) {
     pageInfo.slug = BLOG.POST_URL_PREFIX
@@ -86,8 +92,6 @@ export default async function getPageProperties(
   pageInfo.password = pageInfo.password
     ? md5(pageInfo.slug + pageInfo.password)
     : '';
-
-  console.log(pageInfo);
 
   return pageInfo as Page;
 }

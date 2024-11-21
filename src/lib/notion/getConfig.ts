@@ -1,21 +1,20 @@
 import { getPostBlocks } from './getPostBlocks';
 import getPageIds from './getPageIds';
 import { getTextContent } from 'notion-utils';
-import BLOG from 'blog.config';
 
 import type { Config, Decoration } from '@/types';
 
 // get config from notion page
-const getConfig = async (configPageId?: string): Promise<Config> => {
+const getConfig = async (configPageId?: string): Promise<Partial<Config>> => {
   if (!configPageId) {
-    return {} as Config;
+    return {};
   }
   const configRecordMap = await getPostBlocks(configPageId, 'get-config');
   const configBlockMap = configRecordMap.block;
   const { content } = configBlockMap[configPageId].value;
 
   if (!content) {
-    return {} as Config;
+    return {};
   }
 
   const configTableId = content.find((contentId) => {
@@ -23,7 +22,7 @@ const getConfig = async (configPageId?: string): Promise<Config> => {
   });
 
   if (!configTableId) {
-    return {} as Config;
+    return {};
   }
 
   const configBlock = configBlockMap[configTableId].value;
@@ -47,7 +46,7 @@ const getConfig = async (configPageId?: string): Promise<Config> => {
     configBlock.view_ids,
   );
 
-  const config: Config = {};
+  const config: Partial<Config> = {};
 
   configIds.forEach((id) => {
     const { properties } = configBlockMap[id].value;
@@ -103,7 +102,7 @@ const getConfig = async (configPageId?: string): Promise<Config> => {
     }
   });
 
-  return { ...BLOG, ...config };
+  return config;
 };
 
 export default getConfig;

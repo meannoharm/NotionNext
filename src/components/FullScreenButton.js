@@ -1,48 +1,48 @@
-import { isBrowser } from '@/lib/utils'
-import React, { useState } from 'react'
+import { isBrowser } from '@/utils';
+import React, { useState } from 'react';
 
 /**
  * 全屏按钮
  * @returns
  */
 const FullScreenButton = () => {
-  const [isFullScreen, setIsFullScreen] = useState(false)
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const handleFullScreenClick = () => {
     if (!isBrowser) {
-      return
+      return;
     }
-    const element = document.documentElement
+    const element = document.documentElement;
     if (!isFullScreen) {
       if (element.requestFullscreen) {
-        element.requestFullscreen()
+        element.requestFullscreen();
       } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen()
+        element.webkitRequestFullscreen();
       } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen()
+        element.mozRequestFullScreen();
       } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen()
+        element.msRequestFullscreen();
       }
-      setIsFullScreen(true)
+      setIsFullScreen(true);
     } else {
       if (document.exitFullscreen) {
-        document.exitFullscreen()
+        document.exitFullscreen();
       } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen()
+        document.webkitExitFullscreen();
       } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen()
+        document.mozCancelFullScreen();
       } else if (document.msExitFullscreen) {
-        document.msExitFullscreen()
+        document.msExitFullscreen();
       }
-      setIsFullScreen(false)
+      setIsFullScreen(false);
     }
-  }
+  };
 
   return (
-      <button onClick={handleFullScreenClick} className='dark:text-gray-300'>
-        {isFullScreen ? '退出全屏' : <i className="fa-solid fa-expand"></i>}
-      </button>
-  )
-}
+    <button onClick={handleFullScreenClick} className="dark:text-gray-300">
+      {isFullScreen ? '退出全屏' : <i className="fa-solid fa-expand"></i>}
+    </button>
+  );
+};
 
-export default FullScreenButton
+export default FullScreenButton;

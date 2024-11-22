@@ -51,9 +51,10 @@ export enum PagePropertyName {
 export enum PageType {
   Post = 'Post',
   Page = 'Page',
-  SubPage = 'SubPage',
   Notice = 'Notice',
   Config = 'Config',
+  Link = 'Link',
+  Menu = 'Menu',
 }
 
 export enum PageStatus {

@@ -1,10 +1,8 @@
 import BLOG from 'blog.config';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { getSiteData } from '@/lib/notion/getSiteData';
-import { getIndependentPage } from '@/lib/notion/getIndependentPage';
 import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
 import { useCallback, useEffect, useState } from 'react';
-import { idToUuid } from 'notion-utils';
 import { useRouter } from 'next/router';
 import { useLayout } from '@/lib/theme';
 import md5 from 'js-md5';
@@ -18,8 +16,8 @@ import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, ArticleProps, ThemeArticleProps, Page } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 
-export interface SlugIndexParams extends ParsedUrlQuery {
-  prefix: string;
+export interface PrefixParams extends ParsedUrlQuery {
+  slug: string[];
 }
 
 /**
@@ -109,7 +107,7 @@ const Slug: FC<ArticleProps> = (props) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths<SlugIndexParams> = async () => {
+export const getStaticPaths: GetStaticPaths<PrefixParams> = async () => {
   if (!isProduct()) {
     return {
       paths: [],
@@ -119,51 +117,38 @@ export const getStaticPaths: GetStaticPaths<SlugIndexParams> = async () => {
 
   const { allPages } = await getSiteData('slug-index');
   return {
-    paths: allPages
-      .filter(
-        (row) => row.slug.indexOf('/') < 0 && row.type.indexOf('Menu') < 0,
-      )
-      .map((row) => ({ params: { prefix: row.slug } })),
+    paths: allPages.map((row) => ({ params: { slug: row.slug.split('/') } })),
     fallback: true,
   };
 };
 
 export const getStaticProps: GetStaticProps<
   ArticleProps,
-  SlugIndexParams
+  PrefixParams
 > = async ({ params, locale }) => {
-  const { prefix } = params as SlugIndexParams;
-  const fullSlug =
-    BLOG.PSEUDO_STATIC && !prefix.endsWith('.html') ? `${prefix}.html` : prefix;
-  const from = `slug-index-${fullSlug}`;
-
-  const { allPages, ...restProps } = await getSiteData(from);
+  const { slug: slugList } = params as PrefixParams;
+  const slug = slugList.join('/');
+  const from = `slug-index-${slug}`;
+  const props = await getSiteData(from);
+  const { allPages, publishedPosts, config } = props;
 
   // 在列表内查找文章
-  let post = allPages.find((p) => {
-    return p.slug === fullSlug || p.id === idToUuid(fullSlug);
+  const post = allPages.find((p) => {
+    return p.slug === slug;
   });
-
-  // 处理非列表内文章的内信息
-  if (!post) {
-    const pageId = prefix;
-    if (pageId.length >= 32) {
-      post = await getIndependentPage(pageId, from);
-    }
-  }
 
   // 无法获取文章
   if (!post) {
     return {
       props: {
-        ...restProps,
+        ...props,
         post: null,
         prev: null,
         next: null,
         recommendPosts: [],
         ...(await serverSideTranslations(locale as string)),
       },
-      revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+      revalidate: config.NEXT_REVALIDATE_SECOND,
     };
   }
 
@@ -173,19 +158,15 @@ export const getStaticProps: GetStaticProps<
   }
 
   // 生成全文索引 && process.env.npm_lifecycle_event === 'build' && JSON.parse(BLOG.ALGOLIA_RECREATE_DATA)
-  if (BLOG.ALGOLIA_APP_ID) {
+  if (config.ALGOLIA_APP_ID) {
     uploadDataToAlgolia(post);
   }
 
-  // 推荐关联文章处理
-  const allPosts = allPages.filter(
-    (page) => page.type === 'Post' && page.status === 'Published',
-  );
-  const { prev, next, recommendPosts } = findRelatedPosts(post, allPosts);
+  const { prev, next, recommendPosts } = findRelatedPosts(post, publishedPosts);
 
   return {
     props: {
-      ...restProps,
+      ...props,
       post,
       prev,
       next,
@@ -198,14 +179,14 @@ export const getStaticProps: GetStaticProps<
 
 export const findRelatedPosts: (
   post: Page,
-  allPosts: Page[],
+  publishedPosts: Page[],
   count?: number,
 ) => {
   prev: Page | null;
   next: Page | null;
   recommendPosts: Page[];
 } = (post, allPosts, count = 6) => {
-  if (!allPosts.length || !post) {
+  if (!allPosts.length || !post || post.type === PageType.Page) {
     return { prev: null, next: null, recommendPosts: [] };
   }
   const relatedPosts = allPosts.filter(

@@ -83,7 +83,7 @@ export default async function getPageProperties(
   // handle slug
   if (pageInfo.type === PageType.Post) {
     // parse post's prefix from config
-    pageInfo.slug = generateCustomizeSlug(pageInfo as Page, config);
+    pageInfo.slug = generatePostSlug(pageInfo as Page, config);
   } else if (pageInfo.type === PageType.Page) {
     pageInfo.slug = pageInfo.slug ?? pageInfo.id;
     if (pageInfo.childrenIds && pageInfo.childrenIds.length > 0) {
@@ -112,9 +112,9 @@ export default async function getPageProperties(
  * @param {*} page
  * @returns
  */
-function generateCustomizeSlug(page: Page, config: Config) {
+function generatePostSlug(page: Page, config: Config) {
   // 默认占位符的回退值
-  const fallbackSlug = page.slug ?? page.id ?? '';
+  const fallbackSlug = page.slug ?? page.id;
   const date = page.date ? dayjs(page.date) : null;
 
   // 用于存储最终生成的路径片段

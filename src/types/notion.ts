@@ -74,7 +74,6 @@ export interface Nav {
   id: string;
   icon: string;
   to: string;
-  target: string;
   show: boolean;
   title: string;
   subMenus?: Nav[];

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import BLOG from 'blog.config';
 import LayoutBase from '../layout/LayoutBase';
-import { deepClone } from '@/lib/utils';
 import BlogListPage from '../components/BlogListPage';
 import BlogListScroll from '../components/BlogListScroll';
 import BlogListBar from '../components/BlogListBar';
 import { ContextWrapper } from '../providers';
+import { cloneDeep } from 'lodash';
 
 import type {
   Page,
@@ -49,7 +49,7 @@ const PostList: FC<
       return searchContent.toLowerCase().includes(filterKey.toLowerCase());
     });
   } else {
-    filteredBlogPosts = deepClone(posts);
+    filteredBlogPosts = cloneDeep(posts);
   }
   return (
     <LayoutBase

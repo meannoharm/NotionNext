@@ -3,7 +3,7 @@ import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { getIndependentPage } from '@/lib/notion/getIndependentPage';
 import { idToUuid } from 'notion-utils';
-import Slug, { findRelatedPosts } from '.';
+import Slug, { findRelatedPosts } from '..';
 import { uploadDataToAlgolia } from '@/lib/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 

@@ -4,7 +4,6 @@ import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { generateRss } from '@/lib/rss';
 import { generateRobotsTxt } from '@/lib/robots.txt';
 import { useLayout } from '@/lib/theme';
-import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { GetStaticProps } from 'next';
@@ -31,11 +30,8 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
   locale,
 }) => {
   const globalData = await getSiteData('index');
-
-  const { siteInfo } = globalData;
-  let posts: Page[] = globalData.allPages?.filter(
-    (page) => page.type === 'Post' && page.status === 'Published',
-  );
+  const { siteInfo, publishedPosts, config } = globalData;
+  let posts: Page[] = [];
 
   const pageMeta = {
     title: `${siteInfo?.title} | ${siteInfo?.description}`,
@@ -47,11 +43,11 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
 
   // 处理分页
   if (BLOG.POST_LIST_STYLE === 'scroll') {
-    // 滚动列表默认给前端返回所有数据
+    posts = publishedPosts;
   }
 
   if (BLOG.POST_LIST_STYLE === 'page') {
-    posts = posts?.slice(0, BLOG.POSTS_PER_PAGE) || [];
+    posts = publishedPosts?.slice(0, config.POSTS_PER_PAGE) || [];
   }
 
   // 预览文章内容
@@ -61,8 +57,8 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
         if (!post.password) {
           post.blockMap = await getPostBlocks(
             post.id,
-            'slug',
-            BLOG.POST_PREVIEW_LINES,
+            'index-page',
+            config.POST_PREVIEW_LINES,
           );
         }
       }),
@@ -79,12 +75,12 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
 
   return {
     props: {
+      ...globalData,
       pageMeta,
       posts,
-      ...omit(globalData, 'allPages'),
       ...(await serverSideTranslations(locale as string)),
     },
-    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+    revalidate: config.NEXT_REVALIDATE_SECOND,
   };
 };
 

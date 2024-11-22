@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { deepClone } from '@/lib/utils';
 import BLOG from 'blog.config';
 import replaceSearchResult from '@/components/Mark';
 import { isBrowser } from '@/lib/utils';
@@ -9,6 +8,7 @@ import SearchNavBar from './components/SearchNavBar';
 import BlogListPage from '@themes/nobelium/components/BlogListPage';
 import BlogListScroll from '@themes/nobelium/components/BlogListScroll';
 import { ContextWrapper } from '@themes/nobelium/providers/index';
+import { cloneDeep } from 'lodash';
 
 import type { FC } from 'react';
 import type { ThemeSearchProps } from '@/types';
@@ -44,7 +44,7 @@ const Search: FC<ThemeSearchProps> = (props) => {
       return searchContent.toLowerCase().includes(filterKey.toLowerCase());
     });
   } else {
-    filteredBlogPosts = deepClone(posts);
+    filteredBlogPosts = cloneDeep(posts);
   }
 
   return (

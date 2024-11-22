@@ -20,9 +20,7 @@ const layoutNameMapping: Record<string, string> = {
   '/search': 'Search',
   '/search/[keyword]': 'SearchDetail',
   '/search/[keyword]/page/[page]': 'SearchPage',
-  '/[prefix]': 'Article',
-  '/[prefix]/[slug]': 'Article',
-  '/[prefix]/[slug]/[...suffix]': 'Article',
+  '/[...slug]': 'Article',
   '/404': 'PageNotFound',
 };
 

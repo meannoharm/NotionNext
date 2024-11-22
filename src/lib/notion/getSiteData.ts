@@ -79,6 +79,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
 
   const navPageList: Page[] = [];
   const publishedPosts: Page[] = [];
+  // posts and pages
   const allPages: Page[] = [];
   let configPage: Partial<Config> | null = null;
   let notice: Page | null = null;

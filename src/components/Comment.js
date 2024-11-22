@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import dynamic from 'next/dynamic';
 import Tabs from '@/components/Tabs';
-import { isBrowser } from '@/lib/utils';
+import { isBrowser } from '@/utils';
 import { useRouter } from 'next/router';
 import Artalk from './Artalk';
 

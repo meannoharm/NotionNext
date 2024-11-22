@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import type { Block } from 'notion-types';
 import { PatchedCollection } from '@/types/notion';
-import { isEmoji } from '@/lib/utils';
+import { isEmoji } from '@/utils';
 
 /**
  * 图片映射

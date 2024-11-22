@@ -2,7 +2,7 @@ import { useGlobal } from '@/context/global';
 import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { loadExternalResource } from '@/lib/utils';
+import { loadExternalResource } from '@/utils';
 import { useTranslation } from 'next-i18next';
 
 const CusdisComponent = ({ frontMatter }) => {

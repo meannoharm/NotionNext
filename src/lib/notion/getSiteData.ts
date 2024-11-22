@@ -9,7 +9,7 @@ import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
 import { PageStatus, PageType } from '@/types/notion';
 import dayjs from 'dayjs';
-import { isHrefStartWithHttp, isEmoji } from '@/lib/utils';
+import { isHrefStartWithHttp, isEmoji } from '@/utils';
 
 import type {
   Nav,

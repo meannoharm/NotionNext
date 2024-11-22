@@ -5,9 +5,10 @@ import { idToUuid } from 'notion-utils';
 import Slug, { findRelatedPosts } from '..';
 import { uploadDataToAlgolia } from '@/lib/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { isProduct } from '@/utils';
 
 import type { FC } from 'react';
-import { isProduct } from '@/utils';
+import type { ArticleProps } from '@/types';
 
 /**
  * 根据notion的slug访问页面
@@ -15,7 +16,7 @@ import { isProduct } from '@/utils';
  * @param {*} props
  * @returns
  */
-const PrefixSlug = (props) => {
+const PrefixSlug: FC<ArticleProps> = (props) => {
   return <Slug {...props} />;
 };
 

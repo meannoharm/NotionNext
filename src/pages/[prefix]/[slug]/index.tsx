@@ -11,6 +11,7 @@ import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PrefixSlugProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
+import { isProduct } from '@/utils';
 
 export interface PrefixSlugParams extends ParsedUrlQuery {
   prefix: string;
@@ -27,7 +28,7 @@ const PrefixSlug: FC<PrefixSlugProps> = (props) => {
 };
 
 export const getStaticPaths: GetStaticPaths<PrefixSlugParams> = async () => {
-  if (!isProd()) {
+  if (!isProduct()) {
     return {
       paths: [],
       fallback: true,

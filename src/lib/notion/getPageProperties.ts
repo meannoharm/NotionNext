@@ -4,7 +4,7 @@ import { mapImgUrl } from './mapImage';
 import dayjs from 'dayjs';
 import { PageType } from '@/types/notion';
 import { getParentId, getChildrenIds } from './getTree';
-import { isHrefStartWithHttp } from '@/lib/utils';
+import { isHrefStartWithHttp } from '@/utils';
 
 import type {
   BlockMap,

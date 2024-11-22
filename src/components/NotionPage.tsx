@@ -10,7 +10,7 @@ import Link from 'next/link';
 import BLOG from 'blog.config';
 import 'katex/dist/katex.min.css';
 import { mapImgUrl } from '@/lib/notion/mapImage';
-import { isBrowser } from '@/lib/utils';
+import { isBrowser } from '@/utils';
 
 import type { Page } from '@/types/notion';
 

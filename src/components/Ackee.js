@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import BLOG from 'blog.config';
-import { loadExternalResource } from '@/lib/utils';
+import { loadExternalResource } from '@/utils';
 import { useRouter } from 'next/router';
 const Ackee = () => {
   const router = useRouter();

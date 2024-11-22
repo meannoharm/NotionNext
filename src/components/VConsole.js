@@ -1,4 +1,4 @@
-import { loadExternalResource } from '@/lib/utils';
+import { loadExternalResource } from '@/utils';
 import { useEffect, useRef } from 'react';
 
 const VConsole = () => {

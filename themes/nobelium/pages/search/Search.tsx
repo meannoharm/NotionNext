@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import BLOG from 'blog.config';
 import replaceSearchResult from '@/components/Mark';
-import { isBrowser } from '@/lib/utils';
+import { isBrowser } from '@/utils';
 import LayoutBase from '@themes/nobelium/layout/LayoutBase';
 import BlogListBar from '@themes/nobelium/components/BlogListBar';
 import SearchNavBar from './components/SearchNavBar';

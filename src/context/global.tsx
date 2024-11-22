@@ -7,7 +7,7 @@ import {
   operateDarkMode,
   saveDarkModeToLocalStorage,
 } from '@/lib/darkMode';
-import { getQueryVariable } from '@/lib/utils';
+import { getQueryVariable } from '@/utils';
 import { progressStart, progressDone } from '@/components/NProgress';
 
 import type { FunctionComponent, ReactNode } from 'react';

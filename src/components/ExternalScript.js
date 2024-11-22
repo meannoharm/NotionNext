@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { isBrowser } from '@/lib/utils'
+import { isBrowser } from '@/utils';
 
 /**
  * 自定义外部 script
@@ -8,22 +8,22 @@ import { isBrowser } from '@/lib/utils'
  * @returns
  */
 const ExternalScript = (props) => {
-  const { src } = props
+  const { src } = props;
   if (!isBrowser || !src) {
-    return null
+    return null;
   }
 
-  const element = document.querySelector(`script[src="${src}"]`)
+  const element = document.querySelector(`script[src="${src}"]`);
   if (element) {
-    return null
+    return null;
   }
-  const script = document.createElement('script')
+  const script = document.createElement('script');
   Object.entries(props).forEach(([key, value]) => {
-    script.setAttribute(key, value)
-  })
-  document.head.appendChild(script)
-  console.log('加载外部脚本', props, script)
-  return null
-}
+    script.setAttribute(key, value);
+  });
+  document.head.appendChild(script);
+  console.log('加载外部脚本', props, script);
+  return null;
+};
 
-export default ExternalScript
+export default ExternalScript;

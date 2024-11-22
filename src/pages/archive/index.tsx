@@ -2,7 +2,7 @@ import { getSiteData } from '@/lib/notion/getSiteData';
 import { useEffect, type FC } from 'react';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
-import { isBrowser } from '@/lib/utils';
+import { isBrowser } from '@/utils';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
 import { omit } from 'lodash';

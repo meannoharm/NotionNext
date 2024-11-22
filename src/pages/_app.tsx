@@ -11,7 +11,7 @@ import 'katex/dist/katex.min.css';
 import { GlobalContextProvider } from '@/context/global';
 import { appWithTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
-import { isBrowser, loadExternalResource } from '@/lib/utils';
+import { isBrowser, loadExternalResource } from '@/utils';
 import BLOG from 'blog.config';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles

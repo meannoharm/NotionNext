@@ -11,7 +11,7 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 
 // mermaid图
 import BLOG from 'blog.config';
-import { loadExternalResource } from '@/lib/utils';
+import { loadExternalResource } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { useGlobal } from '@/context/global';
 

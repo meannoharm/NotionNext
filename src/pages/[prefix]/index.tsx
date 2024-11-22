@@ -8,7 +8,7 @@ import { idToUuid } from 'notion-utils';
 import { useRouter } from 'next/router';
 import { useLayout } from '@/lib/theme';
 import md5 from 'js-md5';
-import { isBrowser } from '@/lib/utils';
+import { isBrowser } from '@/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { PageType } from '@/types/notion';

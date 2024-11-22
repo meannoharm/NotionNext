@@ -1,6 +1,6 @@
 // import 'gitalk/dist/gitalk.css'
 import BLOG from 'blog.config';
-import { loadExternalResource } from '@/lib/utils';
+import { loadExternalResource } from '@/utils';
 import { useEffect } from 'react';
 // import GitalkComponent from 'gitalk/dist/gitalk-component'
 

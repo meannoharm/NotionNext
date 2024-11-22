@@ -3,7 +3,7 @@ import { getDataFromCache } from '@/lib/cache/cacheManager';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
-import { isIterable } from '@/lib/utils';
+import { isIterable } from '@/utils';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';

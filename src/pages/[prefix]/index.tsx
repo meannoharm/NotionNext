@@ -8,7 +8,7 @@ import { idToUuid } from 'notion-utils';
 import { useRouter } from 'next/router';
 import { useLayout } from '@/lib/theme';
 import md5 from 'js-md5';
-import { isBrowser } from '@/utils';
+import { isBrowser, isProduct } from '@/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { PageType } from '@/types/notion';
@@ -110,7 +110,7 @@ const Slug: FC<SlugIndexProps> = (props) => {
 };
 
 export const getStaticPaths: GetStaticPaths<SlugIndexParams> = async () => {
-  if (!BLOG.isProd) {
+  if (!isProduct()) {
     return {
       paths: [],
       fallback: true,

@@ -27,7 +27,7 @@ const PrefixSlug: FC<PrefixSlugProps> = (props) => {
 };
 
 export const getStaticPaths: GetStaticPaths<PrefixSlugParams> = async () => {
-  if (!BLOG.isProd) {
+  if (!isProd()) {
     return {
       paths: [],
       fallback: true,

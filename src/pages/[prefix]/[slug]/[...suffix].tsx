@@ -7,6 +7,7 @@ import { uploadDataToAlgolia } from '@/lib/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
+import { isProduct } from '@/utils';
 
 /**
  * 根据notion的slug访问页面
@@ -23,7 +24,7 @@ const PrefixSlug = (props) => {
  * @returns
  */
 export async function getStaticPaths() {
-  if (!BLOG.isProd) {
+  if (!isProduct()) {
     return {
       paths: [],
       fallback: true,

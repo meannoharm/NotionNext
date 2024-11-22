@@ -9,8 +9,8 @@ import { useRouter } from 'next/router';
  */
 const layoutNameMapping: Record<string, string> = {
   '/': 'Home',
-  '/archive': 'Archive',
   '/page/[page]': 'Page',
+  '/archive': 'Archive',
   '/category': 'Category',
   '/category/[category]': 'CategoryDetail',
   '/category/[category]/page/[page]': 'CategoryPage',
@@ -22,6 +22,7 @@ const layoutNameMapping: Record<string, string> = {
   '/search/[keyword]/page/[page]': 'SearchPage',
   '/[prefix]': 'Prefix',
   '/[prefix]/[slug]': 'PrefixSlug',
+  '/[prefix]/[slug]/[...suffix]': 'LayoutSlug',
   '/404': 'PageNotFound',
 };
 

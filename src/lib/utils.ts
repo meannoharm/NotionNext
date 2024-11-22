@@ -1,6 +1,3 @@
-// 封装异步加载资源的方法
-import { memo } from 'react';
-
 /**
  * 判断是否客户端
  * @returns {boolean}
@@ -8,22 +5,12 @@ import { memo } from 'react';
 export const isBrowser = typeof window !== 'undefined';
 
 /**
- * 组件持久化
- */
-export const memorize = (Component) => {
-  const MemoizedComponent = (props) => {
-    return <Component {...props} />;
-  };
-  return memo(MemoizedComponent);
-};
-
-/**
  * 加载外部资源
  * @param url 地址 例如 https://xx.com/xx.js
  * @param type js 或 css
  * @returns {Promise<unknown>}
  */
-export function loadExternalResource(url, type) {
+export function loadExternalResource(url: string, type: 'css' | 'font' | 'js') {
   // 检查是否已存在
   const elements =
     type === 'js'
@@ -70,7 +57,7 @@ export function loadExternalResource(url, type) {
  * @param {}} variable
  * @returns
  */
-export function getQueryVariable(key) {
+export function getQueryVariable(key: string) {
   const query = isBrowser ? window.location.search.substring(1) : '';
   const vars = query.split('&');
   for (let i = 0; i < vars.length; i++) {
@@ -81,101 +68,22 @@ export function getQueryVariable(key) {
   }
   return false;
 }
-
-/**
- * 获取 URL 中指定参数的值
- * @param {string} url
- * @param {string} param
- * @returns {string|null}
- */
-export function getQueryParam(url, param) {
-  const searchParams = new URLSearchParams(url.split('?')[1]);
-  return searchParams.get(param);
-}
-
-/**
- * 深度合并两个对象
- * @param target
- * @param sources
- */
-export function mergeDeep(target, ...sources) {
-  if (!sources.length) return target;
-  const source = sources.shift();
-
-  if (isObject(target) && isObject(source)) {
-    for (const key in source) {
-      if (isObject(source[key])) {
-        if (!target[key]) Object.assign(target, { [key]: {} });
-        mergeDeep(target[key], source[key]);
-      } else {
-        Object.assign(target, { [key]: source[key] });
-      }
-    }
-  }
-  return mergeDeep(target, ...sources);
-}
-
-/**
- * 是否对象
- * @param item
- * @returns {boolean}
- */
-export function isObject(item) {
-  return item && typeof item === 'object' && !Array.isArray(item);
-}
-
 /**
  * 是否可迭代
  * @param {*} obj
  * @returns
  */
-export function isIterable(obj) {
+export function isIterable(obj: any) {
   return obj != null && typeof obj[Symbol.iterator] === 'function';
 }
 
-/**
- * 深拷贝对象
- * 根据源对象类型深度复制，支持object和array
- * @param {*} obj
- * @returns
- */
-export function deepClone(obj) {
-  if (Array.isArray(obj)) {
-    // If obj is an array, create a new array and deep clone each element
-    return obj.map((item) => deepClone(item));
-  } else if (obj && typeof obj === 'object') {
-    const newObj = {};
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        if (obj[key] instanceof Date) {
-          newObj[key] = new Date(obj[key].getTime()).toISOString();
-        } else {
-          newObj[key] = deepClone(obj[key]);
-        }
-      }
-    }
-    return newObj;
-  } else {
-    return obj;
-  }
-}
 /**
  * 延时
  * @param {*} ms
  * @returns
  */
-export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-/**
- * 获取从第1页到指定页码的文章
- * @param pageIndex 第几页
- * @param list 所有文章
- * @param pageSize 每页文章数量
- * @returns {*}
- */
-export const getListByPage = function (list, pageIndex, pageSize) {
-  return list.slice(0, pageIndex * pageSize);
-};
+export const delay = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * 判断是否移动设备
@@ -206,16 +114,16 @@ export const isMobile = () => {
   return isMobile;
 };
 
-export function isUrl(website) {
+export function isUrl(website: string) {
   const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
   return urlPattern.test(website);
 }
 
-export function isHrefStartWithHttp(href) {
+export function isHrefStartWithHttp(href: string) {
   return href.indexOf('http:') === 0 || href.indexOf('https:') === 0;
 }
 
-export function isEmoji(str) {
+export function isEmoji(str: string) {
   const emojiRegex =
     /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g;
   return emojiRegex.test(str);

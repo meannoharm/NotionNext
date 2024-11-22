@@ -22,7 +22,6 @@ export {
   Search,
   PostList as SearchDetail,
   PostList as SearchPage,
-  Post as Prefix,
-  Post as PrefixSlug,
+  Post as Article,
   PageNotFound,
 };

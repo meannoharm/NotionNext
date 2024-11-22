@@ -15,7 +15,7 @@ import { PageType } from '@/types/notion';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type { PageMeta, SlugIndexProps, ThemePrefixProps, Page } from '@/types';
+import type { PageMeta, ArticleProps, ThemeArticleProps, Page } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 
 export interface SlugIndexParams extends ParsedUrlQuery {
@@ -27,7 +27,7 @@ export interface SlugIndexParams extends ParsedUrlQuery {
  * @param {*} props
  * @returns
  */
-const Slug: FC<SlugIndexProps> = (props) => {
+const Slug: FC<ArticleProps> = (props) => {
   const { post, siteInfo } = props;
   const router = useRouter();
 
@@ -97,7 +97,7 @@ const Slug: FC<SlugIndexProps> = (props) => {
   };
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemePrefixProps>;
+  const Layout = useLayout() as FC<ThemeArticleProps>;
 
   return (
     <Layout
@@ -129,7 +129,7 @@ export const getStaticPaths: GetStaticPaths<SlugIndexParams> = async () => {
 };
 
 export const getStaticProps: GetStaticProps<
-  SlugIndexProps,
+  ArticleProps,
   SlugIndexParams
 > = async ({ params, locale }) => {
   const { prefix } = params as SlugIndexParams;

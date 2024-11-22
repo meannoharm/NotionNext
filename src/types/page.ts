@@ -68,13 +68,12 @@ export type SearchPageProps = DataBaseForProps & {
   page: number;
   keyword: string;
 };
-export type SlugIndexProps = DataBaseForProps & {
+export type ArticleProps = DataBaseForProps & {
   post: Page | null;
   prev: Page | null;
   next: Page | null;
   recommendPosts: Page[];
 };
-export type PrefixSlugProps = SlugIndexProps;
 
 export type ThemeProps<T> = Partial<T & PageMetaProps>;
 
@@ -94,9 +93,8 @@ export type ThemeSearchProps = SearchIndexProps &
   };
 export type ThemeSearchDetailProps = SearchDetailProps & PageMetaProps;
 export type ThemeSearchPageProps = SearchPageProps & PageMetaProps;
-export type ThemePrefixProps = SlugIndexProps &
+export type ThemeArticleProps = ArticleProps &
   PageMetaProps & {
     isLock: boolean;
     validPassword: (passInput: string) => boolean;
   };
-export type ThemePrefixSlugProps = ThemePrefixProps;

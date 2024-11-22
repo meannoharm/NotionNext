@@ -9,9 +9,9 @@ import Comment from '@/components/Comment';
 import { ContextWrapper } from '../providers';
 
 import type { FC } from 'react';
-import type { ThemePrefixProps, ThemePrefixSlugProps } from '@/types';
+import type { ThemeArticleProps } from '@/types';
 
-const Post: FC<ThemePrefixProps & ThemePrefixSlugProps> = (props) => {
+const Post: FC<ThemeArticleProps> = (props) => {
   const { post, isLock, validPassword } = props;
 
   return (

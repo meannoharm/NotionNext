@@ -9,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type { PrefixSlugProps } from '@/types';
+import type { ArticleProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import { isProduct } from '@/utils';
 
@@ -23,7 +23,7 @@ export interface PrefixSlugParams extends ParsedUrlQuery {
  * @param {*} props
  * @returns
  */
-const PrefixSlug: FC<PrefixSlugProps> = (props) => {
+const PrefixSlug: FC<ArticleProps> = (props) => {
   return <Slug {...props} />;
 };
 

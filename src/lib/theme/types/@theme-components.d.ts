@@ -19,7 +19,7 @@ declare module '@theme-components' {
   export const SearchPage: React.FC<
     import('@/pages/types').ThemeSearchPageProps
   >;
-  export const Slug: React.FC<import('@/pages/types').ThemePrefixProps>;
+  export const Slug: React.FC<import('@/pages/types').ThemeArticleProps>;
   export const PrefixSlug: React.FC<
     import('@/pages/types').ThemePrefixSlugProps
   >;

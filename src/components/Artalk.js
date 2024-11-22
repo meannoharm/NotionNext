@@ -1,6 +1,6 @@
 import BLOG from 'blog.config';
 import { loadExternalResource } from '@/utils';
-// import { loadExternalResource } from '@/lib/utils'
+// import { loadExternalResource } from '@/utils'
 import { useEffect } from 'react';
 
 /**

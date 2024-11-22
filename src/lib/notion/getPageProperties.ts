@@ -4,7 +4,6 @@ import { mapImgUrl } from './mapImage';
 import dayjs from 'dayjs';
 import { PageType } from '@/types/notion';
 import { getParentId, getChildrenIds } from './getTree';
-import { isHrefStartWithHttp } from '@/utils';
 
 import type {
   BlockMap,
@@ -114,11 +113,6 @@ export default async function getPageProperties(
  * @returns
  */
 function generateCustomizeSlug(page: Page, config: Config) {
-  // 如果是外部链接，直接返回原始链接
-  if (page.slug && isHrefStartWithHttp(page.slug)) {
-    return page.slug;
-  }
-
   // 默认占位符的回退值
   const fallbackSlug = page.slug ?? page.id ?? '';
   const date = page.date ? dayjs(page.date) : null;

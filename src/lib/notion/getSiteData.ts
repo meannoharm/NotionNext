@@ -9,7 +9,7 @@ import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
 import { PageStatus, PageType } from '@/types/notion';
 import dayjs from 'dayjs';
-import { isHrefStartWithHttp, isEmoji } from '@/utils';
+import { isEmoji } from '@/utils';
 
 import type {
   Nav,
@@ -184,14 +184,12 @@ function getNavList(navPages: Page[]): Nav[] {
   const navMenus: Nav[] = [];
 
   navPages.forEach((page) => {
-    console.log(page);
     pageMap[page.id] = {
       id: page.id,
       show: true,
       icon: page.icon,
       title: page.title,
-      to: isHrefStartWithHttp(page.slug) ? page.slug : `/${page.slug}`,
-      target: isHrefStartWithHttp(page.slug) ? '_blank' : '_self',
+      to: page.slug,
       subMenus: [],
     };
   });

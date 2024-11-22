@@ -77,7 +77,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
     block.view_ids,
   );
 
-  const pages: Page[] = [];
+  const navPageList: Page[] = [];
   const publishedPosts: Page[] = [];
   const allPages: Page[] = [];
   let configPage: Partial<Config> | null = null;
@@ -105,33 +105,28 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
           schemaMap,
           config,
         );
-        if (!page || !page.type) return;
+        if (!page || !page.type || !(page.status === PageStatus.Published))
+          return;
 
         // The Notice page is unique; only the first one will be loaded
-        if (
-          !notice &&
-          page.type === PageType.Notice &&
-          page.status === PageStatus.Published
-        ) {
+        if (!notice && page.type === PageType.Notice) {
           notice = await getNotice(page);
         }
 
         // for published post
-        if (
-          page.type === PageType.Post &&
-          page.status === PageStatus.Published
-        ) {
+        if (page.type === PageType.Post) {
           publishedPosts.push(page);
           allPages.push(page);
         }
 
         // page for custom nav menu
-        if (
-          page.type === PageType.Page &&
-          page.status === PageStatus.Published
-        ) {
-          pages.push(page);
+        if (page.type === PageType.Page) {
+          navPageList.push(page);
           allPages.push(page);
+        }
+
+        if (page.type === PageType.Menu || page.type === PageType.Link) {
+          navPageList.push(page);
         }
       } catch (error) {
         console.error(`Error getting properties for page ${pageId}:`, error);
@@ -146,23 +141,18 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
     publishedPosts.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));
   }
 
-  const categoryOptions = getCategories(publishedPosts, schemaMap);
-  const tagOptions = getTags(publishedPosts, schemaMap);
-  const latestPosts = getLatestPosts(publishedPosts, 6);
-  const navList = getNavList(pages);
-
   return {
     id: pageId,
     notice,
     siteInfo,
     allPages,
     block,
-    tagOptions,
-    categoryOptions,
-    navList,
+    tagOptions: getTags(publishedPosts, schemaMap),
+    categoryOptions: getCategories(publishedPosts, schemaMap),
+    navList: getNavList(navPageList),
     postCount: publishedPosts.length,
     publishedPosts,
-    latestPosts,
+    latestPosts: getLatestPosts(publishedPosts, 6),
     config,
   };
 }

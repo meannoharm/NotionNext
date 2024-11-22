@@ -81,37 +81,22 @@ export default async function getPageProperties(
   pageInfo.tags = pageInfo?.tags || [];
   pageInfo.summary = pageInfo?.summary || '';
 
-  // handle slug and href
+  // handle slug
   if (pageInfo.type === PageType.Post) {
     // parse post's prefix from config
-    pageInfo.href = generateCustomizeSlug(pageInfo as Page, config);
+    pageInfo.slug = generateCustomizeSlug(pageInfo as Page, config);
   } else if (pageInfo.type === PageType.Page) {
-    pageInfo.href = pageInfo.slug ?? pageInfo.id;
+    pageInfo.slug = pageInfo.slug ?? pageInfo.id;
     if (pageInfo.childrenIds && pageInfo.childrenIds.length > 0) {
       // non-leaf node pages' href are set as placeholders.
       pageInfo.slug = '#';
-      pageInfo.href = '#';
     }
-  } else {
-    pageInfo.href = '';
   }
 
-  // http or https 开头的视为外链
-  if (!isHrefStartWithHttp(pageInfo?.href)) {
-    // 伪静态路径右侧拼接.html
-    if (config.PSEUDO_STATIC) {
-      if (
-        !pageInfo?.href?.endsWith('.html') &&
-        pageInfo?.href !== '' &&
-        pageInfo?.href !== '#' &&
-        pageInfo?.href !== '/'
-      ) {
-        pageInfo.href += '.html';
-      }
-    }
-
-    // 相对路径转绝对路径：url左侧拼接 /
-    pageInfo.href = convertUrlStartWithOneSlash(pageInfo?.href);
+  // non-leaf node pages' href are set as placeholders.
+  if (pageInfo.childrenIds && pageInfo.childrenIds.length > 0) {
+    pageInfo.type = PageType.Menu;
+    pageInfo.slug = '#';
   }
 
   pageInfo.password = pageInfo.password
@@ -166,16 +151,4 @@ function generateCustomizeSlug(page: Page, config: Config) {
 
   // 最终拼接slug部分
   return fullPrefix ? `${fullPrefix}/${fallbackSlug}` : fallbackSlug;
-}
-
-function convertUrlStartWithOneSlash(href: string) {
-  if (!href) {
-    return '#';
-  }
-  if (!href.startsWith('/')) {
-    href = '/' + href;
-  }
-  // Replace multiple slashes with a single slash
-  href = href.replace(/\/+/g, '/');
-  return href;
 }

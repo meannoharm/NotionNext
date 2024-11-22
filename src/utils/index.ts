@@ -1,3 +1,5 @@
+export const isProduct = () => process.env.VERCEL_ENV === 'product';
+
 /**
  * 判断是否客户端
  * @returns {boolean}

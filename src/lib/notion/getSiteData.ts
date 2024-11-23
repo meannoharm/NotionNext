@@ -18,7 +18,7 @@ import type {
   Site,
   PatchedCollection,
 } from '@/types/notion';
-import type { Config } from '@/types/config';
+import type { SiteConfig } from '@/types/config';
 import getConfig from './getConfig';
 
 /**
@@ -81,7 +81,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const publishedPosts: Page[] = [];
   // posts and pages
   const allPages: Page[] = [];
-  let configPage: Partial<Config> | null = null;
+  let configPage: Partial<SiteConfig> | null = null;
   let notice: Page | null = null;
 
   if (configId) {

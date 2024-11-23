@@ -5,7 +5,7 @@ import type {
   ID,
   BlockType,
 } from 'notion-types';
-import { Config } from './config';
+import { SiteConfig } from './config';
 
 export type * from 'notion-types';
 
@@ -112,7 +112,7 @@ export interface Site {
   postCount: number;
   publishedPosts: Page[];
   latestPosts: Page[];
-  config: Config;
+  config: SiteConfig;
 }
 
 // property description and cover are not included in the original Collection type, but it definitely return these property.
@@ -127,4 +127,8 @@ export interface TableOfContentsEntry {
   type: BlockType;
   text: string;
   indentLevel: number;
+}
+
+export interface ExtendedTweetRecordMap extends ExtendedRecordMap {
+  tweets: Record<string, any>;
 }

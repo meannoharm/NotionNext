@@ -11,14 +11,14 @@ import type {
   CollectionPropertySchemaMap,
   Decoration,
 } from '@/types/notion';
-import type { Config } from '@/types';
+import type { SiteConfig } from '@/types';
 
 // get properties for each line in collection
 export default async function getPageProperties(
   id: string,
   blockMap: BlockMap,
   schemaMap: CollectionPropertySchemaMap,
-  config: Config,
+  config: SiteConfig,
 ): Promise<Page> {
   const pageInfo: Partial<Page> & { [key: string]: any } = {};
   const block = blockMap[id].value;
@@ -112,7 +112,7 @@ export default async function getPageProperties(
  * @param {*} page
  * @returns
  */
-function generatePostSlug(page: Page, config: Config) {
+function generatePostSlug(page: Page, config: SiteConfig) {
   // 默认占位符的回退值
   const fallbackSlug = page.slug ?? page.id;
   const date = page.date ? dayjs(page.date) : null;

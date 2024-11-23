@@ -107,6 +107,7 @@ const nextConfig = withBundleAnalyzer({
     THEMES: themes,
   },
   i18n,
+  transpilePackages: ['react-tweet'],
 });
 
 module.exports = nextConfig;

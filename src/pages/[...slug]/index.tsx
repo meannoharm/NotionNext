@@ -158,7 +158,7 @@ export const getStaticProps: GetStaticProps<
   }
 
   // 生成全文索引 && process.env.npm_lifecycle_event === 'build' && JSON.parse(BLOG.ALGOLIA_RECREATE_DATA)
-  if (config.ALGOLIA_APP_ID) {
+  if (isProduct() && config.ALGOLIA_APP_ID) {
     uploadDataToAlgolia(post);
   }
 

@@ -102,8 +102,6 @@ const BLOG = {
   FACEBOOK_PAGE_ID: process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || '', // Facebook Page ID 來啟用 messenger 聊天功能
   FACEBOOK_APP_ID: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || '', // Facebook App ID 來啟用 messenger 聊天功能 获取: https://developers.facebook.com/
 
-  BEI_AN: process.env.NEXT_PUBLIC_BEI_AN || '', // 备案号 闽ICP备XXXXXXX
-
   // START********config of PrismJs********
   PRISM_JS_PATH: 'https://npm.elemecdn.com/prismjs@1.29.0/components/',
   PRISM_JS_AUTO_LOADER:
@@ -385,31 +383,6 @@ const BLOG = {
 
   // END<----营收相关
 
-  // // 自定义配置notion数据库字段名
-  // NOTION_PROPERTY_NAME: {
-  //   password: process.env.NEXT_PUBLIC_NOTION_PROPERTY_PASSWORD || 'password',
-  //   type: process.env.NEXT_PUBLIC_NOTION_PROPERTY_TYPE || 'type', // 文章类型，
-  //   type_post: process.env.NEXT_PUBLIC_NOTION_PROPERTY_TYPE_POST || 'Post', // 当type文章类型与此值相同时，为博文。
-  //   type_page: process.env.NEXT_PUBLIC_NOTION_PROPERTY_TYPE_PAGE || 'Page', // 当type文章类型与此值相同时，为单页。
-  //   type_notice:
-  //     process.env.NEXT_PUBLIC_NOTION_PROPERTY_TYPE_NOTICE || 'Notice', // 当type文章类型与此值相同时，为公告。
-  //   type_menu: process.env.NEXT_PUBLIC_NOTION_PROPERTY_TYPE_MENU || 'Menu', // 当type文章类型与此值相同时，为菜单。
-  //   type_sub_menu:
-  //     process.env.NEXT_PUBLIC_NOTION_PROPERTY_TYPE_SUB_MENU || 'SubMenu', // 当type文章类型与此值相同时，为子菜单。
-  //   title: process.env.NEXT_PUBLIC_NOTION_PROPERTY_TITLE || 'title', // 文章标题
-  //   status: process.env.NEXT_PUBLIC_NOTION_PROPERTY_STATUS || 'status',
-  //   status_publish:
-  //     process.env.NEXT_PUBLIC_NOTION_PROPERTY_STATUS_PUBLISH || 'Published', // 当status状态值与此相同时为发布，可以为中文
-  //   status_invisible:
-  //     process.env.NEXT_PUBLIC_NOTION_PROPERTY_STATUS_INVISIBLE || 'Invisible', // 当status状态值与此相同时为隐藏发布，可以为中文 ， 除此之外其他页面状态不会显示在博客上
-  //   summary: process.env.NEXT_PUBLIC_NOTION_PROPERTY_SUMMARY || 'summary',
-  //   slug: process.env.NEXT_PUBLIC_NOTION_PROPERTY_SLUG || 'slug',
-  //   category: process.env.NEXT_PUBLIC_NOTION_PROPERTY_CATEGORY || 'category',
-  //   date: process.env.NEXT_PUBLIC_NOTION_PROPERTY_DATE || 'date',
-  //   tags: process.env.NEXT_PUBLIC_NOTION_PROPERTY_TAGS || 'tags',
-  //   icon: process.env.NEXT_PUBLIC_NOTION_PROPERTY_ICON || 'icon',
-  // },
-
   // RSS订阅
   // TODO
   ENABLE_RSS: true, // 是否开启RSS订阅功能
@@ -429,8 +402,6 @@ const BLOG = {
   IMG_LAZY_LOAD_PLACEHOLDER:
     process.env.NEXT_PUBLIC_IMG_LAZY_LOAD_PLACEHOLDER ||
     'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', // 懒加载占位图片地址，支持base64或url
-  IMG_URL_TYPE: process.env.NEXT_PUBLIC_IMG_TYPE || 'Notion', // 此配置已失效，请勿使用；AMAZON方案不再支持，仅支持Notion方案。 ['Notion','AMAZON'] 站点图片前缀 默认 Notion:(https://notion.so/images/xx) ， AMAZON(https://s3.us-west-2.amazonaws.com/xxx)
-  IMG_SHADOW: process.env.NEXT_PUBLIC_IMG_SHADOW || false, // 文章图片是否自动添加阴影
 
   // 开发相关
   NOTION_ACCESS_TOKEN: process.env.NOTION_ACCESS_TOKEN || '', // Useful if you prefer not to make your database public

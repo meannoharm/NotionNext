@@ -1,4 +1,5 @@
 import BLOG from 'blog.config';
-export type Config = typeof BLOG & {
+
+export type SiteConfig = typeof BLOG & {
   [key: string]: any;
 };

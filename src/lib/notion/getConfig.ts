@@ -2,10 +2,12 @@ import { getPostBlocks } from './getPostBlocks';
 import getPageIds from './getPageIds';
 import { getTextContent } from 'notion-utils';
 
-import type { Config, Decoration } from '@/types';
+import type { SiteConfig, Decoration } from '@/types';
 
 // get config from notion page
-const getConfig = async (configPageId?: string): Promise<Partial<Config>> => {
+const getConfig = async (
+  configPageId?: string,
+): Promise<Partial<SiteConfig>> => {
   if (!configPageId) {
     return {};
   }
@@ -46,7 +48,7 @@ const getConfig = async (configPageId?: string): Promise<Partial<Config>> => {
     configBlock.view_ids,
   );
 
-  const config: Partial<Config> = {};
+  const config: Partial<SiteConfig> = {};
 
   configIds.forEach((id) => {
     const { properties } = configBlockMap[id].value;

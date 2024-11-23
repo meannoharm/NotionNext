@@ -1,12 +1,15 @@
-import '@/styles/animate.css'; // @see https://animate.style/
-import '@/styles/globals.css';
-import '@/styles/utility-patterns.css';
+import '@/styles/input.css';
+import '@/styles/global.css';
+import '@/styles/animate.css';
 
-// core styles shared by all of react-notion-x (required)
+// core styles shared by all of react-notion-x and override
 import 'react-notion-x/src/styles.css';
-import '@/styles/notion.css'; //  重写部分样式
-// used for rendering equations (optional)
+import '@/styles/notion.css';
+
+// used for rendering notion component
 import 'katex/dist/katex.min.css';
+import 'prismjs/themes/prism-coy.css';
+import '@/styles/prism-theme.css';
 
 import { GlobalContextProvider } from '@/context/global';
 import { appWithTranslation } from 'next-i18next';
@@ -30,11 +33,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     // 静态导入本地自定义样式
     loadExternalResource('/css/custom.css', 'css');
     loadExternalResource('/js/custom.js', 'js');
-
-    // 自动添加图片阴影
-    if (BLOG.IMG_SHADOW) {
-      loadExternalResource('/css/img-shadow.css', 'css');
-    }
 
     // 导入外部自定义脚本
     if (BLOG.CUSTOM_EXTERNAL_JS && BLOG.CUSTOM_EXTERNAL_JS.length > 0) {

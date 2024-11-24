@@ -87,12 +87,9 @@ export default async function getPageProperties(
   } else if (pageInfo.type === PageType.Page) {
     pageInfo.slug = pageInfo.slug ?? pageInfo.id;
     if (pageInfo.childrenIds && pageInfo.childrenIds.length > 0) {
-      // non-leaf node pages' href are set as placeholders.
       pageInfo.slug = '#';
     }
   }
-
-  // non-leaf node pages' href are set as placeholders.
   if (pageInfo.childrenIds && pageInfo.childrenIds.length > 0) {
     pageInfo.type = PageType.Menu;
     pageInfo.slug = '#';

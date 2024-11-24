@@ -1,5 +1,4 @@
 import BLOG from 'blog.config';
-import { idToUuid } from 'notion-utils';
 import { getPostBlocks } from './getPostBlocks';
 import { defaultMapImageUrl } from 'react-notion-x';
 import dayjs from 'dayjs';
@@ -17,20 +16,16 @@ export async function getIndependentPage(pageId: string, from: string) {
     return;
   }
 
-  const postInfo = blockMap?.block?.[idToUuid(pageId)].value;
+  const postInfo = blockMap?.block?.[pageId].value;
 
   return {
     id: pageId,
     type: PageType.Post,
     category: '',
     tags: [],
-    title: postInfo?.properties?.title?.[0],
+    title: postInfo?.properties?.title?.[0] || '',
     status: PageStatus.Published,
-    pageCover: getPageCover(postInfo),
-    date: {
-      type: 'date',
-      start_date: dayjs(postInfo.last_edited_time).format('yyyy-MM-dd'),
-    },
+    pageCover: getPageCover(postInfo) || '',
     blockMap,
     date: dayjs(postInfo.created_time).valueOf(),
     lastEditedDate: dayjs(postInfo.last_edited_time).valueOf(),

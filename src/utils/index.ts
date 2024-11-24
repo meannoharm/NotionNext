@@ -10,9 +10,12 @@ export const isBrowser = typeof window !== 'undefined';
  * 加载外部资源
  * @param url 地址 例如 https://xx.com/xx.js
  * @param type js 或 css
- * @returns {Promise<unknown>}
+ * @returns {Promise<string>}
  */
-export function loadExternalResource(url: string, type: 'css' | 'font' | 'js') {
+export function loadExternalResource(
+  url: string,
+  type: 'css' | 'font' | 'js',
+): Promise<string> {
   // 检查是否已存在
   const elements =
     type === 'js'
@@ -22,7 +25,7 @@ export function loadExternalResource(url: string, type: 'css' | 'font' | 'js') {
   return new Promise((resolve, reject) => {
     if (elements.length > 0 || !url) {
       resolve(url);
-      return url;
+      return;
     }
 
     let tag;
@@ -125,4 +128,10 @@ export function isEmoji(str: string) {
   const emojiRegex =
     /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g;
   return emojiRegex.test(str);
+}
+
+export function isUUID(str: string) {
+  const uuidRegex =
+    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+  return uuidRegex.test(str);
 }

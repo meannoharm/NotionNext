@@ -12,11 +12,8 @@
 }
 .notion code {
   color: rgba(31, 41, 55, 1);
-  border: 0 none !important;
-  box-shadow: none !important;
-  background: none !important;
-  padding: 0 !important;
 }
+
 :where(.dark, .dark *) .notion code {
   color: rgba(229, 231, 235, 1);
 }

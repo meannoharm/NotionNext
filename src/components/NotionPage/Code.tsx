@@ -9,28 +9,22 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import Prism from 'prismjs';
 import { getBlockTitle } from 'notion-utils';
 import { useNotionContext, Text } from 'react-notion-x';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import BLOG from 'blog.config';
 
 import type { CodeBlock } from 'notion-types';
+import Script from 'next/script';
 
 const CDN = BLOG.CDN;
 Prism.plugins.autoloader.languages_path = `https://${CDN}/prism/1.29.0/components/`;
 
-function Code({
-  block,
-  defaultLanguage = 'typescript',
-  className = '',
-}: {
-  block: CodeBlock;
-  defaultLanguage?: string;
-  className?: string;
-}) {
+function Code({ block }: { block: CodeBlock }) {
   const { recordMap } = useNotionContext();
+
   const content = getBlockTitle(block, recordMap);
-  const language = (() => {
+  const language = useMemo(() => {
     const languageNotion = (
-      block.properties?.language?.[0]?.[0] || defaultLanguage
+      block.properties?.language?.[0]?.[0] || 'javascript'
     ).toLowerCase();
 
     switch (languageNotion) {
@@ -41,7 +35,8 @@ function Code({
       default:
         return languageNotion;
     }
-  })();
+  }, [block]);
+
   const caption = block.properties.caption;
 
   const codeRef = useRef();
@@ -55,16 +50,21 @@ function Code({
     }
   }, [codeRef]);
 
+  const handleMermaidOnLoad = () => {
+    (window as any).mermaid.contentLoaded();
+  };
+
   return (
     <>
       <div className="w-full">
         <pre
-          className={`notion-code line-numbers language-${language} ${className}`}
+          className={`notion-code line-numbers language-${language}`}
           style={{
             whiteSpace: 'pre-wrap',
           }}
         >
           <code ref={codeRef as any}>{content}</code>
+          {language === 'mermaid' && <div className="mermaid">{content}</div>}
         </pre>
       </div>
 
@@ -72,6 +72,12 @@ function Code({
         <figcaption className="notion-asset-caption">
           <Text value={caption} block={block} />
         </figcaption>
+      )}
+      {language === 'mermaid' && (
+        <Script
+          src={`https://${CDN}/mermaid/11.4.0/mermaid.min.js`}
+          onLoad={handleMermaidOnLoad}
+        />
       )}
     </>
   );

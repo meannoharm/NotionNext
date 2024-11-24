@@ -51,7 +51,7 @@ function Code({ block }: { block: CodeBlock }) {
   }, [codeRef]);
 
   const handleMermaidOnLoad = () => {
-    (window as any).mermaid.contentLoaded();
+    (window as any).mermaid?.contentLoaded();
   };
 
   return (

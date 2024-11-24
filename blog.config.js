@@ -17,6 +17,7 @@ const BLOG = {
     process.env.NEXT_PUBLIC_GREETING_WORDS ||
     '嗨，我是糕糕，欢迎来到我的博客🎉',
 
+  DOMAIN: '04.lu',
   AUTHOR: process.env.NEXT_PUBLIC_AUTHOR || '糕糕', // 您的昵称 例如 tangly1024
   BIO: process.env.NEXT_PUBLIC_BIO || '一只咸鱼🐟', // 作者简介
   LINK: process.env.NEXT_PUBLIC_LINK || 'https://04.lu', // 网站地址
@@ -102,27 +103,7 @@ const BLOG = {
   FACEBOOK_PAGE_ID: process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || '', // Facebook Page ID 來啟用 messenger 聊天功能
   FACEBOOK_APP_ID: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || '', // Facebook App ID 來啟用 messenger 聊天功能 获取: https://developers.facebook.com/
 
-  // START********config of PrismJs********
-  PRISM_JS_PATH: 'https://npm.elemecdn.com/prismjs@1.29.0/components/',
-  PRISM_JS_AUTO_LOADER:
-    'https://npm.elemecdn.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js',
-
-  // 代码主题 @see https://github.com/PrismJS/prism-themes
-  PRISM_THEME_PREFIX_PATH:
-    process.env.NEXT_PUBLIC_PRISM_THEME_PREFIX_PATH ||
-    'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.css', // 代码块默认主题
-  PRISM_THEME_SWITCH: process.env.NEXT_PUBLIC_PRISM_THEME_SWITCH || true, // 是否开启浅色/深色模式代码主题切换； 开启后将显示以下两个主题
-  PRISM_THEME_LIGHT_PATH:
-    process.env.NEXT_PUBLIC_PRISM_THEME_LIGHT_PATH ||
-    'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-solarizedlight.css', // 浅色模式主题
-  PRISM_THEME_DARK_PATH:
-    process.env.NEXT_PUBLIC_PRISM_THEME_DARK_PATH ||
-    'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css', // 深色模式主题
-
-  CODE_MAC_BAR: false, // 代码左上角显示mac的红黄绿图标
-  CODE_LINE_NUMBERS: true, // 是否显示行号
-  CODE_COLLAPSE: false, // 是否折叠代码框
-  // END********config of PrismJs********
+  CDN: 'cdnjs.cloudflare.com/ajax/libs',
 
   // Mermaid 图表CDN
   MERMAID_CDN:
@@ -408,7 +389,7 @@ const BLOG = {
   DEBUG: false, // 是否显示调试按钮
   ENABLE_CACHE:
     process.env.ENABLE_CACHE || process.env.npm_lifecycle_event === 'build', // 缓存在开发调试和打包过程中选择性开启，正式部署开启此功能意义不大。
-  VERSION: process.env.NEXT_PUBLIC_VERSION, // 版本号
+  // VERSION: process.env.NEXT_PUBLIC_VERSION, // 版本号
 
   // 协议
   LICENSE: process.env.NEXT_PUBLIC_LICENSE || 'CC BY-NC-SA 4.0',

@@ -16,6 +16,7 @@ import { appWithTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
 import { isBrowser, loadExternalResource } from '@/utils';
 import BLOG from 'blog.config';
+
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 import { initNProgress } from '@/components/NProgress';

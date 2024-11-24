@@ -11,7 +11,7 @@ import { useGlobal } from '@/context/global';
 import { idToUuid } from 'notion-utils';
 
 const Code = dynamic(
-  () => import('@/components/NotionPage/Code').then(async (m) => m),
+  () => import('@/components/NotionPage/Test').then(async (m) => m),
   { ssr: false },
 );
 

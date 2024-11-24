@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useLayout } from '@/lib/theme';
 import md5 from 'js-md5';
-import { isBrowser, isProduct } from '@/utils';
+import { isBrowser, isProduct, isUUID } from '@/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { PageType } from '@/types/notion';
@@ -15,6 +15,7 @@ import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, ArticleProps, ThemeArticleProps, Page } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
+import { getIndependentPage } from '@/lib/notion/getIndependentPage';
 
 export interface PrefixParams extends ParsedUrlQuery {
   slug: string[];
@@ -133,9 +134,15 @@ export const getStaticProps: GetStaticProps<
   const { allPages, publishedPosts, config } = props;
 
   // 在列表内查找文章
-  const post = allPages.find((p) => {
+  let post = allPages.find((p) => {
     return p.slug === slug;
   });
+
+  // handle the situation that navigate this page directly by use pageId
+  // so no slug matched
+  if (!post && isUUID(slug)) {
+    post = await getIndependentPage(slug, from);
+  }
 
   // 无法获取文章
   if (!post) {

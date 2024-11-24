@@ -25,7 +25,6 @@ export interface Page {
   tags: string[];
   summary: string;
   slug: string;
-  href: string;
   password?: string;
   blockMap?: ExtendedRecordMap;
   results?: string[];

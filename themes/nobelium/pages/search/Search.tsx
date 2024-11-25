@@ -4,11 +4,11 @@ import replaceSearchResult from '@/components/Mark';
 import { isBrowser } from '@/utils';
 import LayoutBase from '@themes/nobelium/layout/LayoutBase';
 import BlogListBar from '@themes/nobelium/components/BlogListBar';
-import SearchNavBar from './components/SearchNavBar';
 import BlogListPage from '@themes/nobelium/components/BlogListPage';
 import BlogListScroll from '@themes/nobelium/components/BlogListScroll';
 import { ContextWrapper } from '@themes/nobelium/providers/index';
 import { cloneDeep } from 'lodash';
+import SearchInput from './components/SearchInput';
 
 import type { FC } from 'react';
 import type { ThemeSearchProps } from '@/types';
@@ -52,7 +52,7 @@ const Search: FC<ThemeSearchProps> = (props) => {
       {...props}
       topSlot={<BlogListBar {...props} setFilterKey={setFilterKey} />}
     >
-      <SearchNavBar {...props} />
+      <SearchInput keyword={keyword} />
       {BLOG.POST_LIST_STYLE === 'page' ? (
         <BlogListPage postCount={postCount} posts={filteredBlogPosts} />
       ) : (

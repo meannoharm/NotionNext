@@ -3,11 +3,10 @@ import { type FC, useRef, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
 export interface SearchInputProps {
-  tag: string;
   keyword: string;
 }
 
-const SearchInput: FC<SearchInputProps> = ({ tag, keyword }) => {
+const SearchInput: FC<SearchInputProps> = ({ keyword }) => {
   const router = useRouter();
   const { t } = useTranslation('common');
   const [showClean, setShowClean] = useState(false);
@@ -52,13 +51,13 @@ const SearchInput: FC<SearchInputProps> = ({ tag, keyword }) => {
   };
 
   return (
-    <section className="flex w-full bg-gray-100">
+    <section className="focus:border- flex w-full rounded bg-gray-100 px-4 py-2 dark:bg-gray-900">
       <input
         ref={searchInputRef}
         type="text"
-        placeholder={tag ? `${t('tags')} #${tag}` : `${t('search-articles')}`}
+        placeholder={t('search-articles')}
         className={
-          'w-full bg-gray-100 pl-4 text-sm font-light leading-10 text-black outline-none transition focus:shadow-lg dark:bg-gray-900 dark:text-white'
+          'flex-1 bg-gray-100 p-2 text-gray-900 outline-none transition  dark:bg-gray-900 dark:text-gray-100'
         }
         onKeyUp={handleKeyUp}
         onCompositionStart={lockSearchInput}
@@ -67,26 +66,20 @@ const SearchInput: FC<SearchInputProps> = ({ tag, keyword }) => {
         onChange={updateSearchKey}
         defaultValue={keyword || ''}
       />
-
-      <div
-        className="float-right -ml-8 cursor-pointer items-center justify-center py-2"
-        onClick={handleSearch}
-      >
-        <i
-          className={
-            'fas fa-search transform  cursor-pointer text-gray-500 duration-200 hover:text-black'
-          }
-        />
-      </div>
-
       {showClean && (
-        <div className="float-right -ml-12 cursor-pointer items-center justify-center py-2 dark:bg-gray-600 dark:hover:bg-gray-800">
-          <i
-            className="fas fa-times transform cursor-pointer text-gray-400 duration-200 hover:text-black"
-            onClick={cleanSearch}
-          />
+        <div
+          className="transform cursor-pointer p-2 text-gray-500 duration-200 hover:text-gray-700 dark:hover:text-gray-300"
+          onClick={cleanSearch}
+        >
+          <i className="fas fa-times " />
         </div>
       )}
+      <div
+        className="transform cursor-pointer p-2 text-gray-500 duration-200 hover:text-gray-700 dark:hover:text-gray-300"
+        onClick={handleSearch}
+      >
+        <i className={'fas fa-search'} />
+      </div>
     </section>
   );
 };

@@ -1,9 +1,6 @@
 import '@/styles/input.css';
 import '@/styles/global.css';
 import '@/styles/animate.css';
-
-// core styles shared by all of react-notion-x and override
-import 'react-notion-x/src/styles.css';
 import '@/styles/notion.css';
 
 // used for rendering notion component
@@ -18,7 +15,7 @@ import { isBrowser, loadExternalResource } from '@/utils';
 import BLOG from 'blog.config';
 
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // You can also use <link> for styles
+import 'aos/dist/aos.css';
 import { initNProgress } from '@/components/NProgress';
 import '@/styles/nprogress.css';
 

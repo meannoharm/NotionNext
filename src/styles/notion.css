@@ -834,6 +834,7 @@ svg.notion-page-icon {
 }
 
 .notion-list {
+  width: 100%;
   margin: 0;
   margin-block-start: 0.6em;
   margin-block-end: 0.6em;
@@ -1802,9 +1803,7 @@ svg.notion-page-icon {
 }
 
 .notion-collection-page-properties {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+  display: none;
 }
 
 .notion-table-of-contents {
@@ -2975,12 +2974,4 @@ svg.notion-page-icon {
   padding: 0 !important;
   text-decoration: underline;
   cursor: pointer;
-}
-
-.notion .notion-collection-page-properties {
-  display: none;
-}
-
-.notion .notion-list {
-  width: 100%;
 }

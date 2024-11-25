@@ -1,6 +1,8 @@
 import Link from 'next/link';
+
 import type { Tag } from '@/types';
 import type { FC } from 'react';
+import TagItem from './TagItem';
 
 export interface TagsProps {
   tagOptions: Tag[];
@@ -22,6 +24,7 @@ const Tags: FC<TagsProps> = ({ tagOptions, tag: currentTag }) => {
                   : 'border-gray-100 bg-gray-100 text-gray-400 dark:border-gray-800 dark:bg-night'
               }`}
             >
+              123
               <Link
                 key={tag.id}
                 href={

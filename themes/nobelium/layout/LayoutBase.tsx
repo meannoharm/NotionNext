@@ -19,23 +19,19 @@ export interface LayoutBaseProps extends ThemeBaseProps {
  * @constructor
  */
 const LayoutBase: FC<LayoutBaseProps> = (props) => {
-  const { children, topSlot, pageMeta, latestPosts, siteInfo, navList } = props;
+  const { children, topSlot, pageMeta } = props;
 
-  const { updateLatestPosts, updateSiteInfo, updateNavList } = useNobeliumStore(
-    (state) => state,
-  );
+  const { updateState } = useNobeliumStore((state) => state);
 
   useEffect(() => {
-    updateLatestPosts(latestPosts);
-  }, [latestPosts, updateLatestPosts]);
-
-  useEffect(() => {
-    updateSiteInfo(siteInfo);
-  }, [siteInfo, updateSiteInfo]);
-
-  useEffect(() => {
-    updateNavList(navList);
-  }, [navList, updateNavList]);
+    updateState({
+      siteInfo: props.siteInfo,
+      latestPosts: props.latestPosts,
+      navList: props.navList,
+      tags: props.tagOptions,
+      category: props.categoryOptions,
+    });
+  }, [props]);
 
   const { isLoading } = useGlobal();
 

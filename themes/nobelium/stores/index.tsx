@@ -1,27 +1,20 @@
 import { createStore } from 'zustand';
 
-import { SiteInfo, Page, Nav } from '@/types';
+import { SiteInfo, Page, Nav, Tag, Category } from '@/types';
 
 export interface NobeliumState {
   siteInfo: SiteInfo;
   latestPosts: Page[];
   navList: Nav[];
+  tags: Tag[];
+  category: Category[];
 }
 
 export interface NobeliumAction {
-  updateSiteInfo: (siteInfo: NobeliumStore['siteInfo']) => void;
-  updateLatestPosts: (latestPosts: NobeliumStore['latestPosts']) => void;
-  updateNavList: (navList: NobeliumStore['navList']) => void;
+  updateState: (props: NobeliumState) => void;
 }
 
-export interface NobeliumStore {
-  siteInfo: SiteInfo;
-  latestPosts: Page[];
-  navList: Nav[];
-  updateSiteInfo: (siteInfo: NobeliumStore['siteInfo']) => void;
-  updateLatestPosts: (latestPosts: NobeliumStore['latestPosts']) => void;
-  updateNavList: (navList: NobeliumStore['navList']) => void;
-}
+export type NobeliumStore = NobeliumState & NobeliumAction;
 
 export const defaultInitState: NobeliumState = {
   siteInfo: {
@@ -32,6 +25,8 @@ export const defaultInitState: NobeliumState = {
   },
   latestPosts: [],
   navList: [],
+  tags: [],
+  category: [],
 };
 
 export const createNobeliumStore = (
@@ -41,17 +36,11 @@ export const createNobeliumStore = (
     siteInfo: initState.siteInfo,
     latestPosts: initState.latestPosts,
     navList: initState.navList,
-    updateSiteInfo: (siteInfo) =>
+    tags: initState.tags,
+    category: initState.category,
+    updateState: (props) =>
       set(() => ({
-        siteInfo: siteInfo,
-      })),
-    updateLatestPosts: (latestPosts) =>
-      set(() => ({
-        latestPosts: latestPosts,
-      })),
-    updateNavList: (navList) =>
-      set(() => ({
-        navList: navList,
+        ...props,
       })),
   }));
 };

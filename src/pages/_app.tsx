@@ -1,6 +1,5 @@
 import '@/styles/input.css';
 import '@/styles/global.css';
-import '@/styles/animate.css';
 import '@/styles/notion.css';
 
 // used for rendering notion component

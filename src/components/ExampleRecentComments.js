@@ -8,7 +8,7 @@ import { RecentComments } from '@waline/client';
  * @param {*} props
  * @returns
  */
-const ExampleRecentComments = (props) => {
+const ExampleRecentComments = () => {
   const [comments, updateComments] = React.useState([]);
   const [onLoading, changeLoading] = React.useState(true);
   React.useEffect(() => {

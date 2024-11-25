@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import BLOG from 'blog.config';
 import replaceSearchResult from '@/components/Mark';
 import { isBrowser } from '@/utils';
 import LayoutBase from '@themes/nobelium/layout/LayoutBase';
-import BlogListBar from '@themes/nobelium/components/BlogListBar';
 import BlogListPage from '@themes/nobelium/components/BlogListPage';
 import BlogListScroll from '@themes/nobelium/components/BlogListScroll';
 import { ContextWrapper } from '@themes/nobelium/providers/index';
-import { cloneDeep } from 'lodash';
 import SearchInput from './components/SearchInput';
 
 import type { FC } from 'react';
@@ -34,29 +32,13 @@ const Search: FC<ThemeSearchProps> = (props) => {
     }
   }, []);
 
-  // 在列表中进行实时过滤
-  const [filterKey, setFilterKey] = useState('');
-  let filteredBlogPosts = [];
-  if (filterKey && posts) {
-    filteredBlogPosts = posts.filter((post) => {
-      const tagContent = post?.tags ? post?.tags.join(' ') : '';
-      const searchContent = post.title + post.summary + tagContent;
-      return searchContent.toLowerCase().includes(filterKey.toLowerCase());
-    });
-  } else {
-    filteredBlogPosts = cloneDeep(posts);
-  }
-
   return (
-    <LayoutBase
-      {...props}
-      topSlot={<BlogListBar {...props} setFilterKey={setFilterKey} />}
-    >
+    <LayoutBase {...props}>
       <SearchInput keyword={keyword} />
       {BLOG.POST_LIST_STYLE === 'page' ? (
-        <BlogListPage postCount={postCount} posts={filteredBlogPosts} />
+        <BlogListPage postCount={postCount} posts={posts} />
       ) : (
-        <BlogListScroll posts={filteredBlogPosts} />
+        <BlogListScroll posts={posts} />
       )}
     </LayoutBase>
   );

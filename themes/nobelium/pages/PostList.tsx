@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import BLOG from 'blog.config';
 import LayoutBase from '../layout/LayoutBase';
 import BlogListPage from '../components/BlogListPage';
 import BlogListScroll from '../components/BlogListScroll';
-import BlogListBar from '../components/BlogListBar';
 import { ContextWrapper } from '../providers';
-import { cloneDeep } from 'lodash';
 
 import type {
-  Page,
   ThemeHomeProps,
   ThemeCategoryDetailProps,
   ThemeCategoryPageProps,
@@ -37,34 +34,14 @@ const PostList: FC<
         }
     >
 > = (props) => {
-  const { posts, postCount, page, topSlot } = props;
+  const { posts, postCount, page } = props;
 
-  // 在列表中进行实时过滤
-  const [filterKey, setFilterKey] = useState('');
-  let filteredBlogPosts: Page[] = [];
-  if (filterKey && posts) {
-    filteredBlogPosts = posts.filter((post) => {
-      const tagContent = post?.tags ? post?.tags.join(' ') : '';
-      const searchContent = post.title + post.summary + tagContent;
-      return searchContent.toLowerCase().includes(filterKey.toLowerCase());
-    });
-  } else {
-    filteredBlogPosts = cloneDeep(posts);
-  }
   return (
-    <LayoutBase
-      {...props}
-      topSlot={<BlogListBar {...props} setFilterKey={setFilterKey} />}
-    >
-      {topSlot}
+    <LayoutBase {...props}>
       {BLOG.POST_LIST_STYLE === 'page' ? (
-        <BlogListPage
-          postCount={postCount}
-          page={page}
-          posts={filteredBlogPosts}
-        />
+        <BlogListPage postCount={postCount} page={page} posts={posts} />
       ) : (
-        <BlogListScroll posts={filteredBlogPosts} />
+        <BlogListScroll posts={posts} />
       )}
     </LayoutBase>
   );

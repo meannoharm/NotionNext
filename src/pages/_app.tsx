@@ -10,7 +10,6 @@ import '@/styles/prism-theme.css';
 
 import { GlobalContextProvider } from '@/context/global';
 import { appWithTranslation } from 'next-i18next';
-import dynamic from 'next/dynamic';
 import { isBrowser, loadExternalResource } from '@/utils';
 import BLOG from 'blog.config';
 
@@ -18,11 +17,9 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { initNProgress } from '@/components/NProgress';
 import '@/styles/nprogress.css';
+import ExternalPlugins from '@/components/ExternalPlugins';
 
 import type { AppProps } from 'next/app';
-
-// 各种扩展插件 动画等
-const ExternalPlugins = dynamic(() => import('@/components/ExternalPlugins'));
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   if (isBrowser) {

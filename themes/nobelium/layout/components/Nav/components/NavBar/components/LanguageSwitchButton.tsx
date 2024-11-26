@@ -39,7 +39,7 @@ export default function LanguageSwitchButton() {
   return (
     <div className="relative" onClick={() => setIsOpen(!isOpen)} ref={menuRef}>
       <div
-        className={`flex h-10 w-10 transform cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800`}
+        className={`flex h-10 w-10 transform cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-gray-200/40 dark:text-gray-200 dark:hover:bg-gray-800/40`}
       >
         <Language className="h-5 w-5" />
       </div>
@@ -49,7 +49,7 @@ export default function LanguageSwitchButton() {
         <Collapse isOpen={isOpen}>
           {locales.map((locale) => (
             <div
-              className="cursor-pointer p-3 text-gray-800 transition-all duration-200  hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
+              className="cursor-pointer p-3 text-gray-800 transition-all duration-200  hover:bg-gray-200/40 dark:text-gray-200 dark:hover:bg-gray-800/40"
               key={locale}
               onClick={() => changeLanguage(locale)}
             >

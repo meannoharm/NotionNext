@@ -76,7 +76,7 @@ const NavBar: FC = () => {
         <div
           onClick={toggleOpen}
           ref={mobileMenuToggleButtonRef}
-          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-gray-800 hover:bg-gray-200/40 dark:text-gray-200 dark:hover:bg-gray-800/40"
         >
           <i className="fas fa-bars"></i>
         </div>

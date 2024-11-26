@@ -7,23 +7,23 @@ import 'katex/dist/katex.min.css';
 import 'prismjs/themes/prism-coy.css';
 import '@/styles/prism-theme.css';
 
-import { GlobalContextProvider } from '@/context/global';
 import { appWithTranslation } from 'next-i18next';
 import { isBrowser, loadExternalResource } from '@/utils';
 import BLOG from 'blog.config';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { initNProgress } from '@/components/NProgress';
-import '@/styles/nprogress.css';
+
+import Progress from '@/components/NProgress';
 import ExternalPlugins from '@/components/ExternalPlugins';
 
 import type { AppProps } from 'next/app';
+import { StyleProvider } from '@/providers/styleProvider';
+import { SiteStoreProvider } from '@/providers/siteProvider';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   if (isBrowser) {
     AOS.init();
-    initNProgress();
     // 静态导入本地自定义样式
     loadExternalResource('/css/custom.css', 'css');
     loadExternalResource('/js/custom.js', 'js');
@@ -44,10 +44,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   }
 
   return (
-    <GlobalContextProvider {...pageProps}>
-      <Component {...pageProps} />
-      <ExternalPlugins {...pageProps} />
-    </GlobalContextProvider>
+    <StyleProvider>
+      <SiteStoreProvider>
+        <Component {...pageProps} />
+        <Progress />
+        <ExternalPlugins {...pageProps} />
+      </SiteStoreProvider>
+    </StyleProvider>
   );
 };
 

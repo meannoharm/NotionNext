@@ -3,8 +3,8 @@ import BLOG from 'blog.config';
 import algoliasearch from 'algoliasearch';
 import replaceSearchResult from '@/components/Mark';
 import Link from 'next/link';
-import { useGlobal } from '@/context/global';
 import throttle from 'lodash/throttle';
+import { useStyleStore } from '@/providers/styleProvider';
 
 /**
  * 结合 Algolia 实现的弹出式搜索框
@@ -178,7 +178,7 @@ export default function AlgoliaSearchModal({ cRef }) {
  * 标签组
  */
 function TagGroups() {
-  const { tagOptions } = useGlobal();
+  const tagOptions = useStyleStore((state) => state.tagOptions);
   //  获取tagOptions数组前十个
   const firstTenTags = tagOptions?.slice(0, 10);
 

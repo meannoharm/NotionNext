@@ -1,10 +1,10 @@
 import { Transition } from '@headlessui/react';
-import { useGlobal } from '@/context/global';
 import CommonHead from '@/components/CommonHead';
 import Nav from './components/Nav/Nav';
 import Footer from './components/Footer';
 import JumpToTopButton from './components/JumpToTopButton';
 import { useNobeliumStore } from '@themes/nobelium/providers';
+import { useStyleStore } from '@/providers/styleProvider';
 
 import { useEffect, type FC, type ReactNode } from 'react';
 import type { ThemeBaseProps } from '@/types';
@@ -33,7 +33,7 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
     });
   }, [props]);
 
-  const { isLoading } = useGlobal();
+  const isLoading = useStyleStore((state) => state.isLoading);
 
   return (
     <div

@@ -1,13 +1,12 @@
 import busuanzi from '@/lib/busuanzi';
-import { useRouter } from 'next/router';
-import { useGlobal } from '@/context/global';
-// import { useRouter } from 'next/router'
+import { useStyleStore } from '@/providers/styleProvider';
 import React from 'react';
+import { useRouter } from 'next/router';
 
 let path = '';
 
 export default function Busuanzi() {
-  const { theme } = useGlobal();
+  const theme = useStyleStore((state) => state.theme);
   const Router = useRouter();
   Router.events.on('routeChangeComplete', (url) => {
     if (url !== path) {

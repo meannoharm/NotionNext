@@ -108,7 +108,6 @@ export interface Site {
   tagOptions: Tag[];
   categoryOptions: Category[];
   navList: Nav[];
-  postCount: number;
   publishedPosts: Page[];
   latestPosts: Page[];
   config: SiteConfig;

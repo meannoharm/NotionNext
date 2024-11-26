@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
-import { useGlobal } from '@/context/global';
 import { THEMES } from '@/lib/theme';
 import { saveDarkModeToLocalStorage } from '@/lib/darkMode';
 import BLOG from 'blog.config';
 import useWindowSize from '@/hooks/useWindowSize';
 import { useTranslation } from 'next-i18next';
+import { useStyleStore } from '@/providers/styleProvider';
 
 /**
  * 自定义右键菜单
@@ -16,7 +16,8 @@ import { useTranslation } from 'next-i18next';
 export default function CustomContextMenu(props) {
   const [position, setPosition] = useState({ x: '0px', y: '0px' });
   const [show, setShow] = useState(false);
-  const { isDarkMode, setIsDarkMode } = useGlobal();
+  const isDarkMode = useStyleStore((state) => state.isDarkMode);
+  const setIsDarkMode = useStyleStore((state) => state.setIsDarkMode);
   const menuRef = useRef(null);
   const windowSize = useWindowSize();
   const [width, setWidth] = useState(0);

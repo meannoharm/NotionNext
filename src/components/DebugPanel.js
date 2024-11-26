@@ -1,10 +1,10 @@
 import BLOG from 'blog.config';
 import { useEffect, useState } from 'react';
 import Select from './Select';
-import { useGlobal } from '@/context/global';
 import { THEMES } from '@/lib/theme';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import { useStyleStore } from '@/providers/styleProvider';
 
 /**
  *
@@ -12,7 +12,10 @@ import { useTranslation } from 'next-i18next';
  */
 const DebugPanel = () => {
   const [show, setShow] = useState(false);
-  const { theme, switchTheme } = useGlobal();
+  const { theme, switchTheme } = useStyleStore((state) => ({
+    theme: state.theme,
+    switchTheme: state.switchTheme,
+  }));
   const router = useRouter();
   const [siteConfig, updateSiteConfig] = useState({});
   const { t } = useTranslation('common');

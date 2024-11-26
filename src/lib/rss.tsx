@@ -28,7 +28,8 @@ export async function generateRss(posts: Page[]) {
       title: post.title,
       link: `${BLOG.LINK}/${post.slug}`,
       description: post.summary,
-      content: await createFeedContent(post),
+      // content: await createFeedContent(post),
+      content: '',
       date: new Date(post.date),
     });
   }

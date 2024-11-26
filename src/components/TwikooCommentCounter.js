@@ -1,5 +1,5 @@
 import BLOG from 'blog.config';
-import { useGlobal } from '@/context/global';
+import { useStyleStore } from '@/providers/styleProvider';
 import { loadExternalResource } from '@/utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 
 const TwikooCommentCounter = (props) => {
   let commentsData = [];
-  const { theme } = useGlobal();
+  const theme = useStyleStore((state) => state.theme);
 
   const fetchTwikooData = async (posts) => {
     posts.forEach((post) => {

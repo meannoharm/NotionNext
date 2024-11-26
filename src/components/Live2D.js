@@ -1,11 +1,13 @@
 /* eslint-disable no-undef */
 import BLOG from 'blog.config';
-import { useGlobal } from '@/context/global';
+import { useStyleStore } from '@/providers/styleProvider';
 import { loadExternalResource } from '@/utils';
 import { useEffect } from 'react';
 
 export default function Live2D() {
-  const { theme, switchTheme } = useGlobal();
+  const theme = useStyleStore((state) => state.theme);
+  const switchTheme = useStyleStore((state) => state.switchTheme);
+
   const showPet = JSON.parse(BLOG.WIDGET_PET);
 
   useEffect(() => {

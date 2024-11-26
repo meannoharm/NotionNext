@@ -1,18 +1,22 @@
-import React, { useRef, useEffect, useImperativeHandle } from 'react';
+import React, { useRef, useEffect, useImperativeHandle, useCallback } from 'react';
 import type { FC, ForwardedRef, ReactNode } from 'react';
 
-const VerticalStyle = { height: '0px', willChange: 'height' };
-const horizontalStyle = { width: '0px', willChange: 'width' };
+
+const getInitialStyle = (type: 'horizontal' | 'vertical') => ({
+  [type === 'vertical' ? 'height' : 'width']: '0px',
+  willChange: type === 'vertical' ? 'height' : 'width',
+});
 
 export interface CollapseHandle {
-  updateCollapseHeight: () => void;
+  updateCollapseSize: () => void;
 }
 
 export interface CollapseProps {
   type?: 'horizontal' | 'vertical';
   isOpen: boolean;
   className?: string;
-  onHeightChange?: (param: {
+  duration?: number;
+  onSizeChange?: (param: {
     height: number;
     width: number;
     increase: boolean;
@@ -21,111 +25,79 @@ export interface CollapseProps {
   children: ReactNode;
 }
 
-/**
- * 折叠面板组件，支持水平折叠、垂直折叠
- * @param {type:['horizontal','vertical'],isOpen} props
- * @returns
- */
-const Collapse: FC<CollapseProps> = (props) => {
-  const {
-    collapseRef,
-    type = 'vertical',
-    onHeightChange,
-    isOpen = false,
-    className,
-    children,
-  } = props;
+const Collapse: FC<CollapseProps> = ({
+  collapseRef,
+  type = 'vertical',
+  onSizeChange,
+  isOpen = false,
+  className,
+  duration = 200,
+  children,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
-  useImperativeHandle(collapseRef, () => {
-    return {
-      /**
-       * 当子元素高度变化时，可调用此方法更新折叠组件的高度
-       * @param {*} param0
-       */
-      updateCollapseHeight: () => {
-        const style = ref.current?.style;
-        if (style) {
-          style.height = 'auto';
-          style.width = 'auto';
-        }
-        // ref.current.style.height = ref.current.scrollHeight;
-        // ref.current.style.height = 'auto';
-      },
-    };
-  });
+  const updateSize = useCallback((element: HTMLDivElement, targetSize: string) => {
+    const property = type === 'vertical' ? 'height' : 'width';
+    const scrollSize = type === 'vertical' ? element.scrollHeight : element.scrollWidth;
 
-  /**
-   * 折叠
-   * @param {*} element
-   */
-  const collapseSection = (element: HTMLDivElement) => {
-    const sectionHeight = element.scrollHeight;
-    const sectionWidth = element.scrollWidth;
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
 
-    requestAnimationFrame(function () {
-      switch (type) {
-        case 'horizontal':
-          element.style.width = sectionWidth + 'px';
-          requestAnimationFrame(function () {
-            element.style.width = 0 + 'px';
-          });
-          break;
-        case 'vertical':
-          element.style.height = sectionHeight + 'px';
-          requestAnimationFrame(function () {
-            element.style.height = 0 + 'px';
-          });
+    requestAnimationFrame(() => {
+      element.style[property] = `${scrollSize}px`;
+      
+      if (targetSize === 'auto') {
+        timeoutRef.current = setTimeout(() => {
+          element.style[property] = targetSize;
+        }, duration);
+      } else {
+        requestAnimationFrame(() => {
+          element.style[property] = targetSize;
+        });
       }
     });
-  };
+  }, [type]);
 
-  /**
-   * 展开
-   * @param {*} element
-   */
-  const expandSection = (element: HTMLDivElement) => {
-    const sectionHeight = element.scrollHeight;
-    const sectionWidth = element.scrollWidth;
-    let clearTime: NodeJS.Timeout;
-    switch (type) {
-      case 'horizontal':
-        element.style.width = sectionWidth + 'px';
-        clearTime = setTimeout(() => {
-          element.style.width = 'auto';
-        }, 400);
-        break;
-      case 'vertical':
-        element.style.height = sectionHeight + 'px';
-        clearTime = setTimeout(() => {
-          element.style.height = 'auto';
-        }, 400);
+  useImperativeHandle(collapseRef, () => ({
+    updateCollapseSize: () => {
+      if (ref.current) {
+        updateSize(ref.current, isOpen ? 'auto' : '0px');
+      }
     }
-
-    clearTimeout(clearTime);
-  };
+  }));
 
   useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
     if (isOpen) {
-      if (ref.current) expandSection(ref.current);
+      updateSize(element, 'auto');
     } else {
-      if (ref.current) collapseSection(ref.current);
+      updateSize(element, '0px');
     }
-    // 通知父组件高度变化
-    if (onHeightChange) {
-      onHeightChange({
-        height: ref.current?.scrollHeight || 0,
-        width: ref.current?.scrollWidth || 0,
-        increase: isOpen,
-      });
-    }
-  }, [isOpen]);
+
+    onSizeChange?.({
+      height: element.scrollHeight || 0,
+      width: element.scrollWidth || 0,
+      increase: isOpen,
+    });
+  }, [isOpen, updateSize, onSizeChange]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div
       ref={ref}
-      style={type === 'vertical' ? VerticalStyle : horizontalStyle}
-      className={`${className || ''} overflow-hidden duration-200 `}
+      style={getInitialStyle(type)}
+      className={`${className || ''} overflow-hidden transition-all duration-${duration}`}
     >
       {children}
     </div>

@@ -1,84 +1,68 @@
-import Collapse, { CollapseHandle } from '@/components/Collapse';
-import useToggleClickOutSide from '@/hooks/useToggleClickOutSide';
-import BLOG from 'blog.config';
 import { type FC, useRef, useState } from 'react';
 import CONFIG from '@themes/nobelium/theme.config';
-import { MenuItemDrop } from './components/MenuItemDrop';
+import { NavItem } from './components/NavItem';
 import RandomPostButton from './components/RandomPostButton';
 import SearchButton from './components/SearchButton';
 import LanguageSwitchButton from './components/LanguageSwitchButton';
 import DarkModeButton from './components/DarkModeButton';
-import { MenuItemCollapse } from './components/MenuItemCollapse';
 import { useNobeliumStore } from '@themes/nobelium/providers';
-import { isEmpty } from 'lodash';
 
-import type { Nav } from '@/types/notion';
+import { Menu } from './components/Menu';
 
 const NavBar: FC = () => {
-  const [isOpen, changeOpen] = useState(false);
-  const collapseRef = useRef<CollapseHandle>(null);
-  const mobileMenuRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
   const mobileMenuToggleButtonRef = useRef(null);
   const { navList } = useNobeliumStore((store) => store);
 
   const toggleOpen = () => {
-    changeOpen(!isOpen);
+    setIsOpen(!isOpen);
   };
 
-  useToggleClickOutSide([mobileMenuRef, mobileMenuToggleButtonRef], () => {
-    changeOpen(false);
-  });
-
-  const links: Nav[] = !isEmpty(navList)
-    ? navList
-    : [
-        {
-          id: 'rss',
-          icon: 'fas fa-rss',
-          title: 'rss',
-          to: '/feed',
-          show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
-          target: '_blank',
-        },
-        {
-          id: 'search',
-          icon: 'fas fa-search',
-          title: 'search',
-          to: '/search',
-          show: CONFIG.MENU_SEARCH,
-          target: '_self',
-        },
-        {
-          id: 'archive',
-          icon: 'fas fa-archive',
-          title: 'archive',
-          to: '/archive',
-          show: CONFIG.MENU_ARCHIVE,
-          target: '_self',
-        },
-        {
-          id: 'category',
-          icon: 'fas fa-folder',
-          title: 'category',
-          to: '/category',
-          show: CONFIG.MENU_CATEGORY,
-          target: '_self',
-        },
-        {
-          id: 'tags',
-          icon: 'fas fa-tag',
-          title: 'tags',
-          to: '/tag',
-          show: CONFIG.MENU_TAG,
-          target: '_self',
-        },
-      ];
+  // const links: Nav[] = !isEmpty(navList)
+  //   ? navList
+  //   : [
+  //       {
+  //         id: 'rss',
+  //         icon: 'fas fa-rss',
+  //         title: 'rss',
+  //         to: '/feed',
+  //         show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
+  //       },
+  //       {
+  //         id: 'search',
+  //         icon: 'fas fa-search',
+  //         title: 'search',
+  //         to: '/search',
+  //         show: CONFIG.MENU_SEARCH,
+  //       },
+  //       {
+  //         id: 'archive',
+  //         icon: 'fas fa-archive',
+  //         title: 'archive',
+  //         to: '/archive',
+  //         show: CONFIG.MENU_ARCHIVE,
+  //       },
+  //       {
+  //         id: 'category',
+  //         icon: 'fas fa-folder',
+  //         title: 'category',
+  //         to: '/category',
+  //         show: CONFIG.MENU_CATEGORY,
+  //       },
+  //       {
+  //         id: 'tags',
+  //         icon: 'fas fa-tag',
+  //         title: 'tags',
+  //         to: '/tag',
+  //         show: CONFIG.MENU_TAG,
+  //       },
+  //     ];
 
   return (
     <div className="flex flex-shrink-0">
       <ul className="hidden flex-row md:flex">
-        {links.map((link) => (
-          <MenuItemDrop key={link?.id} link={link} />
+        {navList.map((link) => (
+          <NavItem key={link?.id} link={link} />
         ))}
       </ul>
 
@@ -97,20 +81,13 @@ const NavBar: FC = () => {
           <i className="fas fa-bars"></i>
         </div>
 
-        <div
-          ref={mobileMenuRef}
-          className={`${isOpen ? 'block' : 'hidden'} absolute right-0 w-40 rounded border border-gray-100 bg-white drop-shadow-lg transition-all duration-300 dark:border-gray-900 dark:bg-black`}
-        >
-          <Collapse collapseRef={collapseRef} isOpen={isOpen} type="vertical">
-            {links.map((link) => (
-              <MenuItemCollapse
-                key={link.id}
-                link={link}
-                onHeightChange={collapseRef.current?.updateCollapseHeight}
-              />
-            ))}
-          </Collapse>
-        </div>
+        <Menu
+          className="absolute right-0 w-60"
+          menuList={navList}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          excludeRef={mobileMenuToggleButtonRef}
+        />
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import Archive from './pages/archive';
 import Category from './pages/Category';
 import Home from './pages/Home';
 import PostList from './pages/PostList';
-import Search from './pages/search/Search';
+import Search from './pages/Search';
 import Tag from './pages/Tag';
 import Post from './pages/Post';
 import CONFIG from './theme.config';

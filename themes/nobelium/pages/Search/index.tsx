@@ -39,7 +39,7 @@ const Search: FC<ThemeSearchProps> = (props) => {
         <BlogListPage postCount={postCount} posts={posts} />
       ) : (
         <BlogListScroll posts={posts} />
-      )}
+      )} 
     </LayoutBase>
   );
 };

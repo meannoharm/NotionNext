@@ -44,7 +44,7 @@ const Nav: FC = () => {
         ref={navRef}
       >
         <Link
-          className="flex items-center rounded-full px-3 py-2 text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
+          className="flex items-center rounded-full px-3 py-2 text-gray-800 hover:bg-gray-200/40 dark:text-gray-200 dark:hover:bg-gray-800/40"
           href="/"
           aria-label={BLOG.TITLE}
         >

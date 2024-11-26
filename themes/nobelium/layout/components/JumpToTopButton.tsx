@@ -28,7 +28,7 @@ const JumpToTopButton = () => {
   return (
     <div
       title={t('top')}
-      className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-all ${isShowButton ? 'opacity-100' : 'opacity-0'} text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800`}
+      className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-all ${isShowButton ? 'opacity-100' : 'opacity-0'} text-gray-800 hover:bg-gray-200/40 dark:text-gray-200 dark:hover:bg-gray-800/40`}
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       <i className="fas fa-angle-up text-2xl" />

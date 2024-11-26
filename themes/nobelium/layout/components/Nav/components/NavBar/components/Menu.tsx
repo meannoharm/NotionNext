@@ -97,7 +97,7 @@ const SubMenuItem = ({ menu }: { menu: Nav }) => {
     <>
       <div
         onClick={toggleOpen}
-        className="flex cursor-pointer p-3 text-gray-800 transition-all duration-200 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
+        className="flex cursor-pointer p-3 text-gray-800 transition-all duration-200 hover:bg-gray-200/40 dark:text-gray-200 dark:hover:bg-gray-800/40"
       >
         {menu?.icon && (
           <div className="mr-2">

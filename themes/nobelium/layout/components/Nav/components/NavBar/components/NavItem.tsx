@@ -28,7 +28,7 @@ export const NavItem: FC<NavItemProps> = ({ link }) => {
   return (
     <div className="relative">
       <div
-        className="cursor-pointer rounded-full px-4 py-2 text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
+        className="cursor-pointer rounded-full px-4 py-2 text-gray-800 hover:bg-gray-200/40 dark:text-gray-200 dark:hover:bg-gray-800/40"
         ref={menuRef}
       >
         {hasSubMenu ? (

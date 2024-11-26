@@ -8,9 +8,9 @@ import type { Nav } from '@/types/notion';
 import { Menu } from './Menu';
 
 export interface NavItemProps {
-  link: Nav;
+  nav: Nav;
 }
-export const NavItem: FC<NavItemProps> = ({ link }) => {
+export const NavItem: FC<NavItemProps> = ({ nav }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const { t } = useTranslation('nav');
@@ -19,13 +19,13 @@ export const NavItem: FC<NavItemProps> = ({ link }) => {
     setIsOpen(!isOpen);
   };
 
-  if (!link || !link.show) {
+  if (!nav || !nav.show) {
     return null;
   }
 
-  const hasSubMenu = link.subMenus && link?.subMenus.length > 0;
+  const hasSubMenu = nav.subMenus && nav?.subMenus.length > 0;
 
-  return (
+  return nav.show ? (
     <div className="relative">
       <div
         className="cursor-pointer rounded-full px-4 py-2 text-gray-800 hover:bg-gray-200/40 dark:text-gray-200 dark:hover:bg-gray-800/40"
@@ -36,35 +36,32 @@ export const NavItem: FC<NavItemProps> = ({ link }) => {
             className={`flex items-center text-black dark:text-gray-50`}
             onClick={toggleShow}
           >
-            {link?.icon && (
+            {nav?.icon && (
               <div className="mr-2">
-                <i className={link?.icon} />
+                <i className={nav?.icon} />
               </div>
             )}
-            <span className="font-medium">{link?.title}</span>
+            <span className="font-medium">{nav?.title}</span>
             <i
               className={`fas fa-chevron-down ml-2 transition-all duration-200 ${isOpen ? ' rotate-180' : ''}`}
             ></i>
           </div>
         ) : (
-          <Link
-            className={`block text-black dark:text-gray-50`}
-            href={link?.to}
-          >
-            {link?.icon && <i className={link?.icon} />}{' '}
-            <span className="font-medium">{t(link.title)}</span>
+          <Link className={`block text-black dark:text-gray-50`} href={nav?.to}>
+            {nav?.icon && <i className={nav?.icon} />}{' '}
+            <span className="font-medium">{t(nav.title)}</span>
           </Link>
         )}
       </div>
       {hasSubMenu && (
         <Menu
           className="absolute right-4 top-10 w-60"
-          menuList={link.subMenus as Nav[]}
+          menuList={nav.subMenus as Nav[]}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           excludeRef={menuRef}
         />
       )}
     </div>
-  );
+  ) : null;
 };

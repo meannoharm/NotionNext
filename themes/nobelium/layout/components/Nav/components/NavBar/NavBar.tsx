@@ -6,63 +6,66 @@ import SearchButton from './components/SearchButton';
 import LanguageSwitchButton from './components/LanguageSwitchButton';
 import DarkModeButton from './components/DarkModeButton';
 import { useNobeliumStore } from '@themes/nobelium/providers';
-
 import { Menu } from './components/Menu';
+import { isEmpty } from 'lodash';
+import BLOG from 'blog.config';
+
+import type { Nav } from '@/types';
 
 const NavBar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const mobileMenuToggleButtonRef = useRef(null);
-  const { navList } = useNobeliumStore((store) => store);
+  const { navList: customNav } = useNobeliumStore((store) => store);
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
 
-  // const links: Nav[] = !isEmpty(navList)
-  //   ? navList
-  //   : [
-  //       {
-  //         id: 'rss',
-  //         icon: 'fas fa-rss',
-  //         title: 'rss',
-  //         to: '/feed',
-  //         show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
-  //       },
-  //       {
-  //         id: 'search',
-  //         icon: 'fas fa-search',
-  //         title: 'search',
-  //         to: '/search',
-  //         show: CONFIG.MENU_SEARCH,
-  //       },
-  //       {
-  //         id: 'archive',
-  //         icon: 'fas fa-archive',
-  //         title: 'archive',
-  //         to: '/archive',
-  //         show: CONFIG.MENU_ARCHIVE,
-  //       },
-  //       {
-  //         id: 'category',
-  //         icon: 'fas fa-folder',
-  //         title: 'category',
-  //         to: '/category',
-  //         show: CONFIG.MENU_CATEGORY,
-  //       },
-  //       {
-  //         id: 'tags',
-  //         icon: 'fas fa-tag',
-  //         title: 'tags',
-  //         to: '/tag',
-  //         show: CONFIG.MENU_TAG,
-  //       },
-  //     ];
+  const navList: Nav[] = !isEmpty(customNav)
+    ? customNav
+    : [
+        {
+          id: 'rss',
+          icon: 'fas fa-rss',
+          title: 'rss',
+          to: '/feed',
+          show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
+        },
+        {
+          id: 'search',
+          icon: 'fas fa-search',
+          title: 'search',
+          to: '/search',
+          show: CONFIG.MENU_SEARCH,
+        },
+        {
+          id: 'archive',
+          icon: 'fas fa-archive',
+          title: 'archive',
+          to: '/archive',
+          show: CONFIG.MENU_ARCHIVE,
+        },
+        {
+          id: 'category',
+          icon: 'fas fa-folder',
+          title: 'category',
+          to: '/category',
+          show: CONFIG.MENU_CATEGORY,
+        },
+        {
+          id: 'tags',
+          icon: 'fas fa-tag',
+          title: 'tags',
+          to: '/tag',
+          show: CONFIG.MENU_TAG,
+        },
+      ];
 
   return (
     <div className="flex flex-shrink-0">
       <ul className="hidden flex-row md:flex">
         {navList.map((link) => (
-          <NavItem key={link?.id} link={link} />
+          <NavItem key={link?.id} nav={link} />
         ))}
       </ul>
 

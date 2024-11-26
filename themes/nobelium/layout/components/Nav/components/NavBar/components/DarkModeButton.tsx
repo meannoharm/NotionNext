@@ -12,8 +12,7 @@ export interface DarkModeButtonProps {
  */
 const DarkModeButton: FC<DarkModeButtonProps> = (props) => {
   const { className } = props;
-  const isDarkMode = useStyleStore((state) => state.isDarkMode);
-  const setIsDarkMode = useStyleStore((state) => state.setIsDarkMode);
+  const {isDarkMode, setIsDarkMode} = useStyleStore((state) => state);
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 

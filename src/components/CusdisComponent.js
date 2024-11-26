@@ -1,13 +1,13 @@
-import { useGlobal } from '@/context/global';
 import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { loadExternalResource } from '@/utils';
 import { useTranslation } from 'next-i18next';
+import { useStyleStore } from '@/providers/styleProvider';
 
 const CusdisComponent = ({ frontMatter }) => {
   const router = useRouter();
-  const { isDarkMode } = useGlobal();
+  const isDarkMode = useStyleStore((state) => state.isDarkMode);
   const { i18n } = useTranslation();
 
   //   处理cusdis主题

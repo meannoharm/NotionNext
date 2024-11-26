@@ -7,8 +7,8 @@ import BLOG from 'blog.config';
 import { mapImgUrl } from '@/lib/notion/mapImage';
 
 import type { Page } from '@/types/notion';
-import { useGlobal } from '@/context/global';
 import { idToUuid } from 'notion-utils';
+import { useStyleStore } from '@/providers/styleProvider';
 
 const Code = dynamic(
   () => import('@/components/NotionPage/Code').then(async (m) => m),
@@ -55,7 +55,7 @@ const NotionPage: FC<{
   post: Page;
   className?: string;
 }> = ({ post, className = '' }) => {
-  const { isDarkMode } = useGlobal();
+  const isDarkMode = useStyleStore((state) => state.isDarkMode);
 
   const components = useMemo<Partial<NotionComponents>>(
     () => ({

@@ -1,14 +1,14 @@
-import { useGlobal } from '@/context/global';
 import React, { useState } from 'react';
 import { Draggable } from './Draggable';
 import { THEMES } from '@/lib/theme';
 import { useRouter } from 'next/router';
+import { useStyleStore } from '@/providers/styleProvider';
 /**
  *
  * @returns 主题切换
  */
 const ThemeSwitch = () => {
-  const { theme } = useGlobal();
+  const theme = useStyleStore((state) => state.theme);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

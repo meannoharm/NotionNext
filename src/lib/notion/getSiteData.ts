@@ -151,7 +151,6 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
     tagOptions: getTags(publishedPosts, schemaMap),
     categoryOptions: getCategories(publishedPosts, schemaMap),
     navList: getNavList(navPageList),
-    postCount: publishedPosts.length,
     publishedPosts,
     latestPosts: getLatestPosts(publishedPosts, 6),
     config,

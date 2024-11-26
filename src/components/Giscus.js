@@ -1,6 +1,6 @@
 import BLOG from 'blog.config';
-import { useGlobal } from '@/context/global';
 import Giscus from '@giscus/react';
+import { useStyleStore } from '@/providers/styleProvider';
 
 /**
  * Giscus评论 @see https://giscus.app/zh-CN
@@ -10,7 +10,7 @@ import Giscus from '@giscus/react';
  */
 
 const GiscusComponent = () => {
-  const { isDarkMode } = useGlobal();
+  const isDarkMode = useStyleStore((state) => state.isDarkMode);
   const theme = isDarkMode ? 'dark' : 'light';
 
   return (

@@ -1,4 +1,4 @@
-import { isIterable } from '../../utils';
+import { isIterable } from '../utils';
 import {
   PagePropertyName,
   type CollectionPropertySchemaMap,

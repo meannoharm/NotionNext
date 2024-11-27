@@ -8,7 +8,7 @@ import 'prismjs/themes/prism-coy.css';
 import '@/styles/prism-theme.css';
 
 import { appWithTranslation } from 'next-i18next';
-import { isBrowser, loadExternalResource } from '@/utils';
+import { isBrowser, loadExternalResource } from '@/lib/utils';
 import BLOG from 'blog.config';
 
 import AOS from 'aos';

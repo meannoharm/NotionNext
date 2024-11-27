@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { loadExternalResource } from '@/utils';
+import { loadExternalResource } from '@/lib/utils';
 import { useTranslation } from 'next-i18next';
 import { useStyleStore } from '@/providers/styleProvider';
 

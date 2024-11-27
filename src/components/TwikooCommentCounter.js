@@ -1,6 +1,6 @@
 import BLOG from 'blog.config';
 import { useStyleStore } from '@/providers/styleProvider';
-import { loadExternalResource } from '@/utils';
+import { loadExternalResource } from '@/lib/utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 

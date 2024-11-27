@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import { NotionAPI } from 'notion-client';
 import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
-import { delay } from '../../utils';
+import { delay } from '../utils';
 import { cloneDeep } from 'lodash';
 
 import type { ExtendedRecordMap } from '@/types/notion';

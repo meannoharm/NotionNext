@@ -1,5 +1,5 @@
 import store from 'store';
-import { isBrowser } from '../../utils';
+import { isBrowser } from '../utils';
 
 /**
  * 读取默认主题

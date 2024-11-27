@@ -1,11 +1,11 @@
 import BlogPost from '@themes/nobelium/components/BlogPost';
 
 import type { FC } from 'react';
-import type { ArchivePosts } from '@/types';
+import type { Archive } from '@/types';
 
 export interface BlogArchiveItemProps {
-  archiveTitle: keyof ArchivePosts;
-  archivePosts: ArchivePosts;
+  archiveTitle: keyof Archive;
+  archivePosts: Archive;
 }
 
 /**

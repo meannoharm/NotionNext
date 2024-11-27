@@ -1,4 +1,4 @@
-import type { Site, Page } from './notion';
+import type { Site, Page, Archive } from './notion';
 
 export type PageMeta = {
   title: string;
@@ -10,23 +10,21 @@ export type PageMeta = {
   category?: string;
   tags?: string[];
 };
-export type ArchivePosts = Record<string, Page[]>;
 export type DataBaseForProps = Omit<Site, 'allPages'>;
 
 export type PageMetaProps = {
   pageMeta: PageMeta;
 };
 
-export type ThemeBaseProps = DataBaseForProps & PageMetaProps;
+export type ThemeBaseProps = DataBaseForProps;
 
 export type HomeIndexProps = DataBaseForProps &
-  PageMetaProps & {
+ {
     posts: Page[];
   };
 export type PageNotFoundIndexProps = DataBaseForProps;
 export type ArchiveIndexProps = DataBaseForProps & {
-  posts: Page[];
-  archivePosts: ArchivePosts;
+  archive: Archive;
 };
 export type PageIndexProps = DataBaseForProps & {
   posts: Page[];
@@ -36,65 +34,60 @@ export type CategoryIndexProps = DataBaseForProps;
 export type CategoryDetailProps = DataBaseForProps & {
   category: string;
   posts: Page[];
-  postCount: number;
+  resultCount: number;
 };
 export type CategoryPageProps = DataBaseForProps & {
-  postCount: number;
+  resultCount: number;
+  posts: Page[];
   page: number;
   category: string;
 };
 export type TagIndexProps = DataBaseForProps;
 export type TagDetailProps = DataBaseForProps & {
-  postCount: number;
   tag: string;
   posts: Page[];
+  resultCount: number;
 };
 export type TagPageProps = DataBaseForProps & {
-  postCount: number;
   page: number;
   tag: string;
-};
-export type SearchIndexProps = DataBaseForProps & {
   posts: Page[];
+  resultCount: number;
 };
+export type SearchIndexProps = DataBaseForProps;
 export type SearchDetailProps = DataBaseForProps & {
-  postCount: number;
   keyword: string;
   posts: Page[];
+  resultCount: number;
 };
 export type SearchPageProps = DataBaseForProps & {
   posts: Page[];
-  postCount: number;
+  resultCount: number;
   page: number;
   keyword: string;
 };
 export type ArticleProps = DataBaseForProps & {
   post: Page | null;
-  prev: Page | null;
-  next: Page | null;
-  recommendPosts: Page[];
 };
 
 export type ThemeProps<T> = Partial<T & PageMetaProps>;
 
-export type ThemeHomeProps = HomeIndexProps;
-export type ThemePageNotFoundProps = PageNotFoundIndexProps & PageMetaProps;
-export type ThemeArchiveProps = ArchiveIndexProps & PageMetaProps;
-export type ThemePageProps = PageIndexProps & PageMetaProps;
-export type ThemeCategoryProps = CategoryIndexProps & PageMetaProps;
-export type ThemeCategoryDetailProps = CategoryDetailProps & PageMetaProps;
-export type ThemeCategoryPageProps = CategoryPageProps & PageMetaProps;
-export type ThemeTagProps = TagIndexProps & PageMetaProps;
-export type ThemeTagDetailProps = TagDetailProps & PageMetaProps;
-export type ThemeTagPageProps = TagPageProps & PageMetaProps;
-export type ThemeSearchProps = SearchIndexProps &
-  PageMetaProps & {
-    keyword: string;
+export type ThemeHomeProps =  {
+    posts: Page[];
   };
-export type ThemeSearchDetailProps = SearchDetailProps & PageMetaProps;
-export type ThemeSearchPageProps = SearchPageProps & PageMetaProps;
-export type ThemeArticleProps = ArticleProps &
-  PageMetaProps & {
+export type ThemePageNotFoundProps = PageNotFoundIndexProps;
+export type ThemeArchiveProps = ArchiveIndexProps;
+export type ThemePageProps = PageIndexProps;
+export type ThemeCategoryProps = CategoryIndexProps;
+export type ThemeCategoryDetailProps = CategoryDetailProps;
+export type ThemeCategoryPageProps = CategoryPageProps;
+export type ThemeTagProps = TagIndexProps;
+export type ThemeTagDetailProps = TagDetailProps;
+export type ThemeTagPageProps = TagPageProps;
+export type ThemeSearchProps = SearchIndexProps 
+export type ThemeSearchDetailProps = SearchDetailProps;
+export type ThemeSearchPageProps = SearchPageProps;
+export type ThemeArticleProps = ArticleProps  & {
     isLock: boolean;
     validPassword: (passInput: string) => boolean;
   };

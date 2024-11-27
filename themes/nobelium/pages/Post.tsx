@@ -7,20 +7,26 @@ import NotionPage from '@/components/NotionPage';
 import ShareBar from '@/components/ShareBar';
 import Comment from '@/components/Comment';
 import { ContextWrapper } from '../providers';
+import { useSiteStore } from '@/providers/siteProvider';
+import { useShallow } from 'zustand/react/shallow';
 
 import type { FC } from 'react';
-import type { ThemeArticleProps } from '@/types';
 
-const Post: FC<ThemeArticleProps> = (props) => {
-  const { post, isLock, validPassword } = props;
+const Post: FC = () => {
+  const { post, isLock } = useSiteStore(
+    useShallow((state) => ({
+      post: state.post,
+      isLock: state.isLock,
+    })),
+  );
 
   return (
-    <LayoutBase {...props}>
-      {isLock && <ArticleLock validPassword={validPassword} />}
+    <LayoutBase>
+      {isLock && <ArticleLock />}
 
       {!isLock && (
         <div id="article-wrapper" className="px-2">
-          {post && <ArticleInfo post={post} />}
+          {post && <ArticleInfo />}
           {post && <NotionPage post={post} />}
           <ShareBar post={post} />
           <Comment frontMatter={post} />

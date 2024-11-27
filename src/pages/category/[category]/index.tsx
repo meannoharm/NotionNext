@@ -4,13 +4,12 @@ import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useSiteStore } from '@/providers/siteProvider';
+import CommonHead from '@/components/CommonHead';
+import { omit } from 'lodash';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type {
-  PageMeta,
-  CategoryDetailProps,
-  ThemeCategoryDetailProps,
-} from '@/types';
+import type { PageMeta, CategoryDetailProps } from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 
@@ -26,9 +25,18 @@ export interface CategoryDetailParams extends ParsedUrlQuery {
 const CategoryDetail: FC<CategoryDetailProps> = (props) => {
   const { siteInfo } = props;
   const { t } = useTranslation('common');
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
+  const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
+  const updateCategory = useSiteStore((state) => state.updateCategory);
+
+  updateSiteDataState(props);
+  updateRenderPosts(props.posts, 1, props.resultCount);
+  updateCategory(props.category);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeCategoryDetailProps>;
+  const Layout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${props.category} | ${t('category')} | ${siteInfo?.title || ''}`,
@@ -38,7 +46,12 @@ const CategoryDetail: FC<CategoryDetailProps> = (props) => {
     type: 'website',
   };
 
-  return <Layout pageMeta={pageMeta} {...props} />;
+  return (
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Layout />
+    </>
+  );
 };
 
 export const getStaticProps: GetStaticProps<
@@ -46,16 +59,12 @@ export const getStaticProps: GetStaticProps<
   CategoryDetailParams
 > = async ({ params, locale }) => {
   const { category } = params as CategoryDetailParams;
-  const { allPages, ...globalProps } = await getSiteData(
-    'category-detail-props',
+  const props = await getSiteData('category-detail-props');
+
+  const filteredPosts = props.publishedPosts.filter((page) =>
+    page.category?.includes(category),
   );
 
-  const filteredPosts = allPages.filter(
-    (page) =>
-      page.type === 'Post' &&
-      page.status === 'Published' &&
-      page.category?.includes(category),
-  );
   const posts =
     BLOG.POST_LIST_STYLE === 'page'
       ? filteredPosts.slice(0, BLOG.POSTS_PER_PAGE)
@@ -63,10 +72,10 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-      ...globalProps,
+      ...omit(props, 'allPages'),
       category,
       posts,
-      postCount: posts.length,
+      resultCount: filteredPosts.length,
       ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,

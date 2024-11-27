@@ -130,3 +130,5 @@ export interface TableOfContentsEntry {
 export interface ExtendedTweetRecordMap extends ExtendedRecordMap {
   tweets: Record<string, any>;
 }
+
+export type Archive = Record<string, Page[]>;

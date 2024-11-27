@@ -5,11 +5,10 @@ import type { FC } from 'react';
 import type { PageMeta } from '@/types';
 
 export interface CommonHeadProps {
-  pageMeta?: PageMeta;
-  children?: React.ReactNode;
+  pageMeta: PageMeta;
 }
 
-const CommonHead: FC<CommonHeadProps> = ({ pageMeta, children }) => {
+const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
   let url = BLOG.SUB_PATH?.length ? `${BLOG.LINK}/${BLOG.SUB_PATH}` : BLOG.LINK;
   let image;
   if (pageMeta) {
@@ -93,7 +92,6 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta, children }) => {
           />
         </>
       )}
-      {children}
     </Head>
   );
 };

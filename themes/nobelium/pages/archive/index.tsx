@@ -1,25 +1,24 @@
 import LayoutBase from '@themes/nobelium/layout/LayoutBase';
 import BlogArchiveItem from './components/BlogArchiveItem';
 import { ContextWrapper } from '@themes/nobelium/providers';
-
-import type { FC } from 'react';
-import type { ThemeArchiveProps } from '@/types';
+import { useSiteStore } from '@/providers/siteProvider';
 
 /**
  * 归档
  * @param {*} props
  * @returns
  */
-const Archive: FC<ThemeArchiveProps> = (props) => {
-  const { archivePosts } = props;
+const Archive = () => {
+  const archive = useSiteStore((state) => state.archive);
+
   return (
-    <LayoutBase {...props}>
+    <LayoutBase>
       <div className="mb-10 min-h-screen w-full p-3  pb-20 md:py-12">
-        {Object.keys(archivePosts).map((archiveTitle) => (
+        {Object.keys(archive).map((archiveTitle) => (
           <BlogArchiveItem
             key={archiveTitle}
             archiveTitle={archiveTitle}
-            archivePosts={archivePosts}
+            archivePosts={archive}
           />
         ))}
       </div>

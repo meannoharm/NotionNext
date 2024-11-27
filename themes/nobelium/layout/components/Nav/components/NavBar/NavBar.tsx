@@ -9,13 +9,14 @@ import { useNobeliumStore } from '@themes/nobelium/providers';
 import { Menu } from './components/Menu';
 import { isEmpty } from 'lodash';
 import BLOG from 'blog.config';
+import { useSiteStore } from '@/providers/siteProvider';
 
 import type { Nav } from '@/types';
 
 const NavBar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const mobileMenuToggleButtonRef = useRef(null);
-  const { navList: customNav } = useNobeliumStore((store) => store);
+  const customNav = useSiteStore((state) => state.navList);
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);

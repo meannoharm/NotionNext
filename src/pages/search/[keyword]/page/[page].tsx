@@ -1,21 +1,16 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import { getDataFromCache } from '@/lib/cache/cacheManager';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
-import { isIterable } from '@/utils';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useSiteStore } from '@/providers/siteProvider';
+import CommonHead from '@/components/CommonHead';
+import getSearchResult from '@/lib/notion/getSearchResult';
 
 import type { FC } from 'react';
-import type {
-  PageMeta,
-  SearchPageProps,
-  ThemeSearchPageProps,
-  Site,
-  Page,
-} from '@/types';
+import type { PageMeta, SearchPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
-import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { GetStaticProps } from 'next';
 
 export interface SearchPageParams extends ParsedUrlQuery {
   keyword: string;
@@ -24,10 +19,19 @@ export interface SearchPageParams extends ParsedUrlQuery {
 
 const SearchPage: FC<SearchPageProps> = (props) => {
   const { keyword, siteInfo } = props;
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
+  const updateKeyword = useSiteStore((state) => state.updateKeyword);
+  const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
   const { t } = useTranslation('nav');
 
+  updateSiteDataState(props);
+  updateKeyword(keyword);
+  updateRenderPosts(props.posts, props.page, props.resultCount);
+
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeSearchPageProps>;
+  const Layout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,
@@ -37,7 +41,12 @@ const SearchPage: FC<SearchPageProps> = (props) => {
     type: 'website',
   };
 
-  return <Layout {...props} pageMeta={pageMeta} />;
+  return (
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Layout />
+    </>
+  );
 };
 
 /**
@@ -55,7 +64,7 @@ export const getStaticProps: GetStaticProps<
   const filteredPosts = allPages?.filter(
     (page) => page.type === 'Post' && page.status === 'Published',
   );
-  const posts = (await filterByMemCache(filteredPosts, keyword)).slice(
+  const posts = (await getSearchResult(filteredPosts, keyword)).slice(
     BLOG.POSTS_PER_PAGE * (pageNumber - 1),
     BLOG.POSTS_PER_PAGE * pageNumber,
   );
@@ -63,7 +72,7 @@ export const getStaticProps: GetStaticProps<
     props: {
       ...restProps,
       posts,
-      postCount: posts.length,
+      resultCount: filteredPosts.length,
       page: pageNumber,
       keyword,
       ...(await serverSideTranslations(locale as string)),
@@ -71,100 +80,5 @@ export const getStaticProps: GetStaticProps<
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
   };
 };
-
-export const getStaticPaths: GetStaticPaths<SearchPageParams> = () => {
-  return {
-    paths: [{ params: { keyword: BLOG.TITLE, page: '1' } }],
-    fallback: true,
-  };
-};
-
-/**
- * 将对象的指定字段拼接到字符串
- * @param sourceTextArray
- * @param targetObj
- * @param key
- * @returns {*}
- */
-function appendText(sourceTextArray: string[], targetObj: any, key: string) {
-  if (!targetObj) return sourceTextArray;
-  const textArray = targetObj[key];
-  const text = textArray ? getTextContent(textArray) : '';
-  if (text && text !== 'Untitled') {
-    return sourceTextArray.concat(text);
-  }
-  return sourceTextArray;
-}
-
-/**
- * 递归获取层层嵌套的数组
- * @param {*} textArray
- * @returns
- */
-function getTextContent(textArray: any) {
-  if (typeof textArray === 'object' && isIterable(textArray)) {
-    let result = '';
-    for (const textObj of textArray) {
-      result = result + getTextContent(textObj);
-    }
-    return result;
-  } else if (typeof textArray === 'string') {
-    return textArray;
-  }
-}
-
-/**
- * 在内存缓存中进行全文索引
- * @param {*} posts
- * @param keyword 关键词
- * @returns
- */
-async function filterByMemCache(posts: Page[], keyword: string) {
-  if (!keyword) return [];
-  const lowerKeyword = keyword.toLowerCase().trim();
-  const filterPosts: Page[] = [];
-
-  posts.forEach(async (post) => {
-    const page = await getDataFromCache<Site>(`page_block_${post.id}`, true);
-    const tagContent = post?.tags?.join(' ') || '';
-    const categoryContent = post?.category || '';
-    const articleInfo = (
-      post.title +
-      post.summary +
-      tagContent +
-      categoryContent
-    ).toLowerCase();
-
-    post.results = [];
-    let hit = articleInfo.includes(lowerKeyword);
-    let hitCount = 0;
-
-    let indexContent = [post.summary];
-    if (page && page.block) {
-      Object.values(page.block).forEach((block) => {
-        const properties = block.value.properties;
-        indexContent = appendText(indexContent, properties, 'title');
-        indexContent = appendText(indexContent, properties, 'caption');
-      });
-    }
-
-    indexContent.forEach((content, index) => {
-      if (content && post.results) {
-        if (content.toLowerCase().includes(lowerKeyword)) {
-          hit = true;
-          hitCount += 1;
-          post.results.push(content);
-        } else if ((post.results.length - 1) / hitCount < 3 || index === 0) {
-          post.results.push(content);
-        }
-      }
-    });
-
-    if (hit) {
-      filterPosts.push(post);
-    }
-  });
-  return filterPosts;
-}
 
 export default SearchPage;

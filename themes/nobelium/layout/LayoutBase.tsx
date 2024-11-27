@@ -1,15 +1,12 @@
 import { Transition } from '@headlessui/react';
-import CommonHead from '@/components/CommonHead';
 import Nav from './components/Nav/Nav';
 import Footer from './components/Footer';
 import JumpToTopButton from './components/JumpToTopButton';
-import { useNobeliumStore } from '@themes/nobelium/providers';
 import { useStyleStore } from '@/providers/styleProvider';
 
-import { useEffect, type FC, type ReactNode } from 'react';
-import type { ThemeBaseProps } from '@/types';
+import type { FC, ReactNode } from 'react';
 
-export interface LayoutBaseProps extends ThemeBaseProps {
+export interface LayoutBaseProps {
   topSlot?: ReactNode;
   children: ReactNode;
 }
@@ -19,19 +16,7 @@ export interface LayoutBaseProps extends ThemeBaseProps {
  * @constructor
  */
 const LayoutBase: FC<LayoutBaseProps> = (props) => {
-  const { children, topSlot, pageMeta } = props;
-
-  const { updateState } = useNobeliumStore((state) => state);
-
-  useEffect(() => {
-    updateState({
-      siteInfo: props.siteInfo,
-      latestPosts: props.latestPosts,
-      navList: props.navList,
-      tags: props.tagOptions,
-      category: props.categoryOptions,
-    });
-  }, [props]);
+  const { children, topSlot } = props;
 
   const isLoading = useStyleStore((state) => state.isLoading);
 
@@ -40,9 +25,6 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
       id="theme-nobelium"
       className="nobelium flex min-h-screen flex-col flex-nowrap items-stretch justify-start bg-white dark:bg-black dark:text-gray-300"
     >
-      {/* SEO相关 */}
-      <CommonHead pageMeta={pageMeta} />
-
       {/* 顶部导航栏 */}
       <Nav />
 

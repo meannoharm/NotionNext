@@ -3,7 +3,6 @@ import { OriginPostList } from './PostList';
 import { ContextWrapper } from '../providers';
 
 import type { FC } from 'react';
-import type { ThemeHomeProps } from '@/types';
 
 /**
  * 首页
@@ -12,11 +11,8 @@ import type { ThemeHomeProps } from '@/types';
  * @returns
  */
 
-const Home: FC<ThemeHomeProps> = (props) => {
-  const { notice } = props;
-  return (
-    <OriginPostList {...props} topSlot={<Announcement notice={notice} />} />
-  );
+const Home: FC = () => {
+  return <OriginPostList topSlot={<Announcement />} />;
 };
 
 export default ContextWrapper(Home);

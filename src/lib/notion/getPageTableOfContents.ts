@@ -21,7 +21,11 @@ export const getPageTableOfContents = (
   page: Page,
   recordMap: ExtendedRecordMap,
 ): TableOfContentsEntry[] => {
-  const contents = page.content ?? [];
+  const contents =
+    page.blockMap &&
+    Object.keys(page.blockMap.block).filter(
+      (key) => page.blockMap?.block[key]?.value?.parent_id === page.id,
+    ) || [];
   const toc = getBlockHeader(contents, recordMap);
   const indentLevelStack = [
     {

@@ -5,9 +5,11 @@ import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useSiteStore } from '@/providers/siteProvider';
+import CommonHead from '@/components/CommonHead';
 
 import type { FC } from 'react';
-import type { PageMeta, CategoryIndexProps, ThemeCategoryProps } from '@/types';
+import type { PageMeta, CategoryIndexProps } from '@/types';
 import type { GetStaticProps } from 'next';
 
 /**
@@ -18,9 +20,14 @@ import type { GetStaticProps } from 'next';
 const Category: FC<CategoryIndexProps> = (props) => {
   const { siteInfo } = props;
   const { t } = useTranslation('common');
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
+
+  updateSiteDataState(props);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeCategoryProps>;
+  const Layout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${t('category')} | ${siteInfo?.title}`,
@@ -30,7 +37,12 @@ const Category: FC<CategoryIndexProps> = (props) => {
     type: 'website',
   };
 
-  return <Layout pageMeta={pageMeta} {...props} />;
+  return (
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Layout />
+    </>
+  );
 };
 
 export const getStaticProps: GetStaticProps<CategoryIndexProps> = async ({

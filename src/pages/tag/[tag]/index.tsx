@@ -3,9 +3,12 @@ import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { omit } from 'lodash';
+import { useSiteStore } from '@/providers/siteProvider';
+import CommonHead from '@/components/CommonHead';
 
 import type { FC } from 'react';
-import type { PageMeta, TagDetailProps, ThemeTagDetailProps } from '@/types';
+import type { PageMeta, TagDetailProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 
@@ -21,9 +24,18 @@ export interface TagIndexParams extends ParsedUrlQuery {
 const TagIndex: FC<TagDetailProps> = (props) => {
   const { tag, siteInfo } = props;
   const { t } = useTranslation('common');
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
+  const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
+  const updateTag = useSiteStore((state) => state.updateTag);
+
+  updateSiteDataState(props);
+  updateRenderPosts(props.posts, 1, props.resultCount);
+  updateTag(tag);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeTagDetailProps>;
+  const Layout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,
@@ -32,7 +44,13 @@ const TagIndex: FC<TagDetailProps> = (props) => {
     slug: 'tag/' + tag,
     type: 'website',
   };
-  return <Layout pageMeta={pageMeta} {...props} />;
+
+  return (
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Layout />
+    </>
+  );
 };
 
 export const getStaticProps: GetStaticProps<
@@ -40,9 +58,9 @@ export const getStaticProps: GetStaticProps<
   TagIndexParams
 > = async ({ params, locale }) => {
   const { tag } = params as TagIndexParams;
-  const { allPages, ...globalProps } = await getSiteData('tag-props');
+  const props = await getSiteData('tag-props');
 
-  const filteredPosts = allPages
+  const filteredPosts = props.publishedPosts
     ?.filter((page) => page.type === 'Post' && page.status === 'Published')
     .filter((post) => post && post?.tags && post?.tags.includes(tag));
 
@@ -53,10 +71,10 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-      ...globalProps,
-      postCount: posts.length,
+      ...omit(props, 'allPages'),
       tag,
       posts,
+      resultCount: filteredPosts.length,
       ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,

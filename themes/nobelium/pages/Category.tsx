@@ -1,20 +1,18 @@
 import Link from 'next/link';
 import LayoutBase from '../layout/LayoutBase';
 import { ContextWrapper } from '../providers';
-
-import type { FC } from 'react';
-import type { ThemeCategoryProps } from '@/types';
+import { useSiteStore } from '@/providers/siteProvider';
 
 /**
  * 文章分类列表
  * @param {*} props
  * @returns
  */
-const Category: FC<ThemeCategoryProps> = (props) => {
-  const { categoryOptions } = props;
+const Category = () => {
+  const categoryOptions = useSiteStore((state) => state.categoryOptions);
 
   return (
-    <LayoutBase {...props}>
+    <LayoutBase>
       <div id="category-list" className="flex flex-wrap duration-200">
         {categoryOptions?.map((category) => {
           return (

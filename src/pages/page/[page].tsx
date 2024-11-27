@@ -4,11 +4,13 @@ import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { useLayout } from '@/lib/theme';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import CommonHead from '@/components/CommonHead';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type { PageMeta, PageIndexProps, ThemePageProps } from '@/types';
+import type { PageMeta, PageIndexProps } from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
+import { useSiteStore } from '@/providers/siteProvider';
 
 export interface PageParams extends ParsedUrlQuery {
   page: string;
@@ -21,9 +23,16 @@ export interface PageParams extends ParsedUrlQuery {
  */
 const Page: FC<PageIndexProps> = (props) => {
   const { siteInfo } = props;
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
+  const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
+
+  updateSiteDataState(props);
+  updateRenderPosts(props.posts, props.page, props.publishedPosts.length);
 
   // 根据页面路径加载不同Layout文件
-  const PostList = useLayout() as FC<ThemePageProps>;
+  const PostList = useLayout();
   const pageMeta: PageMeta = {
     title: `${props?.page} | Page | ${siteInfo?.title}`,
     description: siteInfo?.description,
@@ -32,17 +41,22 @@ const Page: FC<PageIndexProps> = (props) => {
     type: 'website',
   };
 
-  return <PostList pageMeta={pageMeta} {...props} />;
+  return (
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <PostList />
+    </>
+  );
 };
 
 export const getStaticPaths: GetStaticPaths<PageParams> = async () => {
   const from = 'page-paths';
-  const { postCount } = await getSiteData(from);
-  const totalPages = Math.ceil(postCount / BLOG.POSTS_PER_PAGE);
+  const { publishedPosts } = await getSiteData(from);
+  const totalPages = Math.ceil(publishedPosts.length / BLOG.POSTS_PER_PAGE);
   return {
-    // remove first page, we 're not gonna handle that.
-    paths: Array.from({ length: totalPages - 1 }, (_, i) => ({
-      params: { page: '' + (i + 2) },
+    // 生成每一页的路径
+    paths: Array.from({ length: totalPages }, (_, i) => ({
+      params: { page: String(i + 1) },
     })),
     fallback: true,
   };
@@ -55,12 +69,9 @@ export const getStaticProps: GetStaticProps<
   const { page } = params as PageParams;
   const pageNumber = parseInt(page, 10);
   const props = await getSiteData(`page-${pageNumber}`);
-  const { allPages } = props;
-  const allPosts = allPages?.filter(
-    (page) => page.type === 'Post' && page.status === 'Published',
-  );
+
   // 处理分页
-  const posts = allPosts.slice(
+  const posts = props.publishedPosts.slice(
     BLOG.POSTS_PER_PAGE * (pageNumber - 1),
     BLOG.POSTS_PER_PAGE * pageNumber,
   );

@@ -5,16 +5,12 @@ import md5 from 'js-md5';
 import dayjs from 'dayjs';
 import { useNobeliumStore } from '@themes/nobelium/providers';
 import { useCallback } from 'react';
-
-import { type FC } from 'react';
-import type { Page } from '@/types';
 import Link from 'next/link';
+import { useSiteStore } from '@/providers/siteProvider';
 
-export interface ArticleInfoProps {
-  post: Page;
-}
 
-export const ArticleInfo: FC<ArticleInfoProps> = ({ post }) => {
+export const ArticleInfo = () => {
+  const post = useSiteStore((state) => state.post);
   const emailHash = md5(BLOG.CONTACT_EMAIL);
   const tagOptions = useNobeliumStore((s) => s.tags);
   const tagColor = useCallback(

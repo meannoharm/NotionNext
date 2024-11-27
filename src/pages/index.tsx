@@ -1,15 +1,18 @@
 import BLOG from 'blog.config';
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
-import { generateRss } from '@/lib/rss';
-import { generateRobotsTxt } from '@/lib/robots.txt';
+// import { generateRss } from '@/lib/rss';
+// import { generateRobotsTxt } from '@/lib/robots.txt';
 import { useLayout } from '@/lib/theme';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
-import type { HomeIndexProps, ThemeHomeProps } from '@/types';
+import type { HomeIndexProps } from '@/types';
 import type { Page } from '@/types/notion';
+import CommonHead from '@/components/CommonHead';
+import { useSiteStore } from '@/providers/siteProvider';
+import { omit } from 'lodash';
 
 /**
  * 首页布局
@@ -17,9 +20,32 @@ import type { Page } from '@/types/notion';
  * @returns
  */
 const Index: FC<HomeIndexProps> = (props) => {
+  const { siteInfo } = props;
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
+  const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
+
+  updateSiteDataState(props);
+  updateRenderPosts(props.posts, 1, props.publishedPosts.length);
+
+  const pageMeta = {
+    title: `${siteInfo?.title} | ${siteInfo?.description}`,
+    description: siteInfo?.description,
+    image: siteInfo?.pageCover,
+    slug: '',
+    type: 'website',
+  };
+
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeHomeProps>;
-  return <Layout {...props} />;
+  const Layout = useLayout() as FC;
+
+  return (
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Layout />
+    </>
+  );
 };
 
 /**
@@ -29,17 +55,9 @@ const Index: FC<HomeIndexProps> = (props) => {
 export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
   locale,
 }) => {
-  const globalData = await getSiteData('index');
-  const { siteInfo, publishedPosts, config } = globalData;
+  const props = await getSiteData('index');
+  const { publishedPosts, config } = props;
   let posts: Page[] = [];
-
-  const pageMeta = {
-    title: `${siteInfo?.title} | ${siteInfo?.description}`,
-    description: siteInfo?.description,
-    image: siteInfo?.pageCover,
-    slug: '',
-    type: 'website',
-  };
 
   // 处理分页
   if (BLOG.POST_LIST_STYLE === 'scroll') {
@@ -65,18 +83,18 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
     );
   }
 
+  // TODO: 直接在page目录生成
   // 生成robotTxt
-  generateRobotsTxt();
+  // generateRobotsTxt();
 
   // 生成Feed订阅
-  if (BLOG.ENABLE_RSS) {
-    generateRss(globalData.latestPosts);
-  }
+  // if (BLOG.ENABLE_RSS) {
+  //   generateRss(globalData.latestPosts);
+  // }
 
   return {
     props: {
-      ...globalData,
-      pageMeta,
+      ...omit(props, 'allPages'),
       posts,
       ...(await serverSideTranslations(locale as string)),
     },

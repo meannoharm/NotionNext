@@ -4,10 +4,13 @@ import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useSiteStore } from '@/providers/siteProvider';
+import CommonHead from '@/components/CommonHead';
 
 import type { FC } from 'react';
-import type { PageMeta, TagIndexProps, ThemeTagProps } from '@/types';
+import type { PageMeta, TagIndexProps } from '@/types';
 import type { GetStaticProps } from 'next';
+
 
 /**
  * 标签首页
@@ -17,9 +20,14 @@ import type { GetStaticProps } from 'next';
 const TagIndex: FC<TagIndexProps> = (props) => {
   const { siteInfo } = props;
   const { t } = useTranslation('common');
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
+
+  updateSiteDataState(props);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeTagProps>;
+  const Layout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${t('tags')} | ${siteInfo?.title}`,
@@ -29,7 +37,12 @@ const TagIndex: FC<TagIndexProps> = (props) => {
     type: 'website',
   };
 
-  return <Layout {...props} pageMeta={pageMeta} />;
+  return (
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Layout />
+    </>
+  );
 };
 
 export const getStaticProps: GetStaticProps<TagIndexProps> = async ({

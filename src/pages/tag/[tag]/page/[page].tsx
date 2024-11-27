@@ -3,11 +3,15 @@ import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { omit } from 'lodash';
+import { useSiteStore } from '@/providers/siteProvider';
+import CommonHead from '@/components/CommonHead';
 
 import type { FC } from 'react';
-import type { PageMeta, TagPageProps, ThemeTagPageProps } from '@/types';
+import type { PageMeta, TagPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps, GetStaticPaths } from 'next';
+
 
 export interface TagPageParams extends ParsedUrlQuery {
   tag: string;
@@ -17,9 +21,18 @@ export interface TagPageParams extends ParsedUrlQuery {
 const TagPage: FC<TagPageProps> = (props) => {
   const { tag, siteInfo } = props;
   const { t } = useTranslation('common');
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
+  const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
+  const updateTag = useSiteStore((state) => state.updateTag);
+
+  updateSiteDataState(props);
+  updateRenderPosts(props.posts, props.page, props.resultCount);
+  updateTag(props.tag);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeTagPageProps>;
+  const Layout = useLayout() 
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,
@@ -29,7 +42,12 @@ const TagPage: FC<TagPageProps> = (props) => {
     type: 'website',
   };
 
-  return <Layout pageMeta={pageMeta} {...props} />;
+  return (
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Layout />
+    </>
+  );
 };
 
 export const getStaticProps: GetStaticProps<
@@ -38,23 +56,20 @@ export const getStaticProps: GetStaticProps<
 > = async ({ params, locale }) => {
   const { tag, page } = params as TagPageParams;
   const props = await getSiteData('tag-page-props');
-
   const pageNumber = parseInt(page, 10);
 
-  const posts = props.allPages
-    ?.filter((page) => page.type === 'Post' && page.status === 'Published')
-    .filter((post) => post?.tags?.includes(tag));
+  const filteredPosts = props.publishedPosts.filter((post) => post?.tags?.includes(tag));
 
-  const paginatedPosts = posts.slice(
+  const paginatedPosts = filteredPosts.slice(
     BLOG.POSTS_PER_PAGE * (pageNumber - 1),
     BLOG.POSTS_PER_PAGE * pageNumber,
   );
 
   return {
     props: {
-      ...props,
+      ...omit(props, 'allPages'),
       posts: paginatedPosts,
-      postCount: posts.length,
+      resultCount: filteredPosts.length,
       tag,
       page: pageNumber,
       ...(await serverSideTranslations(locale as string)),
@@ -64,20 +79,15 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const getStaticPaths: GetStaticPaths<TagPageParams> = async () => {
-  const { tagOptions, allPages } = await getSiteData('tag-page-static-path');
+  const { tagOptions, publishedPosts } = await getSiteData('tag-page-static-path');
   const paths: {
     params: TagPageParams;
   }[] = [];
   tagOptions?.forEach((tag) => {
-    const tagPosts = allPages
-      .filter((page) => page.type === 'Post' && page.status === 'Published')
-      .filter((post) => post?.tags?.includes(tag.name)); // 过滤包含标签的文章
-
+    const tagPosts = publishedPosts.filter((post) => post?.tags?.includes(tag.name));
     const totalPages = Math.ceil(tagPosts.length / BLOG.POSTS_PER_PAGE);
-
-    // 生成每一页的路径
-    for (let i = 1; i <= totalPages; i++) {
-      paths.push({ params: { tag: tag.name, page: String(i) } });
+    for (let i = 1; i < totalPages; i++) {
+      paths.push({ params: { tag: tag.name, page: String(i + 1) } });
     }
   });
   return {

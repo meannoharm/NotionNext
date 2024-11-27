@@ -2,20 +2,20 @@ import BLOG from 'blog.config';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useLayout } from '@/lib/theme';
-import md5 from 'js-md5';
 import { isBrowser, isProduct, isUUID } from '@/utils';
 import { uploadDataToAlgolia } from '@/lib/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { PageType } from '@/types/notion';
+import { getIndependentPage } from '@/lib/notion/getIndependentPage';
+import CommonHead from '@/components/CommonHead';
+import { useSiteStore } from '@/providers/siteProvider';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import type { PageMeta, ArticleProps, ThemeArticleProps, Page } from '@/types';
+import type { PageMeta, ArticleProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import { getIndependentPage } from '@/lib/notion/getIndependentPage';
 
 export interface PrefixParams extends ParsedUrlQuery {
   slug: string[];
@@ -29,28 +29,13 @@ export interface PrefixParams extends ParsedUrlQuery {
 const Slug: FC<ArticleProps> = (props) => {
   const { post, siteInfo } = props;
   const router = useRouter();
-
-  // 文章锁🔐
-  const [isLock, setIsLock] = useState<boolean>(!!(post && post.password));
-
-  /**
-   * 验证文章密码
-   * @param {*} result
-   */
-  const validPassword = useCallback(
-    (passInput: string) => {
-      if (!post) {
-        return false;
-      }
-      const encrypt = md5(post.slug + passInput);
-      if (passInput && encrypt === post.password) {
-        setIsLock(false);
-        return true;
-      }
-      return false;
-    },
-    [post],
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
   );
+  const updatePost = useSiteStore((state) => state.updatePost);
+
+  updateSiteDataState(props);
+  updatePost(post);
 
   // 文章加载
   useEffect(() => {
@@ -67,20 +52,7 @@ const Slug: FC<ArticleProps> = (props) => {
         }
       }, 8 * 1000); // 404时长 8秒
     }
-
-    // 文章加密
-    if (post?.password && post?.password !== '') {
-      setIsLock(true);
-    } else {
-      setIsLock(false);
-      if (!isLock && post?.blockMap?.block) {
-        post.content = Object.keys(post.blockMap.block).filter(
-          (key) => post.blockMap?.block[key]?.value?.parent_id === post.id,
-        );
-        post.toc = getPageTableOfContents(post, post.blockMap);
-      }
-    }
-  }, [post, isLock]);
+  }, [post]);
 
   const pageMeta: PageMeta = {
     title: post
@@ -96,15 +68,13 @@ const Slug: FC<ArticleProps> = (props) => {
   };
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeArticleProps>;
+  const Layout = useLayout();
 
   return (
-    <Layout
-      {...props}
-      pageMeta={pageMeta}
-      isLock={isLock}
-      validPassword={validPassword}
-    />
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Layout />
+    </>
   );
 };
 
@@ -131,7 +101,7 @@ export const getStaticProps: GetStaticProps<
   const slug = slugList.join('/');
   const from = `slug-index-${slug}`;
   const props = await getSiteData(from);
-  const { allPages, publishedPosts, config } = props;
+  const { allPages, config } = props;
 
   // 在列表内查找文章
   let post = allPages.find((p) => {
@@ -150,18 +120,16 @@ export const getStaticProps: GetStaticProps<
       props: {
         ...props,
         post: null,
-        prev: null,
-        next: null,
-        recommendPosts: [],
         ...(await serverSideTranslations(locale as string)),
       },
       revalidate: config.NEXT_REVALIDATE_SECOND,
     };
   }
 
-  // 文章内容加载
+  // 文章内容加载, 生成目录
   if (!post.blockMap) {
     post.blockMap = await getPostBlocks(post.id, from);
+    post.toc = getPageTableOfContents(post, post.blockMap);
   }
 
   // 生成全文索引 && process.env.npm_lifecycle_event === 'build' && JSON.parse(BLOG.ALGOLIA_RECREATE_DATA)
@@ -169,44 +137,13 @@ export const getStaticProps: GetStaticProps<
     uploadDataToAlgolia(post);
   }
 
-  const { prev, next, recommendPosts } = findRelatedPosts(post, publishedPosts);
-
   return {
     props: {
       ...props,
       post,
-      prev,
-      next,
-      recommendPosts,
       ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,
-  };
-};
-
-export const findRelatedPosts: (
-  post: Page,
-  publishedPosts: Page[],
-  count?: number,
-) => {
-  prev: Page | null;
-  next: Page | null;
-  recommendPosts: Page[];
-} = (post, allPosts, count = 6) => {
-  if (!allPosts.length || !post || post.type === PageType.Page) {
-    return { prev: null, next: null, recommendPosts: [] };
-  }
-  const relatedPosts = allPosts.filter(
-    (p) =>
-      p.id !== post.id &&
-      p.type === PageType.Post &&
-      post.tags.some((tag) => p.tags.includes(tag)),
-  );
-
-  return {
-    prev: allPosts[allPosts.indexOf(post) - 1] || allPosts[allPosts.length - 1],
-    next: allPosts[allPosts.indexOf(post) + 1] || allPosts[0],
-    recommendPosts: relatedPosts.slice(0, count),
   };
 };
 

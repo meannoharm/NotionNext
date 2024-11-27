@@ -3,16 +3,15 @@ import { ContextWrapper } from '../providers';
 import { useTranslation } from 'next-i18next';
 
 import { type FC } from 'react';
-import type { ThemePageNotFoundProps } from '@/types';
 /**
  * 404 页面
  * @param {*} props
  * @returns
  */
-const PageNotFound: FC<ThemePageNotFoundProps> = (props) => {
+const PageNotFound: FC = () => {
   const { t } = useTranslation('common');
   return (
-    <LayoutBase {...props}>
+    <LayoutBase>
       <div className="flex flex-col items-center">
         <div className="mb-8 text-9xl">404</div>
         <div className="mb-2">{t('404')}</div>

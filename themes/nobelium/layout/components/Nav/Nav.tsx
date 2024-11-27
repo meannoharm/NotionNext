@@ -4,16 +4,16 @@ import BLOG from 'blog.config';
 import CONFIG from '@themes/nobelium/theme.config';
 import { SvgIcon } from './components/SvgIcon';
 import LazyImage from '@/components/LazyImage';
-import { useNobeliumStore } from '@themes/nobelium/providers';
 import NavBar from './components/NavBar/NavBar';
 import styles from './Nav.module.css';
 
 import type { FC } from 'react';
+import { useSiteStore } from '@/providers/siteProvider';
 
 const Nav: FC = () => {
   const navRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
-  const { siteInfo } = useNobeliumStore((state) => state);
+  const siteInfo = useSiteStore((state) => state.siteInfo);
 
   const handler: IntersectionObserverCallback = ([entry]) => {
     if (navRef && navRef.current) {

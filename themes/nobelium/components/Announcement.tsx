@@ -2,20 +2,19 @@ import dynamic from 'next/dynamic';
 
 import type { Page } from '@/types';
 import type { FC } from 'react';
+import { useSiteStore } from '@/providers/siteProvider';
 
 const NotionPage = dynamic(() => import('@/components/NotionPage'));
 
-export interface AnnouncementProps {
-  notice: Page | null;
-}
+const Announcement: FC = () => {
+  const notice = useSiteStore((state) => state.notice);
 
-const Announcement: FC<AnnouncementProps> = ({ notice }) => {
   if (notice && notice?.blockMap) {
     return (
       <div>
         <section id="announcement-wrapper" className="mb-10">
           <div id="announcement-content">
-            <NotionPage post={notice} className="text-center " />
+            <NotionPage post={notice} className="text-center" />
           </div>
         </section>
       </div>

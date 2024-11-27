@@ -3,7 +3,7 @@ import { type FC, useRef, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
 export interface SearchInputProps {
-  keyword: string;
+  keyword?: string;
 }
 
 const SearchInput: FC<SearchInputProps> = ({ keyword }) => {

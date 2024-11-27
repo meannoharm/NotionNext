@@ -1,19 +1,18 @@
 import LayoutBase from '../layout/LayoutBase';
 import { ContextWrapper } from '../providers/index';
 import TagItem from '../components/TagItem';
-
-import type { FC } from 'react';
-import type { ThemeTagProps } from '@/types';
+import { useSiteStore } from '@/providers/siteProvider';
 
 /**
  * 文章标签列表
  * @param {*} props
  * @returns
  */
-const Tag: FC<ThemeTagProps> = (props) => {
-  const { tagOptions } = props;
+const Tag = () => {
+  const tagOptions = useSiteStore((state) => state.tagOptions);
+
   return (
-    <LayoutBase {...props}>
+    <LayoutBase>
       <div id="tags-list" className="flex flex-wrap duration-200">
         {tagOptions.map((tag) => {
           return (

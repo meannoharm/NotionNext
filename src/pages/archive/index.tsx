@@ -7,21 +7,26 @@ import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useSiteStore } from '@/providers/siteProvider';
+import CommonHead from '@/components/CommonHead';
 
 import type { GetStaticProps } from 'next';
-import type {
-  PageMeta,
-  ArchiveIndexProps,
-  ThemeArchiveProps,
-} from '../../types/page';
-import type { Page } from '@/types/notion';
+import type { PageMeta, ArchiveIndexProps } from '../../types/page';
+import type { Archive } from '@/types/notion';
 
 const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   const { siteInfo } = props;
   const { t } = useTranslation('nav');
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
+  const updateArchive = useSiteStore((state) => state.updateArchive);
+
+  updateSiteDataState(props);
+  updateArchive(props.archive);
 
   // 根据页面路径加载不同Layout文件
-  const Archive = useLayout() as FC<ThemeArchiveProps>;
+  const Archive = useLayout();
 
   useEffect(() => {
     if (isBrowser) {
@@ -48,32 +53,32 @@ const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
     type: 'website',
   };
 
-  return <Archive pageMeta={pageMeta} {...props} />;
+  return (
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Archive />
+    </>
+  );
 };
 
 export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async ({
   locale,
 }) => {
-  const globalData = await getSiteData('archive-index');
+  const props = await getSiteData('archive-index');
 
-  const posts = globalData.allPages?.filter(
-    (page) => page.type === 'Post' && page.status === 'Published',
-  ) as Page[];
-
-  const archivePosts: Record<string, Page[]> = {};
-  posts
-    .sort((a, b) => (dayjs(b.date).isAfter(a.date) ? 1 : -1))
+  const archive: Archive = {};
+  props.publishedPosts
+    .sort((a, b) => dayjs(b.date).diff(dayjs(a.date)))
     .forEach((post) => {
       const date = dayjs(post.date).format('YYYY-MM');
-      if (!archivePosts[date]) archivePosts[date] = [];
-      archivePosts[date].push(post);
+      if (!archive[date]) archive[date] = [];
+      archive[date].push(post);
     });
 
   return {
     props: {
-      ...omit(globalData, 'allPages'),
-      posts,
-      archivePosts,
+      ...omit(props, 'allPages'),
+      archive,
       ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,

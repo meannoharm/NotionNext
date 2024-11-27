@@ -1,12 +1,13 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import { useRouter } from 'next/router';
 import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useSiteStore } from '@/providers/siteProvider';
+import CommonHead from '@/components/CommonHead';
 
 import type { FC } from 'react';
-import type { PageMeta, SearchIndexProps, ThemeSearchProps } from '@/types';
+import type { PageMeta, SearchIndexProps } from '@/types';
 import type { GetStaticProps } from 'next';
 
 /**
@@ -15,55 +16,40 @@ import type { GetStaticProps } from 'next';
  * @returns
  */
 const SearchIndex: FC<SearchIndexProps> = (props) => {
-  const { posts, siteInfo } = props;
+  const updateSiteDataState = useSiteStore(
+    (state) => state.updateSiteDataState,
+  );
   const { t } = useTranslation('nav');
-  const router = useRouter();
-  const keyword = router.query.s ? String(router.query.s) : '';
+
+  updateSiteDataState(props);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC<ThemeSearchProps>;
-
-  const filteredPosts = keyword
-    ? posts.filter((post) => {
-        const tagContent = post?.tags ? post.tags.join(' ') : '';
-        const searchContent =
-          post.title + post.summary + tagContent + post.category;
-        return searchContent.toLowerCase().includes(keyword.toLowerCase());
-      })
-    : [];
+  const Layout = useLayout();
 
   const pageMeta: PageMeta = {
-    title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,
-    description: siteInfo?.description,
-    image: siteInfo?.pageCover,
+    title: `${t('search')} | ${props.siteInfo.title}`,
+    description: props.siteInfo.description,
+    image: props.siteInfo.pageCover,
     slug: 'search',
     type: 'website',
   };
 
   return (
-    <Layout
-      {...props}
-      pageMeta={pageMeta}
-      posts={filteredPosts}
-      keyword={keyword}
-    />
+    <>
+      <CommonHead pageMeta={pageMeta} />
+      <Layout />
+    </>
   );
 };
 
-/**
- * 浏览器前端搜索
- */
 export const getStaticProps: GetStaticProps<SearchIndexProps> = async ({
   locale,
 }) => {
-  const { allPages, ...restProps } = await getSiteData('search-props');
-  const posts = allPages?.filter(
-    (page) => page.type === 'Post' && page.status === 'Published',
-  );
+  const props = await getSiteData('search-props');
+
   return {
     props: {
-      ...restProps,
-      posts,
+      ...props,
       ...(await serverSideTranslations(locale as string)),
     },
     revalidate: BLOG.NEXT_REVALIDATE_SECOND,

@@ -11,9 +11,6 @@ import { appWithTranslation } from 'next-i18next';
 import { isBrowser, loadExternalResource } from '@/lib/utils';
 import BLOG from 'blog.config';
 
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-
 import Progress from '@/components/NProgress';
 import ExternalPlugins from '@/components/ExternalPlugins';
 
@@ -23,7 +20,6 @@ import { SiteStoreProvider } from '@/providers/siteProvider';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   if (isBrowser) {
-    AOS.init();
     // 静态导入本地自定义样式
     loadExternalResource('/css/custom.css', 'css');
     loadExternalResource('/js/custom.js', 'js');

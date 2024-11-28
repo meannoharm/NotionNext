@@ -87,7 +87,6 @@ const ExternalPlugin = (props: any) => {
       {BLOG.MUSIC_PLAYER && <MusicPlayer />}
       {BLOG.NEST && <Nest />}
       {BLOG.FLUTTERINGRIBBON && <FlutteringRibbon />}
-      {BLOG.COMMENT_TWIKOO_COUNT_ENABLE && <TwikooCommentCounter {...props} />}
       {BLOG.RIBBON && <Ribbon />}
       {BLOG.CUSTOM_RIGHT_CLICK_CONTEXT_MENU && <CustomContextMenu {...props} />}
       {!BLOG.CAN_COPY && <DisableCopy />}

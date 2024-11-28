@@ -62,20 +62,13 @@ const CommonScript = () => {
         ></script>
       )}
 
-      {BLOG.COMMENT_CUSDIS_APP_ID && (
-        <script
-          defer
-          src={`https://cusdis.com/js/widget/lang/${BLOG.LANG.toLowerCase()}.js`}
-        />
-      )}
+
 
       {BLOG.COMMENT_TWIKOO_ENV_ID && (
         <script defer src={BLOG.COMMENT_TWIKOO_CDN_URL} />
       )}
 
-      {BLOG.COMMENT_ARTALK_SERVER && (
-        <script defer src={BLOG.COMMENT_ARTALK_JS} />
-      )}
+
 
       {BLOG.COMMENT_TIDIO_ID && (
         <script async src={`//code.tidio.co/${BLOG.COMMENT_TIDIO_ID}.js`} />

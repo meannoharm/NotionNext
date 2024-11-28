@@ -37,7 +37,6 @@ const nextConfig = withBundleAnalyzer({
       'images.unsplash.com',
       'source.unsplash.com',
       'p1.qhimg.com',
-      'webmention.io',
     ],
   },
   async headers() {

@@ -1,8 +1,6 @@
 import BLOG from 'blog.config';
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
-// import { generateRss } from '@/lib/rss';
-// import { generateRobotsTxt } from '@/lib/robots.txt';
 import { useLayout } from '@/lib/theme';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -82,15 +80,6 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
       }),
     );
   }
-
-  // TODO: 直接在page目录生成
-  // 生成robotTxt
-  // generateRobotsTxt();
-
-  // 生成Feed订阅
-  // if (BLOG.ENABLE_RSS) {
-  //   generateRss(globalData.latestPosts);
-  // }
 
   return {
     props: {

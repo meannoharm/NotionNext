@@ -1,4 +1,4 @@
-const fs = require('fs');
+// const fs = require('fs');
 const path = require('path');
 const { THEME } = require('./blog.config');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -6,28 +6,23 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 const { i18n } = require('./next-i18next.config');
 
-/**
- * 扫描指定目录下的文件夹名，用于获取当前有几个主题
- * @param {*} directory
- * @returns
- */
-function scanSubdirectories(directory) {
-  const subdirectories = [];
+// function scanSubdirectories(directory) {
+//   const subdirectories = [];
 
-  fs.readdirSync(directory).forEach((file) => {
-    const fullPath = path.join(directory, file);
-    const stats = fs.statSync(fullPath);
+//   fs.readdirSync(directory).forEach((file) => {
+//     const fullPath = path.join(directory, file);
+//     const stats = fs.statSync(fullPath);
 
-    // landing主题比较特殊，不在可切换的主题中显示
-    if (stats.isDirectory() && file !== 'landing') {
-      subdirectories.push(file);
-    }
-  });
+//     // landing主题比较特殊，不在可切换的主题中显示
+//     if (stats.isDirectory() && file !== 'landing') {
+//       subdirectories.push(file);
+//     }
+//   });
 
-  return subdirectories;
-}
-// 扫描项目 /themes下的目录名
-const themes = scanSubdirectories(path.resolve(__dirname, 'themes'));
+//   return subdirectories;
+// }
+
+// const themes = scanSubdirectories(path.resolve(__dirname, 'themes'));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withBundleAnalyzer({
@@ -44,24 +39,6 @@ const nextConfig = withBundleAnalyzer({
       'p1.qhimg.com',
       'webmention.io',
     ],
-  },
-  // 默认将feed重定向至 /public/rss/feed.xml
-  async redirects() {
-    return [
-      {
-        source: '/feed',
-        destination: '/rss/feed.xml',
-        permanent: true,
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/:path*.html',
-        destination: '/:path*',
-      },
-    ];
   },
   async headers() {
     return [
@@ -91,20 +68,6 @@ const nextConfig = withBundleAnalyzer({
       THEME,
     );
     return config;
-  },
-  experimental: {
-    scrollRestoration: true,
-  },
-  exportPathMap: async function (defaultPathMap) {
-    // 导出时 忽略/pages/sitemap.xml.js ， 否则报错getServerSideProps
-    const pages = { ...defaultPathMap };
-    delete pages['/sitemap.xml'];
-    return pages;
-  },
-  publicRuntimeConfig: {
-    // 这里的配置既可以服务端获取到，也可以在浏览器端获取到
-    NODE_ENV_API: process.env.NODE_ENV_API || 'prod',
-    THEMES: themes,
   },
   i18n,
   transpilePackages: ['react-tweet'],

@@ -34,7 +34,6 @@
     "canvas": "^2.11.2",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.12",
-    "feed": "^4.2.2",
     "i18next": "^23.12.2",
     "js-md5": "^0.7.3",
     "katex": "^0.16.11",
@@ -55,6 +54,7 @@
     "react-notion-x": "6.16.0",
     "react-share": "^4.4.1",
     "react-tweet": "^3.2.1",
+    "rss": "^1.2.2",
     "store": "^2.0.12",
     "zustand": "^5.0.0"
   },
@@ -70,6 +70,7 @@
     "@types/prismjs": "^1.26.5",
     "@types/react": "18.2.75",
     "@types/react-dom": "^18.3.1",
+    "@types/rss": "^0.0.32",
     "@types/store": "^2.0.5",
     "@waline/client": "^2.15.8",
     "autoprefixer": "^10.4.19",

@@ -5,7 +5,7 @@ import BLOG from 'blog.config';
 
 import type { ISitemapField } from 'next-sitemap';
 import type { GetServerSideProps } from 'next';
-import { PageStatus, PageType } from '@/types';
+import { PageStatus } from '@/types';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { allPages } = await getSiteData('rss');
@@ -48,19 +48,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       priority: 0.7,
     },
   ];
-  const postFields: ISitemapField[] = allPages
-    ?.filter((p) => p.status === PageStatus.Published)
-    ?.map((post) => {
-      const slugWithoutLeadingSlash = post.slug.startsWith('/')
-        ? post.slug.slice(1)
-        : post.slug;
-      return {
+  const postFields: ISitemapField[] = allPages.map((post) => {
+    const slugWithoutLeadingSlash = post.slug.startsWith('/')
+      ? post.slug.slice(1)
+      : post.slug;
+    return {
         loc: `${BLOG.LINK}/${slugWithoutLeadingSlash}`,
         lastmod: dayjs(post.date).format('YYYY-MM-DD'),
-        changefreq: 'daily',
-        priority: 0.7,
-      };
-    });
+      changefreq: 'daily',
+      priority: 0.7,
+    };
+  });
   const fields = defaultFields.concat(postFields);
 
   // 缓存

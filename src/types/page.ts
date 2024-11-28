@@ -18,10 +18,9 @@ export type PageMetaProps = {
 
 export type ThemeBaseProps = DataBaseForProps;
 
-export type HomeIndexProps = DataBaseForProps &
- {
-    posts: Page[];
-  };
+export type HomeIndexProps = DataBaseForProps & {
+  posts: Page[];
+};
 export type PageNotFoundIndexProps = DataBaseForProps;
 export type ArchiveIndexProps = DataBaseForProps & {
   archive: Archive;
@@ -69,25 +68,3 @@ export type SearchPageProps = DataBaseForProps & {
 export type ArticleProps = DataBaseForProps & {
   post: Page | null;
 };
-
-export type ThemeProps<T> = Partial<T & PageMetaProps>;
-
-export type ThemeHomeProps =  {
-    posts: Page[];
-  };
-export type ThemePageNotFoundProps = PageNotFoundIndexProps;
-export type ThemeArchiveProps = ArchiveIndexProps;
-export type ThemePageProps = PageIndexProps;
-export type ThemeCategoryProps = CategoryIndexProps;
-export type ThemeCategoryDetailProps = CategoryDetailProps;
-export type ThemeCategoryPageProps = CategoryPageProps;
-export type ThemeTagProps = TagIndexProps;
-export type ThemeTagDetailProps = TagDetailProps;
-export type ThemeTagPageProps = TagPageProps;
-export type ThemeSearchProps = SearchIndexProps 
-export type ThemeSearchDetailProps = SearchDetailProps;
-export type ThemeSearchPageProps = SearchPageProps;
-export type ThemeArticleProps = ArticleProps  & {
-    isLock: boolean;
-    validPassword: (passInput: string) => boolean;
-  };

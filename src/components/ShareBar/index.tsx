@@ -1,9 +1,10 @@
 import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
-import React from 'react';
 import ShareButtons from './ShareButtons';
 
-const ShareBar = ({ post }) => {
+import type { Page } from '@/types';
+
+const ShareBar = ({ post }: { post: Page }) => {
   const router = useRouter();
 
   if (
@@ -11,7 +12,7 @@ const ShareBar = ({ post }) => {
     !post ||
     post?.type !== 'Post'
   ) {
-    return <></>;
+    return null;
   }
 
   const shareUrl = BLOG.LINK + router.asPath;

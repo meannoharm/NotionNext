@@ -2,7 +2,6 @@ import BLOG from 'blog.config';
 import copy from 'copy-to-clipboard';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -49,14 +48,26 @@ import {
 } from 'react-share';
 import { useTranslation } from 'next-i18next';
 
-const QrCode = dynamic(() => import('@/components/QrCode'), { ssr: false });
+const QrCode = dynamic(() => import('./QrCode'), {
+  ssr: false,
+});
 
 /**
  * @author https://github.com/txs
  * @param {*} param0
  * @returns
  */
-const ShareButtons = ({ shareUrl, title, body, image }) => {
+const ShareButtons = ({
+  shareUrl,
+  title,
+  body,
+  image,
+}: {
+  shareUrl: string;
+  title: string;
+  body: string;
+  image: string;
+}) => {
   const services = BLOG.POSTS_SHARE_SERVICES.split(',');
   const titleWithSiteInfo = title + ' | ' + BLOG.TITLE;
   const [qrCodeShow, setQrCodeShow] = useState(false);
@@ -388,13 +399,13 @@ const ShareButtons = ({ shareUrl, title, body, image }) => {
               key={singleService}
               className="mx-1 cursor-pointer rounded-full bg-yellow-500 text-white"
             >
-              <div alt={t('url-copied')} onClick={copyUrl}>
+              <div aria-label={t('url-copied')} onClick={copyUrl}>
                 <i className="fas fa-link w-8" />
               </div>
             </button>
           );
         }
-        return <></>;
+        return null;
       })}
     </>
   );

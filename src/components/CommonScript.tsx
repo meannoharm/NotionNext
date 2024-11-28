@@ -1,4 +1,5 @@
 import BLOG from 'blog.config';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 
 /**
  * 第三方代码 统计脚本
@@ -62,13 +63,9 @@ const CommonScript = () => {
         ></script>
       )}
 
-
-
       {BLOG.COMMENT_TWIKOO_ENV_ID && (
         <script defer src={BLOG.COMMENT_TWIKOO_CDN_URL} />
       )}
-
-
 
       {BLOG.COMMENT_TIDIO_ID && (
         <script async src={`//code.tidio.co/${BLOG.COMMENT_TIDIO_ID}.js`} />
@@ -137,23 +134,8 @@ const CommonScript = () => {
       {/* 谷歌统计 */}
       {BLOG.ANALYTICS_GOOGLE_ID && (
         <>
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${BLOG.ANALYTICS_GOOGLE_ID}`}
-          />
-          <script
-            async
-            dangerouslySetInnerHTML={{
-              __html: `
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', '${BLOG.ANALYTICS_GOOGLE_ID}', {
-                      page_path: window.location.pathname,
-                    });
-                  `,
-            }}
-          />
+          <GoogleAnalytics gaId={BLOG.ANALYTICS_GOOGLE_ID} />
+          <GoogleTagManager gaId={BLOG.ANALYTICS_GOOGLE_ID} />
         </>
       )}
 

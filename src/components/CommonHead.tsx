@@ -92,6 +92,13 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
           />
         </>
       )}
+
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        href={`${BLOG.LINK}`}
+        title={title}
+      />
     </Head>
   );
 };

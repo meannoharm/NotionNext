@@ -24,12 +24,12 @@ const Post: FC = () => {
     <LayoutBase>
       {isLock && <ArticleLock />}
 
-      {!isLock && (
+      {!isLock && post && (
         <div id="article-wrapper" className="px-2">
-          {post && <ArticleInfo />}
-          {post && <NotionPage post={post} />}
+          <ArticleInfo />
+          <NotionPage post={post} />
           <ShareBar post={post} />
-          <Comment frontMatter={post} />
+          <Comment />
           <ArticleFooter />
         </div>
       )}

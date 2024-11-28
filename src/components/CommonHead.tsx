@@ -57,24 +57,6 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
       <meta name="twitter:description" content={description} />
       <meta name="twitter:title" content={title} />
 
-      {BLOG.COMMENT_WEBMENTION.ENABLE && (
-        <>
-          <link
-            rel="webmention"
-            href={`https://webmention.io/${BLOG.COMMENT_WEBMENTION.HOSTNAME}/webmention`}
-          />
-          <link
-            rel="pingback"
-            href={`https://webmention.io/${BLOG.COMMENT_WEBMENTION.HOSTNAME}/xmlrpc`}
-          />
-        </>
-      )}
-
-      {BLOG.COMMENT_WEBMENTION.ENABLE &&
-        BLOG.COMMENT_WEBMENTION.AUTH !== '' && (
-          <link href={BLOG.COMMENT_WEBMENTION.AUTH} rel="me" />
-        )}
-
       {BLOG.ANALYTICS_BUSUANZI_ENABLE && (
         <meta name="referrer" content="no-referrer-when-downgrade" />
       )}

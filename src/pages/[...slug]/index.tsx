@@ -132,7 +132,7 @@ export const getStaticProps: GetStaticProps<
     post.toc = getPageTableOfContents(post, post.blockMap);
   }
 
-  // 生成全文索引 && process.env.npm_lifecycle_event === 'build' && JSON.parse(BLOG.ALGOLIA_RECREATE_DATA)
+  // for algolia search
   if (isProduct() && config.ALGOLIA_APP_ID) {
     uploadDataToAlgolia(post);
   }

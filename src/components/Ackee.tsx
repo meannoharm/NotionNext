@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import BLOG from 'blog.config';
 import { loadExternalResource } from '@/lib/utils';
 import { useRouter } from 'next/router';
+import Script from 'next/dist/client/script';
 const Ackee = () => {
   const router = useRouter();
 
@@ -40,7 +41,17 @@ const Ackee = () => {
     handleAckeeCallback();
   }, [router]);
 
-  return null;
+  return (
+    <>
+      <Script
+        async
+        src={BLOG.ANALYTICS_ACKEE_TRACKER}
+        data-ackee-server={BLOG.ANALYTICS_ACKEE_DATA_SERVER}
+        data-ackee-domain-id={BLOG.ANALYTICS_ACKEE_DOMAIN_ID}
+        onLoad={handleAckeeCallback}
+      />
+    </>
+  );
 };
 
 export default Ackee;
@@ -53,7 +64,11 @@ export default Ackee;
  * @param {Object} environment - Object containing the URL of the Ackee server and the domain id.
  * @param {?Object} options - Ackee options.
  */
-const handleAckee = async function (pathname, environment, options = {}) {
+const handleAckee = async function (
+  pathname: string,
+  environment: any,
+  options: any = {},
+) {
   await loadExternalResource(BLOG.ANALYTICS_ACKEE_TRACKER, 'js');
   const ackeeTracker = window.ackeeTracker;
 
@@ -76,7 +91,7 @@ const handleAckee = async function (pathname, environment, options = {}) {
   }
 
   const attributes = ackeeTracker?.attributes(options.detailed);
-  const url = new URL(pathname, location);
+  const url = new URL(pathname, window.location.href);
 
   return instance.record(environment.domainId, {
     ...attributes,

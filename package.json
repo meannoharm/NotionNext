@@ -1,16 +1,16 @@
 {
-  "name": "nnbb",
+  "name": "notion-next-base",
   "version": "0.0.1",
-  "homepage": "https://github.com/czgaotian/NotionNextBlogBase.git",
+  "homepage": "https://github.com/czgaotian/notion-next-base.git",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/czgaotian/NotionNextBlogBase.git"
+    "url": "https://github.com/czgaotian/notion-next-base.git"
   },
   "author": {
-    "name": "czgotian",
-    "email": "me@04.lu",
-    "url": "http://04.lu"
+    "name": "czgaotian",
+    "email": "czgaotian1@gmail.com",
+    "url": "http://gaotian.net"
   },
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",

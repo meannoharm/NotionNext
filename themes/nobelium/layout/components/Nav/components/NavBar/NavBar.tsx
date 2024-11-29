@@ -5,7 +5,6 @@ import RandomPostButton from './components/RandomPostButton';
 import SearchButton from './components/SearchButton';
 import LanguageSwitchButton from './components/LanguageSwitchButton';
 import DarkModeButton from './components/DarkModeButton';
-import { useNobeliumStore } from '@themes/nobelium/providers';
 import { Menu } from './components/Menu';
 import { isEmpty } from 'lodash';
 import BLOG from 'blog.config';

@@ -18,12 +18,17 @@ const ArtalkComponent = ({ siteInfo }: { siteInfo: SiteInfo }) => {
 
   useEffect(() => {
     if (!artalkRef.current) return;
-    Artalk.init({
-      server: BLOG.COMMENT_ARTALK_SERVER, // 后端地址
-      el: artalkRef.current, // 容器元素
+
+    const instance = Artalk.init({
+      server: BLOG.COMMENT_ARTALK_SERVER,
+      el: artalkRef.current,
       locale: language,
-      site: siteInfo.title, // 你的站点名
+      site: siteInfo.title,
     });
+
+    return () => {
+      instance?.destroy();
+    };
   }, [siteInfo.title, language]);
 
   return <div ref={artalkRef} />;

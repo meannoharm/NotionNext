@@ -1,5 +1,4 @@
 import BLOG from 'blog.config';
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 
 /**
  * 第三方代码 统计脚本
@@ -92,15 +91,6 @@ const CommonScript = () => {
         </>
       )}
 
-      {/* 代码统计 */}
-      {/* ackee统计脚本 */}
-      {/* {BLOG.ANALYTICS_ACKEE_TRACKER && (
-      <script async src={BLOG.ANALYTICS_ACKEE_TRACKER}
-              data-ackee-server={BLOG.ANALYTICS_ACKEE_DATA_SERVER}
-              data-ackee-domain-id={BLOG.ANALYTICS_ACKEE_DOMAIN_ID}
-      />
-    )} */}
-
       {/* 百度统计 */}
       {BLOG.ANALYTICS_BAIDU_ID && (
         <script
@@ -131,13 +121,6 @@ const CommonScript = () => {
         />
       )}
 
-      {/* 谷歌统计 */}
-      {BLOG.ANALYTICS_GOOGLE_ID && (
-        <>
-          <GoogleAnalytics gaId={BLOG.ANALYTICS_GOOGLE_ID} />
-          <GoogleTagManager gaId={BLOG.ANALYTICS_GOOGLE_ID} />
-        </>
-      )}
 
       {/* 引入音乐播放 */}
       {JSON.parse(BLOG.MUSIC_PLAYER) && (

@@ -1,11 +1,10 @@
 import BLOG from 'blog.config';
 import dynamic from 'next/dynamic';
-import WebWhiz from './Webwhiz';
 
-const TwikooCommentCounter = dynamic(
-  () => import('@/components/TwikooCommentCounter'),
-  { ssr: false },
+const GoogleAnalytics = dynamic(() =>
+  import('@next/third-parties/google').then((res) => res.GoogleAnalytics),
 );
+
 const DebugPanel = dynamic(() => import('@/components/DebugPanel'), {
   ssr: false,
 });
@@ -45,7 +44,6 @@ const MusicPlayer = dynamic(() => import('@/components/Player'), {
   ssr: false,
 });
 const Ackee = dynamic(() => import('@/components/Ackee'), { ssr: false });
-const Gtag = dynamic(() => import('@/components/Gtag'), { ssr: false });
 const Busuanzi = dynamic(() => import('@/components/Busuanzi'), { ssr: false });
 const GoogleAdsense = dynamic(() => import('@/components/GoogleAdsense'), {
   ssr: false,
@@ -64,18 +62,13 @@ const DisableCopy = dynamic(() => import('@/components/DisableCopy'), {
 const AdBlockDetect = dynamic(() => import('@/components/AdBlockDetect'), {
   ssr: false,
 });
-/**
- * 各种第三方组件
- * @param {*} props
- * @returns
- */
+
 const ExternalPlugin = (props: any) => {
   return (
     <>
       {BLOG.THEME_SWITCH && <ThemeSwitch />}
       {BLOG.DEBUG && <DebugPanel />}
       {BLOG.ANALYTICS_ACKEE_TRACKER && <Ackee />}
-      {BLOG.ANALYTICS_GOOGLE_ID && <Gtag />}
       {BLOG.ANALYTICS_VERCEL && <Analytics />}
       {BLOG.VERCEL_SPEED_INSIGHTS && <SpeedInsights />}
       {BLOG.ANALYTICS_BUSUANZI_ENABLE && <Busuanzi />}
@@ -90,8 +83,10 @@ const ExternalPlugin = (props: any) => {
       {BLOG.RIBBON && <Ribbon />}
       {BLOG.CUSTOM_RIGHT_CLICK_CONTEXT_MENU && <CustomContextMenu {...props} />}
       {!BLOG.CAN_COPY && <DisableCopy />}
-      {BLOG.WEB_WHIZ_ENABLED && <WebWhiz />}
       {BLOG.AD_WWADS_BLOCK_DETECT && <AdBlockDetect />}
+      {BLOG.ANALYTICS_GOOGLE_ID && (
+        <GoogleAnalytics gaId={BLOG.ANALYTICS_GOOGLE_ID} />
+      )}
       <VConsole />
     </>
   );

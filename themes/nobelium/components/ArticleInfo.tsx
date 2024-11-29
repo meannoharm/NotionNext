@@ -7,6 +7,7 @@ import { useNobeliumStore } from '@themes/nobelium/providers';
 import { useCallback } from 'react';
 import Link from 'next/link';
 import { useSiteStore } from '@/providers/siteProvider';
+import NotionIcon from '@/components/NotionIcon';
 
 export const ArticleInfo = () => {
   const post = useSiteStore((state) => state.post);
@@ -22,6 +23,7 @@ export const ArticleInfo = () => {
   return (
     <section className="mt-2 flex flex-col font-light">
       <div className="text-3xl font-bold text-black dark:text-white">
+        {post?.pageIcon && <NotionIcon icon={post?.pageIcon} />}
         {post?.title}
       </div>
 

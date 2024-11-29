@@ -5,7 +5,6 @@ import BLOG from 'blog.config';
 
 import type { ISitemapField } from 'next-sitemap';
 import type { GetServerSideProps } from 'next';
-import { PageStatus } from '@/types';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { allPages } = await getSiteData('rss');
@@ -53,8 +52,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       ? post.slug.slice(1)
       : post.slug;
     return {
-        loc: `${BLOG.LINK}/${slugWithoutLeadingSlash}`,
-        lastmod: dayjs(post.date).format('YYYY-MM-DD'),
+      loc: `${BLOG.LINK}/${slugWithoutLeadingSlash}`,
+      lastmod: dayjs(post.date).format('YYYY-MM-DD'),
       changefreq: 'daily',
       priority: 0.7,
     };

@@ -8,7 +8,6 @@ import { useCallback } from 'react';
 import Link from 'next/link';
 import { useSiteStore } from '@/providers/siteProvider';
 
-
 export const ArticleInfo = () => {
   const post = useSiteStore((state) => state.post);
   const emailHash = md5(BLOG.CONTACT_EMAIL);
@@ -42,10 +41,6 @@ export const ArticleInfo = () => {
             <div className="mr-4 md:ml-0">
               {dayjs(post?.date).format('YYYY-MM-DD')}
             </div>
-            <span className="busuanzi_container_page_pv hidden">
-              <i className="fas fa-eye mr-1" />
-              <span className="busuanzi_value_page_pv" />
-            </span>
           </div>
           <div className="mt-4">
             {post?.tags && (

@@ -1,6 +1,6 @@
 import BLOG from 'blog.config';
 import { useEffect, useState } from 'react';
-import Select from './Select';
+import Select from '@/components/Select';
 import { THEMES } from '@/lib/theme';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -12,16 +12,14 @@ import { useStyleStore } from '@/providers/styleProvider';
  */
 const DebugPanel = () => {
   const [show, setShow] = useState(false);
-  const { theme, switchTheme } = useStyleStore((state) => ({
-    theme: state.theme,
-    switchTheme: state.switchTheme,
-  }));
+  const theme = useStyleStore((state) => state.theme);
+  const setTheme = useStyleStore((state) => state.setTheme);
   const router = useRouter();
-  const [siteConfig, updateSiteConfig] = useState({});
+  const [siteConfig, updateSiteConfig] = useState<Record<string, any>>({});
   const { t } = useTranslation('common');
 
   // 主题下拉框
-  const themeOptions = THEMES?.map((t) => ({ value: t, text: t }));
+  const themeOptions = THEMES?.map((t: string) => ({ value: t, text: t }));
 
   useEffect(() => {
     updateSiteConfig(Object.assign({}, BLOG));
@@ -33,15 +31,15 @@ const DebugPanel = () => {
   }
 
   function handleChangeDebugTheme() {
-    switchTheme();
+    setTheme(theme);
   }
 
-  function handleUpdateDebugTheme(newTheme) {
+  function handleUpdateDebugTheme(newTheme: string) {
     const query = { ...router.query, theme: newTheme };
     router.push({ pathname: router.pathname, query });
   }
 
-  function filterResult(text) {
+  function filterResult(text: string) {
     switch (text) {
       case 'true':
         return <span className="text-green-500">true</span>;
@@ -96,23 +94,6 @@ const DebugPanel = () => {
         </div>
 
         <div>
-          {/* <div>
-                        <div className="font-bold w-18 border-b my-2">
-                            主题配置{`config_${debugTheme}.js`}:
-                        </div>
-                        <div className="text-xs">
-                            {Object.keys(themeConfig).map(k => (
-                                <div key={k} className="justify-between flex py-1">
-                                    <span className="bg-indigo-500 p-0.5 rounded text-white mr-2">
-                                        {k}
-                                    </span>
-                                    <span className="whitespace-nowrap">
-                                        {filterResult(themeConfig[k] + '')}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div> */}
           <div className="w-18 my-2 border-b font-bold">
             站点配置[blog.config.js]
           </div>

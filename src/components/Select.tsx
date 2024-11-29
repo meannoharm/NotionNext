@@ -1,15 +1,20 @@
-import React from 'react'
+import React from 'react';
 
 /**
  * 下拉单选框
  */
-class Select extends React.Component {
-  constructor (props) {
-    super(props)
-    this.handleChange = this.handleChange.bind(this)
+class Select extends React.Component<{
+  label: string;
+  value: string;
+  options: { value: string; text: string }[];
+  onChange: (value: string) => void;
+}> {
+  constructor(props: any) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange (event) {
+  handleChange (event: React.ChangeEvent<HTMLSelectElement>) {
     const { onChange } = this.props
     onChange(event.target.value)
   }
@@ -29,12 +34,5 @@ class Select extends React.Component {
     )
   }
 }
-Select.defaultProps = {
-  label: '',
-  value: '1',
-  options: [
-    { value: '1', text: '选项1' },
-    { value: '2', text: '选项2' }
-  ]
-}
+
 export default Select

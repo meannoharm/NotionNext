@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Draggable } from './Draggable';
+import { Draggable } from '@/components/Draggable';
 import { THEMES } from '@/lib/theme';
 import { useRouter } from 'next/router';
 import { useStyleStore } from '@/providers/styleProvider';
@@ -14,7 +14,7 @@ const ThemeSwitch = () => {
 
   // 修改当前路径url中的 theme 参数
   // 例如 http://localhost?theme=hexo 跳转到 http://localhost?theme=newTheme
-  const onSelectChange = (e) => {
+  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setIsLoading(true);
     const newTheme = e.target.value;
     const query = router.query;
@@ -40,7 +40,7 @@ const ThemeSwitch = () => {
                 name="themes"
                 className="cursor-pointer appearance-none bg-gray-50 uppercase outline-none dark:bg-black dark:text-white"
               >
-                {THEMES?.map((t) => {
+                {THEMES?.map((t: string) => {
                   return (
                     <option key={t} value={t}>
                       {t}

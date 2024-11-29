@@ -57,9 +57,6 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
       <meta name="twitter:description" content={description} />
       <meta name="twitter:title" content={title} />
 
-      {BLOG.ANALYTICS_BUSUANZI_ENABLE && (
-        <meta name="referrer" content="no-referrer-when-downgrade" />
-      )}
       {pageMeta?.type === 'Post' && (
         <>
           <meta

@@ -1,22 +1,24 @@
 import { useRouter } from 'next/router';
-import { type FC, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useSiteStore } from '@/providers/siteProvider';
 
-export interface SearchInputProps {
-  keyword?: string;
-}
-
-const SearchInput: FC<SearchInputProps> = ({ keyword }) => {
+const SearchInput = () => {
   const router = useRouter();
+  const keyword = useSiteStore((state) => state.keyword);
   const { t } = useTranslation('common');
-  const [showClean, setShowClean] = useState(false);
+
+  const [text, setText] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const lock = useRef(false);
+
+  useEffect(() => {
+    setText(keyword);
+  }, [keyword]);
+  const isShowClean = useMemo(() => !!text.trim(), [text]);
 
   const handleSearch = () => {
-    const key = searchInputRef.current?.value.trim();
-    if (key) {
-      router.push(`/search/${key}`);
+    if (text.trim()) {
+      router.push(`/search/${text}`);
     } else {
       router.push('/');
     }
@@ -28,30 +30,15 @@ const SearchInput: FC<SearchInputProps> = ({ keyword }) => {
   };
 
   const cleanSearch = () => {
-    (searchInputRef.current as HTMLInputElement).value = '';
-    setShowClean(false);
+    setText('');
   };
 
-  function lockSearchInput() {
-    lock.current = true;
-  }
-
-  function unLockSearchInput() {
-    lock.current = false;
-  }
-  const updateSearchKey = () => {
-    if (lock.current) {
-      return;
-    }
-    if (searchInputRef.current?.value) {
-      setShowClean(true);
-    } else {
-      setShowClean(false);
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
   };
 
   return (
-    <section className="focus:border- flex w-full rounded bg-gray-100 px-4 py-2 dark:bg-gray-900">
+    <section className="flex w-full rounded bg-gray-100 px-4 py-2  focus-within:ring-2 dark:bg-gray-900">
       <input
         ref={searchInputRef}
         type="text"
@@ -60,13 +47,10 @@ const SearchInput: FC<SearchInputProps> = ({ keyword }) => {
           'flex-1 bg-gray-100 p-2 text-gray-900 outline-none transition  dark:bg-gray-900 dark:text-gray-100'
         }
         onKeyUp={handleKeyUp}
-        onCompositionStart={lockSearchInput}
-        onCompositionUpdate={lockSearchInput}
-        onCompositionEnd={unLockSearchInput}
-        onChange={updateSearchKey}
-        defaultValue={keyword || ''}
+        onChange={handleChange}
+        value={text}
       />
-      {showClean && (
+      {isShowClean && (
         <div
           className="transform cursor-pointer p-2 text-gray-500 duration-200 hover:text-gray-700 dark:hover:text-gray-300"
           onClick={cleanSearch}

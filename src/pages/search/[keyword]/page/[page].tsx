@@ -6,6 +6,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from '@/providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import getSearchResult from '@/lib/notion/getSearchResult';
+import { omit } from 'lodash';
 
 import type { FC } from 'react';
 import type { PageMeta, SearchDetailPageProps } from '@/types';
@@ -49,6 +50,13 @@ const SearchDetailPage: FC<SearchDetailPageProps> = (props) => {
   );
 };
 
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
 /**
  * 服务端搜索
  * @param {*} param0
@@ -59,18 +67,17 @@ export const getStaticProps: GetStaticProps<
   SearchDetailPageParams
 > = async ({ params, locale }) => {
   const { keyword, page } = params as SearchDetailPageParams;
-  const { allPages, ...restProps } = await getSiteData('search-props');
+  const props = await getSiteData('search-detail-page');
+
   const pageNumber = parseInt(page, 10);
-  const filteredPosts = allPages?.filter(
-    (page) => page.type === 'Post' && page.status === 'Published',
-  );
-  const posts = (await getSearchResult(filteredPosts, keyword)).slice(
+  const filteredPosts = await getSearchResult(props.publishedPosts, keyword);
+  const posts = filteredPosts.slice(
     BLOG.POSTS_PER_PAGE * (pageNumber - 1),
     BLOG.POSTS_PER_PAGE * pageNumber,
   );
   return {
     props: {
-      ...restProps,
+      ...omit(props, 'allPages'),
       posts,
       resultCount: filteredPosts.length,
       page: pageNumber,

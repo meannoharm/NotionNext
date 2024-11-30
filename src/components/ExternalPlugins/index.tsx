@@ -41,9 +41,6 @@ const CustomContextMenu = dynamic(
 const DisableCopy = dynamic(() => import('./components/DisableCopy'), {
   ssr: false,
 });
-const AdBlockDetect = dynamic(() => import('./components/AdBlockDetect'), {
-  ssr: false,
-});
 
 const ExternalPlugin = (props: any) => {
   return (
@@ -57,7 +54,6 @@ const ExternalPlugin = (props: any) => {
       {BLOG.FACEBOOK_APP_ID && BLOG.FACEBOOK_PAGE_ID && <Messenger />}
       {BLOG.CUSTOM_RIGHT_CLICK_CONTEXT_MENU && <CustomContextMenu {...props} />}
       {!BLOG.CAN_COPY && <DisableCopy />}
-      {BLOG.AD_WWADS_BLOCK_DETECT && <AdBlockDetect />}
       {BLOG.ANALYTICS_GOOGLE_ID && (
         <GoogleAnalytics gaId={BLOG.ANALYTICS_GOOGLE_ID} />
       )}

@@ -1,7 +1,4 @@
-
 export function ErrorPage({ statusCode }: { statusCode: number }) {
-  const title = 'Error'
-
   return (
     <>
       <div>
@@ -11,5 +8,5 @@ export function ErrorPage({ statusCode }: { statusCode: number }) {
         </main>
       </div>
     </>
-  )
+  );
 }

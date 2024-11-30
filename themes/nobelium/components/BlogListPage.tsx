@@ -3,19 +3,18 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import BlogPost from './BlogPost';
 import { useTranslation } from 'next-i18next';
+import { useShallow } from 'zustand/react/shallow';
+import { useSiteStore } from '@/providers/siteProvider';
 
-import type { FC } from 'react';
-import type { Page } from '@/types';
-
-export interface BlogListPageProps {
-  posts: Page[];
-  page?: number;
-  postCount: number;
-}
-
-const BlogListPage: FC<BlogListPageProps> = (props) => {
+const BlogListPage = () => {
+  const { posts, page, postCount } = useSiteStore(
+    useShallow((state) => ({
+      posts: state.posts,
+      page: state.page,
+      postCount: state.postCount,
+    })),
+  );
   const { t } = useTranslation('common');
-  const { page = 1, posts, postCount } = props;
   const router = useRouter();
   const totalPage = Math.ceil(postCount / BLOG.POSTS_PER_PAGE);
   const currentPage = +page;

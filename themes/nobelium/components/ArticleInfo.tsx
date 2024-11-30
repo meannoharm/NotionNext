@@ -3,7 +3,6 @@ import BLOG from 'blog.config';
 import TagItem from './TagItem';
 import md5 from 'js-md5';
 import dayjs from 'dayjs';
-import { useNobeliumStore } from '@themes/nobelium/providers';
 import { useCallback } from 'react';
 import Link from 'next/link';
 import { useSiteStore } from '@/providers/siteProvider';
@@ -12,7 +11,7 @@ import NotionIcon from '@/components/NotionIcon';
 export const ArticleInfo = () => {
   const post = useSiteStore((state) => state.post);
   const emailHash = md5(BLOG.CONTACT_EMAIL);
-  const tagOptions = useNobeliumStore((s) => s.tags);
+  const tagOptions = useSiteStore((state) => state.tagOptions);
   const tagColor = useCallback(
     (tag: string) => {
       return tagOptions.find((t) => t.name === tag)?.color || 'gray';
@@ -30,9 +29,12 @@ export const ArticleInfo = () => {
       {post?.type !== 'Page' && (
         <>
           <div className="mt-7 flex items-center text-gray-500 dark:text-gray-500">
-            <Link href={BLOG.CONTACT_GITHUB || '#'} className="mr-1">
+            <Link
+              href={BLOG.CONTACT_GITHUB || '#'}
+              className="mr-1 h-6 w-6 overflow-hidden"
+            >
               <Image
-                className="rounded-full"
+                className="h-6 w-6 rounded-full"
                 alt={BLOG.AUTHOR}
                 width={24}
                 height={24}

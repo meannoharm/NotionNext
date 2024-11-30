@@ -1,27 +1,28 @@
 import PageNotFound from './pages/PageNotFound';
 import Archive from './pages/archive';
 import Category from './pages/Category';
+import CategoryDetail from './pages/CategoryDetail';
 import Home from './pages/Home';
 import PostList from './pages/PostList';
 import Search from './pages/Search';
+import SearchDetail from './pages/SearchDetail';
 import Tag from './pages/Tag';
+import TagDetail from './pages/TagDetail';
 import Post from './pages/Post';
-import CONFIG from './theme.config';
 
 export {
-  CONFIG as THEME_CONFIG,
   Home,
   PostList as Page,
   Archive,
   Category,
-  PostList as CategoryDetail,
-  PostList as CategoryPage,
+  CategoryDetail,
+  CategoryDetail as CategoryDetailPage,
   Tag,
-  PostList as TagDetail,
-  PostList as TagPage,
+  TagDetail,
+  TagDetail as TagDetailPage,
   Search,
-  PostList as SearchDetail,
-  PostList as SearchPage,
+  SearchDetail,
+  SearchDetail as SearchDetailPage,
   Post as Article,
   PageNotFound,
 };

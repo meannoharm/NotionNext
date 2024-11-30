@@ -1,7 +1,5 @@
 import LayoutBase from '../layout/LayoutBase';
-import { ContextWrapper } from '../providers/index';
-import TagItem from '../components/TagItem';
-import { useSiteStore } from '@/providers/siteProvider';
+import TagList from '../components/TagList';
 
 /**
  * 文章标签列表
@@ -9,25 +7,11 @@ import { useSiteStore } from '@/providers/siteProvider';
  * @returns
  */
 const Tag = () => {
-  const tagOptions = useSiteStore((state) => state.tagOptions);
-
   return (
     <LayoutBase>
-      <div id="tags-list" className="flex flex-wrap duration-200">
-        {tagOptions.map((tag) => {
-          return (
-            <TagItem
-              key={tag.name}
-              tag={tag.name}
-              color={tag.color}
-              count={tag.count}
-              className="mb-2 mr-3"
-            />
-          );
-        })}
-      </div>
+      <TagList />
     </LayoutBase>
   );
 };
 
-export default ContextWrapper(Tag);
+export default Tag;

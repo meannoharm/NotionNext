@@ -6,7 +6,6 @@ import ArticleFooter from '../components/ArticleFooter';
 import NotionPage from '@/components/NotionPage';
 import ShareBar from '@/components/ShareBar';
 import Comment from '@/components/Comment';
-import { ContextWrapper } from '../providers';
 import { useSiteStore } from '@/providers/siteProvider';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -37,4 +36,4 @@ const Post: FC = () => {
   );
 };
 
-export default ContextWrapper(Post);
+export default Post;

@@ -16,7 +16,7 @@ export interface LayoutBaseProps {
  * @constructor
  */
 const LayoutBase: FC<LayoutBaseProps> = (props) => {
-  const { children, topSlot } = props;
+  const { children } = props;
 
   const isLoading = useStyleStore((state) => state.isLoading);
 
@@ -41,8 +41,6 @@ const LayoutBase: FC<LayoutBaseProps> = (props) => {
           leaveTo="opacity-0 -translate-y-16"
           unmount={false}
         >
-          {/* 顶部插槽 */}
-          {topSlot}
           {children}
         </Transition>
       </main>

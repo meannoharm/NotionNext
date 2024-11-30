@@ -1,6 +1,6 @@
 import Announcement from '../components/Announcement';
-import { OriginPostList } from './PostList';
-import { ContextWrapper } from '../providers';
+import BlogList from '../components/BlogList';
+import LayoutBase from '../layout/LayoutBase';
 
 import type { FC } from 'react';
 
@@ -12,7 +12,12 @@ import type { FC } from 'react';
  */
 
 const Home: FC = () => {
-  return <OriginPostList topSlot={<Announcement />} />;
+  return (
+    <LayoutBase>
+      <Announcement />
+      <BlogList />
+    </LayoutBase>
+  );
 };
 
-export default ContextWrapper(Home);
+export default Home;

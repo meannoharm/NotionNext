@@ -9,11 +9,11 @@ import CommonHead from '@/components/CommonHead';
 import { omit } from 'lodash';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import type { PageMeta, CategoryPageProps } from '@/types';
+import type { PageMeta, CategoryDetailPageProps } from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 
-export interface CategoryPageParams extends ParsedUrlQuery {
+export interface CategoryDetailPageParams extends ParsedUrlQuery {
   category: string;
   page: string;
 }
@@ -24,7 +24,7 @@ export interface CategoryPageParams extends ParsedUrlQuery {
  * @returns
  */
 
-const CategoryPage: FC<CategoryPageProps> = (props) => {
+const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
   const { siteInfo } = props;
   const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
@@ -57,10 +57,10 @@ const CategoryPage: FC<CategoryPageProps> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps<
-  CategoryPageProps,
-  CategoryPageParams
+  CategoryDetailPageProps,
+  CategoryDetailPageParams
 > = async ({ params, locale }) => {
-  const { category, page } = params as CategoryPageParams;
+  const { category, page } = params as CategoryDetailPageParams;
   const pageNumber = parseInt(page, 10);
   const props = await getSiteData('category-page-props');
 
@@ -87,10 +87,12 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export const getStaticPaths: GetStaticPaths<CategoryPageParams> = async () => {
+export const getStaticPaths: GetStaticPaths<
+  CategoryDetailPageParams
+> = async () => {
   const { categoryOptions, publishedPosts } =
     await getSiteData('category-paths');
-  const paths: { params: CategoryPageParams }[] = [];
+  const paths: { params: CategoryDetailPageParams }[] = [];
 
   categoryOptions?.forEach((category) => {
     // 只处理发布状态的文章
@@ -109,4 +111,4 @@ export const getStaticPaths: GetStaticPaths<CategoryPageParams> = async () => {
   };
 };
 
-export default CategoryPage;
+export default CategoryDetailPage;

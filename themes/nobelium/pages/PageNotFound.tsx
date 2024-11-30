@@ -1,5 +1,4 @@
 import LayoutBase from '../layout/LayoutBase';
-import { ContextWrapper } from '../providers';
 import { useTranslation } from 'next-i18next';
 
 import { type FC } from 'react';
@@ -21,4 +20,4 @@ const PageNotFound: FC = () => {
   );
 };
 
-export default ContextWrapper(PageNotFound);
+export default PageNotFound;

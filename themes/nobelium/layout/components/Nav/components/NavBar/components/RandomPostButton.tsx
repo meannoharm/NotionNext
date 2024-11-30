@@ -1,7 +1,7 @@
 import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { useNobeliumStore } from '@themes/nobelium/providers';
+import { useSiteStore } from '@/providers/siteProvider';
 
 /**
  * 随机跳转到一个文章
@@ -9,7 +9,7 @@ import { useNobeliumStore } from '@themes/nobelium/providers';
 export default function RandomPostButton() {
   const router = useRouter();
   const { t } = useTranslation('menu');
-  const { latestPosts } = useNobeliumStore((state) => state);
+  const latestPosts = useSiteStore((state) => state.latestPosts);
   /**
    * 随机跳转文章
    */

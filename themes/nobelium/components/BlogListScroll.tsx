@@ -5,16 +5,12 @@ import React from 'react';
 import { throttle } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
+import { useSiteStore } from '@/providers/siteProvider';
 
-import type { FC } from 'react';
-import type { Page } from '@/types';
 
-export interface BlogListScrollProps {
-  posts: Page[];
-}
+const BlogListScroll = () => {
+  const posts = useSiteStore((state) => state.posts);
 
-const BlogListScroll: FC<BlogListScrollProps> = (props) => {
-  const { posts } = props;
   const { t } = useTranslation('common');
   const [page, setPage] = useState(1);
   const targetRef = useRef<HTMLDivElement>(null);

@@ -1,27 +1,32 @@
 import type { ExtendedRecordMap, Page } from '@/types/notion';
 
+// search in page content
 export default function getPageContentText(
   post: Page,
   blockMap: ExtendedRecordMap,
 ) {
-  let indexContent: string[] = [];
+  const contentList: string[] = [];
   if (blockMap && !post.password) {
-      Object.values(blockMap.block).forEach((block) => {
+    Object.values(blockMap.block).forEach((block) => {
       const properties = block.value?.properties;
-      indexContent = extractTextContent(indexContent, properties.title);
-      indexContent = extractTextContent(indexContent, properties.caption);
+      if (properties?.title) {
+        extractText(properties.title, contentList);
+      }
+      if (properties?.caption) {
+        extractText(properties.caption, contentList);
+      }
     });
   }
-  return indexContent;
+  return contentList;
 }
 
-function extractTextContent(
-  sourceText: string[],
-  target: any,
-): string[] {
-  if (!target) return sourceText;
-  const text = typeof target === 'object' ? getTextContent(target) : target;
-  return text && text !== 'Untitled' ? sourceText.concat(text) : sourceText;
+function extractText(source: any, target: string[]): void {
+  if (!source) return;
+
+  const text = extractNestedText(source);
+  if (text && text !== 'Untitled') {
+    target.push(text);
+  }
 }
 
 /**
@@ -29,10 +34,9 @@ function extractTextContent(
  * @param {*} textArray
  * @returns
  */
-function getTextContent(textArray: any): string {
-  return Array.isArray(textArray)
-    ? textArray.reduce((acc, item) => acc + getTextContent(item), '')
-    : typeof textArray === 'string'
-      ? textArray
-      : '';
+function extractNestedText(input: any): string {
+  if (Array.isArray(input)) {
+    return input.reduce((acc, item) => acc + extractNestedText(item), '');
+  }
+  return typeof input === 'string' ? input : '';
 }

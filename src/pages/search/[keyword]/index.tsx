@@ -6,6 +6,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
 import getSearchResult from '@/lib/notion/getSearchResult';
+import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, SearchDetailProps } from '@/types';
@@ -64,12 +65,10 @@ export const getStaticProps: GetStaticProps<
   SearchDetailProps,
   CategoryDetailParams
 > = async ({ params, locale }) => {
-  const { allPages, ...restProps } = await getSiteData('search-detail-page');
+  const props = await getSiteData('search-detail-page');
   const { keyword } = params as CategoryDetailParams;
-  const allPosts = allPages?.filter(
-    (page) => page.type === 'Post' && page.status === 'Published',
-  );
-  const filteredPosts = await getSearchResult(allPosts, keyword);
+
+  const filteredPosts = await getSearchResult(props.publishedPosts, keyword);
   const posts =
     BLOG.POST_LIST_STYLE === 'page'
       ? filteredPosts.slice(0, BLOG.POSTS_PER_PAGE)
@@ -77,7 +76,7 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-      ...restProps,
+      ...omit(props, 'allPages'),
       resultCount: filteredPosts.length,
       keyword,
       posts,

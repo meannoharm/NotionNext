@@ -10,13 +10,15 @@ export interface BlogPostProps {
   isShowSummary?: boolean;
 }
 const BlogPost: FC<BlogPostProps> = ({ post, isShowSummary = true }) => {
+  const isSearchResult = post.results && post.results.length > 0;
+
   return (
     <Link href={`${BLOG.SUB_PATH}/${post.slug}`}>
       <article
         key={post.id}
         className="mb-4 rounded px-3 py-2 hover:bg-gray-200/40 md:mb-6 dark:hover:bg-gray-800/40"
       >
-        <header className="flex flex-col justify-between md:flex-row md:items-baseline">
+        <header className="mb-2 flex flex-col justify-between md:flex-row md:items-baseline">
           <div className="mr-4 cursor-pointer text-lg font-medium text-gray-900 md:text-xl dark:text-gray-200">
             {post.title}
           </div>
@@ -24,9 +26,20 @@ const BlogPost: FC<BlogPostProps> = ({ post, isShowSummary = true }) => {
             {dayjs(post?.date).format('YYYY-MM-DD')}
           </time>
         </header>
-        {isShowSummary && post.summary && (
-          <div className="mb-2 hidden leading-8 text-gray-700 md:block dark:text-gray-300">
+        {!isSearchResult && isShowSummary && post.summary && (
+          <div className="hidden leading-8 text-gray-700 md:block dark:text-gray-300">
             {post.summary}
+          </div>
+        )}
+        {post.results &&
+          post.results.length > 0 && (
+            <div
+              key="result"
+              className="hidden leading-8 text-gray-700 md:block dark:text-gray-300"
+            >
+              {post.results.map((result) => (
+                <div>...{result}...</div>
+            ))}
           </div>
         )}
       </article>

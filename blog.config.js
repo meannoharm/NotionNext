@@ -138,63 +138,7 @@ const BLOG = {
   PREVIEW_CATEGORY_COUNT: 16, // 首页最多展示的分类数量，0为不限制
   PREVIEW_TAG_COUNT: 16, // 首页最多展示的标签数量，0为不限制
 
-  POST_DISABLE_GALLERY_CLICK: false, // 画册视图禁止点击，方便在友链页面的画册插入链接
-
-  //   ********挂件组件相关********
-  // Chatbase 是否显示chatbase机器人 https://www.chatbase.co/
-  CHATBASE_ID: process.env.NEXT_PUBLIC_CHATBASE_ID || null,
-  // WebwhizAI 机器人 @see https://github.com/webwhiz-ai/webwhiz
-  WEB_WHIZ_ENABLED: false, // 是否显示
-  WEB_WHIZ_BASE_URL:
-    process.env.NEXT_PUBLIC_WEB_WHIZ_BASE_URL || 'https://api.webwhiz.ai', // 可以自建服务器
-  WEB_WHIZ_CHAT_BOT_ID: process.env.NEXT_PUBLIC_WEB_WHIZ_CHAT_BOT_ID || null, // 在后台获取ID
-
-  // 悬浮挂件
-  WIDGET_PET: process.env.NEXT_PUBLIC_WIDGET_PET || false, // 是否显示宠物挂件
-  WIDGET_PET_LINK:
-    process.env.NEXT_PUBLIC_WIDGET_PET_LINK ||
-    'https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json', // 挂件模型地址 @see https://github.com/xiazeyu/live2d-widget-models
-  WIDGET_PET_SWITCH_THEME:
-    process.env.NEXT_PUBLIC_WIDGET_PET_SWITCH_THEME || true, // 点击宠物挂件切换博客主题
-
-  // 音乐播放插件
-  MUSIC_PLAYER: false, // 是否使用音乐播放插件
-  MUSIC_PLAYER_VISIBLE: process.env.NEXT_PUBLIC_MUSIC_PLAYER_VISIBLE || true, // 是否在左下角显示播放和切换，如果使用播放器，打开自动播放再隐藏，就会以类似背景音乐的方式播放，无法取消和暂停
-  MUSIC_PLAYER_AUTO_PLAY:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_AUTO_PLAY || true, // 是否自动播放，不过自动播放时常不生效（移动设备不支持自动播放）
-  MUSIC_PLAYER_LRC_TYPE: process.env.NEXT_PUBLIC_MUSIC_PLAYER_LRC_TYPE || '0', // 歌词显示类型，可选值： 3 | 1 | 0（0：禁用 lrc 歌词，1：lrc 格式的字符串，3：lrc 文件 url）（前提是有配置歌词路径，对 meting 无效）
-  MUSIC_PLAYER_CDN_URL:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_CDN_URL ||
-    'https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/aplayer/1.10.1/APlayer.min.js',
-  MUSIC_PLAYER_ORDER: process.env.NEXT_PUBLIC_MUSIC_PLAYER_ORDER || 'list', // 默认播放方式，顺序 list，随机 random
-  MUSIC_PLAYER_AUDIO_LIST: [
-    // 示例音乐列表。除了以下配置外，还可配置歌词，具体配置项看此文档 https://aplayer.js.org/#/zh-Hans/
-    {
-      name: '风を共に舞う気持ち',
-      artist: 'Falcom Sound Team jdk',
-      url: 'https://music.163.com/song/media/outer/url?id=731419.mp3',
-      cover:
-        'https://p2.music.126.net/kn6ugISTonvqJh3LHLaPtQ==/599233837187278.jpg',
-    },
-    {
-      name: '王都グランセル',
-      artist: 'Falcom Sound Team jdk',
-      url: 'https://music.163.com/song/media/outer/url?id=731355.mp3',
-      cover:
-        'https://p1.music.126.net/kn6ugISTonvqJh3LHLaPtQ==/599233837187278.jpg',
-    },
-  ],
-  MUSIC_PLAYER_METING: process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING || false, // 是否要开启 MetingJS，从平台获取歌单。会覆盖自定义的 MUSIC_PLAYER_AUDIO_LIST，更多配置信息：https://github.com/metowolf/MetingJS
-  MUSIC_PLAYER_METING_SERVER:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING_SERVER || 'netease', // 音乐平台，[netease, tencent, kugou, xiami, baidu]
-  MUSIC_PLAYER_METING_ID:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING_ID || '60198', // 对应歌单的 id
-  MUSIC_PLAYER_METING_LRC_TYPE:
-    process.env.NEXT_PUBLIC_MUSIC_PLAYER_METING_LRC_TYPE || '1', // 可选值： 3 | 1 | 0（0：禁用 lrc 歌词，1：lrc 格式的字符串，3：lrc 文件 url）
-
-  //   ********挂件组件相关********
   // ----> 评论互动 可同时开启多个支持 WALINE VALINE GISCUS CUSDIS UTTERRANCES GITALK
-
   // artalk 评论插件
   COMMENT_ARTALK_SERVER: process.env.NEXT_PUBLIC_COMMENT_ARTALK_SERVER || '', // ArtalkServert后端地址 https://artalk.js.org/guide/deploy.html
   COMMENT_ARTALK_JS:
@@ -255,10 +199,6 @@ const BLOG = {
     process.env.NEXT_PUBLIC_COMMENT_GITALK_CSS_CDN_URL ||
     'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css', // gitalk客户端 css cdn
 
-  COMMENT_GITTER_ROOM: process.env.NEXT_PUBLIC_COMMENT_GITTER_ROOM || '', // gitter聊天室 see https://gitter.im/ 不需要则留空
-  COMMENT_DAO_VOICE_ID: process.env.NEXT_PUBLIC_COMMENT_DAO_VOICE_ID || '', // DaoVoice http://dashboard.daovoice.io/get-started
-  COMMENT_TIDIO_ID: process.env.NEXT_PUBLIC_COMMENT_TIDIO_ID || '', // [tidio_id] -> //code.tidio.co/[tidio_id].js
-
   COMMENT_VALINE_CDN:
     process.env.NEXT_PUBLIC_VALINE_CDN ||
     'https://unpkg.com/valine@1.5.1/dist/Valine.min.js',
@@ -295,8 +235,6 @@ const BLOG = {
 
   // <---- 站点统计
 
-  // START---->营收相关
-
   // 谷歌广告
   ADSENSE_GOOGLE_ID: process.env.NEXT_PUBLIC_ADSENSE_GOOGLE_ID || '', // 谷歌广告ID e.g ca-pub-xxxxxxxxxxxxxxxx
   ADSENSE_GOOGLE_TEST: process.env.NEXT_PUBLIC_ADSENSE_GOOGLE_TEST || false, // 谷歌广告ID测试模式，这种模式获取假的测试广告，用于开发 https://www.tangly1024.com/article/local-dev-google-adsense
@@ -313,10 +251,7 @@ const BLOG = {
   AD_WWADS_ID: process.env.NEXT_PUBLIC_WWAD_ID || '', // https://wwads.cn/ 创建您的万维广告单元ID
   AD_WWADS_BLOCK_DETECT: false, // 是否开启WWADS广告屏蔽插件检测,开启后会在广告位上以文字提示 @see https://github.com/bytegravity/whitelist-wwads
 
-  // END<----营收相关
-
   // RSS订阅
-  // TODO
   ENABLE_RSS: true, // 是否开启RSS订阅功能
   MAILCHIMP_LIST_ID: process.env.MAILCHIMP_LIST_ID || null, // 开启mailichimp邮件订阅 客户列表ID ，具体使用方法参阅文档
   MAILCHIMP_API_KEY: process.env.MAILCHIMP_API_KEY || null, // 开启mailichimp邮件订阅 APIkey

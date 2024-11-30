@@ -7,7 +7,6 @@ import Document, {
   type DocumentContext,
 } from 'next/document';
 import BLOG from 'blog.config';
-import CommonScript from '@/components/CommonScript';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -20,7 +19,6 @@ export default class MyDocument extends Document {
       <Html lang={BLOG.LANG}>
         <Head>
           <link rel="icon" href={`${BLOG.BLOG_FAVICON}`} />
-          <CommonScript />
           {/* 预加载字体 */}
           {BLOG.FONT_AWESOME && (
             <>

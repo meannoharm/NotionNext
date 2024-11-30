@@ -8,16 +8,16 @@ import CommonHead from '@/components/CommonHead';
 import getSearchResult from '@/lib/notion/getSearchResult';
 
 import type { FC } from 'react';
-import type { PageMeta, SearchPageProps } from '@/types';
+import type { PageMeta, SearchDetailPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps } from 'next';
 
-export interface SearchPageParams extends ParsedUrlQuery {
+export interface SearchDetailPageParams extends ParsedUrlQuery {
   keyword: string;
   page: string;
 }
 
-const SearchPage: FC<SearchPageProps> = (props) => {
+const SearchDetailPage: FC<SearchDetailPageProps> = (props) => {
   const { keyword, siteInfo } = props;
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
@@ -55,10 +55,10 @@ const SearchPage: FC<SearchPageProps> = (props) => {
  * @returns
  */
 export const getStaticProps: GetStaticProps<
-  SearchPageProps,
-  SearchPageParams
+  SearchDetailPageProps,
+  SearchDetailPageParams
 > = async ({ params, locale }) => {
-  const { keyword, page } = params as SearchPageParams;
+  const { keyword, page } = params as SearchDetailPageParams;
   const { allPages, ...restProps } = await getSiteData('search-props');
   const pageNumber = parseInt(page, 10);
   const filteredPosts = allPages?.filter(
@@ -81,4 +81,4 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export default SearchPage;
+export default SearchDetailPage;

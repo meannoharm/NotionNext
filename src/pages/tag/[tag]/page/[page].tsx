@@ -8,17 +8,16 @@ import { useSiteStore } from '@/providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 
 import type { FC } from 'react';
-import type { PageMeta, TagPageProps } from '@/types';
+import type { PageMeta, TagDetailPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps, GetStaticPaths } from 'next';
 
-
-export interface TagPageParams extends ParsedUrlQuery {
+export interface TagDetailPageParams extends ParsedUrlQuery {
   tag: string;
   page: string;
 }
 
-const TagPage: FC<TagPageProps> = (props) => {
+const TagDetailPage: FC<TagDetailPageProps> = (props) => {
   const { tag, siteInfo } = props;
   const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
@@ -32,7 +31,7 @@ const TagPage: FC<TagPageProps> = (props) => {
   updateTag(props.tag);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() 
+  const Layout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,
@@ -51,14 +50,16 @@ const TagPage: FC<TagPageProps> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps<
-  TagPageProps,
-  TagPageParams
+  TagDetailPageProps,
+  TagDetailPageParams
 > = async ({ params, locale }) => {
-  const { tag, page } = params as TagPageParams;
+  const { tag, page } = params as TagDetailPageParams;
   const props = await getSiteData('tag-page-props');
   const pageNumber = parseInt(page, 10);
 
-  const filteredPosts = props.publishedPosts.filter((post) => post?.tags?.includes(tag));
+  const filteredPosts = props.publishedPosts.filter((post) =>
+    post?.tags?.includes(tag),
+  );
 
   const paginatedPosts = filteredPosts.slice(
     BLOG.POSTS_PER_PAGE * (pageNumber - 1),
@@ -78,13 +79,17 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export const getStaticPaths: GetStaticPaths<TagPageParams> = async () => {
-  const { tagOptions, publishedPosts } = await getSiteData('tag-page-static-path');
+export const getStaticPaths: GetStaticPaths<TagDetailPageParams> = async () => {
+  const { tagOptions, publishedPosts } = await getSiteData(
+    'tag-page-static-path',
+  );
   const paths: {
-    params: TagPageParams;
+    params: TagDetailPageParams;
   }[] = [];
   tagOptions?.forEach((tag) => {
-    const tagPosts = publishedPosts.filter((post) => post?.tags?.includes(tag.name));
+    const tagPosts = publishedPosts.filter((post) =>
+      post?.tags?.includes(tag.name),
+    );
     const totalPages = Math.ceil(tagPosts.length / BLOG.POSTS_PER_PAGE);
     for (let i = 1; i < totalPages; i++) {
       paths.push({ params: { tag: tag.name, page: String(i + 1) } });
@@ -96,4 +101,4 @@ export const getStaticPaths: GetStaticPaths<TagPageParams> = async () => {
   };
 };
 
-export default TagPage;
+export default TagDetailPage;

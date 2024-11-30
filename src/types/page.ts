@@ -35,7 +35,7 @@ export type CategoryDetailProps = DataBaseForProps & {
   posts: Page[];
   resultCount: number;
 };
-export type CategoryPageProps = DataBaseForProps & {
+export type CategoryDetailPageProps = DataBaseForProps & {
   resultCount: number;
   posts: Page[];
   page: number;
@@ -47,7 +47,7 @@ export type TagDetailProps = DataBaseForProps & {
   posts: Page[];
   resultCount: number;
 };
-export type TagPageProps = DataBaseForProps & {
+export type TagDetailPageProps = DataBaseForProps & {
   page: number;
   tag: string;
   posts: Page[];
@@ -59,7 +59,7 @@ export type SearchDetailProps = DataBaseForProps & {
   posts: Page[];
   resultCount: number;
 };
-export type SearchPageProps = DataBaseForProps & {
+export type SearchDetailPageProps = DataBaseForProps & {
   posts: Page[];
   resultCount: number;
   page: number;

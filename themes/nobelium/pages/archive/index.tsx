@@ -1,6 +1,5 @@
 import LayoutBase from '@themes/nobelium/layout/LayoutBase';
 import BlogArchiveItem from './components/BlogArchiveItem';
-import { ContextWrapper } from '@themes/nobelium/providers';
 import { useSiteStore } from '@/providers/siteProvider';
 
 /**
@@ -26,4 +25,4 @@ const Archive = () => {
   );
 };
 
-export default ContextWrapper(Archive);
+export default Archive;

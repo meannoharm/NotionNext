@@ -3,7 +3,6 @@ const BLOG = {
   // Important page_id！！！Duplicate Template from  https://www.notion.so/tanghh/02ab3b8678004aa69e9e415905ef32a5
   NOTION_PAGE_ID:
     process.env.NOTION_PAGE_ID || '14297ce5427180bcb214d8c92a8e0be8',
-  // TODO: 类型判断
   NEXT_REVALIDATE_SECOND: 5, // 更新内容缓存间隔 单位(秒)；即每个页面有5秒的纯静态期、此期间无论多少次访问都不会抓取notion数据；调大该值有助于节省Vercel资源、同时提升访问速率，但也会使文章更新有延迟。
   THEME: process.env.NEXT_PUBLIC_THEME || 'nobelium', // 当前主题，在themes文件夹下可找到所有支持的主题；主题名称就是文件夹名，例如 example,fukasawa,gitbook,heo,hexo,landing,matery,medium,next,nobelium,plog,simple
   THEME_SWITCH: false, // 是否显示切换主题按钮
@@ -15,20 +14,21 @@ const BLOG = {
   // 3.14.1版本后，欢迎语在此配置，英文逗号隔开 ,  即可支持多个欢迎语打字效果。
   GREETING_WORDS:
     process.env.NEXT_PUBLIC_GREETING_WORDS ||
-    '嗨，我是糕糕，欢迎来到我的博客🎉',
+    'Hello! Welcome to building your site with notion-next-base.',
 
-  DOMAIN: 'gaotian.net',
-  AUTHOR: process.env.NEXT_PUBLIC_AUTHOR || '糕糕', // 您的昵称 例如 tangly1024
-  BIO: process.env.NEXT_PUBLIC_BIO || '一只咸鱼🐟', // 作者简介
-  LINK: process.env.NEXT_PUBLIC_LINK || 'https://gaotian.net', // 网站地址
-  KEYWORDS: process.env.NEXT_PUBLIC_KEYWORD || 'Notion, 博客', // 网站关键词 英文逗号隔开
+  DOMAIN: 'notion-next-base.gaotian.net',
+  AUTHOR: process.env.NEXT_PUBLIC_AUTHOR || 'czgaotian', // 您的昵称 例如 tangly1024
+  BIO: process.env.NEXT_PUBLIC_BIO || 'A salted fish', // 作者简介
+  LINK: process.env.NEXT_PUBLIC_LINK || 'https://nontion-next-base.gaotian.net', // 网站地址
+  KEYWORDS: process.env.NEXT_PUBLIC_KEYWORD || 'Notion, next.js, blog, site', // 网站关键词 英文逗号隔开
 
   // 社交链接，不需要可留空白，例如 CONTACT_WEIBO:''
-  CONTACT_EMAIL: process.env.NEXT_PUBLIC_CONTACT_EMAIL || '811460602@qq.com', // 邮箱地址 例如mail@tangly1024.com
+  CONTACT_EMAIL:
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'czgaotian1@gmail.com', // 邮箱地址 例如mail@tangly1024.com
   CONTACT_WEIBO: process.env.NEXT_PUBLIC_CONTACT_WEIBO || '', // 你的微博个人主页
   CONTACT_TWITTER: process.env.NEXT_PUBLIC_CONTACT_TWITTER || '', // 你的twitter个人主页
   CONTACT_GITHUB:
-    process.env.NEXT_PUBLIC_CONTACT_GITHUB || 'https://github.com/meannoharm', // 你的github个人主页 例如 https://github.com/tangly1024
+    process.env.NEXT_PUBLIC_CONTACT_GITHUB || 'https://github.com/czgaotian', // 你的github个人主页 例如 https://github.com/tangly1024
   CONTACT_TELEGRAM: process.env.NEXT_PUBLIC_CONTACT_TELEGRAM || '', // 你的telegram 地址 例如 https://t.me/tangly_1024
   CONTACT_LINKEDIN: process.env.NEXT_PUBLIC_CONTACT_LINKEDIN || '', // 你的linkedIn 首页
   CONTACT_INSTAGRAM: process.env.NEXT_PUBLIC_CONTACT_INSTAGRAM || '', // 您的instagram地址

@@ -48,6 +48,13 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
   );
 };
 
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
 /**
  * 服务端搜索
  * @param {*} param0

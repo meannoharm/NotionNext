@@ -310,7 +310,7 @@ const BLOG = {
     process.env.NEXT_PUBLIC_ADSENSE_GOOGLE_SLOT_AUTO || '8807314373', // Google AdScene>广告>按单元广告>新建展示广告 （自动广告）
 
   // 万维广告
-  AD_WWADS_ID: process.env.NEXT_PUBLIC_WWAD_ID || null, // https://wwads.cn/ 创建您的万维广告单元ID
+  AD_WWADS_ID: process.env.NEXT_PUBLIC_WWAD_ID || '', // https://wwads.cn/ 创建您的万维广告单元ID
   AD_WWADS_BLOCK_DETECT: false, // 是否开启WWADS广告屏蔽插件检测,开启后会在广告位上以文字提示 @see https://github.com/bytegravity/whitelist-wwads
 
   // END<----营收相关
@@ -323,12 +323,12 @@ const BLOG = {
 
   // 作废配置
   AVATAR: process.env.NEXT_PUBLIC_AVATAR || '/avatar.svg', // 作者头像，被notion中的ICON覆盖。若无ICON则取public目录下的avatar.png
-  TITLE: process.env.NEXT_PUBLIC_TITLE || 'NotionNextBlogBase', // 站点标题 ，被notion中的页面标题覆盖；此处请勿留空白，否则服务器无法编译
+  TITLE: process.env.NEXT_PUBLIC_TITLE || 'notion-next-base', // 站点标题 ，被notion中的页面标题覆盖；此处请勿留空白，否则服务器无法编译
   HOME_BANNER_IMAGE:
     process.env.NEXT_PUBLIC_HOME_BANNER_IMAGE || '/bg_image.jpg', // 首页背景大图, 会被notion中的封面图覆盖，若无封面图则会使用代码中的 /public/bg_image.jpg 文件
   DESCRIPTION:
     process.env.NEXT_PUBLIC_DESCRIPTION ||
-    '这是一个由NotionNextBlogBase生成的站点', // 站点描述，被notion中的页面描述覆盖
+    '这是一个由notion-next-base生成的站点', // 站点描述，被notion中的页面描述覆盖
 
   // 网站图片
   IMG_LAZY_LOAD_PLACEHOLDER:

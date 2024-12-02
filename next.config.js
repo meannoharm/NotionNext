@@ -1,28 +1,9 @@
-// const fs = require('fs');
 const path = require('path');
 const { THEME } = require('./blog.config');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 const { i18n } = require('./next-i18next.config');
-
-// function scanSubdirectories(directory) {
-//   const subdirectories = [];
-
-//   fs.readdirSync(directory).forEach((file) => {
-//     const fullPath = path.join(directory, file);
-//     const stats = fs.statSync(fullPath);
-
-//     // landing主题比较特殊，不在可切换的主题中显示
-//     if (stats.isDirectory() && file !== 'landing') {
-//       subdirectories.push(file);
-//     }
-//   });
-
-//   return subdirectories;
-// }
-
-// const themes = scanSubdirectories(path.resolve(__dirname, 'themes'));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withBundleAnalyzer({

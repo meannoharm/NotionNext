@@ -52,14 +52,16 @@ const uploadDataToAlgolia = async (post: Page) => {
     const existed = await algoliaIndex.getObject<AlgoliaRecord>(post.id);
     if (!existed || !existed?.lastEditedDate || !existed?.lastIndexDate) {
       needUpdateIndex = true;
-    } else {
-      if (dayjs(post.lastEditedDate).isAfter(dayjs(existed.lastIndexDate))) {
-        needUpdateIndex = true;
-      }
+    } else if (
+      dayjs(post.lastEditedDate).isAfter(dayjs(existed.lastIndexDate))
+    ) {
+      needUpdateIndex = true;
     }
   } catch (error) {
-    console.error(error);
-    // 通常是不存在索引
+    console.log(error);
+    if ((error as Error).message.includes('ObjectID does not exist')) {
+      needUpdateIndex = true;
+    }
   }
 
   // 如果需要更新搜索
@@ -74,7 +76,10 @@ const uploadDataToAlgolia = async (post: Page) => {
       summary: post.summary,
       lastEditedDate: post.lastEditedDate, // 更新文章时间
       lastIndexDate: dayjs().valueOf(), // 更新索引时间
-      content: truncate(getPageContentText(post, post.blockMap as ExtendedRecordMap).join(''), 9000), // 索引9000个字节，因为api限制总请求内容上限1万个字节
+      content: truncate(
+        getPageContentText(post, post.blockMap as ExtendedRecordMap).join(''),
+        9000,
+      ), // 索引9000个字节，因为api限制总请求内容上限1万个字节
     };
 
     // console.log('更新Algolia索引', record)

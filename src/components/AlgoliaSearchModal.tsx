@@ -1,17 +1,18 @@
 import { useState, useImperativeHandle, useRef } from 'react';
 import BLOG from 'blog.config';
 import algoliasearch from 'algoliasearch';
-import replaceSearchResult from '@/components/Mark';
 import Link from 'next/link';
 import throttle from 'lodash/throttle';
 import { useStyleStore } from '@/providers/styleProvider';
+import markText from '@/lib/markText';
 
+import type { SearchIndex } from 'algoliasearch';
 /**
  * 结合 Algolia 实现的弹出式搜索框
  * 打开方式 cRef.current.openSearch()
  * https://www.algolia.com/doc/api-reference/search-api-parameters/
  */
-export default function AlgoliaSearchModal({ cRef }) {
+export default function AlgoliaSearchModal() {
   const [searchResults, setSearchResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState(0);
@@ -20,22 +21,13 @@ export default function AlgoliaSearchModal({ cRef }) {
   const [totalHit, setTotalHit] = useState(0);
   const [useTime, setUseTime] = useState(0);
 
-  /**
-   * 对外暴露方法
-   */
-  useImperativeHandle(cRef, () => {
-    return {
-      openSearch: () => {
-        setIsModalOpen(true);
-      },
-    };
-  });
-
-  const client = algoliasearch(
-    BLOG.ALGOLIA_APP_ID || '',
-    BLOG.ALGOLIA_SEARCH_ONLY_APP_KEY || '',
-  );
-  const index = client.initIndex(BLOG.ALGOLIA_INDEX);
+  const algoliaRef = useRef<SearchIndex | null>(null);
+  if (!algoliaRef.current) {
+    algoliaRef.current = algoliasearch(
+      BLOG.ALGOLIA_APP_ID || '',
+      BLOG.ALGOLIA_SEARCH_ONLY_APP_KEY || '',
+    ).initIndex(BLOG.ALGOLIA_INDEX);
+  }
 
   /**
    * 搜索

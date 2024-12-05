@@ -6,7 +6,7 @@ import Document, {
   NextScript,
   type DocumentContext,
 } from 'next/document';
-import BLOG from 'blog.config';
+import { FONT_AWESOME } from '@/constants';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -16,45 +16,26 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang={BLOG.LANG}>
+      <Html>
         <Head>
-          <link rel="icon" href={`${BLOG.BLOG_FAVICON}`} />
-          {/* 预加载字体 */}
-          {BLOG.FONT_AWESOME && (
-            <>
-              <link
-                rel="preload"
-                href={BLOG.FONT_AWESOME}
-                as="style"
-                crossOrigin="anonymous"
-              />
-              <link
-                rel="stylesheet"
-                href={BLOG.FONT_AWESOME}
-                crossOrigin="anonymous"
-                referrerPolicy="no-referrer"
-              />
-            </>
-          )}
-
-          {BLOG.FONT_URL?.map((fontUrl, index) => {
-            if (fontUrl.endsWith('.css')) {
-              return <link key={index} rel="stylesheet" href={fontUrl} />;
-            } else {
-              return (
-                <link
-                  key={index}
-                  rel="preload"
-                  href={fontUrl}
-                  as="font"
-                  type="font/woff2"
-                />
-              );
-            }
-          })}
+          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+          <link rel="manifest" href="/manifest.json" />
+          <link
+            rel="preload"
+            href={FONT_AWESOME}
+            as="style"
+            crossOrigin="anonymous"
+          />
+          <link
+            rel="stylesheet"
+            href={FONT_AWESOME}
+            crossOrigin="anonymous"
+            referrerPolicy="no-referrer"
+          />
         </Head>
 
-        <body className={`${BLOG.FONT_STYLE} scroll-smooth font-light`}>
+        <body>
           <Main />
           <NextScript />
         </body>

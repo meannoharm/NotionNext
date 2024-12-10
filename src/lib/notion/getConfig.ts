@@ -53,55 +53,49 @@ const getConfig = async (
   configIds.forEach((id) => {
     const { properties } = configBlockMap[id].value;
     const tempConfigItem = {
-      enable: false,
       name: '',
       value: '',
       type: '',
     };
     Object.entries<Decoration[]>(properties).forEach(([key, value]) => {
-      const { name, type } = schema[key];
+      const { name } = schema[key];
       const content = getTextContent(value);
-      if (type === 'checkbox' && name === 'enable') {
-        tempConfigItem[name] = content === 'Yes';
-      } else if (name === 'name' || name === 'value' || name === 'type') {
+      if (name === 'name' || name === 'value' || name === 'type') {
         tempConfigItem[name] = content;
       }
     });
-    const { enable, name, value: rawValue, type } = tempConfigItem;
+    const { name, value: rawValue, type } = tempConfigItem;
 
-    // Only process selected configurations.
-    if (enable) {
-      let value: any;
+    let value: any;
 
-      switch (type) {
-        case 'String':
-          value = rawValue;
-          break;
+    switch (type) {
+      case 'String':
+        value = rawValue;
+        break;
 
-        case 'Boolean':
-          value = rawValue.toLowerCase() === 'true';
-          break;
+      case 'Boolean':
+        value = rawValue.toLowerCase() === 'true';
+        break;
 
-        case 'Number':
-          value = parseFloat(rawValue);
-          if (isNaN(value)) {
-            console.warn(`Invalid number for ${name}: ${rawValue}`);
-          }
-          break;
+      case 'Number':
+        value = parseFloat(rawValue);
+        if (isNaN(value)) {
+          console.warn(`Invalid number for ${name}: ${rawValue}`);
+        }
+        break;
 
-        case 'JSON':
-          try {
-            value = JSON.parse(rawValue);
-          } catch (err) {
-            console.error(`Invalid JSON for ${name}: ${rawValue}`, err);
-          }
-          break;
+      case 'JSON':
+        try {
+          value = JSON.parse(rawValue);
+        } catch (err) {
+          console.error(`Invalid JSON for ${name}: ${rawValue}`, err);
+        }
+        break;
 
-        default:
-          console.warn(`Unsupported type for ${name}: ${type} in Config page`);
-      }
-      config[name] = value;
+      default:
+        console.warn(`Unsupported type for ${name}: ${type} in Config page`);
     }
+    config[name] = value;
   });
 
   return config;

@@ -16,7 +16,6 @@ export default function GoogleAdsense() {
     })),
   );
   const router = useRouter();
-  if (!GOOGLE_ADSENSE_ENABLE || !GOOGLE_ADSENSE_ID) return null;
 
   const initGoogleAdsense = () => {
     const ads = document.getElementsByClassName(
@@ -24,7 +23,8 @@ export default function GoogleAdsense() {
     ) as HTMLCollectionOf<HTMLElement>;
     if (!window.adsbygoogle) return;
 
-    Array.from(ads).forEach((ad) => {
+    Array.from(ads).forEach(() => {
+      // TODO google ad
       try {
         window.adsbygoogle.push({});
       } catch (e) {
@@ -34,14 +34,17 @@ export default function GoogleAdsense() {
   };
 
   useEffect(() => {
-    if (!GOOGLE_ADSENSE_ID) return;
+    if (!GOOGLE_ADSENSE_ENABLE || !GOOGLE_ADSENSE_ID) return;
 
-    const timer = setTimeout(() => {
-      initGoogleAdsense();
-    }, 3000);
+    const initAdsWithDelay = () => {
+      const timer = setTimeout(initGoogleAdsense, 3000);
+      return () => clearTimeout(timer);
+    };
 
-    return () => clearTimeout(timer); // 清除定时器
-  }, [router]);
+    return initAdsWithDelay();
+  }, [GOOGLE_ADSENSE_ENABLE, GOOGLE_ADSENSE_ID, router]);
+
+  if (!GOOGLE_ADSENSE_ENABLE || !GOOGLE_ADSENSE_ID) return null;
 
   return (
     <Script
@@ -74,17 +77,14 @@ const AdSlot: React.FC<AdSlotProps> = ({ type = 'show' }) => {
       GOOGLE_ADSENSE_SLOT_AUTO: state.GOOGLE_ADSENSE_SLOT_AUTO,
     })),
   );
-  if (!GOOGLE_ADSENSE_ENABLE || !GOOGLE_ADSENSE_ID) {
-    return null;
-  }
-
-  const commonProps = {
-    className: 'adsbygoogle',
-    'data-ad-client': GOOGLE_ADSENSE_ID,
-    'data-adtest': GOOGLE_ADSENSE_TEST ? 'on' : 'off',
-  };
 
   const adAttributes = useMemo(() => {
+    const commonProps = {
+      className: 'adsbygoogle',
+      'data-ad-client': GOOGLE_ADSENSE_ID,
+      'data-adtest': GOOGLE_ADSENSE_TEST ? 'on' : 'off',
+    };
+
     switch (type) {
       case 'in-article':
         return {
@@ -118,7 +118,19 @@ const AdSlot: React.FC<AdSlotProps> = ({ type = 'show' }) => {
           'data-full-width-responsive': 'true',
         };
     }
-  }, [type]);
+  }, [
+    GOOGLE_ADSENSE_ID,
+    GOOGLE_ADSENSE_SLOT_AUTO,
+    GOOGLE_ADSENSE_SLOT_FLOW,
+    GOOGLE_ADSENSE_SLOT_IN_ARTICLE,
+    GOOGLE_ADSENSE_SLOT_NATIVE,
+    GOOGLE_ADSENSE_TEST,
+    type,
+  ]);
+
+  if (!GOOGLE_ADSENSE_ENABLE || !GOOGLE_ADSENSE_ID) {
+    return null;
+  }
 
   return <ins {...adAttributes} />;
 };

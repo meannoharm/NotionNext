@@ -1,14 +1,13 @@
 import { SiteConfig } from '@/types';
 import { createStore } from 'zustand';
+import defaultConfig from 'site.config';
 
 export type ConfigStore = SiteConfig & {
   setConfig: (config: SiteConfig) => void;
 };
 
-export const defaultConfigState: SiteConfig = {};
-
 export const createConfigStore = (
-  initState: SiteConfig = defaultConfigState,
+  initState: SiteConfig = defaultConfig,
 ) => {
   return createStore<ConfigStore>((set) => ({
     ...initState,

@@ -1,19 +1,18 @@
 import { MongoClient } from 'mongodb';
+import { MONGO_DB_URL, MONGO_DB_NAME } from '@/constants';
 
-const DB_URL = process.env.MONGO_DB_URL as string;
-const DB_NAME = process.env.MONGO_DB_NAME as string;
 const DB_COLLECTION = 'posts';
 
 let client: MongoClient | null = null;
 
 async function connectToDatabase() {
   if (!client) {
-    client = await MongoClient.connect(DB_URL, {
+    client = await MongoClient.connect(MONGO_DB_URL, {
       // Optional connection pooling config
       maxPoolSize: 10, // Maintain up to 10 socket connections
     });
   }
-  return client.db(DB_NAME);
+  return client.db(MONGO_DB_NAME);
 }
 
 export async function getCache(key: string) {

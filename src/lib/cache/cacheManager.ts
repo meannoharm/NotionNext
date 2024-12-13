@@ -1,14 +1,13 @@
 import memoryCache from './memoryMache';
 import fileCache from './localFileCache';
 import mongoCache from './mongoDbCache';
-import BLOG from 'blog.config';
-
+import { ENABLE_CACHE, ENABLE_FILE_CACHE, MONGO_DB_NAME, MONGO_DB_URL } from '@/constants';
 import type { CacheManager } from './types';
 
 let cacheManager: CacheManager;
-if (process.env.MONGO_DB_URL && process.env.MONGO_DB_NAME) {
+if (MONGO_DB_URL && MONGO_DB_NAME) {
   cacheManager = mongoCache;
-} else if (process.env.ENABLE_FILE_CACHE) {
+} else if (ENABLE_FILE_CACHE) {
   cacheManager = fileCache;
 } else {
   cacheManager = memoryCache;
@@ -23,7 +22,7 @@ export async function getDataFromCache<T>(
   key: string,
   force?: boolean,
 ): Promise<T | null> {
-  if (BLOG.ENABLE_CACHE || force) {
+  if (ENABLE_CACHE || force) {
     const dataFromCache = await cacheManager.getCache(key);
     if (JSON.stringify(dataFromCache) === '[]') {
       return null;
@@ -42,7 +41,7 @@ export async function setDataToCache<T>(key: string, data: T) {
 }
 
 export async function delCacheData(key: string) {
-  if (!BLOG.ENABLE_CACHE) {
+  if (!ENABLE_CACHE) {
     return;
   }
   await cacheManager.delCache(key);

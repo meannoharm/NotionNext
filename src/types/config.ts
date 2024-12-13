@@ -21,6 +21,7 @@ export type SiteConfig = {
   IMG_LAZY_LOAD_PLACEHOLDER: string;
   POSTS_PER_PAGE: number;
   POST_LIST_STYLE: 'page' | 'scroll';
+  POSTS_SORT_BY: 'date' | 'notion';
   POST_LIST_PREVIEW: boolean;
   POST_PREVIEW_LINES: number;
   ENABLE_RSS: boolean;

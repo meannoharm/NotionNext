@@ -130,7 +130,10 @@ function generatePostSlug(page: Page, config: SiteConfig) {
     } else if (pattern === '%slug%') {
       segments.push(fallbackSlug);
     } else if (pattern === '%category%' && page?.category) {
-      const category = categoryPrefixMap[page.category] ?? page.category;
+      const category =
+        categoryPrefixMap && categoryPrefixMap[page.category]
+          ? categoryPrefixMap[page.category]
+          : page.category;
       segments.push(category);
     } else if (!pattern.includes('%')) {
       segments.push(pattern); // 处理非占位符的固定部分

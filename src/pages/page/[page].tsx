@@ -1,4 +1,3 @@
-import BLOG from 'blog.config';
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { useLayout } from '@/lib/theme';
@@ -52,7 +51,7 @@ const Page: FC<PageIndexProps> = (props) => {
 export const getStaticPaths: GetStaticPaths<PageParams> = async () => {
   const from = 'page-paths';
   const { publishedPosts } = await getSiteData(from);
-  const totalPages = Math.ceil(publishedPosts.length / BLOG.POSTS_PER_PAGE);
+  const totalPages = Math.ceil(publishedPosts.length / props.config.POSTS_PER_PAGE);
   return {
     // 生成每一页的路径
     paths: Array.from({ length: totalPages }, (_, i) => ({
@@ -72,19 +71,19 @@ export const getStaticProps: GetStaticProps<
 
   // 处理分页
   const posts = props.publishedPosts.slice(
-    BLOG.POSTS_PER_PAGE * (pageNumber - 1),
-    BLOG.POSTS_PER_PAGE * pageNumber,
+    props.config.POSTS_PER_PAGE * (pageNumber - 1),
+    props.config.POSTS_PER_PAGE * pageNumber,
   );
 
   // 处理预览
-  if (BLOG.POST_LIST_PREVIEW === 'true') {
+  if (props.config.POST_LIST_PREVIEW) {
     await Promise.all(
       posts.map(async (post) => {
         if (!post.password) {
           post.blockMap = await getPostBlocks(
             post.id,
             'slug',
-            BLOG.POST_PREVIEW_LINES,
+            props.config.POST_PREVIEW_LINES,
           );
         }
       }),
@@ -99,7 +98,7 @@ export const getStaticProps: GetStaticProps<
       page: pageNumber,
       ...(await serverSideTranslations(locale as string)),
     },
-    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+    revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
 };
 

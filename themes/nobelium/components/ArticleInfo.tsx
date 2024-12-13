@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import BLOG from 'blog.config';
 import TagItem from './TagItem';
 import md5 from 'js-md5';
 import dayjs from 'dayjs';
@@ -7,11 +6,20 @@ import { useCallback } from 'react';
 import Link from 'next/link';
 import { useSiteStore } from '@/providers/siteProvider';
 import NotionIcon from '@/components/NotionIcon';
+import { useConfigStore } from '@/providers/configProvider';
+import { useShallow } from 'zustand/react/shallow';
 
 export const ArticleInfo = () => {
   const post = useSiteStore((state) => state.post);
-  const emailHash = md5(BLOG.CONTACT_EMAIL);
+  const { EMAIL, GITHUB_URL, AUTHOR } = useConfigStore(
+    useShallow((state) => ({
+      EMAIL: state.EMAIL,
+      GITHUB_URL: state.GITHUB_URL,
+      AUTHOR: state.AUTHOR,
+    })),
+  );
   const tagOptions = useSiteStore((state) => state.tagOptions);
+  const emailHash = md5(EMAIL);
   const tagColor = useCallback(
     (tag: string) => {
       return tagOptions.find((t) => t.name === tag)?.color || 'gray';
@@ -30,18 +38,18 @@ export const ArticleInfo = () => {
         <>
           <div className="mt-7 flex items-center text-gray-500 dark:text-gray-500">
             <Link
-              href={BLOG.CONTACT_GITHUB || '#'}
+              href={GITHUB_URL || '#'}
               className="mr-1 h-6 w-6 overflow-hidden"
             >
               <Image
                 className="h-6 w-6 rounded-full"
-                alt={BLOG.AUTHOR}
+                alt={AUTHOR}
                 width={24}
                 height={24}
                 src={`https://gravatar.com/avatar/${emailHash}`}
               />
             </Link>
-            <div className="mr-4 md:block">{BLOG.AUTHOR}</div>
+            <div className="mr-4 md:block">{AUTHOR}</div>
             <div className="mr-4 md:ml-0">
               {dayjs(post?.date).format('YYYY-MM-DD')}
             </div>

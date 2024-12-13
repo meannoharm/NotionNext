@@ -1,5 +1,4 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -31,7 +30,7 @@ const TagDetailPage: FC<TagDetailPageProps> = (props) => {
   updateTag(props.tag);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout();
+  const ThemeLayout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,
@@ -44,7 +43,7 @@ const TagDetailPage: FC<TagDetailPageProps> = (props) => {
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <Layout />
+      <ThemeLayout />
     </>
   );
 };
@@ -62,8 +61,8 @@ export const getStaticProps: GetStaticProps<
   );
 
   const paginatedPosts = filteredPosts.slice(
-    BLOG.POSTS_PER_PAGE * (pageNumber - 1),
-    BLOG.POSTS_PER_PAGE * pageNumber,
+    props.config.POSTS_PER_PAGE * (pageNumber - 1),
+    props.config.POSTS_PER_PAGE * pageNumber,
   );
 
   return {
@@ -75,12 +74,12 @@ export const getStaticProps: GetStaticProps<
       page: pageNumber,
       ...(await serverSideTranslations(locale as string)),
     },
-    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+    revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
 };
 
 export const getStaticPaths: GetStaticPaths<TagDetailPageParams> = async () => {
-  const { tagOptions, publishedPosts } = await getSiteData(
+  const { tagOptions, publishedPosts, config: { POSTS_PER_PAGE } } = await getSiteData(
     'tag-page-static-path',
   );
   const paths: {
@@ -90,7 +89,7 @@ export const getStaticPaths: GetStaticPaths<TagDetailPageParams> = async () => {
     const tagPosts = publishedPosts.filter((post) =>
       post?.tags?.includes(tag.name),
     );
-    const totalPages = Math.ceil(tagPosts.length / BLOG.POSTS_PER_PAGE);
+    const totalPages = Math.ceil(tagPosts.length / POSTS_PER_PAGE);
     for (let i = 1; i < totalPages; i++) {
       paths.push({ params: { tag: tag.name, page: String(i + 1) } });
     }

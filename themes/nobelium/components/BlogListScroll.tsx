@@ -1,27 +1,33 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import BLOG from 'blog.config';
 import Link from 'next/link';
 import React from 'react';
 import { throttle } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
 import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
+import { useShallow } from 'zustand/react/shallow';
 
 
 const BlogListScroll = () => {
   const posts = useSiteStore((state) => state.posts);
-
+  const { POSTS_PER_PAGE, AUTHOR } = useConfigStore(
+    useShallow((state) => ({
+      POSTS_PER_PAGE: state.POSTS_PER_PAGE,
+      AUTHOR: state.AUTHOR,
+    })),
+  );
   const { t } = useTranslation('common');
   const [page, setPage] = useState(1);
   const targetRef = useRef<HTMLDivElement>(null);
 
   const hasMore = useMemo(
-    () => page * BLOG.POSTS_PER_PAGE < posts.length,
+    () => page * POSTS_PER_PAGE < posts.length,
     [posts, page],
   );
 
   const postsToShow = useMemo(
-    () => posts.slice(0, BLOG.POSTS_PER_PAGE * page),
+    () => posts.slice(0, POSTS_PER_PAGE * page),
     [posts, page],
   );
 
@@ -64,7 +70,7 @@ const BlogListScroll = () => {
           <div className="mb-4 text-sm text-gray-700">
             by
             <a href="#" className="text-gray-700">
-              {BLOG.AUTHOR}
+              {AUTHOR}
             </a>
             on {dayjs(post.date).format('YYYY-MM-DD')}
             <span className="mx-1 font-bold"> | </span>

@@ -1,10 +1,10 @@
-import BLOG from 'blog.config';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Select from '@/components/Select';
 import { THEMES } from '@/lib/theme';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useStyleStore } from '@/providers/styleProvider';
+import { useConfigStore } from '@/providers/configProvider';
 
 /**
  *
@@ -15,16 +15,11 @@ const DebugPanel = () => {
   const theme = useStyleStore((state) => state.theme);
   const setTheme = useStyleStore((state) => state.setTheme);
   const router = useRouter();
-  const [siteConfig, updateSiteConfig] = useState<Record<string, any>>({});
+  const siteConfig = useConfigStore(state => ({...state}));
   const { t } = useTranslation('common');
 
   // 主题下拉框
   const themeOptions = THEMES?.map((t: string) => ({ value: t, text: t }));
-
-  useEffect(() => {
-    updateSiteConfig(Object.assign({}, BLOG));
-    // updateThemeConfig(Object.assign({}, ThemeMap[BLOG.THEME].THEME_CONFIG))
-  }, []);
 
   function toggleShow() {
     setShow(!show);
@@ -39,7 +34,7 @@ const DebugPanel = () => {
     router.push({ pathname: router.pathname, query });
   }
 
-  function filterResult(text: string) {
+  function filterResult(text: any) {
     switch (text) {
       case 'true':
         return <span className="text-green-500">true</span>;
@@ -105,7 +100,7 @@ const DebugPanel = () => {
                     {k}
                   </span>
                   <span className="whitespace-nowrap">
-                    {filterResult(siteConfig[k] + '')}
+                    {filterResult(siteConfig[k as keyof typeof siteConfig])}
                   </span>
                 </div>
               ))}

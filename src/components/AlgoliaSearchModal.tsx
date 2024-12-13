@@ -1,10 +1,10 @@
 import { useState, useImperativeHandle, useRef } from 'react';
-import BLOG from 'blog.config';
 import algoliasearch from 'algoliasearch';
 import Link from 'next/link';
 import throttle from 'lodash/throttle';
 import { useStyleStore } from '@/providers/styleProvider';
 import markText from '@/lib/markText';
+import { ALGOLIA_APPLICATION_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } from '@/constants';
 
 import type { SearchIndex } from 'algoliasearch';
 /**
@@ -24,9 +24,9 @@ export default function AlgoliaSearchModal() {
   const algoliaRef = useRef<SearchIndex | null>(null);
   if (!algoliaRef.current) {
     algoliaRef.current = algoliasearch(
-      BLOG.ALGOLIA_APP_ID || '',
-      BLOG.ALGOLIA_SEARCH_ONLY_APP_KEY || '',
-    ).initIndex(BLOG.ALGOLIA_INDEX);
+      ALGOLIA_APPLICATION_ID || '',
+      ALGOLIA_SEARCH_API_KEY || '',
+    ).initIndex(ALGOLIA_INDEX_NAME);
   }
 
   /**
@@ -94,7 +94,7 @@ export default function AlgoliaSearchModal() {
     setIsModalOpen(false);
   };
 
-  if (!BLOG.ALGOLIA_APP_ID) {
+  if (!ALGOLIA_APPLICATION_ID) {
     return <></>;
   }
 

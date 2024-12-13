@@ -1,5 +1,6 @@
-import BLOG from 'blog.config';
+import { useConfigStore } from '@/providers/configProvider';
 import dynamic from 'next/dynamic';
+import { useShallow } from 'zustand/react/shallow';
 
 const GoogleAnalytics = dynamic(() =>
   import('@next/third-parties/google').then((res) => res.GoogleAnalytics),
@@ -43,19 +44,49 @@ const DisableCopy = dynamic(() => import('./components/DisableCopy'), {
 });
 
 const ExternalPlugin = (props: any) => {
+
+  const {
+    THEME_SWITCH,
+    DEBUG,
+    ACKEE_ENABLE,
+    VERCEL_SPEED_INSIGHTS_ENABLE,
+    VERCEL_ANALYTICS_ENABLE,
+    GOOGLE_ADSENSE_ENABLE,
+    FACEBOOK_APP_ID,
+    FACEBOOK_PAGE,
+    CUSTOM_RIGHT_CLICK_CONTEXT_MENU,
+    CAN_COPY,
+    GOOGLE_ANALYTICS_ENABLE,
+    GOOGLE_ANALYTICS_ID,
+  } = useConfigStore(
+    useShallow((state) => ({
+      THEME_SWITCH: state.THEME_SWITCH,
+      DEBUG: state.DEBUG,
+      ACKEE_ENABLE: state.ACKEE_ENABLE,
+      VERCEL_SPEED_INSIGHTS_ENABLE: state.VERCEL_SPEED_INSIGHTS_ENABLE,
+      VERCEL_ANALYTICS_ENABLE: state.VERCEL_ANALYTICS_ENABLE,
+      GOOGLE_ADSENSE_ENABLE: state.GOOGLE_ADSENSE_ENABLE,
+      FACEBOOK_APP_ID: state.FACEBOOK_APP_ID,
+      FACEBOOK_PAGE: state.FACEBOOK_PAGE,
+      CUSTOM_RIGHT_CLICK_CONTEXT_MENU: state.CUSTOM_RIGHT_CLICK_CONTEXT_MENU,
+      CAN_COPY: state.CAN_COPY,
+      GOOGLE_ANALYTICS_ENABLE: state.GOOGLE_ANALYTICS_ENABLE,
+      GOOGLE_ANALYTICS_ID: state.GOOGLE_ANALYTICS_ID,
+    })),
+  );
   return (
     <>
-      {BLOG.THEME_SWITCH && <ThemeSwitch />}
-      {BLOG.DEBUG && <DebugPanel />}
-      {BLOG.ANALYTICS_ACKEE_TRACKER && <Ackee />}
-      {BLOG.ANALYTICS_VERCEL && <Analytics />}
-      {BLOG.VERCEL_SPEED_INSIGHTS && <SpeedInsights />}
-      {BLOG.ADSENSE_GOOGLE_ID && <GoogleAdsense />}
-      {BLOG.FACEBOOK_APP_ID && BLOG.FACEBOOK_PAGE_ID && <Messenger />}
-      {BLOG.CUSTOM_RIGHT_CLICK_CONTEXT_MENU && <CustomContextMenu {...props} />}
-      {!BLOG.CAN_COPY && <DisableCopy />}
-      {BLOG.ANALYTICS_GOOGLE_ID && (
-        <GoogleAnalytics gaId={BLOG.ANALYTICS_GOOGLE_ID} />
+      {THEME_SWITCH && <ThemeSwitch />}
+      {DEBUG && <DebugPanel />}
+      {ACKEE_ENABLE && <Ackee />}
+      {VERCEL_SPEED_INSIGHTS_ENABLE && <SpeedInsights />}
+      {VERCEL_ANALYTICS_ENABLE && <Analytics />}
+      {GOOGLE_ADSENSE_ENABLE && <GoogleAdsense />}
+      {FACEBOOK_APP_ID && FACEBOOK_PAGE && <Messenger />}
+      {CUSTOM_RIGHT_CLICK_CONTEXT_MENU && <CustomContextMenu {...props} />}
+      {!CAN_COPY && <DisableCopy />}
+      {GOOGLE_ANALYTICS_ENABLE && GOOGLE_ANALYTICS_ID && (
+        <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />
       )}
       <VConsole />
     </>

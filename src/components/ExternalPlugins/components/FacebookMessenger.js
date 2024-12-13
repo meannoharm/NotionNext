@@ -1,13 +1,22 @@
-import BLOG from 'blog.config';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { useConfigStore } from '@/stores/siteStore';
+import { useShallow } from 'zustand/react/shallow';
+import { useTranslation } from 'next-i18next';
 
 export default function Messenger() {
+  const {FACEBOOK_PAGE_ID, FACEBOOK_APP_ID} = useConfigStore(useShallow(state => ({
+    FACEBOOK_PAGE_ID: state.FACEBOOK_PAGE_ID,
+    FACEBOOK_APP_ID: state.FACEBOOK_APP_ID,
+  })));
+
+  const {i18n:{language}} = useTranslation();
+
   return (
     <MessengerCustomerChat
-      pageId={BLOG.FACEBOOK_PAGE_ID}
-      appId={BLOG.FACEBOOK_APP_ID}
-      language={BLOG.LANG.replace('-', '_')}
+      pageId={FACEBOOK_PAGE_ID}
+      appId={FACEBOOK_APP_ID}
+      language={language.replace('-', '_')}
       shouldShowDialog={true}
     />
   );

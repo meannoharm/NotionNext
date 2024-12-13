@@ -1,4 +1,3 @@
-import BLOG from 'blog.config';
 import copy from 'copy-to-clipboard';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -47,6 +46,8 @@ import {
   HatenaIcon,
 } from 'react-share';
 import { useTranslation } from 'next-i18next';
+import { useConfigStore } from '@/providers/configProvider';
+import { useShallow } from 'zustand/react/shallow';
 
 const QrCode = dynamic(() => import('./QrCode'), {
   ssr: false,
@@ -68,8 +69,13 @@ const ShareButtons = ({
   body: string;
   image: string;
 }) => {
-  const services = BLOG.POSTS_SHARE_SERVICES.split(',');
-  const titleWithSiteInfo = title + ' | ' + BLOG.TITLE;
+  const { POSTS_SHARE_SERVICES, FACEBOOK_APP_ID } = useConfigStore(
+    useShallow((state) => ({
+      POSTS_SHARE_SERVICES: state.POSTS_SHARE_SERVICES,
+      FACEBOOK_APP_ID: state.FACEBOOK_APP_ID,
+    })),
+  );
+  const services = POSTS_SHARE_SERVICES.split(',');
   const [qrCodeShow, setQrCodeShow] = useState(false);
   const { t } = useTranslation('common');
 
@@ -99,12 +105,12 @@ const ShareButtons = ({
             </FacebookShareButton>
           );
         }
-        if (singleService === 'messenger') {
+        if (singleService === 'messenger' && FACEBOOK_APP_ID) {
           return (
             <FacebookMessengerShareButton
               key={singleService}
               url={shareUrl}
-              appId={BLOG.FACEBOOK_APP_ID}
+              appId={FACEBOOK_APP_ID}
               className="mx-1"
             >
               <FacebookMessengerIcon size={32} round />
@@ -127,7 +133,7 @@ const ShareButtons = ({
             <RedditShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               windowWidth={660}
               windowHeight={460}
               className="mx-1"
@@ -141,7 +147,7 @@ const ShareButtons = ({
             <EmailShareButton
               key={singleService}
               url={shareUrl}
-              subject={titleWithSiteInfo}
+              subject={title}
               body={body}
               className="mx-1"
             >
@@ -154,7 +160,7 @@ const ShareButtons = ({
             <TwitterShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               className="mx-1"
             >
               <TwitterIcon size={32} round />
@@ -166,7 +172,7 @@ const ShareButtons = ({
             <TelegramShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               className="mx-1"
             >
               <TelegramIcon size={32} round />
@@ -178,7 +184,7 @@ const ShareButtons = ({
             <WhatsappShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               separator=":: "
               className="mx-1"
             >
@@ -238,7 +244,7 @@ const ShareButtons = ({
             <TumblrShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               className="mx-1"
             >
               <TumblrIcon size={32} round />
@@ -250,7 +256,7 @@ const ShareButtons = ({
             <LivejournalShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               description={shareUrl}
               className="mx-1"
             >
@@ -263,7 +269,7 @@ const ShareButtons = ({
             <MailruShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               className="mx-1"
             >
               <MailruIcon size={32} round />
@@ -275,7 +281,7 @@ const ShareButtons = ({
             <ViberShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               className="mx-1"
             >
               <ViberIcon size={32} round />
@@ -287,7 +293,7 @@ const ShareButtons = ({
             <WorkplaceShareButton
               key={singleService}
               url={shareUrl}
-              quote={titleWithSiteInfo}
+              quote={title}
               className="mx-1"
             >
               <WorkplaceIcon size={32} round />
@@ -299,7 +305,7 @@ const ShareButtons = ({
             <WeiboShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               image={image}
               className="mx-1"
             >
@@ -312,7 +318,7 @@ const ShareButtons = ({
             <PocketShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               className="mx-1"
             >
               <PocketIcon size={32} round />
@@ -324,7 +330,7 @@ const ShareButtons = ({
             <InstapaperShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               className="mx-1"
             >
               <InstapaperIcon size={32} round />
@@ -336,7 +342,7 @@ const ShareButtons = ({
             <HatenaShareButton
               key={singleService}
               url={shareUrl}
-              title={titleWithSiteInfo}
+              title={title}
               windowWidth={660}
               windowHeight={460}
               className="mx-1"

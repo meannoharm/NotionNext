@@ -1,7 +1,11 @@
-import BLOG from 'blog.config';
 import getPageContentText from '@/lib/notion/getPageContentText';
 import algoliasearch from 'algoliasearch';
 import dayjs from 'dayjs';
+import {
+  ALGOLIA_APPLICATION_ID,
+  ALGOLIA_ADMIN_API_KEY,
+  ALGOLIA_INDEX_NAME,
+} from '@/constants';
 
 import type { ExtendedRecordMap, Page } from '@/types/notion';
 
@@ -37,10 +41,10 @@ const generateAlgoliaSearch = async (allPages: Page[]) => {
  */
 const uploadDataToAlgolia = async (post: Page) => {
   // Connect and authenticate with your Algolia app
-  const client = algoliasearch(BLOG.ALGOLIA_APP_ID, BLOG.ALGOLIA_ADMIN_APP_KEY);
+  const client = algoliasearch(ALGOLIA_APPLICATION_ID, ALGOLIA_ADMIN_API_KEY);
 
   // Create a new index and add a record
-  const algoliaIndex = client.initIndex(BLOG.ALGOLIA_INDEX);
+  const algoliaIndex = client.initIndex(ALGOLIA_INDEX_NAME);
 
   if (!post) {
     return;

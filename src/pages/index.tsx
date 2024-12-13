@@ -1,16 +1,16 @@
-import BLOG from 'blog.config';
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { useLayout } from '@/lib/theme';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import CommonHead from '@/components/CommonHead';
+import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
+import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
 import type { HomeIndexProps } from '@/types';
 import type { Page } from '@/types/notion';
-import CommonHead from '@/components/CommonHead';
-import { useSiteStore } from '@/providers/siteProvider';
-import { omit } from 'lodash';
 
 /**
  * 首页布局
@@ -23,9 +23,11 @@ const Index: FC<HomeIndexProps> = (props) => {
     (state) => state.updateSiteDataState,
   );
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
   updateSiteDataState(props);
   updateRenderPosts(props.posts, 1, props.publishedPosts.length);
+  updateConfig(props.config);
 
   const pageMeta = {
     title: `${siteInfo?.title} | ${siteInfo?.description}`,
@@ -36,12 +38,12 @@ const Index: FC<HomeIndexProps> = (props) => {
   };
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout() as FC;
+  const ThemeLayout = useLayout();
 
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <Layout />
+      <ThemeLayout />
     </>
   );
 };
@@ -58,16 +60,16 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
   let posts: Page[] = [];
 
   // 处理分页
-  if (BLOG.POST_LIST_STYLE === 'scroll') {
+  if (config.POST_LIST_STYLE === 'scroll') {
     posts = publishedPosts;
   }
 
-  if (BLOG.POST_LIST_STYLE === 'page') {
+  if (config.POST_LIST_STYLE === 'page') {
     posts = publishedPosts?.slice(0, config.POSTS_PER_PAGE) || [];
   }
 
   // 预览文章内容
-  if (BLOG.POST_LIST_PREVIEW === 'true') {
+  if (config.POST_LIST_PREVIEW) {
     await Promise.all(
       posts.map(async (post) => {
         if (!post.password) {

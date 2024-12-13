@@ -10,13 +10,12 @@ import Prism from 'prismjs';
 import { getBlockTitle } from 'notion-utils';
 import { useNotionContext, Text } from 'react-notion-x';
 import { useEffect, useMemo, useRef } from 'react';
-import BLOG from 'blog.config';
+import { MERMAID_CDN, PRISM_JS_LANGUAGE_PATH } from '@/constants';
 
 import type { CodeBlock } from 'notion-types';
 import Script from 'next/script';
 
-const CDN = BLOG.CDN;
-Prism.plugins.autoloader.languages_path = `https://${CDN}/prism/1.29.0/components/`;
+Prism.plugins.autoloader.languages_path = PRISM_JS_LANGUAGE_PATH;
 
 function Code({ block }: { block: CodeBlock }) {
   const { recordMap } = useNotionContext();
@@ -75,7 +74,7 @@ function Code({ block }: { block: CodeBlock }) {
       )}
       {language === 'mermaid' && (
         <Script
-          src={`https://${CDN}/mermaid/11.4.0/mermaid.min.js`}
+          src={MERMAID_CDN}
           onLoad={handleMermaidOnLoad}
         />
       )}

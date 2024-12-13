@@ -1,5 +1,4 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -32,7 +31,7 @@ const SearchDetailPage: FC<SearchDetailPageProps> = (props) => {
   updateRenderPosts(props.posts, props.page, props.resultCount);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout();
+  const ThemeLayout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,
@@ -45,7 +44,7 @@ const SearchDetailPage: FC<SearchDetailPageProps> = (props) => {
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <Layout />
+      <ThemeLayout />
     </>
   );
 };
@@ -72,8 +71,8 @@ export const getStaticProps: GetStaticProps<
   const pageNumber = parseInt(page, 10);
   const filteredPosts = await getSearchResult(props.publishedPosts, keyword);
   const posts = filteredPosts.slice(
-    BLOG.POSTS_PER_PAGE * (pageNumber - 1),
-    BLOG.POSTS_PER_PAGE * pageNumber,
+    props.config.POSTS_PER_PAGE * (pageNumber - 1),
+    props.config.POSTS_PER_PAGE * pageNumber,
   );
   return {
     props: {
@@ -84,7 +83,7 @@ export const getStaticProps: GetStaticProps<
       keyword,
       ...(await serverSideTranslations(locale as string)),
     },
-    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+    revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
 };
 

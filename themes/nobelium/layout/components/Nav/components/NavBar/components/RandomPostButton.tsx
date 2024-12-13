@@ -1,7 +1,7 @@
-import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
 
 /**
  * 随机跳转到一个文章
@@ -10,13 +10,16 @@ export default function RandomPostButton() {
   const router = useRouter();
   const { t } = useTranslation('menu');
   const latestPosts = useSiteStore((state) => state.latestPosts);
+  const SUB_PATH = useConfigStore((state) => state.SUB_PATH);
+
+
   /**
    * 随机跳转文章
    */
   function handleClick() {
     const randomIndex = Math.floor(Math.random() * latestPosts.length);
     const randomPost = latestPosts[randomIndex];
-    router.push(`${BLOG.SUB_PATH}/${randomPost?.slug}`);
+    router.push(`${SUB_PATH}/${randomPost?.slug}`);
   }
 
   return (

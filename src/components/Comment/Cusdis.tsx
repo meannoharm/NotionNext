@@ -1,11 +1,13 @@
-import BLOG from 'blog.config';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useStyleStore } from '@/providers/styleProvider';
+import Script from 'next/script';
+import { useShallow } from 'zustand/react/shallow';
+import { useConfigStore } from '@/providers/configProvider';
+import { SITE_URL } from '@/constants';
 
 import type { Page } from '@/types/notion';
-import Script from 'next/script';
 
 /**
  * @see https://cusdis.com/
@@ -17,6 +19,13 @@ const Cusdis = ({ post }: { post: Page }) => {
   const {
     i18n: { language },
   } = useTranslation();
+  const { CUSDIS_APP_ID, CUSDIS_HOST, CUSDIS_BASE } = useConfigStore(
+    useShallow((state) => ({
+      CUSDIS_APP_ID: state.CUSDIS_APP_ID,
+      CUSDIS_HOST: state.CUSDIS_HOST,
+      CUSDIS_BASE: state.CUSDIS_BASE,
+    })),
+  );
 
   useEffect(() => {
     renderCusdis();
@@ -36,19 +45,19 @@ const Cusdis = ({ post }: { post: Page }) => {
         ref={divRef}
         id="cusdis_thread"
         lang={language}
-        data-host={BLOG.COMMENT_CUSDIS_HOST}
-        data-app-id={BLOG.COMMENT_CUSDIS_APP_ID}
+        data-host={CUSDIS_HOST}
+        data-app-id={CUSDIS_APP_ID}
         data-page-id={post.id}
-        data-page-url={BLOG.LINK + router.asPath}
+        data-page-url={`${SITE_URL}${router.asPath}`}
         data-page-title={post.title}
         data-theme={isDarkMode ? 'dark' : 'light'}
       />
       <Script
         defer
-        src={`https://cusdis.com/js/widget/lang/${BLOG.LANG.toLowerCase()}.js`}
+        src={`${CUSDIS_BASE}/js/widget/lang/${language}.js`}
         onLoad={renderCusdis}
       />
-      <Script src={BLOG.COMMENT_CUSDIS_SCRIPT_SRC} onLoad={renderCusdis} />
+      <Script src={`${CUSDIS_BASE}/js/cusdis.es.js`} onLoad={renderCusdis} />
     </>
   );
 };

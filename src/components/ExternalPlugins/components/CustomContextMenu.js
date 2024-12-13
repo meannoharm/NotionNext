@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { THEMES } from '@/lib/theme';
 import { saveDarkModeToLocalStorage } from '@/lib/darkMode';
-import BLOG from 'blog.config';
 import useWindowSize from '@/hooks/useWindowSize';
 import { useTranslation } from 'next-i18next';
 import { useStyleStore } from '@/providers/styleProvider';
+import { useConfigStore } from '@/stores/siteStore';
 
 /**
  * 自定义右键菜单
@@ -22,6 +22,7 @@ export default function CustomContextMenu(props) {
   const windowSize = useWindowSize();
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+  const SUB_PATH = useConfigStore(state => state.SUB_PATH);
 
   const { latestPosts } = props;
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function CustomContextMenu(props) {
   function handleJumpToRandomPost() {
     const randomIndex = Math.floor(Math.random() * latestPosts.length);
     const randomPost = latestPosts[randomIndex];
-    router.push(`${BLOG.SUB_PATH}/${randomPost?.slug}`);
+    router.push(`${SUB_PATH}/${randomPost?.slug}`);
   }
 
   useLayoutEffect(() => {

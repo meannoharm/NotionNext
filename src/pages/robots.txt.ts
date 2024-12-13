@@ -1,4 +1,7 @@
-import BLOG from 'blog.config';
+import { getSiteData } from '@/lib/notion/getSiteData';
+import { isProduct } from '@/lib/utils';
+import { SITE_URL } from '@/constants';
+
 import type { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -17,20 +20,22 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
   res.setHeader('Content-Type', 'text/plain');
 
+  const { config } = await getSiteData('rss');
+
   // only allow the site to be crawlable on the production deployment
-  if (process.env.VERCEL_ENV === 'production') {
+  if (isProduct()) {
     res.write(`User-agent: *
 Allow: /
 Disallow: /api/get-tweet-ast/*
 Disallow: /api/search-notion
 
-Sitemap: ${BLOG.LINK}/sitemap.xml
+Sitemap: ${SITE_URL}/sitemap.xml
 `);
   } else {
     res.write(`User-agent: *
 Disallow: /
 
-Sitemap: ${BLOG.LINK}/sitemap.xml
+Sitemap: ${SITE_URL}/sitemap.xml
 `);
   }
 

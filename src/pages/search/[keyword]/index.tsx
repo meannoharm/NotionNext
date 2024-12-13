@@ -1,5 +1,4 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -31,7 +30,7 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
   updateRenderPosts(props.posts, 1, props.resultCount);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout();
+  const ThemeLayout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,
@@ -44,7 +43,7 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <Layout />
+      <ThemeLayout />
     </>
   );
 };
@@ -70,8 +69,8 @@ export const getStaticProps: GetStaticProps<
 
   const filteredPosts = await getSearchResult(props.publishedPosts, keyword);
   const posts =
-    BLOG.POST_LIST_STYLE === 'page'
-      ? filteredPosts.slice(0, BLOG.POSTS_PER_PAGE)
+    props.config.POST_LIST_STYLE === 'page'
+      ? filteredPosts.slice(0, props.config.POSTS_PER_PAGE)
       : filteredPosts;
 
   return {
@@ -82,7 +81,7 @@ export const getStaticProps: GetStaticProps<
       posts,
       ...(await serverSideTranslations(locale as string)),
     },
-    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+    revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
 };
 

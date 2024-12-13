@@ -1,6 +1,4 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import React from 'react';
-import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -38,7 +36,7 @@ const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
   updateCategory(props.category);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout();
+  const ThemeLayout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${props.category} | ${t('category')} | ${siteInfo?.title || ''}`,
@@ -51,7 +49,7 @@ const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <Layout />
+      <ThemeLayout />
     </>
   );
 };
@@ -70,8 +68,8 @@ export const getStaticProps: GetStaticProps<
   );
 
   const posts = filteredPosts.slice(
-    BLOG.POSTS_PER_PAGE * (pageNumber - 1),
-    BLOG.POSTS_PER_PAGE * pageNumber,
+    props.config.POSTS_PER_PAGE * (pageNumber - 1),
+    props.config.POSTS_PER_PAGE * pageNumber,
   );
 
   return {
@@ -83,14 +81,14 @@ export const getStaticProps: GetStaticProps<
       posts,
       ...(await serverSideTranslations(locale as string)),
     },
-    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+    revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
 };
 
 export const getStaticPaths: GetStaticPaths<
   CategoryDetailPageParams
 > = async () => {
-  const { categoryOptions, publishedPosts } =
+  const { categoryOptions, publishedPosts, config } =
     await getSiteData('category-paths');
   const paths: { params: CategoryDetailPageParams }[] = [];
 
@@ -99,7 +97,9 @@ export const getStaticPaths: GetStaticPaths<
     const categoryPosts = publishedPosts?.filter((post) =>
       post.category?.includes(category.name),
     );
-    const totalPages = Math.ceil(categoryPosts.length / BLOG.POSTS_PER_PAGE);
+    const totalPages = Math.ceil(
+      categoryPosts.length / config.POSTS_PER_PAGE,
+    );
     for (let i = 1; i < totalPages; i++) {
       paths.push({ params: { category: category.name, page: String(i + 1) } });
     }

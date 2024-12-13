@@ -53,3 +53,21 @@ export const MAILCHIMP_LIST_ID = serverSideGetEnv(
   'MAILCHIMP_LIST_ID',
   '',
 );
+
+// for cache
+export const ENABLE_CACHE = serverSideGetEnv(
+  'ENABLE_CACHE',
+  'true',
+).toLowerCase() === 'true';
+export const ENABLE_FILE_CACHE = serverSideGetEnv(
+  'ENABLE_FILE_CACHE',
+  'false',
+).toLowerCase() === 'true';
+export const MONGO_DB_URL = serverSideGetEnv(
+  'MONGO_DB_URL',
+  '',
+);
+export const MONGO_DB_NAME = serverSideGetEnv(
+  'MONGO_DB_NAME',
+  '',
+);

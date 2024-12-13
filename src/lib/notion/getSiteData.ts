@@ -1,4 +1,3 @@
-import BLOG from 'blog.config';
 import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
 import { getPostBlocks } from './getPostBlocks';
 import { idToUuid } from 'notion-utils';
@@ -82,20 +81,22 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   const publishedPosts: Page[] = [];
   // posts and pages
   const allPages: Page[] = [];
-  let configPage: Partial<SiteConfig> | null = null;
+  let config: SiteConfig | null = null;
   let notice: Page | null = null;
 
   if (configId) {
     try {
-      configPage = await getConfig(configId);
+      config = await getConfig(configId);
     } catch (error) {
       console.error(
         `Error getting properties for config page ${configId}:`,
         error,
       );
     }
+  } 
+  if (!config) {
+    throw new Error('config page in Notion is required');
   }
-  const config = configPage ? { ...BLOG, ...configPage } : BLOG;
 
   await Promise.all(
     pageIds.map(async (pageId) => {
@@ -216,23 +217,23 @@ function getNavList(navPages: Page[]): Nav[] {
  * @returns {Promise<{title,description,pageCover,icon}>}
  */
 function getSiteInfo(collection: PatchedCollection): SiteInfo {
-  const title = collection.name[0][0] || BLOG.TITLE;
+  const title = collection.name[0][0] || '';
   const description = collection.description
     ? Object.assign(collection).description[0][0]
-    : BLOG.DESCRIPTION;
+    : '';
   const pageCover = collection.cover
     ? mapImgUrl(collection.cover, collection, 'collection')
-    : BLOG.HOME_BANNER_IMAGE;
+    : '';
   let icon = collection?.icon
     ? mapImgUrl(collection?.icon, collection, 'collection')
-    : BLOG.AVATAR;
+    : '';
 
   // 用户头像压缩一下
   icon = compressImage(icon);
 
   // 站点图标不能是emoji
   if (!icon || isEmoji(icon)) {
-    icon = BLOG.AVATAR;
+    icon = '';
   }
   return { title, description, pageCover, icon };
 }

@@ -1,22 +1,23 @@
 import { getPostBlocks } from './getPostBlocks';
 import getPageIds from './getPageIds';
 import { getTextContent } from 'notion-utils';
+import defaultConfig from 'site.config';
 
 import type { SiteConfig, Decoration } from '@/types';
 
 // get config from notion page
 const getConfig = async (
   configPageId?: string,
-): Promise<Partial<SiteConfig>> => {
+): Promise<SiteConfig> => {
   if (!configPageId) {
-    return {};
+    return defaultConfig;
   }
   const configRecordMap = await getPostBlocks(configPageId, 'get-config');
   const configBlockMap = configRecordMap.block;
   const { content } = configBlockMap[configPageId].value;
 
   if (!content) {
-    return {};
+    return defaultConfig;
   }
 
   const configTableId = content.find((contentId) => {
@@ -24,7 +25,7 @@ const getConfig = async (
   });
 
   if (!configTableId) {
-    return {};
+    return defaultConfig;
   }
 
   const configBlock = configBlockMap[configTableId].value;
@@ -95,10 +96,10 @@ const getConfig = async (
       default:
         console.warn(`Unsupported type for ${name}: ${type} in Config page`);
     }
-    config[name] = value;
+    config[name as keyof SiteConfig] = value;
   });
 
-  return config;
+  return { ...defaultConfig, ...config };
 };
 
 export default getConfig;

@@ -6,12 +6,13 @@ import { useConfigStore } from '@/providers/configProvider';
 
 const Ackee = () => {
   const router = useRouter();
-  const {ACKEE_ENABLE, ACKEE_JS, ACKEE_DATA_SERVER, ACKEE_DOMAIN_ID} = useConfigStore(useShallow(state => ({
-    ACKEE_ENABLE: state.ACKEE_ENABLE,
-    ACKEE_JS: state.ACKEE_JS,
-    ACKEE_DATA_SERVER: state.ACKEE_DATA_SERVER,
-    ACKEE_DOMAIN_ID: state.ACKEE_DOMAIN_ID,
-  })));
+  const { ACKEE_JS, ACKEE_DATA_SERVER, ACKEE_DOMAIN_ID } = useConfigStore(
+    useShallow((state) => ({
+      ACKEE_JS: state.ACKEE_JS,
+      ACKEE_DATA_SERVER: state.ACKEE_DATA_SERVER,
+      ACKEE_DOMAIN_ID: state.ACKEE_DOMAIN_ID,
+    })),
+  );
 
   // handleAckee 函数
   const handleAckeeCallback = () => {

@@ -1,4 +1,3 @@
-import BLOG from 'blog.config';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPageTableOfContents } from '@/lib/notion/getPageTableOfContents';
@@ -16,6 +15,7 @@ import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, ArticleProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
+import { ALGOLIA_APPLICATION_ID } from '@/constants';
 
 export interface PrefixParams extends ParsedUrlQuery {
   slug: string[];
@@ -57,23 +57,22 @@ const Slug: FC<ArticleProps> = (props) => {
   const pageMeta: PageMeta = {
     title: post
       ? `${post?.title} | ${siteInfo?.title}`
-      : `${props?.siteInfo?.title || BLOG.TITLE} | loading`,
+      : `${props?.siteInfo?.title} | loading`,
     description: post?.summary || '',
     type: post?.type || '',
     slug: post?.slug || '',
-    image:
-      post?.pageCoverThumbnail || siteInfo?.pageCover || BLOG.HOME_BANNER_IMAGE,
+    image: post?.pageCoverThumbnail || siteInfo?.pageCover,
     category: post?.category?.[0],
     tags: post?.tags,
   };
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout();
+  const ThemeLayout = useLayout();
 
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <Layout />
+      <ThemeLayout />
     </>
   );
 };
@@ -133,7 +132,7 @@ export const getStaticProps: GetStaticProps<
   }
 
   // for algolia search
-  if (isProduct() && config.ALGOLIA_APP_ID) {
+  if (isProduct() && ALGOLIA_APPLICATION_ID) {
     uploadDataToAlgolia(post);
   }
 
@@ -143,7 +142,7 @@ export const getStaticProps: GetStaticProps<
       post,
       ...(await serverSideTranslations(locale as string)),
     },
-    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+    revalidate: config.NEXT_REVALIDATE_SECOND,
   };
 };
 

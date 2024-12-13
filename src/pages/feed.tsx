@@ -1,7 +1,7 @@
 import type { GetServerSideProps } from 'next';
 import RSS from 'rss';
-import BLOG from 'blog.config';
 import { getSiteData } from '@/lib/notion/getSiteData';
+import { SITE_URL } from '@/constants';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (req.method !== 'GET') {
@@ -12,23 +12,22 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return { props: {} };
   }
 
-  const { allPages } = await getSiteData('feed');
+  const { allPages, siteInfo } = await getSiteData('feed');
 
   const ttlMinutes = 24 * 60; // 24 hours
   const ttlSeconds = ttlMinutes * 60;
 
   const feed = new RSS({
-    title: BLOG.TITLE,
-    site_url: BLOG.LINK,
-    feed_url: `${BLOG.LINK}/feed.xml`,
-    language: BLOG.LANG,
+    title: siteInfo.title,
+    site_url: SITE_URL,
+    feed_url: `${SITE_URL}/feed.xml`,
     ttl: ttlMinutes,
   });
 
   allPages.forEach((page) => {
     feed.item({
       title: page.title,
-      url: `${BLOG.LINK}/${page.slug}`,
+      url: `${SITE_URL}/${page.slug}`,
       date: new Date(page.date),
       description: page.summary,
     });

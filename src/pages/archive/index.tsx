@@ -1,6 +1,5 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { useEffect, type FC } from 'react';
-import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { isBrowser } from '@/lib/utils';
 import { useTranslation } from 'next-i18next';
@@ -81,7 +80,7 @@ export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async ({
       archive,
       ...(await serverSideTranslations(locale as string)),
     },
-    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+    revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
 };
 

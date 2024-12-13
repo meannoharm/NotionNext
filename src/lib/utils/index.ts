@@ -1,3 +1,4 @@
+export * from './getEnvironmentVariable';
 export const isProduct = () => process.env.VERCEL_ENV === 'product';
 
 /**

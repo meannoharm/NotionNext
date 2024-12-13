@@ -10,6 +10,9 @@ import { mapImgUrl, compressImage } from './mapImage';
 import { PageStatus, PageType } from '@/types/notion';
 import dayjs from 'dayjs';
 import { isEmoji } from '@/lib/utils';
+import type { SiteConfig } from '@/types/config';
+import getConfig from './getConfig';
+import { NOTION_PAGE_ID } from '@/constants';
 
 import type {
   Nav,
@@ -18,8 +21,6 @@ import type {
   Site,
   PatchedCollection,
 } from '@/types/notion';
-import type { SiteConfig } from '@/types/config';
-import getConfig from './getConfig';
 
 /**
  * whole site info
@@ -28,7 +29,7 @@ import getConfig from './getConfig';
  * @returns {Promise<JSX.Element|*|*[]>}
  */
 export async function getSiteData(from: string): Promise<Site> {
-  const pageId = idToUuid(BLOG.NOTION_PAGE_ID);
+  const pageId = idToUuid(NOTION_PAGE_ID);
   // 尝试从缓存获取
   const cacheKey = `site_data_${pageId}`;
   const data = await getDataFromCache<Site>(cacheKey);

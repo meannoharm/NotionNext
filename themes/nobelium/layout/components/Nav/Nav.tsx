@@ -1,19 +1,26 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import BLOG from 'blog.config';
 import CONFIG from '@themes/nobelium/theme.config';
 import { SvgIcon } from './components/SvgIcon';
 import LazyImage from '@/components/LazyImage';
 import NavBar from './components/NavBar/NavBar';
 import styles from './Nav.module.css';
+import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { FC } from 'react';
-import { useSiteStore } from '@/providers/siteProvider';
+import { useShallow } from 'zustand/react/shallow';
 
 const Nav: FC = () => {
   const navRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const siteInfo = useSiteStore((state) => state.siteInfo);
+  const { ENABLE_RSS, AUTHOR } = useConfigStore(
+    useShallow((state) => ({
+      ENABLE_RSS: state.ENABLE_RSS,
+      AUTHOR: state.AUTHOR,
+    })),
+  );
 
   const handler: IntersectionObserverCallback = ([entry]) => {
     if (navRef && navRef.current) {
@@ -46,7 +53,7 @@ const Nav: FC = () => {
         <Link
           className="flex items-center rounded-full px-3 py-2 text-gray-800 hover:bg-gray-200/40 dark:text-gray-200 dark:hover:bg-gray-800/40"
           href="/"
-          aria-label={BLOG.TITLE}
+          aria-label={siteInfo?.title}
         >
           <div className="h-6 w-6">
             {CONFIG.NAV_NOTION_ICON ? (
@@ -54,7 +61,7 @@ const Nav: FC = () => {
                 src={siteInfo?.icon}
                 width={24}
                 height={24}
-                alt={BLOG.AUTHOR}
+                alt={AUTHOR}
               />
             ) : (
               <SvgIcon />

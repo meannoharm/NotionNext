@@ -13,11 +13,10 @@
     "url": "http://gaotian.net"
   },
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "post-build": "next-sitemap --config next-sitemap.config.js",
-    "export": "next build && next-sitemap --config next-sitemap.config.js && next export",
+    "export": "next export",
     "bundle-report": "ANALYZE=true pnpm build",
     "lint": "next lint"
   },

@@ -1,8 +1,9 @@
-import BLOG from 'blog.config';
 import dynamic from 'next/dynamic';
 import { isBrowser } from '@/lib/utils';
 import { useRouter } from 'next/router';
 import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
+import { useShallow } from 'zustand/react/shallow';
 
 const Artalk = dynamic(() => import('./Artalk'), { ssr: false });
 const Waline = dynamic(() => import('./Waline'), { ssr: false });
@@ -18,18 +19,6 @@ const Valine = dynamic(() => import('./Valine'), {
 });
 
 /**
- * 是否有评论
- */
-export const commentEnable =
-  BLOG.COMMENT_TWIKOO_ENV_ID ||
-  BLOG.COMMENT_WALINE_SERVER_URL ||
-  BLOG.COMMENT_VALINE_APP_ID ||
-  BLOG.COMMENT_GISCUS_REPO ||
-  BLOG.COMMENT_CUSDIS_APP_ID ||
-  BLOG.COMMENT_UTTERRANCES_REPO ||
-  BLOG.COMMENT_GITALK_CLIENT_ID;
-
-/**
  * 评论组件
  * @param {*} param0
  * @returns
@@ -38,6 +27,28 @@ const Comment = ({ className = '' }: { className?: string }) => {
   const router = useRouter();
   const post = useSiteStore((state) => state.post);
   const siteInfo = useSiteStore((state) => state.siteInfo);
+  const {
+    ARTALK_ENABLE,
+    TWIKOO_ENABLE,
+    GISCUS_ENABLE,
+    GITALK_ENABLE,
+    UTTERANCES_ENABLE,
+    VALINE_ENABLE,
+    WALINE_ENABLE,
+    CUSDIS_ENABLE,
+  } = useConfigStore(
+    useShallow((state) => ({
+      ARTALK_ENABLE: state.ARTALK_ENABLE,
+      ARTALK_SERVER: state.ARTALK_SERVER,
+      TWIKOO_ENABLE: state.TWIKOO_ENABLE,
+      GISCUS_ENABLE: state.GISCUS_ENABLE,
+      GITALK_ENABLE: state.GITALK_ENABLE,
+      UTTERANCES_ENABLE: state.UTTERANCES_ENABLE,
+      VALINE_ENABLE: state.VALINE_ENABLE,
+      WALINE_ENABLE: state.WALINE_ENABLE,
+      CUSDIS_ENABLE: state.CUSDIS_ENABLE,
+    })),
+  );
 
   if (
     isBrowser &&
@@ -57,15 +68,14 @@ const Comment = ({ className = '' }: { className?: string }) => {
       id="comment"
       className={`comment mt-5 text-gray-800 dark:text-gray-200 ${className}`}
     >
-      {BLOG.COMMENT_ARTALK_SERVER && <Artalk siteInfo={siteInfo} />}
-      {BLOG.COMMENT_WALINE_SERVER_URL && <Waline />}
-      {BLOG.COMMENT_CUSDIS_APP_ID && <Cusdis post={post} />}
-      {BLOG.COMMENT_TWIKOO_ENV_ID && <Twikoo />}
-      {BLOG.COMMENT_GITALK_CLIENT_ID && <Gitalk post={post} />}
-      {BLOG.COMMENT_UTTERRANCES_REPO && <Utterances />}
-      {BLOG.COMMENT_GISCUS_REPO && <Giscus />}
-
-      {BLOG.COMMENT_VALINE_APP_ID && <Valine post={post} />}
+      {ARTALK_ENABLE && <Artalk siteInfo={siteInfo} />}
+      {WALINE_ENABLE && <Waline />}
+      {CUSDIS_ENABLE && <Cusdis post={post} />}
+      {TWIKOO_ENABLE && <Twikoo />}
+      {GITALK_ENABLE && <Gitalk post={post} />}
+      {UTTERANCES_ENABLE && <Utterances />}
+      {GISCUS_ENABLE && <Giscus />}
+      {VALINE_ENABLE && <Valine post={post} />}
     </div>
   ) : null;
 };

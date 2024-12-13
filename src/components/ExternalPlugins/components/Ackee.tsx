@@ -1,20 +1,25 @@
-'use strict';
-
 import { useEffect } from 'react';
-import BLOG from 'blog.config';
-import { loadExternalResource } from '@/lib/utils';
 import { useRouter } from 'next/router';
 import Script from 'next/dist/client/script';
+import { useShallow } from 'zustand/react/shallow';
+import { useConfigStore } from '@/providers/configProvider';
+
 const Ackee = () => {
   const router = useRouter();
+  const {ACKEE_ENABLE, ACKEE_JS, ACKEE_DATA_SERVER, ACKEE_DOMAIN_ID} = useConfigStore(useShallow(state => ({
+    ACKEE_ENABLE: state.ACKEE_ENABLE,
+    ACKEE_JS: state.ACKEE_JS,
+    ACKEE_DATA_SERVER: state.ACKEE_DATA_SERVER,
+    ACKEE_DOMAIN_ID: state.ACKEE_DOMAIN_ID,
+  })));
 
   // handleAckee 函数
   const handleAckeeCallback = () => {
     handleAckee(
       router.asPath,
       {
-        server: BLOG.ANALYTICS_ACKEE_DATA_SERVER,
-        domainId: BLOG.ANALYTICS_ACKEE_DOMAIN_ID,
+        server: ACKEE_DATA_SERVER,
+        domainId: ACKEE_DOMAIN_ID,
       },
       {
         /*
@@ -45,9 +50,9 @@ const Ackee = () => {
     <>
       <Script
         async
-        src={BLOG.ANALYTICS_ACKEE_TRACKER}
-        data-ackee-server={BLOG.ANALYTICS_ACKEE_DATA_SERVER}
-        data-ackee-domain-id={BLOG.ANALYTICS_ACKEE_DOMAIN_ID}
+        src={ACKEE_JS}
+        data-ackee-server={ACKEE_DATA_SERVER}
+        data-ackee-domain-id={ACKEE_DOMAIN_ID}
         onLoad={handleAckeeCallback}
       />
     </>
@@ -69,7 +74,6 @@ const handleAckee = async function (
   environment: any,
   options: any = {},
 ) {
-  await loadExternalResource(BLOG.ANALYTICS_ACKEE_TRACKER, 'js');
   const ackeeTracker = window.ackeeTracker;
 
   const instance = ackeeTracker?.create(environment.server, options);

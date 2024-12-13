@@ -1,8 +1,8 @@
-import BLOG from 'blog.config';
 import { NotionAPI } from 'notion-client';
 import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
 import { delay } from '../utils';
 import { cloneDeep } from 'lodash';
+import { NOTION_ACCESS_TOKEN } from '@/constants';
 
 import type { ExtendedRecordMap } from '@/types/notion';
 
@@ -63,7 +63,7 @@ export async function getPageWithRetry(
       retryAttempts < 3 ? `剩余重试次数:${retryAttempts}` : '',
     );
     try {
-      const authToken = BLOG.NOTION_ACCESS_TOKEN || '';
+      const authToken = NOTION_ACCESS_TOKEN || '';
       const api = new NotionAPI({
         authToken,
         userTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -103,9 +103,7 @@ function filterPostBlockMap(
   const clonePageBlock = cloneDeep(pageBlockMap);
   let count = 0;
 
-  // for (const i in clonePageBlock.block) {
   for (const [key, block] of Object.entries(clonePageBlock.block)) {
-    // i= key, b = block
     if (slice && slice > 0 && count > slice) {
       delete clonePageBlock.block[key];
       continue;

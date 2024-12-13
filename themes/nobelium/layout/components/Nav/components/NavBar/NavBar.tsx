@@ -7,8 +7,8 @@ import LanguageSwitchButton from './components/LanguageSwitchButton';
 import DarkModeButton from './components/DarkModeButton';
 import { Menu } from './components/Menu';
 import { isEmpty } from 'lodash';
-import BLOG from 'blog.config';
 import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { Nav } from '@/types';
 
@@ -16,6 +16,7 @@ const NavBar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const mobileMenuToggleButtonRef = useRef(null);
   const customNav = useSiteStore((state) => state.navList);
+  const ENABLE_RSS = useConfigStore((state) => state.ENABLE_RSS);
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -29,7 +30,7 @@ const NavBar: FC = () => {
           icon: 'fas fa-rss',
           title: 'rss',
           to: '/feed',
-          show: !!(BLOG.ENABLE_RSS && CONFIG.MENU_RSS),
+          show: !!(ENABLE_RSS && CONFIG.MENU_RSS),
         },
         {
           id: 'search',

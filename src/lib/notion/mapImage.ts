@@ -1,7 +1,7 @@
-import BLOG from 'blog.config';
 import type { Block } from 'notion-types';
 import { PatchedCollection } from '@/types/notion';
 import { isEmoji } from '@/lib/utils';
+import { NOTION_HOST } from '@/constants';
 
 /**
  * 图片映射
@@ -25,7 +25,7 @@ export const mapImgUrl = (
   let ret = '';
   // 相对目录，则视为notion的自带图片
   if (img.startsWith('/')) {
-    ret = BLOG.NOTION_HOST + img;
+    ret = NOTION_HOST + img;
   } else {
     ret = img;
   }
@@ -45,7 +45,7 @@ export const mapImgUrl = (
   // 使用Notion图传
   if (needConvert) {
     ret =
-      BLOG.NOTION_HOST +
+      NOTION_HOST +
       '/image/' +
       encodeURIComponent(ret) +
       '?table=' +
@@ -92,7 +92,7 @@ export const compressImage = (
     return '';
   }
   if (
-    image.indexOf(BLOG.NOTION_HOST) === 0 &&
+    image.indexOf(NOTION_HOST) === 0 &&
     image.includes('amazonaws.com')
   ) {
     return `${image}&width=${width}`;

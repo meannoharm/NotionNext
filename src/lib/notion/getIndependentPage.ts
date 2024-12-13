@@ -1,7 +1,7 @@
-import BLOG from 'blog.config';
 import { getPostBlocks } from './getPostBlocks';
 import { defaultMapImageUrl } from 'react-notion-x';
 import dayjs from 'dayjs';
+import { NOTION_HOST } from '@/constants';
 
 import { Block, Page, PageType, PageStatus } from '@/types/notion';
 
@@ -41,7 +41,7 @@ export async function getIndependentPage(pageId: string, from: string) {
 function getPageCover(postInfo: Block) {
   const pageCover = postInfo.format?.page_cover;
   if (pageCover) {
-    if (pageCover.startsWith('/')) return BLOG.NOTION_HOST + pageCover;
+    if (pageCover.startsWith('/')) return NOTION_HOST + pageCover;
     if (pageCover.startsWith('http'))
       return defaultMapImageUrl(pageCover, postInfo);
   }

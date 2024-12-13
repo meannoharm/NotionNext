@@ -3,8 +3,8 @@ import dynamic from 'next/dynamic';
 import React, { type FC, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import BLOG from 'blog.config';
 import { mapImgUrl } from '@/lib/notion/mapImage';
+import { NOTION_PAGE_ID, SITE_URL } from '@/constants';
 
 import type { Page } from '@/types/notion';
 import { idToUuid } from 'notion-utils';
@@ -44,7 +44,7 @@ const Modal = dynamic(
 );
 
 const mapPageUrl = (pageId: string) => {
-  if (pageId === idToUuid(BLOG.NOTION_PAGE_ID)) {
+  if (pageId === idToUuid(NOTION_PAGE_ID)) {
     return '/';
   } else {
     return `/${pageId}`;
@@ -56,6 +56,14 @@ const NotionPage: FC<{
   className?: string;
 }> = ({ post, className = '' }) => {
   const isDarkMode = useStyleStore((state) => state.isDarkMode);
+  const domain = useMemo(() => {
+    try {
+      const url = new URL(SITE_URL);
+      return url.hostname;
+    } catch {
+      throw new Error('Invalid SITE_URL');
+    }
+  }, []);
 
   const components = useMemo<Partial<NotionComponents>>(
     () => ({
@@ -90,8 +98,8 @@ const NotionPage: FC<{
     <div id="notion-article" className={`mx-auto overflow-hidden ${className}`}>
       <NotionRenderer
         recordMap={post.blockMap}
-        rootPageId={BLOG.NOTION_PAGE_ID}
-        rootDomain={BLOG.DOMAIN}
+        rootPageId={NOTION_PAGE_ID}
+        rootDomain={domain}
         darkMode={isDarkMode}
         mapImageUrl={mapImgUrl}
         mapPageUrl={mapPageUrl}

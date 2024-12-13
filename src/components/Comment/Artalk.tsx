@@ -1,7 +1,7 @@
-import BLOG from 'blog.config';
 import 'artalk/Artalk.css';
 import Artalk from 'artalk';
 import { useEffect, useRef } from 'react';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { SiteInfo } from '@/types';
 import { useTranslation } from 'next-i18next';
@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next';
  */
 
 const ArtalkComponent = ({ siteInfo }: { siteInfo: SiteInfo }) => {
+  const ARTALK_SERVER = useConfigStore((state) => state.ARTALK_SERVER);
   const artalkRef = useRef<HTMLDivElement>(null);
   const {
     i18n: { language },
@@ -20,7 +21,7 @@ const ArtalkComponent = ({ siteInfo }: { siteInfo: SiteInfo }) => {
     if (!artalkRef.current) return;
 
     const instance = Artalk.init({
-      server: BLOG.COMMENT_ARTALK_SERVER,
+      server: ARTALK_SERVER,
       el: artalkRef.current,
       locale: language,
       site: siteInfo.title,
@@ -29,7 +30,7 @@ const ArtalkComponent = ({ siteInfo }: { siteInfo: SiteInfo }) => {
     return () => {
       instance?.destroy();
     };
-  }, [siteInfo.title, language]);
+  }, [siteInfo.title, language, ARTALK_SERVER]);
 
   return <div ref={artalkRef} />;
 };

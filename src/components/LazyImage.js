@@ -1,4 +1,3 @@
-import BLOG from 'blog.config';
 import Head from 'next/head';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -12,7 +11,7 @@ export default function LazyImage({
   id,
   src,
   alt,
-  placeholderSrc = BLOG.IMG_LAZY_LOAD_PLACEHOLDER,
+  placeholderSrc,
   className,
   width,
   height,
@@ -22,6 +21,8 @@ export default function LazyImage({
 }) {
   const imageRef = useRef(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const IMG_LAZY_LOAD_PLACEHOLDER = useConfigStore(state => state.IMG_LAZY_LOAD_PLACEHOLDER);
+  const finalPlaceholderSrc = placeholderSrc || IMG_LAZY_LOAD_PLACEHOLDER;
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -58,7 +59,7 @@ export default function LazyImage({
   // 动态添加width、height和className属性，仅在它们为有效值时添加
   const imgProps = {
     ref: imageRef,
-    src: imageLoaded ? src : placeholderSrc,
+    src: imageLoaded ? src : finalPlaceholderSrc,
     alt: alt,
     onLoad: handleImageLoad,
   };

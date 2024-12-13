@@ -1,6 +1,4 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import React from 'react';
-import BLOG from 'blog.config';
 import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
@@ -27,7 +25,7 @@ const Category: FC<CategoryIndexProps> = (props) => {
   updateSiteDataState(props);
 
   // 根据页面路径加载不同Layout文件
-  const Layout = useLayout();
+  const ThemeLayout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${t('category')} | ${siteInfo?.title}`,
@@ -40,7 +38,7 @@ const Category: FC<CategoryIndexProps> = (props) => {
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <Layout />
+      <ThemeLayout />
     </>
   );
 };
@@ -54,7 +52,7 @@ export const getStaticProps: GetStaticProps<CategoryIndexProps> = async ({
       ...omit(globalData, 'allPages'),
       ...(await serverSideTranslations(locale as string)),
     },
-    revalidate: BLOG.NEXT_REVALIDATE_SECOND,
+    revalidate: globalData.config.NEXT_REVALIDATE_SECOND,
   };
 };
 

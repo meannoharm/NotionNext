@@ -1,4 +1,4 @@
-import BLOG from 'blog.config';
+import { MAILCHIMP_API_KEY, MAILCHIMP_LIST_ID } from '@/constants';
 
 /**
  * 订阅邮件-服务端接口
@@ -10,8 +10,8 @@ export default function subscribeToMailchimpApi(
   firstName = '',
   lastName = '',
 ): Promise<Response> {
-  const listId = BLOG.MAILCHIMP_LIST_ID; // 替换为你的邮件列表 ID
-  const apiKey = BLOG.MAILCHIMP_API_KEY; // 替换为你的 API KEY
+  const listId = MAILCHIMP_LIST_ID; // 替换为你的邮件列表 ID
+  const apiKey = MAILCHIMP_API_KEY; // 替换为你的 API KEY
   if (!email || !listId || !apiKey) {
     return Promise.reject(
       `Missing required parameters, email: ${email}, listId: ${listId}, apiKey: ${apiKey}`,

@@ -49,7 +49,16 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
   return (
     <Head>
       <title>{title}</title>
-      {/* TODO: <meta name="theme-color" content={BLOG.BACKGROUND_DARK} /> */}
+      <meta
+        name="theme-color"
+        content="#ffffff"
+        media="(prefers-color-scheme: light)"
+      />
+      <meta
+        name="theme-color"
+        content="#151515"
+        media="(prefers-color-scheme: dark)"
+      />
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0"
@@ -89,10 +98,7 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
           />
           <meta property="article:author" content={AUTHOR} />
           <meta property="article:section" content={category} />
-          <meta
-            property="article:publisher"
-            content={FACEBOOK_PAGE || ''}
-          />
+          <meta property="article:publisher" content={FACEBOOK_PAGE || ''} />
         </>
       )}
 

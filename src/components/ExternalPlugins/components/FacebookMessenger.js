@@ -1,16 +1,20 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { useConfigStore } from '@/stores/siteStore';
+import { useConfigStore } from '@/providers/configProvider';
 import { useShallow } from 'zustand/react/shallow';
 import { useTranslation } from 'next-i18next';
 
 export default function Messenger() {
-  const {FACEBOOK_PAGE_ID, FACEBOOK_APP_ID} = useConfigStore(useShallow(state => ({
-    FACEBOOK_PAGE_ID: state.FACEBOOK_PAGE_ID,
-    FACEBOOK_APP_ID: state.FACEBOOK_APP_ID,
-  })));
+  const { FACEBOOK_PAGE_ID, FACEBOOK_APP_ID } = useConfigStore(
+    useShallow((state) => ({
+      FACEBOOK_PAGE_ID: state.FACEBOOK_PAGE_ID,
+      FACEBOOK_APP_ID: state.FACEBOOK_APP_ID,
+    })),
+  );
 
-  const {i18n:{language}} = useTranslation();
+  const {
+    i18n: { language },
+  } = useTranslation();
 
   return (
     <MessengerCustomerChat

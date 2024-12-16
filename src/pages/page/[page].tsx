@@ -4,12 +4,12 @@ import { useLayout } from '@/lib/theme';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
+import { useSiteStore } from '@/providers/siteProvider';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, PageIndexProps } from '@/types';
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
-import { useSiteStore } from '@/providers/siteProvider';
 
 export interface PageParams extends ParsedUrlQuery {
   page: string;
@@ -90,10 +90,9 @@ export const getStaticProps: GetStaticProps<
     );
   }
 
-  omit(props, 'allPages');
   return {
     props: {
-      ...props,
+      ...omit(props, 'allPages'),
       posts,
       page: pageNumber,
       ...(await serverSideTranslations(locale as string)),

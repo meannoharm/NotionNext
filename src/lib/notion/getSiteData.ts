@@ -93,7 +93,7 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
         error,
       );
     }
-  } 
+  }
   if (!config) {
     throw new Error('config page in Notion is required');
   }

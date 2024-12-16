@@ -10,12 +10,12 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getIndependentPage } from '@/lib/notion/getIndependentPage';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
+import { ALGOLIA_APPLICATION_ID } from '@/constants';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, ArticleProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import { ALGOLIA_APPLICATION_ID } from '@/constants';
 
 export interface PrefixParams extends ParsedUrlQuery {
   slug: string[];

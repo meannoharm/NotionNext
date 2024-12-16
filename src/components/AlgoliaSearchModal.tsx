@@ -1,5 +1,5 @@
-import { useState, useImperativeHandle, useRef } from 'react';
-import algoliasearch from 'algoliasearch';
+import { useState, useRef } from 'react';
+import { algoliasearch, SearchClient } from 'algoliasearch';
 import Link from 'next/link';
 import throttle from 'lodash/throttle';
 import markText from '@/lib/markText';
@@ -8,7 +8,6 @@ import { useTranslation } from 'next-i18next';
 import { useConfigStore } from '@/providers/configProvider';
 import { useSiteStore } from '@/providers/siteProvider';
 
-import type { SearchIndex } from 'algoliasearch';
 import type { AlgoliaRecord } from '@/lib/algolia';
 
 /**
@@ -27,12 +26,12 @@ export default function AlgoliaSearchModal() {
   const SUB_PATH = useConfigStore((state) => state.SUB_PATH);
   const { t } = useTranslation('search');
 
-  const algoliaRef = useRef<SearchIndex | null>(null);
+  const algoliaRef = useRef<SearchClient | null>(null);
   if (!algoliaRef.current) {
     algoliaRef.current = algoliasearch(
       ALGOLIA_APPLICATION_ID || '',
       ALGOLIA_SEARCH_API_KEY || '',
-    ).initIndex(ALGOLIA_INDEX_NAME);
+    );
   }
 
   /**
@@ -54,8 +53,8 @@ export default function AlgoliaSearchModal() {
       if (!algoliaRef.current) {
         return;
       }
-      const res = await algoliaRef.current.search<AlgoliaRecord>(query, { page, hitsPerPage: 10 });
-      const { hits, nbHits, nbPages, processingTimeMS } = res;
+      const res = await algoliaRef.current.searchSingleIndex<AlgoliaRecord>({indexName: ALGOLIA_INDEX_NAME, searchParams: {query, page}});
+      const { hits, nbHits, nbPages, processingTimeMS } = res.results;
       setUseTime(processingTimeMS);
       setTotalPage(nbPages);
       setTotalHit(nbHits);

@@ -1,4 +1,3 @@
-import { getSiteData } from '@/lib/notion/getSiteData';
 import { isProduct } from '@/lib/utils';
 import { SITE_URL } from '@/constants';
 
@@ -19,8 +18,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // cache for up to one day
   res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
   res.setHeader('Content-Type', 'text/plain');
-
-  const { config } = await getSiteData('rss');
 
   // only allow the site to be crawlable on the production deployment
   if (isProduct()) {

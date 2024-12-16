@@ -50,8 +50,8 @@ const Page: FC<PageIndexProps> = (props) => {
 
 export const getStaticPaths: GetStaticPaths<PageParams> = async () => {
   const from = 'page-paths';
-  const { publishedPosts } = await getSiteData(from);
-  const totalPages = Math.ceil(publishedPosts.length / props.config.POSTS_PER_PAGE);
+  const { publishedPosts, config } = await getSiteData(from);
+  const totalPages = Math.ceil(publishedPosts.length / config.POSTS_PER_PAGE);
   return {
     // 生成每一页的路径
     paths: Array.from({ length: totalPages }, (_, i) => ({

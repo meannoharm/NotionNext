@@ -16,7 +16,7 @@ export const PRISM_JS_LANGUAGE_PATH = `${CDN_BASE}/prism/1.29.0/components/`;
 export const MERMAID_CDN = `${CDN_BASE}/mermaid/11.4.0/mermaid.min.js`;
 
 export const NOTION_HOST = 'https://www.notion.so';
-export const NOTION_ACCESS_TOKEN = serverSideGetEnv('NOTION_ACCESS_TOKEN');
+export const NOTION_ACCESS_TOKEN = serverSideGetEnv('NOTION_ACCESS_TOKEN', '');
 
 // Algolia
 export const ALGOLIA_APPLICATION_ID = clientSideGetEnv(

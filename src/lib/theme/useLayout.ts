@@ -1,8 +1,7 @@
-import BLOG from 'blog.config';
 import dynamic from 'next/dynamic';
-import { useSearchParams } from 'next/navigation';
 import * as ThemeComponents from '@theme-components';
 import { useRouter } from 'next/router';
+import { useStyleStore } from '@/providers/styleProvider';
 
 /**
  * Route path-to-layout mapping
@@ -26,13 +25,12 @@ const layoutNameMapping: Record<string, string> = {
 
 export const useLayout = (): React.ComponentType<any> => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const theme = useStyleStore((state) => state.theme);
 
-  const theme = searchParams.get('theme') || BLOG.THEME;
   const layoutName = (layoutNameMapping[router.pathname] ||
     'PageNotFound') as keyof typeof ThemeComponents;
 
-  return theme !== BLOG.THEME
+  return theme
     ? dynamic(() => import(`themes/${theme}`).then((m) => m[layoutName]), {
         ssr: true,
       })

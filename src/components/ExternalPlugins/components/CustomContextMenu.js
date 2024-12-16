@@ -6,7 +6,7 @@ import { saveDarkModeToLocalStorage } from '@/lib/darkMode';
 import useWindowSize from '@/hooks/useWindowSize';
 import { useTranslation } from 'next-i18next';
 import { useStyleStore } from '@/providers/styleProvider';
-import { useConfigStore } from '@/stores/siteStore';
+import { useConfigStore } from '@/providers/configProvider';
 
 /**
  * 自定义右键菜单
@@ -22,7 +22,7 @@ export default function CustomContextMenu(props) {
   const windowSize = useWindowSize();
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-  const SUB_PATH = useConfigStore(state => state.SUB_PATH);
+  const SUB_PATH = useConfigStore((state) => state.SUB_PATH);
 
   const { latestPosts } = props;
   const router = useRouter();

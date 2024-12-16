@@ -1,5 +1,5 @@
 import getPageContentText from '@/lib/notion/getPageContentText';
-import algoliasearch from 'algoliasearch';
+import { algoliasearch } from 'algoliasearch';
 import dayjs from 'dayjs';
 import {
   ALGOLIA_APPLICATION_ID,
@@ -43,8 +43,6 @@ const uploadDataToAlgolia = async (post: Page) => {
   // Connect and authenticate with your Algolia app
   const client = algoliasearch(ALGOLIA_APPLICATION_ID, ALGOLIA_ADMIN_API_KEY);
 
-  // Create a new index and add a record
-  const algoliaIndex = client.initIndex(ALGOLIA_INDEX_NAME);
 
   if (!post) {
     return;
@@ -53,11 +51,11 @@ const uploadDataToAlgolia = async (post: Page) => {
   // 检查是否有索引
   let needUpdateIndex = false;
   try {
-    const existed = await algoliaIndex.getObject<AlgoliaRecord>(post.id);
+    const existed = await client.getObject({indexName: ALGOLIA_INDEX_NAME, objectID: post.id});
     if (!existed || !existed?.lastEditedDate || !existed?.lastIndexDate) {
       needUpdateIndex = true;
     } else if (
-      dayjs(post.lastEditedDate).isAfter(dayjs(existed.lastIndexDate))
+     dayjs(post.lastEditedDate).isAfter(dayjs(existed.lastIndexDate as number))
     ) {
       needUpdateIndex = true;
     }
@@ -70,7 +68,7 @@ const uploadDataToAlgolia = async (post: Page) => {
 
   // 如果需要更新搜索
   if (needUpdateIndex) {
-    const record: AlgoliaRecord = {
+    const record = {
       objectID: post.id,
       title: post.title,
       category: post.category,
@@ -87,9 +85,7 @@ const uploadDataToAlgolia = async (post: Page) => {
     };
 
     // console.log('更新Algolia索引', record)
-    algoliaIndex
-      .saveObject(record)
-      .wait()
+    client.saveObject({indexName: ALGOLIA_INDEX_NAME, body: record})
       .then((r) => {
         console.log('Algolia索引更新', r);
       })

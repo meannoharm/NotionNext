@@ -4,7 +4,9 @@ export function serverSideGetEnv(
   env = process.env,
 ): string {
   if (typeof window !== 'undefined') {
-    throw new Error(`Config error: cannot get environment variable "${key}" in browser`);
+    throw new Error(
+      `Config error: cannot get environment variable "${key}" in browser`,
+    );
   }
 
   const value = env[key];
@@ -30,7 +32,7 @@ export function clientSideGetEnv(
     return value;
   }
 
-  if (defaultValue) {
+  if (defaultValue !== undefined) {
     return defaultValue;
   }
 

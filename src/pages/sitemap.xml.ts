@@ -7,7 +7,7 @@ import type { ISitemapField } from 'next-sitemap';
 import type { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { allPages, config } = await getSiteData('rss');
+  const { allPages } = await getSiteData('rss');
   const lastmod = dayjs().format('YYYY-MM-DD');
   const defaultFields: ISitemapField[] = [
     {

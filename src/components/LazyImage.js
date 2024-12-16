@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import React, { useEffect, useRef, useState } from 'react';
+import { useConfigStore } from '@/stores/config';
 
 /**
  * 图片懒加载

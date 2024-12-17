@@ -2,7 +2,7 @@ import { getDataFromCache, setDataToCache } from '@/lib/cache/cacheManager';
 import { getPostBlocks } from './getPostBlocks';
 import { idToUuid } from 'notion-utils';
 import { getCategories } from './getCategories';
-import getPageIds from './getPageIds';
+import getPageIds, { getConfigPageId } from './getPageIds';
 import { getTags } from './getTags';
 import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
@@ -70,11 +70,16 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
 
   // the first view is all pages
   // the second view is config
-  const [pageIds, [configId]] = getPageIds(
+  const pageIds = getPageIds(
     block.collection_id || null,
     pageRecordMap.collection_query,
     pageRecordMap.collection_view,
     block.view_ids,
+  );
+  const configId = getConfigPageId(
+    block.collection_id || null,
+    pageRecordMap.collection_query,
+    pageRecordMap.collection_view,
   );
 
   const navPageList: Page[] = [];

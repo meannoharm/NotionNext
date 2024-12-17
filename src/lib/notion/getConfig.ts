@@ -6,7 +6,7 @@ import defaultConfig from 'site.config';
 import type { SiteConfig, Decoration } from '@/types';
 
 // get config from notion page
-const getConfig = async (configPageId?: string): Promise<SiteConfig> => {
+const getConfig = async (configPageId: string | null): Promise<SiteConfig> => {
   if (!configPageId) {
     return defaultConfig;
   }

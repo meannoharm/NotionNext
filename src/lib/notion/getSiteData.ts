@@ -89,18 +89,16 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
   let config: SiteConfig | null = null;
   let notice: Page | null = null;
 
-  if (configId) {
-    try {
-      config = await getConfig(configId);
-    } catch (error) {
-      console.error(
-        `Error getting properties for config page ${configId}:`,
-        error,
-      );
-    }
+  try {
+    config = await getConfig(configId);
+  } catch (error) {
+    console.error(
+      `Error getting properties for config page ${configId}:`,
+      error,
+    );
   }
   if (!config) {
-    throw new Error('config page in Notion is required');
+    throw new Error('config of the site is required');
   }
 
   await Promise.all(

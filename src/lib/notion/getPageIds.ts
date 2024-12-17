@@ -38,7 +38,7 @@ export const getConfigPageId = (
   for (const view of Object.values(collectionView)) {
     if (view.value.name === CONFIG_VIEW_NAME) {
       return collectionQuery[collectionId][view.value.id].collection_group_results
-        ?.blockIds[0];
+        ?.blockIds[0] || null;
     }
   }
   return null;

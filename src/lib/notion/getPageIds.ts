@@ -18,13 +18,13 @@ export default function getPageIds(
   if (!collectionQuery && !collectionView) {
     return [];
   }
-  return viewIds
-    .map(
-      (viewId) =>
-        collectionQuery[collectionId][viewId].collection_group_results
-          ?.blockIds || [],
-    )
-    .flat();
+  const idList = new Set<string>();
+  for (const viewId of viewIds) {
+    const ids = collectionQuery[collectionId][viewId].collection_group_results
+      ?.blockIds || [];
+    ids.forEach((id) => idList.add(id));
+  }
+  return Array.from(idList);
 }
 
 export const getConfigPageId = (

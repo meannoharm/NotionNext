@@ -1,13 +1,13 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { useLayout } from '@/lib/theme';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
-import type { FC } from 'react';
-import type { PageNotFoundIndexProps, PageMeta } from '@/types';
-import type { GetStaticProps } from 'next';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
 import { omit } from 'lodash';
+import { useEffect, type FC } from 'react';
+
+import type { PageNotFoundIndexProps, PageMeta } from '@/types';
+import type { GetStaticProps } from 'next';
 
 /**
  * 404
@@ -20,7 +20,9 @@ const NoFound: FC<PageNotFoundIndexProps> = (props) => {
   );
   const { siteInfo } = props;
 
-  updateSiteDataState(props);
+  useEffect(() => {
+    updateSiteDataState(props);
+  }, [props]);
 
   const pageMeta: PageMeta = {
     title: `${props?.siteInfo?.title} | 页面找不到啦`,

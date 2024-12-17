@@ -5,8 +5,8 @@ import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from '@/providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
+import { useEffect, type FC } from 'react';
 
-import type { FC } from 'react';
 import type { PageMeta, CategoryIndexProps } from '@/types';
 import type { GetStaticProps } from 'next';
 
@@ -22,7 +22,9 @@ const Category: FC<CategoryIndexProps> = (props) => {
     (state) => state.updateSiteDataState,
   );
 
-  updateSiteDataState(props);
+  useEffect(() => {
+    updateSiteDataState(props);
+  }, [props]);
 
   // 根据页面路径加载不同Layout文件
   const ThemeLayout = useLayout();

@@ -43,7 +43,7 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
   const description = pageMeta?.description || siteInfo.description;
   const type = pageMeta?.type || 'website';
   const keywords = pageMeta?.tags?.join(',') || KEYWORDS;
-  const lang = language.replace('-', '_'); // Facebook OpenGraph 要 zh_CN 這樣的格式才抓得到語言
+  const lang = language ? language.replace('-', '_') : ''; // Facebook OpenGraph 要 zh_CN 這樣的格式才抓得到語言
   const category = pageMeta?.category || KEYWORDS; // section 主要是像是 category 這樣的分類，Facebook 用這個來抓連結的分類
 
   return (

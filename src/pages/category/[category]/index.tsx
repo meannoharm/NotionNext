@@ -6,10 +6,10 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from '@/providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import { omit } from 'lodash';
+import { useEffect, type FC } from 'react';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, CategoryDetailProps } from '@/types';
-import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 
 export interface CategoryDetailParams extends ParsedUrlQuery {
@@ -30,9 +30,11 @@ const CategoryDetail: FC<CategoryDetailProps> = (props) => {
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
   const updateCategory = useSiteStore((state) => state.updateCategory);
 
-  updateSiteDataState(props);
-  updateRenderPosts(props.posts, 1, props.resultCount);
-  updateCategory(props.category);
+  useEffect(() => {
+    updateSiteDataState(props);
+    updateRenderPosts(props.posts, 1, props.resultCount);
+    updateCategory(props.category);
+  }, [props]);
 
   // 根据页面路径加载不同Layout文件
   const ThemeLayout = useLayout();

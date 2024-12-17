@@ -34,8 +34,10 @@ const Slug: FC<ArticleProps> = (props) => {
   );
   const updatePost = useSiteStore((state) => state.updatePost);
 
-  updateSiteDataState(props);
-  updatePost(post);
+  useEffect(() => {
+    updateSiteDataState(props);
+    updatePost(post);
+  }, [props]);
 
   // 文章加载
   useEffect(() => {

@@ -5,10 +5,10 @@ import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
+import { useEffect, type FC } from 'react';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, PageIndexProps } from '@/types';
-import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 
 export interface PageParams extends ParsedUrlQuery {
@@ -27,8 +27,10 @@ const Page: FC<PageIndexProps> = (props) => {
   );
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
 
-  updateSiteDataState(props);
-  updateRenderPosts(props.posts, props.page, props.publishedPosts.length);
+  useEffect(() => {
+    updateSiteDataState(props);
+    updateRenderPosts(props.posts, props.page, props.publishedPosts.length);
+  }, [props]);
 
   // 根据页面路径加载不同Layout文件
   const PostList = useLayout();

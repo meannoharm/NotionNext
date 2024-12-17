@@ -15,7 +15,7 @@ const DebugPanel = () => {
   const theme = useStyleStore((state) => state.theme);
   const setTheme = useStyleStore((state) => state.setTheme);
   const router = useRouter();
-  const siteConfig = useConfigStore(state => ({...state}));
+  const siteConfig = useConfigStore((state) => state);
   const { t } = useTranslation('common');
 
   // 主题下拉框

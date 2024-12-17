@@ -6,9 +6,7 @@ import defaultConfig from 'site.config';
 import type { SiteConfig, Decoration } from '@/types';
 
 // get config from notion page
-const getConfig = async (
-  configPageId?: string,
-): Promise<SiteConfig> => {
+const getConfig = async (configPageId?: string): Promise<SiteConfig> => {
   if (!configPageId) {
     return defaultConfig;
   }
@@ -42,7 +40,7 @@ const getConfig = async (
   const collectionId = configBlock.collection_id as string;
   const { schema } = configRecordMap.collection[collectionId].value;
 
-  const [configIds] = getPageIds(
+  const configIds = getPageIds(
     collectionId,
     configRecordMap.collection_query,
     configRecordMap.collection_view,
@@ -59,6 +57,7 @@ const getConfig = async (
       type: '',
     };
     Object.entries<Decoration[]>(properties).forEach(([key, value]) => {
+      if (!schema[key]) return;
       const { name } = schema[key];
       const content = getTextContent(value);
       if (name === 'name' || name === 'value' || name === 'type') {

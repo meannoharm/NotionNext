@@ -21,8 +21,10 @@ const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   );
   const updateArchive = useSiteStore((state) => state.updateArchive);
 
-  updateSiteDataState(props);
-  updateArchive(props.archive);
+  useEffect(() => {
+    updateSiteDataState(props);
+    updateArchive(props.archive);
+  }, [props]);
 
   // 根据页面路径加载不同Layout文件
   const Archive = useLayout();

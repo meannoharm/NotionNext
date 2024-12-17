@@ -6,10 +6,10 @@ import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
 import getSearchResult from '@/lib/notion/getSearchResult';
 import { omit } from 'lodash';
+import { useEffect, type FC } from 'react';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, SearchDetailProps } from '@/types';
-import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 
 export interface CategoryDetailParams extends ParsedUrlQuery {
@@ -25,9 +25,11 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
   const { t } = useTranslation('nav');
 
-  updateSiteDataState(props);
-  updateKeyword(keyword);
-  updateRenderPosts(props.posts, 1, props.resultCount);
+  useEffect(() => {
+    updateSiteDataState(props);
+    updateKeyword(keyword);
+    updateRenderPosts(props.posts, 1, props.resultCount);
+  }, [props]);
 
   // 根据页面路径加载不同Layout文件
   const ThemeLayout = useLayout();

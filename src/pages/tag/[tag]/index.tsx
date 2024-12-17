@@ -5,8 +5,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { omit } from 'lodash';
 import { useSiteStore } from '@/providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
+import { useEffect, type FC } from 'react';
 
-import type { FC } from 'react';
 import type { PageMeta, TagDetailProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps, GetStaticPaths } from 'next';
@@ -29,9 +29,11 @@ const TagIndex: FC<TagDetailProps> = (props) => {
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
   const updateTag = useSiteStore((state) => state.updateTag);
 
-  updateSiteDataState(props);
-  updateRenderPosts(props.posts, 1, props.resultCount);
-  updateTag(tag);
+  useEffect(() => {
+    updateSiteDataState(props);
+    updateRenderPosts(props.posts, 1, props.resultCount);
+    updateTag(tag);
+  }, [props]);
 
   // 根据页面路径加载不同Layout文件
   const ThemeLayout = useLayout();

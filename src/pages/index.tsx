@@ -1,6 +1,5 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
-import { useLayout } from '@/lib/theme';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
@@ -8,9 +7,10 @@ import { useConfigStore } from '@/providers/configProvider';
 import { omit } from 'lodash';
 
 import type { GetStaticProps } from 'next';
-import type { FC } from 'react';
+import { useEffect, type FC } from 'react';
 import type { HomeIndexProps } from '@/types';
 import type { Page } from '@/types/notion';
+import { useLayout } from '@/lib/theme';
 
 /**
  * 首页布局
@@ -25,9 +25,11 @@ const Index: FC<HomeIndexProps> = (props) => {
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
   const updateConfig = useConfigStore((state) => state.setConfig);
 
-  updateSiteDataState(props);
-  updateRenderPosts(props.posts, 1, props.publishedPosts.length);
-  updateConfig(props.config);
+  useEffect(() => {
+    updateSiteDataState(props);
+    updateRenderPosts(props.posts, 1, props.publishedPosts.length);
+    updateConfig(props.config);
+  }, [props]);
 
   const pageMeta = {
     title: `${siteInfo?.title} | ${siteInfo?.description}`,

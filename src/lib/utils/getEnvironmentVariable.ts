@@ -1,14 +1,8 @@
 export function serverSideGetEnv(
   key: string,
-  defaultValue?: string,
+  defaultValue: string,
   env = process.env,
 ): string {
-  if (typeof window !== 'undefined') {
-    throw new Error(
-      `Config error: cannot get environment variable "${key}" in browser`,
-    );
-  }
-
   const value = env[key];
 
   if (value !== undefined) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Draggable } from '@/components/Draggable';
-import { THEMES } from '@/lib/theme';
+import { THEMES } from '@/constants';
 import { useRouter } from 'next/router';
 import { useStyleStore } from '@/providers/styleProvider';
 /**

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
-import { THEMES } from '@/lib/theme';
+import { THEMES } from '@/constants';
 import { saveDarkModeToLocalStorage } from '@/lib/darkMode';
 import useWindowSize from '@/hooks/useWindowSize';
 import { useTranslation } from 'next-i18next';

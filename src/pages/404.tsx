@@ -1,10 +1,10 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import { useLayout } from '@/lib/theme';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
 import { omit } from 'lodash';
 import { useEffect, type FC } from 'react';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { PageNotFoundIndexProps, PageMeta } from '@/types';
 import type { GetStaticProps } from 'next';
@@ -31,9 +31,6 @@ const NoFound: FC<PageNotFoundIndexProps> = (props) => {
     type: 'website',
     image: siteInfo?.pageCover,
   };
-
-  // 根据页面路径加载不同Layout文件
-  const ThemeLayout = useLayout();
 
   return (
     <>

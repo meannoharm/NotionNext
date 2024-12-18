@@ -1,4 +1,4 @@
-import LayoutBase from '@themes/nobelium/layout/LayoutBase';
+import LayoutBase from '@notion-next-base-theme/nobelium/src/layout/LayoutBase';
 import BlogArchiveItem from './components/BlogArchiveItem';
 import { useSiteStore } from '@/providers/siteProvider';
 

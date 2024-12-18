@@ -10,9 +10,7 @@ export interface BlogPostProps {
   isShowSummary?: boolean;
 }
 const BlogPost: FC<BlogPostProps> = ({ post, isShowSummary = true }) => {
-  const { SUB_PATH } = useConfigStore(
-    (state) => ({ SUB_PATH: state.SUB_PATH }),
-  );
+  const SUB_PATH = useConfigStore((state) => state.SUB_PATH);
   const isSearchResult = post.results && post.results.length > 0;
 
   return (

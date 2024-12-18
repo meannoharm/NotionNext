@@ -1,11 +1,11 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { omit } from 'lodash';
 import { useSiteStore } from '@/providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import { useEffect, type FC } from 'react';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { PageMeta, TagDetailProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
@@ -34,9 +34,6 @@ const TagIndex: FC<TagDetailProps> = (props) => {
     updateRenderPosts(props.posts, 1, props.resultCount);
     updateTag(tag);
   }, [props]);
-
-  // 根据页面路径加载不同Layout文件
-  const ThemeLayout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,

@@ -5,12 +5,13 @@ import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
 import { useConfigStore } from '@/providers/configProvider';
 import { omit } from 'lodash';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { GetStaticProps } from 'next';
 import { useEffect, type FC } from 'react';
 import type { HomeIndexProps } from '@/types';
 import type { Page } from '@/types/notion';
-import { useLayout } from '@/lib/theme';
+
 
 /**
  * 首页布局
@@ -38,9 +39,6 @@ const Index: FC<HomeIndexProps> = (props) => {
     slug: '',
     type: 'website',
   };
-
-  // 根据页面路径加载不同Layout文件
-  const ThemeLayout = useLayout();
 
   return (
     <>

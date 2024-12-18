@@ -1,5 +1,4 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
-import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
@@ -7,12 +6,13 @@ import { useSiteStore } from '@/providers/siteProvider';
 import getSearchResult from '@/lib/notion/getSearchResult';
 import { omit } from 'lodash';
 import { useEffect, type FC } from 'react';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, SearchDetailProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 
-export interface CategoryDetailParams extends ParsedUrlQuery {
+export interface SearchDetailParams extends ParsedUrlQuery {
   keyword: string;
 }
 
@@ -30,9 +30,6 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
     updateKeyword(keyword);
     updateRenderPosts(props.posts, 1, props.resultCount);
   }, [props]);
-
-  // 根据页面路径加载不同Layout文件
-  const ThemeLayout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,
@@ -64,10 +61,10 @@ export const getStaticPaths = async () => {
  */
 export const getStaticProps: GetStaticProps<
   SearchDetailProps,
-  CategoryDetailParams
+  SearchDetailParams
 > = async ({ params, locale }) => {
   const props = await getSiteData('search-detail-page');
-  const { keyword } = params as CategoryDetailParams;
+  const { keyword } = params as SearchDetailParams;
 
   const filteredPosts = await getSearchResult(props.publishedPosts, keyword);
   const posts =

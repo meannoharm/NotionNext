@@ -1,0 +1,8 @@
+{
+  "name": "@notion-next-base-theme/nobelium",
+  "version": "0.0.1",
+  "description": "Nobelium theme for NotionNextBlogBase",
+  "main": "src",
+  "license": "MIT",
+  "dependencies": {}
+}

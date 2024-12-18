@@ -1,12 +1,12 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
 import React from 'react';
-import { useLayout } from '@/lib/theme';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from '@/providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import { omit } from 'lodash';
 import { useEffect, type FC } from 'react';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, CategoryDetailProps } from '@/types';
@@ -35,9 +35,6 @@ const CategoryDetail: FC<CategoryDetailProps> = (props) => {
     updateRenderPosts(props.posts, 1, props.resultCount);
     updateCategory(props.category);
   }, [props]);
-
-  // 根据页面路径加载不同Layout文件
-  const ThemeLayout = useLayout();
 
   const pageMeta: PageMeta = {
     title: `${props.category} | ${t('category')} | ${siteInfo?.title || ''}`,

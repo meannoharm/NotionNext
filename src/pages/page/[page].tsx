@@ -1,11 +1,11 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { getPostBlocks } from '@/lib/notion/getPostBlocks';
-import { useLayout } from '@/lib/theme';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
 import { useEffect, type FC } from 'react';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, PageIndexProps } from '@/types';
@@ -32,8 +32,6 @@ const Page: FC<PageIndexProps> = (props) => {
     updateRenderPosts(props.posts, props.page, props.publishedPosts.length);
   }, [props]);
 
-  // 根据页面路径加载不同Layout文件
-  const PostList = useLayout();
   const pageMeta: PageMeta = {
     title: `${props?.page} | Page | ${siteInfo?.title}`,
     description: siteInfo?.description,
@@ -45,7 +43,7 @@ const Page: FC<PageIndexProps> = (props) => {
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <PostList />
+      <ThemeLayout />
     </>
   );
 };

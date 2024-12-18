@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic';
 
-import type { Page } from '@/types';
 import type { FC } from 'react';
 import { useSiteStore } from '@/providers/siteProvider';
 

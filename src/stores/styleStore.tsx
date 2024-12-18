@@ -1,10 +1,11 @@
 import { operateDarkMode } from '@/lib/darkMode';
 import { saveDarkModeToLocalStorage } from '@/lib/darkMode';
-import BLOG from 'blog.config';
 import { createStore } from 'zustand';
+import { THEMES } from '@/constants';
 
 export interface StyleState {
   theme: string;
+  themeList: string[];
   isDarkMode: boolean;
   isLoading: boolean;
 }
@@ -18,7 +19,8 @@ export interface StyleAction {
 export type StyleStore = StyleState & StyleAction;
 
 export const defaultInitState: StyleState = {
-  theme: BLOG.THEME,
+  theme: THEMES[0],
+  themeList: THEMES,
   isDarkMode: false,
   isLoading: false,
 };

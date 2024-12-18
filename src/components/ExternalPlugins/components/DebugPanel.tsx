@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Select from '@/components/Select';
-import { THEMES } from '@/lib/theme';
+import { THEMES } from '@/constants';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useStyleStore } from '@/providers/styleProvider';

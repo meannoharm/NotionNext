@@ -1,5 +1,4 @@
 const path = require('path');
-const { THEME } = require('./blog.config');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -40,17 +39,12 @@ const nextConfig = withBundleAnalyzer({
       },
     ];
   },
-  webpack: (config) => {
-    // 动态主题：添加 resolve.alias 配置，将动态路径映射到实际路径
-    config.resolve.alias['@theme-components'] = path.resolve(
-      __dirname,
-      'themes',
-      THEME,
-    );
-    return config;
-  },
   i18n,
   transpilePackages: ['react-tweet'],
+  // webpack: (config) => {
+  //   config.resolve.alias['@notion-next-base-theme'] = path.resolve(__dirname, 'themes');
+  //   return config;
+  // },
 });
 
 module.exports = nextConfig;

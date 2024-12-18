@@ -21,7 +21,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@themes/*": ["./themes/*"]
+      "@notion-next-base-theme/*": ["./themes/*"],
     },
     "forceConsistentCasingInFileNames": true
   },

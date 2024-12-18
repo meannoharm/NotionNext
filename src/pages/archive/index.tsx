@@ -1,6 +1,5 @@
 import { getSiteData } from '@/lib/notion/getSiteData';
 import { useEffect, type FC } from 'react';
-import { useLayout } from '@/lib/theme';
 import { isBrowser } from '@/lib/utils';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
@@ -8,6 +7,7 @@ import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from '@/providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, ArchiveIndexProps } from '../../types/page';
@@ -25,9 +25,6 @@ const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
     updateSiteDataState(props);
     updateArchive(props.archive);
   }, [props]);
-
-  // 根据页面路径加载不同Layout文件
-  const Archive = useLayout();
 
   useEffect(() => {
     if (isBrowser) {
@@ -57,7 +54,7 @@ const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <Archive />
+      <ThemeLayout />
     </>
   );
 };

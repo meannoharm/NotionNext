@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import CONFIG from '@themes/nobelium/theme.config';
+import CONFIG from '@notion-next-base-theme/nobelium/theme.config';
 import { SvgIcon } from './components/SvgIcon';
 import LazyImage from '@/components/LazyImage';
 import NavBar from './components/NavBar/NavBar';

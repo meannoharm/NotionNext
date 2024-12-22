@@ -6,7 +6,7 @@ import React from 'react';
 class Select extends React.Component<{
   label: string;
   value: string;
-  options: { value: string; text: string }[];
+  options: string[];
   onChange: (value: string) => void;
 }> {
   constructor(props: any) {
@@ -14,25 +14,29 @@ class Select extends React.Component<{
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange (event: React.ChangeEvent<HTMLSelectElement>) {
-    const { onChange } = this.props
-    onChange(event.target.value)
+  handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const { onChange } = this.props;
+    onChange(event.target.value);
   }
 
-  render () {
+  render() {
     return (
-      <div className='py-1 space-x-3'>
-        <label className='text-gray-500'>{this.props.label}</label>
-        <select value={this.props.value} onChange={this.handleChange} className='border p-1 rounded cursor-pointer'>
-          {this.props.options?.map(o => (
-            <option key={o.value} value={o.value}>
-              {o.text}
+      <div className="space-x-3 py-1">
+        <label className="text-gray-500">{this.props.label}</label>
+        <select
+          value={this.props.value}
+          onChange={this.handleChange}
+          className="cursor-pointer rounded border p-1"
+        >
+          {this.props.options?.map((option) => (
+            <option key={option} value={option}>
+              {option}
             </option>
           ))}
         </select>
       </div>
-    )
+    );
   }
 }
 
-export default Select
+export default Select;

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import Select from '@/components/Select';
-import { THEMES } from '@/constants';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useStyleStore } from '@/providers/styleProvider';
 import { useConfigStore } from '@/providers/configProvider';
+import { random } from 'lodash';
 
 /**
  *
@@ -13,25 +12,18 @@ import { useConfigStore } from '@/providers/configProvider';
 const DebugPanel = () => {
   const [show, setShow] = useState(false);
   const theme = useStyleStore((state) => state.theme);
+  const themeList = useStyleStore((state) => state.themeList);
   const setTheme = useStyleStore((state) => state.setTheme);
-  const router = useRouter();
   const siteConfig = useConfigStore((state) => state);
   const { t } = useTranslation('common');
-
-  // 主题下拉框
-  const themeOptions = THEMES?.map((t: string) => ({ value: t, text: t }));
 
   function toggleShow() {
     setShow(!show);
   }
 
-  function handleChangeDebugTheme() {
-    setTheme(theme);
-  }
-
-  function handleUpdateDebugTheme(newTheme: string) {
-    const query = { ...router.query, theme: newTheme };
-    router.push({ pathname: router.pathname, query });
+  function randomTheme() {
+    const newTheme = themeList[random(0, themeList.length - 1)];
+    setTheme(newTheme);
   }
 
   function filterResult(text: any) {
@@ -72,13 +64,10 @@ const DebugPanel = () => {
             <Select
               label={t('theme-switch')}
               value={theme}
-              options={themeOptions}
-              onChange={handleUpdateDebugTheme}
+              options={themeList}
+              onChange={setTheme}
             />
-            <div
-              className="cursor-pointer p-2"
-              onClick={handleChangeDebugTheme}
-            >
+            <div className="cursor-pointer p-2" onClick={randomTheme}>
               <i className="fas fa-sync" />
             </div>
           </div>

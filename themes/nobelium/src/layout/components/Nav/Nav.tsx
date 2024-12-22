@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import CONFIG from '@notion-next-base-theme/nobelium/theme.config';
+import CONFIG from '@themes/nobelium/theme.config';
 import { SvgIcon } from './components/SvgIcon';
 import LazyImage from '@/components/LazyImage';
 import NavBar from './components/NavBar/NavBar';
@@ -9,18 +9,12 @@ import { useSiteStore } from '@/providers/siteProvider';
 import { useConfigStore } from '@/providers/configProvider';
 
 import type { FC } from 'react';
-import { useShallow } from 'zustand/react/shallow';
 
 const Nav: FC = () => {
   const navRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const siteInfo = useSiteStore((state) => state.siteInfo);
-  const { ENABLE_RSS, AUTHOR } = useConfigStore(
-    useShallow((state) => ({
-      ENABLE_RSS: state.ENABLE_RSS,
-      AUTHOR: state.AUTHOR,
-    })),
-  );
+  const AUTHOR = useConfigStore((state) => state.AUTHOR);
 
   const handler: IntersectionObserverCallback = ([entry]) => {
     if (navRef && navRef.current) {

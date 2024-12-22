@@ -41,10 +41,6 @@ const nextConfig = withBundleAnalyzer({
   },
   i18n,
   transpilePackages: ['react-tweet'],
-  // webpack: (config) => {
-  //   config.resolve.alias['@notion-next-base-theme'] = path.resolve(__dirname, 'themes');
-  //   return config;
-  // },
 });
 
 module.exports = nextConfig;

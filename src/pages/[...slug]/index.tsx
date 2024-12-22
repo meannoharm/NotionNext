@@ -11,6 +11,7 @@ import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
 import { ALGOLIA_APPLICATION_ID } from '@/constants';
 import ThemeLayout from '@/components/ThemeLayout';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
@@ -33,10 +34,12 @@ const Slug: FC<ArticleProps> = (props) => {
     (state) => state.updateSiteDataState,
   );
   const updatePost = useSiteStore((state) => state.updatePost);
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
   useEffect(() => {
     updateSiteDataState(props);
     updatePost(post);
+    updateConfig(props.config);
   }, [props]);
 
   // 文章加载

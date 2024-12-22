@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useStyleStore } from '@/providers/styleProvider';
+import { type ComponentType, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 /**
@@ -25,24 +26,26 @@ const layoutNameMapping: Record<string, string> = {
 const ThemeLayout = () => {
   const router = useRouter();
   const theme = useStyleStore((state) => state.theme);
+  const [ThemeComponent, setThemeComponent] = useState<ComponentType>();
 
   const layoutName = layoutNameMapping[router.pathname] || 'PageNotFound';
-  const Layout = dynamic(
-    () =>
-      import(`@notion-next-base-theme/${theme}`)
-        .then((m) => {
-          console.log('m', m);
-          return m[layoutName];
-        })
-        .catch((e) => {
-          console.error('error', e);
-        }),
-    {
-      ssr: true,
-    },
-  );
 
-  return <Layout />;
+  useEffect(() => {
+    console.log(theme);
+    const loadDynamicComponent = async () => {
+      const component = dynamic(
+        () => import(`themes/${theme}`).then((m) => m[layoutName]),
+        {
+          ssr: true,
+        },
+      );
+      setThemeComponent(component);
+    };
+
+    loadDynamicComponent();
+  }, [theme, layoutName]);
+
+  return ThemeComponent ? <ThemeComponent /> : null;
 };
 
 export default ThemeLayout;

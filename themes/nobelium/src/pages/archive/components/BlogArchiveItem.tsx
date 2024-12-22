@@ -1,4 +1,4 @@
-import BlogPost from '@notion-next-base-theme/nobelium/src/components/BlogPost';
+import BlogPost from '@themes/nobelium/src/components/BlogPost';
 
 import type { FC } from 'react';
 import type { Archive } from '@/types';

@@ -1,5 +1,5 @@
 import { type FC, useRef, useState } from 'react';
-import CONFIG from '@notion-next-base-theme/nobelium/theme.config';
+import CONFIG from '@themes/nobelium/theme.config';
 import { NavItem } from './components/NavItem';
 import RandomPostButton from './components/RandomPostButton';
 import SearchButton from './components/SearchButton';

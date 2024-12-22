@@ -1,4 +1,4 @@
-import LayoutBase from '@notion-next-base-theme/nobelium/src/layout/LayoutBase';
+import LayoutBase from '@themes/nobelium/src/layout/LayoutBase';
 import SearchInput from '../components/SearchInput';
 
 /**

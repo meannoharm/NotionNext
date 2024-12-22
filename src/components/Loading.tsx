@@ -10,7 +10,6 @@ const Loading = () => {
     >
       <div id="loading-wrapper">
         <div className="loading">
-          {' '}
           <i className="fas fa-spinner animate-spin text-3xl " />
         </div>
       </div>

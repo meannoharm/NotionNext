@@ -1,28 +1,32 @@
-import PageNotFound from './pages/PageNotFound';
-import Archive from './pages/archive';
-import Category from './pages/Category';
-import CategoryDetail from './pages/CategoryDetail';
-import Home from './pages/Home';
-import PostList from './pages/PostList';
-import Search from './pages/Search';
-import SearchDetail from './pages/SearchDetail';
-import Tag from './pages/Tag';
-import TagDetail from './pages/TagDetail';
-import Post from './pages/Post';
+import dynamic from 'next/dynamic';
 
-export {
+const PageNotFound = dynamic(() => import('./pages/PageNotFound'));
+const Archive = dynamic(() => import('./pages/archive'));
+const Category = dynamic(() => import('./pages/Category'));
+const CategoryDetail = dynamic(() => import('./pages/CategoryDetail'));
+const Home = dynamic(() => import('./pages/Home'));
+const PostList = dynamic(() => import('./pages/PostList'));
+const Search = dynamic(() => import('./pages/Search'));
+const SearchDetail = dynamic(() => import('./pages/SearchDetail'));
+const Tag = dynamic(() => import('./pages/Tag'));
+const TagDetail = dynamic(() => import('./pages/TagDetail'));
+const Post = dynamic(() => import('./pages/Post'));
+
+const Nobelium = {
   Home,
-  PostList as Page,
+  Page: PostList,
   Archive,
   Category,
   CategoryDetail,
-  CategoryDetail as CategoryDetailPage,
+  CategoryDetailPage: CategoryDetail,
   Tag,
   TagDetail,
-  TagDetail as TagDetailPage,
+  TagDetailPage: TagDetail,
   Search,
   SearchDetail,
-  SearchDetail as SearchDetailPage,
-  Post as Article,
+  SearchDetailPage: SearchDetail,
+  Article: Post,
   PageNotFound,
 };
+
+export default Nobelium;

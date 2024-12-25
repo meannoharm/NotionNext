@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useStyleStore } from '@/providers/styleProvider';
 import { type ComponentType, useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 
 /**
  * Route path-to-layout mapping
@@ -31,18 +30,12 @@ const ThemeLayout = () => {
   const layoutName = layoutNameMapping[router.pathname] || 'PageNotFound';
 
   useEffect(() => {
-    console.log(theme);
-    const loadDynamicComponent = async () => {
-      const component = dynamic(
-        () => import(`themes/${theme}`).then((m) => m[layoutName]),
-        {
-          ssr: true,
-        },
-      );
-      setThemeComponent(component);
+    const loadTheme = async () => {
+      const themeModule = await import(`themes/${theme}`);
+      setThemeComponent(themeModule.default[layoutName]);
     };
 
-    loadDynamicComponent();
+    loadTheme();
   }, [theme, layoutName]);
 
   return ThemeComponent ? <ThemeComponent /> : null;

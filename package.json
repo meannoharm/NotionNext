@@ -44,7 +44,7 @@
     "medium-zoom": "^1.1.0",
     "memory-cache": "^0.2.0",
     "mongodb": "^4.17.2",
-    "next": "14.1.4",
+    "next": "14.2.21",
     "next-i18next": "^15.3.0",
     "notion-client": "6.16.0",
     "notion-utils": "6.16.0",

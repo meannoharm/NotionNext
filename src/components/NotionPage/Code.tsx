@@ -73,10 +73,7 @@ function Code({ block }: { block: CodeBlock }) {
         </figcaption>
       )}
       {language === 'mermaid' && (
-        <Script
-          src={MERMAID_CDN}
-          onLoad={handleMermaidOnLoad}
-        />
+        <Script src={MERMAID_CDN} onLoad={handleMermaidOnLoad} />
       )}
     </>
   );

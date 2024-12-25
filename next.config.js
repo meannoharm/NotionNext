@@ -1,8 +1,20 @@
 const path = require('path');
+const fs = require('fs');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 const { i18n } = require('./next-i18next.config');
+
+const themes = fs
+  .readdirSync(path.resolve(__dirname, 'themes'))
+  .map((theme) => {
+    const fullPath = path.resolve(__dirname, 'themes', theme);
+    const stats = fs.statSync(fullPath);
+    if (stats.isDirectory()) {
+      return theme;
+    }
+  })
+  .filter(Boolean);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withBundleAnalyzer({
@@ -41,6 +53,9 @@ const nextConfig = withBundleAnalyzer({
   },
   i18n,
   transpilePackages: ['react-tweet'],
+  publicRuntimeConfig: {
+    ALL_THEMES: themes,
+  },
 });
 
 module.exports = nextConfig;

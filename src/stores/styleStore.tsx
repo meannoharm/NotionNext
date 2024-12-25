@@ -1,7 +1,18 @@
 import { operateDarkMode } from '@/lib/darkMode';
 import { saveDarkModeToLocalStorage } from '@/lib/darkMode';
 import { createStore } from 'zustand';
+import getConfig from 'next/config';
 import { THEMES } from '@/constants';
+
+export const { ALL_THEMES } = getConfig().publicRuntimeConfig;
+
+if (!ALL_THEMES && ALL_THEMES.length === 0) {
+  throw new Error('Please define theme in /themes directory');
+}
+
+export const themes = THEMES.filter((theme: string) =>
+  ALL_THEMES.includes(theme),
+);
 
 export interface StyleState {
   theme: string;
@@ -19,8 +30,8 @@ export interface StyleAction {
 export type StyleStore = StyleState & StyleAction;
 
 export const defaultInitState: StyleState = {
-  theme: THEMES[0],
-  themeList: THEMES,
+  theme: themes[0],
+  themeList: themes,
   isDarkMode: false,
   isLoading: false,
 };

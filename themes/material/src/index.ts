@@ -1,3 +1,7 @@
-import Home from './pages/Home';
+import dynamic from 'next/dynamic';
 
-export { Home };
+const Home = () => dynamic(import('./pages/Home'));
+
+const Material = { Home };
+
+export default Material;

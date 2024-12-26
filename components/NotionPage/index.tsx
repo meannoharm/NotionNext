@@ -26,7 +26,7 @@ const Tweet = dynamic(
 );
 
 const Pdf = dynamic(
-  () => import('react-notion-x/build/third-party/pdf').then(async (m) => m.Pdf),
+  () => import('components/NotionPage/Pdf').then(async (m) => m),
   { ssr: false },
 );
 

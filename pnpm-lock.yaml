@@ -11,12 +11,27 @@ importers:
 
   .:
     dependencies:
+      '@emotion/react':
+        specifier: ^11.13.3
+        version: 11.14.0(@types/react@18.2.75)(react@18.3.1)
+      '@emotion/styled':
+        specifier: ^11.13.0
+        version: 11.14.0(@emotion/react@11.14.0(@types/react@18.2.75)(react@18.3.1))(@types/react@18.2.75)(react@18.3.1)
+      '@fontsource/roboto':
+        specifier: ^5.1.0
+        version: 5.1.0
       '@giscus/react':
         specifier: ^2.4.0
         version: 2.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@headlessui/react':
         specifier: ^1.7.18
         version: 1.7.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mui/icons-material':
+        specifier: ^6.1.7
+        version: 6.2.1(@mui/material@6.2.1(@emotion/react@11.14.0(@types/react@18.2.75)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.2.75)(react@18.3.1))(@types/react@18.2.75)(react@18.3.1))(@types/react@18.2.75)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.2.75)(react@18.3.1)
+      '@mui/material':
+        specifier: ^6.1.7
+        version: 6.2.1(@emotion/react@11.14.0(@types/react@18.2.75)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.2.75)(react@18.3.1))(@types/react@18.2.75)(react@18.3.1))(@types/react@18.2.75)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@next/bundle-analyzer':
         specifier: ^12.3.4
         version: 12.3.4
@@ -4464,7 +4479,7 @@ snapshots:
   '@babel/helper-module-imports@7.25.9':
     dependencies:
       '@babel/traverse': 7.26.4
-      '@babel/types': 7.26.0
+      '@babel/types': 7.26.3
     transitivePeerDependencies:
       - supports-color
 

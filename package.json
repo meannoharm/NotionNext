@@ -37,7 +37,6 @@
     "animejs": "^3.2.2",
     "artalk": "^2.9.1",
     "axios": "^1.7.7",
-    "canvas": "^2.11.2",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.12",
     "gitalk": "^1.8.0",

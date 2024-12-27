@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useStyleStore } from 'providers/styleProvider';
-import { type ComponentType, useEffect, useState } from 'react';
+import { type ComponentType, useEffect, useState, Suspense } from 'react';
+import Loading from '@/components/Loading';
 
 /**
  * Route path-to-layout mapping
@@ -31,14 +32,20 @@ const ThemeLayout = () => {
 
   useEffect(() => {
     const loadTheme = async () => {
-      const themeModule = await import(`themes/${theme}`);
-      setThemeComponent(themeModule.default[layoutName]);
+      const themeModule = await import(`themes/${theme}`).then(
+        (module) => module[layoutName],
+      );
+      setThemeComponent(themeModule);
     };
 
     loadTheme();
   }, [theme, layoutName]);
 
-  return ThemeComponent ? <ThemeComponent /> : null;
+  return (
+    <Suspense fallback={<Loading />}>
+      {ThemeComponent ? <ThemeComponent /> : null}
+    </Suspense>
+  );
 };
 
 export default ThemeLayout;

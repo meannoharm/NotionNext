@@ -1,32 +1,18 @@
 import dynamic from 'next/dynamic';
 
-const PageNotFound = dynamic(() => import('./pages/PageNotFound'));
-const Archive = dynamic(() => import('./pages/archive'));
-const Category = dynamic(() => import('./pages/Category'));
-const CategoryDetail = dynamic(() => import('./pages/CategoryDetail'));
-const Home = dynamic(() => import('./pages/Home'));
-const PostList = dynamic(() => import('./pages/PostList'));
-const Search = dynamic(() => import('./pages/Search'));
-const SearchDetail = dynamic(() => import('./pages/SearchDetail'));
-const Tag = dynamic(() => import('./pages/Tag'));
-const TagDetail = dynamic(() => import('./pages/TagDetail'));
-const Post = dynamic(() => import('./pages/Post'));
-
-const Nobelium = {
-  Home,
-  Page: PostList,
-  Archive,
-  Category,
-  CategoryDetail,
-  CategoryDetailPage: CategoryDetail,
-  Tag,
-  TagDetail,
-  TagDetailPage: TagDetail,
-  Search,
-  SearchDetail,
-  SearchDetailPage: SearchDetail,
-  Article: Post,
-  PageNotFound,
-};
-
-export default Nobelium;
+export const Home = dynamic(() => import('./pages/Home'));
+export const PageNotFound = dynamic(() => import('./pages/PageNotFound'));
+export const Archive = dynamic(() => import('./pages/archive'));
+export const Category = dynamic(() => import('./pages/Category'));
+export const CategoryDetail = dynamic(() => import('./pages/CategoryDetail'));
+export const PostList = dynamic(() => import('./pages/PostList'));
+export const Search = dynamic(() => import('./pages/Search'));
+export const SearchDetail = dynamic(() => import('./pages/SearchDetail'));
+export const Tag = dynamic(() => import('./pages/Tag'));
+export const TagDetail = dynamic(() => import('./pages/TagDetail'));
+export const Post = dynamic(() => import('./pages/Post'));
+export const Page = PostList;
+export const CategoryDetailPage = CategoryDetail;
+export const TagDetailPage = TagDetail;
+export const SearchDetailPage = SearchDetail;
+export const Article = Post;

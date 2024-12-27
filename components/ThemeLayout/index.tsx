@@ -1,14 +1,13 @@
 import { useRouter } from 'next/router';
 import { useStyleStore } from 'providers/styleProvider';
-import { type ComponentType, useEffect, useState, Suspense } from 'react';
-import Loading from '@/components/Loading';
+import { type ComponentType, useEffect, useState } from 'react';
 
 /**
  * Route path-to-layout mapping
  */
 const layoutNameMapping: Record<string, string> = {
   '/': 'Home',
-  '/page/[page]': 'Page',
+  '/page/[page]': 'PostListPage',
   '/archive': 'Archive',
   '/category': 'Category',
   '/category/[category]': 'CategoryDetail',
@@ -41,11 +40,7 @@ const ThemeLayout = () => {
     loadTheme();
   }, [theme, layoutName]);
 
-  return (
-    <Suspense fallback={<Loading />}>
-      {ThemeComponent ? <ThemeComponent /> : null}
-    </Suspense>
-  );
+  return ThemeComponent ? <ThemeComponent /> : null;
 };
 
 export default ThemeLayout;

@@ -1,6 +1,6 @@
 import type { GetServerSideProps } from 'next';
 import RSS from 'rss';
-import { getSiteData } from '@utils/notion/getSiteData';
+import { getSiteData } from '@/utils/notion/getSiteData';
 import { SITE_URL } from '@/constants';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {

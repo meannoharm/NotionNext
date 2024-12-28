@@ -1,5 +1,5 @@
 import { getServerSideSitemap } from 'next-sitemap';
-import { getSiteData } from '@utils/notion/getSiteData';
+import { getSiteData } from '@/utils/notion/getSiteData';
 import dayjs from 'dayjs';
 import { SITE_URL } from '@/constants';
 

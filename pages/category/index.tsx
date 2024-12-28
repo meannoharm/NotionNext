@@ -1,4 +1,4 @@
-import { getSiteData } from '@utils/notion/getSiteData';
+import { getSiteData } from '@/utils/notion/getSiteData';
 import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

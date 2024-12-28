@@ -10,7 +10,7 @@ import { appWithTranslation } from 'next-i18next';
 import { StyleProvider } from '@/providers/styleProvider';
 import { SiteStoreProvider } from '@/providers/siteProvider';
 import { ConfigProvider } from '@/providers/configProvider';
-import Layout from '@/components/Layout';
+import Addon from '@/components/Addon';
 
 import type { AppProps } from 'next/app';
 
@@ -19,9 +19,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <StyleProvider>
       <SiteStoreProvider>
         <ConfigProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Component {...pageProps} />
+          <Addon />
         </ConfigProvider>
       </SiteStoreProvider>
     </StyleProvider>

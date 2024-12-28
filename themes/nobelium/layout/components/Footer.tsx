@@ -1,5 +1,5 @@
 import Vercel from 'components/Vercel';
-import { Trans } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import { useShallow } from 'zustand/react/shallow';
 import { useConfigStore } from 'providers/configProvider';
 import { useMemo } from 'react';
@@ -14,6 +14,7 @@ const Footer = () => {
       LICENSE_URL: state.LICENSE_URL,
     })),
   );
+  const { t } = useTranslation('common');
 
   const copyrightDate = useMemo(() => {
     if (SINCE && SINCE < currentYear) {
@@ -32,7 +33,8 @@ const Footer = () => {
           </div>
           <div className="mb-2 mr-0 md:mb-0 md:mr-auto">
             <Trans
-              i18nKey={'copyright-notice'}
+              i18nKey="copyright-notice"
+              t={t}
               components={{
                 link: (
                   <a href={LICENSE_URL} target="_blank">

@@ -1,12 +1,12 @@
-import { getPostBlocks } from 'lib/notion/getPostBlocks';
-import { getSiteData } from 'lib/notion/getSiteData';
-import { getPageTableOfContents } from 'lib/notion/getPageTableOfContents';
+import { getPostBlocks } from '@/utils/notion/getPostBlocks';
+import { getSiteData } from '@/utils/notion/getSiteData';
+import { getPageTableOfContents } from '@/utils/notion/getPageTableOfContents';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { isBrowser, isProduct, isUUID } from 'lib/utils';
+import { isBrowser, isProduct, isUUID } from '@/utils';
 import { uploadDataToAlgolia } from '@/utils/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { getIndependentPage } from 'lib/notion/getIndependentPage';
+import { getIndependentPage } from '@/utils/notion/getIndependentPage';
 import CommonHead from 'components/CommonHead';
 import { useSiteStore } from 'providers/siteProvider';
 import { ALGOLIA_APPLICATION_ID } from '@/constants';

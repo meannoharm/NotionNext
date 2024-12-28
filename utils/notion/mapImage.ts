@@ -1,6 +1,6 @@
 import type { Block } from 'notion-types';
 import { PatchedCollection } from '@/types/notion';
-import { isEmoji } from 'lib/utils';
+import { isEmoji } from '@/utils';
 import { NOTION_HOST } from '@/constants';
 
 /**

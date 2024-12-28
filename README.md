@@ -7,6 +7,7 @@ A static blog system built with Next.js and the Notion API, deployed on Vercel
 - [ ] usage and document
 - [x] config from Notion
 - [ ] new theme **material**
+- [ ] font family management
 - [ ] test
 
 ---

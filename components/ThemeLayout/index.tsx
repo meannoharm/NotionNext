@@ -31,7 +31,7 @@ const ThemeLayout = () => {
 
   useEffect(() => {
     const loadTheme = async () => {
-      const themeModule = await import(`themes/${theme}`).then(
+      const themeModule = await import(`@/themes/${theme}`).then(
         (module) => module[layoutName],
       );
       setThemeComponent(themeModule);

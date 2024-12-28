@@ -1,14 +1,16 @@
-import { useConfigStore } from 'providers/configProvider';
-import dynamic from 'next/dynamic';
+import useProgress from '@/utils/hooks/useProgress';
+import useDarkMode from '@/utils/hooks/useDarkMode';
+import { useConfigStore } from '@/providers/configProvider';
 import { useShallow } from 'zustand/react/shallow';
+import dynamic from 'next/dynamic';
 
 const GoogleAnalytics = dynamic(() =>
   import('@next/third-parties/google').then((res) => res.GoogleAnalytics),
 );
-const DebugPanel = dynamic(() => import('./components/DebugPanel'), {
+const DebugPanel = dynamic(() => import('@/components/DebugPanel'), {
   ssr: false,
 });
-const ThemeSwitch = dynamic(() => import('./components/ThemeSwitch'), {
+const ThemeSwitch = dynamic(() => import('@/components/ThemeSwitch'), {
   ssr: false,
 });
 const Analytics = dynamic(
@@ -27,23 +29,23 @@ const SpeedInsights = dynamic(
     ssr: false,
   },
 );
-const Ackee = dynamic(() => import('./components/Ackee'), { ssr: false });
-const GoogleAdsense = dynamic(() => import('./components/GoogleAdsense'), {
+const Ackee = dynamic(() => import('@/components/Ackee'), { ssr: false });
+const GoogleAdsense = dynamic(() => import('@/components/GoogleAdsense'), {
   ssr: false,
 });
-const Messenger = dynamic(() => import('./components/FacebookMessenger'), {
+const Messenger = dynamic(() => import('@/components/FacebookMessenger'), {
   ssr: false,
 });
-const VConsole = dynamic(() => import('./components/VConsole'), { ssr: false });
+const VConsole = dynamic(() => import('@/components/VConsole'), { ssr: false });
 const CustomContextMenu = dynamic(
-  () => import('./components/CustomContextMenu'),
+  () => import('@/components/CustomContextMenu'),
   { ssr: false },
 );
-const DisableCopy = dynamic(() => import('./components/DisableCopy'), {
+const DisableCopy = dynamic(() => import('@/components/DisableCopy'), {
   ssr: false,
 });
 
-const ExternalPlugin = () => {
+export default function Addon() {
   const {
     THEME_SWITCH,
     DEBUG,
@@ -73,6 +75,10 @@ const ExternalPlugin = () => {
       GOOGLE_ANALYTICS_ID: state.GOOGLE_ANALYTICS_ID,
     })),
   );
+
+  useProgress();
+  useDarkMode();
+
   return (
     <>
       {THEME_SWITCH && <ThemeSwitch />}
@@ -90,6 +96,4 @@ const ExternalPlugin = () => {
       <VConsole />
     </>
   );
-};
-
-export default ExternalPlugin;
+}

@@ -1,4 +1,4 @@
-import subscribeToMailchimpApi from 'lib/mailchimp';
+import subscribeToMailchimpApi from '@/utils/mailchimp';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 

@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { algoliasearch, SearchClient } from 'algoliasearch';
 import Link from 'next/link';
 import throttle from 'lodash/throttle';
-import markText from 'lib/markText';
+import markText from '@/utils/markText';
 import {
   ALGOLIA_APPLICATION_ID,
   ALGOLIA_SEARCH_API_KEY,
@@ -12,7 +12,7 @@ import { useTranslation } from 'next-i18next';
 import { useConfigStore } from 'providers/configProvider';
 import { useSiteStore } from 'providers/siteProvider';
 
-import type { AlgoliaRecord } from 'lib/algolia';
+import type { AlgoliaRecord } from '@/utils/algolia';
 
 /**
  * 结合 Algolia 实现的弹出式搜索框

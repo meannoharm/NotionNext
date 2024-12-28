@@ -1,4 +1,3 @@
-export * from './getEnvironmentVariable';
 export const isProduct = () => process.env.VERCEL_ENV === 'product';
 
 /**
@@ -7,73 +6,6 @@ export const isProduct = () => process.env.VERCEL_ENV === 'product';
  */
 export const isBrowser = typeof window !== 'undefined';
 
-/**
- * 加载外部资源
- * @param url 地址 例如 https://xx.com/xx.js
- * @param type js 或 css
- * @returns {Promise<string>}
- */
-export function loadExternalResource(
-  url: string,
-  type: 'css' | 'font' | 'js',
-): Promise<string> {
-  // 检查是否已存在
-  const elements =
-    type === 'js'
-      ? document.querySelectorAll(`[src='${url}']`)
-      : document.querySelectorAll(`[href='${url}']`);
-
-  return new Promise((resolve, reject) => {
-    if (elements.length > 0 || !url) {
-      resolve(url);
-      return;
-    }
-
-    let tag;
-
-    if (type === 'css') {
-      tag = document.createElement('link');
-      tag.rel = 'stylesheet';
-      tag.href = url;
-    } else if (type === 'font') {
-      tag = document.createElement('link');
-      tag.rel = 'preload';
-      tag.as = 'font';
-      tag.href = url;
-    } else if (type === 'js') {
-      tag = document.createElement('script');
-      tag.src = url;
-    }
-    if (tag) {
-      tag.onload = () => {
-        console.log('Load Success', url);
-        resolve(url);
-      };
-      tag.onerror = () => {
-        console.log('Load Error', url);
-        reject(url);
-      };
-      document.head.appendChild(tag);
-    }
-  });
-}
-
-/**
- * 查询url中的query参数
- * @param {}} variable
- * @returns
- */
-export function getQueryVariable(key: string) {
-  const query = isBrowser ? window.location.search.substring(1) : '';
-  const vars = query.split('&');
-  for (let i = 0; i < vars.length; i++) {
-    const pair = vars[i].split('=');
-    if (pair[0] === key) {
-      return pair[1];
-    }
-  }
-  return false;
-}
 /**
  * 是否可迭代
  * @param {*} obj

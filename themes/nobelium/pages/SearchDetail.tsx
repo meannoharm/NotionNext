@@ -2,7 +2,7 @@ import { useSiteStore } from 'providers/siteProvider';
 import BlogList from '../components/BlogList';
 import SearchInput from '../components/SearchInput';
 import LayoutBase from '../layout/LayoutBase';
-import markText from '@/lib/markText';
+import markText from '@/utils/markText';
 import { useEffect } from 'react';
 
 const SearchDetail = () => {

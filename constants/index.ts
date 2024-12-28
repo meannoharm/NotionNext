@@ -1,4 +1,7 @@
-import { clientSideGetEnv, serverSideGetEnv } from 'lib/utils';
+import {
+  clientSideGetEnv,
+  serverSideGetEnv,
+} from '@/utils/getEnvironmentVariable';
 
 export const NOTION_PAGE_ID = clientSideGetEnv(
   'NEXT_PUBLIC_NOTION_PAGE_ID',

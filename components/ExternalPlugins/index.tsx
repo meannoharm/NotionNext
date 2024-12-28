@@ -43,7 +43,7 @@ const DisableCopy = dynamic(() => import('./components/DisableCopy'), {
   ssr: false,
 });
 
-const ExternalPlugin = (props: any) => {
+const ExternalPlugin = () => {
   const {
     THEME_SWITCH,
     DEBUG,
@@ -82,7 +82,7 @@ const ExternalPlugin = (props: any) => {
       {VERCEL_ANALYTICS_ENABLE && <Analytics />}
       {GOOGLE_ADSENSE_ENABLE && <GoogleAdsense />}
       {FACEBOOK_APP_ID && FACEBOOK_PAGE && <Messenger />}
-      {CUSTOM_RIGHT_CLICK_CONTEXT_MENU && <CustomContextMenu {...props} />}
+      {CUSTOM_RIGHT_CLICK_CONTEXT_MENU && <CustomContextMenu />}
       {!CAN_COPY && <DisableCopy />}
       {GOOGLE_ANALYTICS_ENABLE && GOOGLE_ANALYTICS_ID && (
         <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />

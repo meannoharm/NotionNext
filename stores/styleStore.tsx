@@ -1,8 +1,7 @@
-import { operateDarkMode } from 'lib/darkMode';
-import { saveDarkModeToLocalStorage } from 'lib/darkMode';
 import { createStore } from 'zustand';
 import getConfig from 'next/config';
 import { THEMES } from '@/constants';
+import { persist } from 'zustand/middleware';
 
 export const { ALL_THEMES } = getConfig().publicRuntimeConfig;
 
@@ -37,16 +36,21 @@ export const defaultInitState: StyleState = {
 };
 
 export const createStyleStore = (initState: StyleState = defaultInitState) => {
-  const store = createStore<StyleStore>()((set) => ({
-    ...initState,
-    setTheme: (theme: string) => set({ theme }),
-    setIsDarkMode: (isDarkMode) => {
-      saveDarkModeToLocalStorage(isDarkMode);
-      operateDarkMode(isDarkMode);
-      set({ isDarkMode });
-    },
-    setIsLoading: (isLoading) => set({ isLoading }),
-  }));
+  const store = createStore<StyleStore>()(
+    persist(
+      (set) => ({
+        ...initState,
+        setTheme: (theme: string) => set({ theme }),
+        setIsDarkMode: (isDarkMode) => {
+          set({ isDarkMode });
+        },
+        setIsLoading: (isLoading) => set({ isLoading }),
+      }),
+      {
+        name: 'style-preference',
+      },
+    ),
+  );
 
   return store;
 };

@@ -26,7 +26,7 @@ export default function QrCode({ value }: { value: string }) {
   };
 
   useEffect(() => {
-    if (domRef.current) {
+    if (qrcodeRef.current) {
       qrcodeRef.current.clear();
       qrcodeRef.current.makeCode(value);
     } else {

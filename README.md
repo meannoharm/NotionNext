@@ -6,11 +6,10 @@ A static blog system built with Next.js and the Notion API, deployed on Vercel
 
 TODO:
 
-- usage and document
-- config from Notion
-- new theme **material**
-- monorepo directory for theme module
-- test
+- [ ] usage and document
+- [x] config from Notion
+- [ ] new theme **material**
+- [ ] test
 
 ---
 

@@ -2,9 +2,7 @@
 
 A static blog system built with Next.js and the Notion API, deployed on Vercel
 
----
-
-TODO:
+## TODO
 
 - [ ] usage and document
 - [x] config from Notion

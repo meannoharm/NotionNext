@@ -1,6 +1,6 @@
 import { NotionAPI } from 'notion-client';
-import { getDataFromCache, setDataToCache } from 'lib/cache/cacheManager';
-import { delay } from '../utils';
+import { getDataFromCache, setDataToCache } from '@/utils/cache/cacheManager';
+import { delay } from '@/utils';
 import { cloneDeep } from 'lodash';
 import { NOTION_ACCESS_TOKEN } from '@/constants';
 

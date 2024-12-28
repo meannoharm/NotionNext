@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from 'react';
 
 import type { FC, RefObject } from 'react';
 import type { Nav } from '@/types/notion';
-import useToggleClickOutSide from 'hooks/useToggleClickOutSide';
+import useToggleClickOutSide from '@/utils/hooks/useToggleClickOutSide';
 
 export interface MenuProps {
   menuList: Nav[];

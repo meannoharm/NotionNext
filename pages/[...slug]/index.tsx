@@ -4,7 +4,7 @@ import { getPageTableOfContents } from 'lib/notion/getPageTableOfContents';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isBrowser, isProduct, isUUID } from 'lib/utils';
-import { uploadDataToAlgolia } from 'lib/algolia';
+import { uploadDataToAlgolia } from '@/utils/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getIndependentPage } from 'lib/notion/getIndependentPage';
 import CommonHead from 'components/CommonHead';

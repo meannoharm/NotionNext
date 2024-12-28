@@ -1,4 +1,4 @@
-import { getDataFromCache, setDataToCache } from 'lib/cache/cacheManager';
+import { getDataFromCache, setDataToCache } from '@/utils/cache/cacheManager';
 import { getPostBlocks } from './getPostBlocks';
 import { idToUuid } from 'notion-utils';
 import { getCategories } from './getCategories';

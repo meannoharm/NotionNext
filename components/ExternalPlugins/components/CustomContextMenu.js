@@ -2,10 +2,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { THEMES } from '@/constants';
-import useWindowSize from 'hooks/useWindowSize';
+import useWindowSize from '@/utils/hooks/useWindowSize';
 import { useTranslation } from 'next-i18next';
-import { useStyleStore } from 'providers/styleProvider';
-import { useConfigStore } from 'providers/configProvider';
+import { useStyleStore } from '@/providers/styleProvider';
+import { useConfigStore } from '@/providers/configProvider';
 import { useSiteStore } from '@/providers/siteProvider';
 
 /**

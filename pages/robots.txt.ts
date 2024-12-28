@@ -1,4 +1,4 @@
-import { isProduct } from 'lib/utils';
+import { isProduct } from '@utils';
 import { SITE_URL } from '@/constants';
 
 import type { GetServerSideProps } from 'next';

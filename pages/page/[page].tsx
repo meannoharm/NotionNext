@@ -1,5 +1,5 @@
-import { getSiteData } from 'lib/notion/getSiteData';
-import { getPostBlocks } from 'lib/notion/getPostBlocks';
+import { getSiteData } from '@utils/notion/getSiteData';
+import { getPostBlocks } from '@utils/notion/getPostBlocks';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from 'components/CommonHead';

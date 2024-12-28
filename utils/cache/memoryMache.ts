@@ -1,5 +1,5 @@
 import cache from 'memory-cache';
-import { isProduct } from 'lib/utils';
+import { isProduct } from '@/utils';
 
 const cacheTime = isProduct() ? 10 * 60 : 120 * 60; // 120 minutes for dev,10 minutes for prod
 

@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic';
-import { isBrowser } from 'lib/utils';
+import { isBrowser } from '@/utils';
 import { useRouter } from 'next/router';
-import { useSiteStore } from 'providers/siteProvider';
-import { useConfigStore } from 'providers/configProvider';
+import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
 import { useShallow } from 'zustand/react/shallow';
 
 const Artalk = dynamic(() => import('./Artalk'), { ssr: false });

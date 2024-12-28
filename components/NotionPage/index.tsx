@@ -3,12 +3,12 @@ import dynamic from 'next/dynamic';
 import React, { type FC, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { mapImgUrl } from 'lib/notion/mapImage';
+import { mapImgUrl } from '@/utils/notion/mapImage';
 import { NOTION_PAGE_ID, SITE_URL } from '@/constants';
 
 import type { Page } from '@/types/notion';
 import { idToUuid } from 'notion-utils';
-import { useStyleStore } from 'providers/styleProvider';
+import { useStyleStore } from '@/providers/styleProvider';
 
 const Code = dynamic(
   () => import('components/NotionPage/Code').then(async (m) => m),

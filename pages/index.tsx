@@ -1,11 +1,11 @@
-import { getSiteData } from 'lib/notion/getSiteData';
-import { getPostBlocks } from 'lib/notion/getPostBlocks';
+import { getSiteData } from '@/utils/notion/getSiteData';
+import { getPostBlocks } from '@/utils/notion/getPostBlocks';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import CommonHead from 'components/CommonHead';
-import { useSiteStore } from 'providers/siteProvider';
-import { useConfigStore } from 'providers/configProvider';
+import CommonHead from '@/components/CommonHead';
+import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
 import { omit } from 'lodash';
-import ThemeLayout from 'components/ThemeLayout';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { GetStaticProps } from 'next';
 import { useEffect, type FC } from 'react';

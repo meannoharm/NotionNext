@@ -1,4 +1,4 @@
-import getPageContentText from 'lib/notion/getPageContentText';
+import getPageContentText from '@/utils/notion/getPageContentText';
 import { algoliasearch } from 'algoliasearch';
 import dayjs from 'dayjs';
 import {

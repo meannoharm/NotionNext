@@ -8,7 +8,7 @@ import getPageProperties from './getPageProperties';
 import { mapImgUrl, compressImage } from './mapImage';
 import { PageStatus, PageType } from '@/types/notion';
 import dayjs from 'dayjs';
-import { isEmoji } from 'lib/utils';
+import { isEmoji } from '@/utils';
 import type { SiteConfig } from '@/types/config';
 import getConfig from './getConfig';
 import { NOTION_PAGE_ID } from '@/constants';

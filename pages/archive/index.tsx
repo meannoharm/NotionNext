@@ -1,6 +1,6 @@
-import { getSiteData } from '@utils/notion/getSiteData';
+import { getSiteData } from '@/utils/notion/getSiteData';
 import { useEffect, type FC } from 'react';
-import { isBrowser } from '@utils';
+import { isBrowser } from '@/utils';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
 import { omit } from 'lodash';

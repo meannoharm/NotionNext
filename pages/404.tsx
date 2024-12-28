@@ -1,4 +1,4 @@
-import { getSiteData } from '@utils/notion/getSiteData';
+import { getSiteData } from '@/utils/notion/getSiteData';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from 'components/CommonHead';
 import { useSiteStore } from 'providers/siteProvider';

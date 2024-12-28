@@ -2,18 +2,18 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { THEMES } from '@/constants';
-import { saveDarkModeToLocalStorage } from 'lib/darkMode';
 import useWindowSize from 'hooks/useWindowSize';
 import { useTranslation } from 'next-i18next';
 import { useStyleStore } from 'providers/styleProvider';
 import { useConfigStore } from 'providers/configProvider';
+import { useSiteStore } from '@/providers/siteProvider';
 
 /**
  * 自定义右键菜单
  * @param {*} props
  * @returns
  */
-export default function CustomContextMenu(props) {
+export default function CustomContextMenu() {
   const [position, setPosition] = useState({ x: '0px', y: '0px' });
   const [show, setShow] = useState(false);
   const isDarkMode = useStyleStore((state) => state.isDarkMode);
@@ -23,8 +23,8 @@ export default function CustomContextMenu(props) {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const SUB_PATH = useConfigStore((state) => state.SUB_PATH);
+  const latestPosts = useSiteStore((state) => state.latestPosts);
 
-  const { latestPosts } = props;
   const router = useRouter();
   const { t } = useTranslation('menu');
   /**
@@ -113,12 +113,7 @@ export default function CustomContextMenu(props) {
   }
 
   function handleChangeDarkMode() {
-    const newStatus = !isDarkMode;
-    saveDarkModeToLocalStorage(newStatus);
-    setIsDarkMode(newStatus);
-    const htmlElement = document.getElementsByTagName('html')[0];
-    htmlElement.classList?.remove(newStatus ? 'light' : 'dark');
-    htmlElement.classList?.add(newStatus ? 'dark' : 'light');
+    setIsDarkMode(!isDarkMode);
   }
 
   return (

@@ -5,12 +5,12 @@ import '@/styles/notion.css';
 import 'katex/dist/katex.min.css';
 import 'prismjs/themes/prism-coy.css';
 import '@/styles/prism-theme.css';
+
 import { appWithTranslation } from 'next-i18next';
-import Progress from 'components/NProgress';
-import ExternalPlugins from 'components/ExternalPlugins';
-import { StyleProvider } from 'providers/styleProvider';
-import { SiteStoreProvider } from 'providers/siteProvider';
-import { ConfigProvider } from 'providers/configProvider';
+import { StyleProvider } from '@/providers/styleProvider';
+import { SiteStoreProvider } from '@/providers/siteProvider';
+import { ConfigProvider } from '@/providers/configProvider';
+import Layout from '@/components/Layout';
 
 import type { AppProps } from 'next/app';
 
@@ -19,9 +19,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <StyleProvider>
       <SiteStoreProvider>
         <ConfigProvider>
-          <Component {...pageProps} />
-          <Progress />
-          <ExternalPlugins {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </ConfigProvider>
       </SiteStoreProvider>
     </StyleProvider>

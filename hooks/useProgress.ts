@@ -8,7 +8,7 @@ NProgress.configure({
   showSpinner: false,
 });
 
-export default function Progress() {
+export default function useProgress() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -18,8 +18,6 @@ export default function Progress() {
       NProgress.start();
     };
   }, [pathname, searchParams]);
-
-  return null;
 }
 
 export const progressStart = NProgress.start;

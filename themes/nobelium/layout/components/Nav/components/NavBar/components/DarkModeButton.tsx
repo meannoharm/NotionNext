@@ -2,6 +2,7 @@ import { Moon, Sun } from 'components/HeroIcons';
 import { useStyleStore } from 'providers/styleProvider';
 
 import type { FC } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 
 export interface DarkModeButtonProps {
   className?: string;
@@ -12,7 +13,12 @@ export interface DarkModeButtonProps {
  */
 const DarkModeButton: FC<DarkModeButtonProps> = (props) => {
   const { className } = props;
-  const { isDarkMode, setIsDarkMode } = useStyleStore((state) => state);
+  const { isDarkMode, setIsDarkMode } = useStyleStore(
+    useShallow((state) => ({
+      isDarkMode: state.isDarkMode,
+      setIsDarkMode: state.setIsDarkMode,
+    })),
+  );
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 

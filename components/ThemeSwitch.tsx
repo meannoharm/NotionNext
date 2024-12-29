@@ -1,5 +1,5 @@
 import { type ChangeEvent } from 'react';
-import { Draggable } from 'components/Draggable';
+import { Draggable } from '@/components/Draggable';
 import { THEMES } from '@/constants';
 import { useStyleStore } from 'providers/styleProvider';
 /**

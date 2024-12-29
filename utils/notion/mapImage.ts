@@ -84,7 +84,7 @@ export const mapImgUrl = (
  */
 export const compressImage = (
   image: string,
-  width = 400,
+  width = 1200,
   quality = 50,
   fmt = 'webp',
 ) => {

@@ -5,7 +5,6 @@ import { useRef, useEffect } from 'react';
  */
 export const Draggable = ({ children }: { children: React.ReactNode }) => {
   const draggableRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number | null>(null);
   const isDragging = useRef(false);
   const currentObj = useRef<HTMLElement | null>(null);
   const offset = useRef({ x: 0, y: 0 });
@@ -19,22 +18,21 @@ export const Draggable = ({ children }: { children: React.ReactNode }) => {
       const normalizedEvent = normalizeEvent(event);
       const child = draggableElement.firstElementChild as HTMLElement;
 
-      if (inDragBox(normalizedEvent, child)) {
+      if (isInsideDragArea(normalizedEvent, child)) {
         currentObj.current = child;
+        isDragging.current = true;
+
+        offset.current = {
+          x: normalizedEvent.clientX - child.offsetLeft,
+          y: normalizedEvent.clientY - child.offsetTop,
+        };
 
         if (event.type === 'touchstart') {
           event.preventDefault();
-          document.documentElement.style.overflow = 'hidden'; // 阻止页面滚动
+          document.documentElement.style.overflow = 'hidden';
         }
 
-        isDragging.current = true;
-        offset.current.x = normalizedEvent.clientX - child.offsetLeft;
-        offset.current.y = normalizedEvent.clientY - child.offsetTop;
-
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('touchmove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
-        document.addEventListener('touchend', handleMouseUp);
+        addEventListeners();
       }
     };
 
@@ -42,70 +40,32 @@ export const Draggable = ({ children }: { children: React.ReactNode }) => {
       if (!isDragging.current || !currentObj.current) return;
 
       const normalizedEvent = normalizeEvent(event);
+      const newLeft = normalizedEvent.clientX - offset.current.x;
+      const newTop = normalizedEvent.clientY - offset.current.y;
 
-      rafRef.current = requestAnimationFrame(() => {
-        const newLeft = normalizedEvent.clientX - offset.current.x;
-        const newTop = normalizedEvent.clientY - offset.current.y;
-
-        currentObj.current!.style.left = `${newLeft}px`;
-        currentObj.current!.style.top = `${newTop}px`;
-
-        checkInWindow(currentObj.current!);
-      });
+      moveElementWithinBounds(currentObj.current, newLeft, newTop);
     };
 
     const handleMouseUp = () => {
-      document.documentElement.style.overflow = 'auto'; // 恢复页面滚动
-
       isDragging.current = false;
-      cancelAnimationFrame(rafRef.current!);
+      currentObj.current = null;
+      document.documentElement.style.removeProperty('overflow');
 
+      removeEventListeners();
+    };
+
+    const addEventListeners = () => {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('touchmove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchend', handleMouseUp);
+    };
+
+    const removeEventListeners = () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('touchmove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('touchend', handleMouseUp);
-    };
-
-    const checkInWindow = (element: HTMLElement) => {
-      const { offsetHeight, offsetWidth, offsetTop, offsetLeft } = element;
-      const { clientWidth, clientHeight } = document.documentElement;
-
-      if (offsetTop < 0) element.style.top = '0px';
-      if (offsetTop > clientHeight - offsetHeight)
-        element.style.top = `${clientHeight - offsetHeight}px`;
-
-      if (offsetLeft < 0) element.style.left = '0px';
-      if (offsetLeft > clientWidth - offsetWidth)
-        element.style.left = `${clientWidth - offsetWidth}px`;
-    };
-
-    const normalizeEvent = (event: MouseEvent | TouchEvent) => {
-      if ('touches' in event) {
-        return {
-          clientX: event.touches[0].clientX,
-          clientY: event.touches[0].clientY,
-        };
-      }
-
-      return {
-        clientX: event.clientX,
-        clientY: event.clientY,
-      };
-    };
-
-    const inDragBox = (
-      event: { clientX: number; clientY: number },
-      element: HTMLElement,
-    ) => {
-      const { clientX, clientY } = event;
-      const { offsetHeight, offsetWidth, offsetTop, offsetLeft } = element;
-
-      const inHorizontal =
-        clientX > offsetLeft && clientX < offsetLeft + offsetWidth;
-      const inVertical =
-        clientY > offsetTop && clientY < offsetTop + offsetHeight;
-
-      return inHorizontal && inVertical;
     };
 
     draggableElement.addEventListener('mousedown', handleMouseDown);
@@ -114,8 +74,7 @@ export const Draggable = ({ children }: { children: React.ReactNode }) => {
     return () => {
       draggableElement.removeEventListener('mousedown', handleMouseDown);
       draggableElement.removeEventListener('touchstart', handleMouseDown);
-
-      cancelAnimationFrame(rafRef.current!);
+      removeEventListeners();
     };
   }, []);
 
@@ -128,4 +87,56 @@ export const Draggable = ({ children }: { children: React.ReactNode }) => {
       {children}
     </div>
   );
+};
+
+/**
+ * 检查事件是否在可拖拽元素内部
+ */
+const isInsideDragArea = (
+  event: { clientX: number; clientY: number },
+  element: HTMLElement,
+) => {
+  const { clientX, clientY } = event;
+  const { offsetHeight, offsetWidth, offsetTop, offsetLeft } = element;
+
+  return (
+    clientX >= offsetLeft &&
+    clientX <= offsetLeft + offsetWidth &&
+    clientY >= offsetTop &&
+    clientY <= offsetTop + offsetHeight
+  );
+};
+
+/**
+ * 确保元素在窗口范围内移动
+ */
+const moveElementWithinBounds = (
+  element: HTMLElement,
+  newLeft: number,
+  newTop: number,
+) => {
+  const { offsetHeight, offsetWidth } = element;
+  const { clientWidth, clientHeight } = document.documentElement;
+
+  const clampedLeft = Math.max(0, Math.min(clientWidth - offsetWidth, newLeft));
+  const clampedTop = Math.max(0, Math.min(clientHeight - offsetHeight, newTop));
+
+  element.style.left = `${clampedLeft}px`;
+  element.style.top = `${clampedTop}px`;
+};
+
+/**
+ * 规范化事件对象（支持鼠标事件和触摸事件）
+ */
+const normalizeEvent = (event: MouseEvent | TouchEvent) => {
+  if ('touches' in event) {
+    return {
+      clientX: event.touches[0].clientX,
+      clientY: event.touches[0].clientY,
+    };
+  }
+  return {
+    clientX: event.clientX,
+    clientY: event.clientY,
+  };
 };

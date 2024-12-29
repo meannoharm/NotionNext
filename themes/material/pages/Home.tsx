@@ -1,10 +1,13 @@
 import Layout from '../layout/Layout';
+import Announcement from '../components/Announcement';
+import PostList from '../components/PostLists';
 
 const Home = () => {
   return (
-    <div>
-      <Layout />
-    </div>
+    <Layout>
+      <Announcement />
+      <PostList />
+    </Layout>
   );
 };
 

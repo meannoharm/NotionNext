@@ -48,7 +48,9 @@ export const NavItem: FC<NavItemProps> = ({ nav }) => {
           </div>
         ) : (
           <Link className={`block text-black dark:text-gray-50`} href={nav?.to}>
-            {nav?.icon && <i className={nav?.icon} />}{' '}
+            <span className="mr-2">
+              {nav?.icon && <i className={nav?.icon} />}
+            </span>
             <span className="font-medium">{t(nav.title)}</span>
           </Link>
         )}

@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useCallback } from 'react';
 import Link from 'next/link';
 import { useSiteStore } from 'providers/siteProvider';
-import NotionIcon from 'components/NotionIcon';
+import NotionIcon from '@/components/NotionIcon';
 import { useConfigStore } from 'providers/configProvider';
 import { useShallow } from 'zustand/react/shallow';
 

@@ -74,14 +74,21 @@ const MultiLevelMenuItem: FC<NavButtonProps> = ({ nav }) => {
 
   return (
     <>
-      <MenuItem onClick={handleClick}>{nav.title}</MenuItem>
-      <Box pl={2}>
-        {hasSubMenu &&
-          showSubMenu &&
-          nav.subMenus?.map((subNav) => (
+      <MenuItem onClick={handleClick}>
+        {nav.title}
+        {hasSubMenu && (
+          <i
+            className={`fas fa-chevron-down ml-2 transition-all duration-200 ${showSubMenu ? ' rotate-180' : ''}`}
+          ></i>
+        )}
+      </MenuItem>
+      {hasSubMenu && showSubMenu && (
+        <Box pl={2}>
+          {nav.subMenus?.map((subNav) => (
             <MultiLevelMenuItem key={subNav.id} nav={subNav} />
           ))}
-      </Box>
+        </Box>
+      )}
     </>
   );
 };

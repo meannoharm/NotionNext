@@ -1,5 +1,5 @@
 import LayoutBase from '../layout/LayoutBase';
-import ArticleLock from '../components/ArticleLock';
+import ArticleLock from '@/components/ArticleLock';
 import ArticleInfo from '../components/ArticleInfo';
 import ArticleFooter from '../components/ArticleFooter';
 // TODO: move to theme file

@@ -1,13 +1,6 @@
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
-/**
- * 加密文章校验组件
- * @param {password, validPassword} props
- * @param password 正确的密码
- * @param validPassword(bool) 回调函数，校验正确回调入参为true
- * @returns
- */
 export const ArticleFooter = () => {
   const router = useRouter();
   const { t } = useTranslation('common');

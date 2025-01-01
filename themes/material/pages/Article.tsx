@@ -13,7 +13,6 @@ import ArticleLock from '@/components/ArticleLock';
 import { useConfigStore } from '@/providers/configProvider';
 import Avatar from '@mui/material/Avatar';
 import md5 from 'js-md5';
-import Box from '@mui/material/Box';
 
 const Article = () => {
   const { post, isLock, tagOptions } = useSiteStore(
@@ -23,7 +22,7 @@ const Article = () => {
       tagOptions: state.tagOptions,
     })),
   );
-  const { EMAIL, GITHUB_URL, AUTHOR } = useConfigStore(
+  const { EMAIL, AUTHOR } = useConfigStore(
     useShallow((state) => ({
       EMAIL: state.EMAIL,
       GITHUB_URL: state.GITHUB_URL,

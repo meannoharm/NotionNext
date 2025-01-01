@@ -10,15 +10,26 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { useCallback } from 'react';
 import ArticleLock from '@/components/ArticleLock';
+import { useConfigStore } from '@/providers/configProvider';
+import Avatar from '@mui/material/Avatar';
+import md5 from 'js-md5';
+import Box from '@mui/material/Box';
 
 const Article = () => {
-  const { post, isLock } = useSiteStore(
+  const { post, isLock, tagOptions } = useSiteStore(
     useShallow((state) => ({
       post: state.post,
       isLock: state.isLock,
+      tagOptions: state.tagOptions,
     })),
   );
-  const tagOptions = useSiteStore((state) => state.tagOptions);
+  const { EMAIL, GITHUB_URL, AUTHOR } = useConfigStore(
+    useShallow((state) => ({
+      EMAIL: state.EMAIL,
+      GITHUB_URL: state.GITHUB_URL,
+      AUTHOR: state.AUTHOR,
+    })),
+  );
   const tagColor = useCallback(
     (tag: string) => {
       return tagOptions.find((t) => t.name === tag)?.color || 'gray';
@@ -35,9 +46,23 @@ const Article = () => {
           <Typography variant="h3" gutterBottom>
             {post.title}
           </Typography>
-          <Typography variant="subtitle1">
-            {dayjs(post?.date).format('YYYY-MM-DD')}
-          </Typography>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
+            <Avatar
+              alt={AUTHOR}
+              src={`https://gravatar.com/avatar/${md5(EMAIL)}`}
+              sx={{ width: 24, height: 24 }}
+            />
+            <Typography variant="subtitle1">{AUTHOR}</Typography>
+            <Typography variant="subtitle1">
+              {dayjs(post?.date).format('YYYY-MM-DD')}
+            </Typography>
+          </Stack>
           <Stack direction="row" spacing={1}>
             {post?.tags &&
               post?.tags.map((tag) => (

@@ -29,9 +29,13 @@ export default function PostList() {
 
   return (
     <Stack spacing={2}>
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
+      <Box id="posts-wrapper">
+        <Stack spacing={2}>
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </Stack>
+      </Box>
       {POST_LIST_STYLE === 'page' && (
         <Box display="flex" justifyContent="flex-end" width="100%">
           <Pagination page={page} count={totalPage} />

@@ -2,5 +2,6 @@
   "search": "Search",
   "search_placeholder": "Enter search keywords here...",
   "search_result": "Found {totalHit} results in {useTime} milliseconds",
-  "search_algolia": "Algolia provides search services"
+  "search_algolia": "Algolia provides search services",
+  "search_articles": "Search articles"
 }

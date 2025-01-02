@@ -22,6 +22,12 @@ export default function Header() {
     router.push('/');
   };
 
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      router.push(`/search/${e.currentTarget.value}`);
+    }
+  };
+
   return (
     <Box component="header">
       <AppBar position="sticky">
@@ -58,6 +64,7 @@ export default function Header() {
             <StyledInputBase
               placeholder={t('search_articles')}
               inputProps={{ 'aria-label': 'search' }}
+              onKeyDown={handleOnKeyDown}
             />
           </Search>
         </Toolbar>

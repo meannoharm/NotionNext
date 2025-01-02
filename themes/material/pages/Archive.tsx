@@ -10,6 +10,9 @@ import { useShallow } from 'zustand/react/shallow';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
+import Button from '@mui/material/Button';
 
 const Archive = () => {
   const { archive, siteInfo } = useSiteStore(
@@ -21,6 +24,11 @@ const Archive = () => {
     }),
   );
   const { t } = useTranslation('nav');
+  const router = useRouter();
+
+  const handleClick = (slug: string) => {
+    router.push(slug);
+  };
 
   return (
     <Layout>
@@ -45,13 +53,32 @@ const Archive = () => {
                   <Typography component="span">{archiveTitle}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  {archive[archiveTitle].map((post) => (
-                    <div key={post.slug}>
-                      <Link href={`/post/${post.slug}`}>
-                        <Typography>{post.title}</Typography>
-                      </Link>
-                    </div>
-                  ))}
+                  <Stack spacing={1}>
+                    {archive[archiveTitle].map((post) => (
+                      <Button
+                        key={post.slug}
+                        onClick={() => handleClick(post.slug)}
+                        fullWidth
+                        sx={{
+                          color: 'inherit',
+                          textTransform: 'none',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                          }}
+                        >
+                          <Typography>{post.title}</Typography>
+                          <Typography>
+                            {dayjs(post.date).format('YYYY-MM-DD')}
+                          </Typography>
+                        </Box>
+                      </Button>
+                    ))}
+                  </Stack>
                 </AccordionDetails>
               </Accordion>
             ))}

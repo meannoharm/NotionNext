@@ -6,20 +6,18 @@ import Comment from '@/components/Comment';
 import { useShallow } from 'zustand/react/shallow';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
-import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import { useCallback } from 'react';
 import ArticleLock from '@/components/ArticleLock';
 import { useConfigStore } from '@/providers/configProvider';
 import Avatar from '@mui/material/Avatar';
 import md5 from 'js-md5';
+import TagList from '../components/TagList';
 
 const Article = () => {
-  const { post, isLock, tagOptions } = useSiteStore(
+  const { post, isLock } = useSiteStore(
     useShallow((state) => ({
       post: state.post,
       isLock: state.isLock,
-      tagOptions: state.tagOptions,
     })),
   );
   const { EMAIL, AUTHOR } = useConfigStore(
@@ -28,12 +26,6 @@ const Article = () => {
       GITHUB_URL: state.GITHUB_URL,
       AUTHOR: state.AUTHOR,
     })),
-  );
-  const tagColor = useCallback(
-    (tag: string) => {
-      return tagOptions.find((t) => t.name === tag)?.color || 'gray';
-    },
-    [tagOptions],
   );
 
   return (
@@ -63,17 +55,7 @@ const Article = () => {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1}>
-            {post?.tags &&
-              post?.tags.map((tag) => (
-                <Chip
-                  key={tag}
-                  label={tag}
-                  style={{
-                    backgroundColor: `var(--notion-item-${tagColor(tag)})`,
-                    color: `var(--notion-item-text-${tagColor(tag)})`,
-                  }}
-                />
-              ))}
+            {post?.tags && <TagList tagList={post.tags} />}
           </Stack>
           <NotionPage post={post} />
           <ShareBar post={post} />

@@ -6,7 +6,7 @@ import { useSiteStore } from 'providers/siteProvider';
 const SearchInput = () => {
   const router = useRouter();
   const keyword = useSiteStore((state) => state.keyword);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('search');
 
   const [text, setText] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -42,7 +42,7 @@ const SearchInput = () => {
       <input
         ref={searchInputRef}
         type="text"
-        placeholder={t('search-articles')}
+        placeholder={t('search_articles')}
         className={
           'flex-1 bg-gray-100 p-2 text-gray-900 outline-none transition  dark:bg-gray-900 dark:text-gray-100'
         }

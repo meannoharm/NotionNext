@@ -10,3 +10,6 @@ export const Tag = () => dynamic(import('./pages/Tag'));
 export const TagDetail = () => dynamic(import('./pages/TagDetail'));
 export const TagDetailPage = () => dynamic(import('./pages/TagDetail'));
 export const Archive = () => dynamic(import('./pages/Archive'));
+export const Search = () => dynamic(import('./pages/Search'));
+export const SearchDetail = () => dynamic(import('./pages/SearchDetail'));
+export const SearchDetailPage = () => dynamic(import('./pages/SearchDetail'));

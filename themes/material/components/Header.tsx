@@ -10,11 +10,13 @@ import { useSiteStore } from '@/providers/siteProvider';
 import Avatar from '@mui/material/Avatar';
 import NavButton from './NavButton';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 export default function Header() {
   const customNav = useSiteStore((state) => state.navList);
   const siteInfo = useSiteStore((state) => state.siteInfo);
   const router = useRouter();
+  const { t } = useTranslation('search');
 
   const backToHome = () => {
     router.push('/');
@@ -54,7 +56,7 @@ export default function Header() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder={t('search_articles')}
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>

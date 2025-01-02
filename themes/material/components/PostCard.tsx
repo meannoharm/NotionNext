@@ -10,6 +10,7 @@ import type { Page } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import Box from '@mui/material/Box';
+import { Stack } from '@mui/material';
 
 export interface PostCardProps {
   post: Page;
@@ -18,8 +19,6 @@ export interface PostCardProps {
 export default function PostCard({ post }: PostCardProps) {
   const { t } = useTranslation('common');
   const router = useRouter();
-
-  const isSearchResult = post.results && post.results.length > 0;
 
   const handleClick = () => {
     router.push(`/${post.slug}`);
@@ -35,28 +34,28 @@ export default function PostCard({ post }: PostCardProps) {
         />
       )}
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {post.title}
-        </Typography>
-        <Typography gutterBottom variant="body1" component="div">
-          {dayjs(post?.date).format('YYYY-MM-DD')}
-        </Typography>
-        {!isSearchResult && (
+        <Stack spacing={1}>
+          <Typography gutterBottom variant="h5" component="div">
+            {post.title}
+          </Typography>
+          <Typography gutterBottom variant="body1" component="div">
+            {dayjs(post?.date).format('YYYY-MM-DD')}
+          </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {post.summary}
           </Typography>
-        )}
-        {post.results &&
-          post.results.length > 0 &&
-          post.results.map((result) => (
-            <Typography
-              key={result}
-              variant="body2"
-              sx={{ color: 'text.secondary' }}
-            >
-              ...{result}...
-            </Typography>
-          ))}
+          {post.results &&
+            post.results.length > 0 &&
+            post.results.map((result) => (
+              <Typography
+                key={result}
+                variant="body2"
+                sx={{ color: 'text.secondary' }}
+              >
+                ...{result}...
+              </Typography>
+            ))}
+        </Stack>
       </CardContent>
       <CardActions>
         <Box display="flex" justifyContent="flex-end" width="100%">

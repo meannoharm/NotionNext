@@ -1,32 +1,40 @@
 import Layout from '../layout/Layout';
-import CategoryList from '@/components/CategoryList';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { useTranslation } from 'next-i18next';
 import { useSiteStore } from '@/providers/siteProvider';
+import TagList from '../components/TagList';
+import { useShallow } from 'zustand/react/shallow';
+import PostList from '../components/PostLists';
 
-const Category = () => {
-  const siteInfo = useSiteStore((state) => state.siteInfo);
+const TagDetail = () => {
+  const { siteInfo, tag } = useSiteStore(
+    useShallow((state) => ({
+      siteInfo: state.siteInfo,
+      tag: state.tag,
+    })),
+  );
   const { t } = useTranslation('nav');
 
   return (
     <Layout>
       <Stack spacing={2}>
-        <Typography variant="h4">{t('category')}</Typography>
         <Breadcrumbs aria-label="breadcrumb">
           <Link underline="hover" color="inherit" href="/">
             {siteInfo.title}
           </Link>
-          <Typography sx={{ color: 'text.primary' }}>
-            {t('category')}
-          </Typography>
+          <Link underline="hover" color="inherit" href="/tag">
+            {t('tags')}
+          </Link>
+          <Typography sx={{ color: 'text.primary' }}>{tag}</Typography>
         </Breadcrumbs>
-        <CategoryList />
+        <TagList />
+        <PostList />
       </Stack>
     </Layout>
   );
 };
 
-export default Category;
+export default TagDetail;

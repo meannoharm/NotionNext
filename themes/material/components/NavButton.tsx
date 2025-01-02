@@ -1,11 +1,14 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Box from '@mui/material/Box';
 import type { Nav } from '@/types';
 import type { FC } from 'react';
 import { useRouter } from 'next/router';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Collapse from '@mui/material/Collapse';
 
 export interface NavButtonProps {
   nav: Nav;
@@ -35,7 +38,7 @@ const NavButton: FC<NavButtonProps> = ({ nav }) => {
         key={nav.id}
         onClick={handleClick}
         color="inherit"
-        startIcon={nav.icon ? <i className={`${nav?.icon} block`} /> : null}
+        startIcon={nav.icon ? <i className={`${nav?.icon}`} /> : null}
       >
         {nav.title}
       </Button>
@@ -49,16 +52,27 @@ const NavButton: FC<NavButtonProps> = ({ nav }) => {
             'aria-labelledby': 'basic-button',
           }}
         >
-          {nav.subMenus?.map((subNav) => (
-            <MultiLevelMenuItem nav={subNav} key={subNav.id} />
-          ))}
+          <List
+            sx={{
+              width: 360,
+              bgcolor: 'background.paper',
+            }}
+            component="nav"
+          >
+            {nav.subMenus?.map((subNav) => (
+              <MultiLevelMenuItem nav={subNav} key={subNav.id} />
+            ))}
+          </List>
         </Menu>
       )}
     </>
   );
 };
 
-const MultiLevelMenuItem: FC<NavButtonProps> = ({ nav }) => {
+const MultiLevelMenuItem: FC<{
+  nav: Nav;
+  sx?: Record<string, unknown>;
+}> = ({ nav, sx = {} }) => {
   const [showSubMenu, setShowSubMenu] = React.useState(false);
   const router = useRouter();
 
@@ -74,20 +88,23 @@ const MultiLevelMenuItem: FC<NavButtonProps> = ({ nav }) => {
 
   return (
     <>
-      <MenuItem onClick={handleClick}>
-        {nav.title}
+      <ListItemButton onClick={handleClick} sx={{ ...sx }}>
+        <ListItemIcon>
+          {nav.icon && <i className={`${nav?.icon}`} />}
+        </ListItemIcon>
+        <ListItemText primary={nav.title} />
         {hasSubMenu && (
           <i
             className={`fas fa-chevron-down ml-2 transition-all duration-200 ${showSubMenu ? ' rotate-180' : ''}`}
           ></i>
         )}
-      </MenuItem>
+      </ListItemButton>
       {hasSubMenu && showSubMenu && (
-        <Box pl={2}>
+        <Collapse in={showSubMenu} timeout="auto" unmountOnExit>
           {nav.subMenus?.map((subNav) => (
-            <MultiLevelMenuItem key={subNav.id} nav={subNav} />
+            <MultiLevelMenuItem key={subNav.id} nav={subNav} sx={{ pl: 4 }} />
           ))}
-        </Box>
+        </Collapse>
       )}
     </>
   );

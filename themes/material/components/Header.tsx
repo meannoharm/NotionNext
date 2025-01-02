@@ -21,7 +21,7 @@ export default function Header() {
   };
 
   return (
-    <Box Component="header">
+    <Box component="header">
       <AppBar position="sticky">
         <Toolbar>
           <Box

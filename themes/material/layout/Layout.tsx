@@ -24,12 +24,24 @@ const Layout: FC<{
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Header />
-      <Container maxWidth="lg">
-        <Box my={4}>{children}</Box>
-      </Container>
-      <Footer />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+        }}
+      >
+        <CssBaseline />
+        <Header />
+        <Box sx={{ flex: '1 0 auto' }}>
+          <Container maxWidth="lg">
+            <Box component="main" my={4}>
+              {children}
+            </Box>
+          </Container>
+        </Box>
+        <Footer />
+      </Box>
     </ThemeProvider>
   );
 };

@@ -19,6 +19,8 @@ export default function PostCard({ post }: PostCardProps) {
   const { t } = useTranslation('common');
   const router = useRouter();
 
+  const isSearchResult = post.results && post.results.length > 0;
+
   const handleClick = () => {
     router.push(`/${post.slug}`);
   };
@@ -39,9 +41,22 @@ export default function PostCard({ post }: PostCardProps) {
         <Typography gutterBottom variant="body1" component="div">
           {dayjs(post?.date).format('YYYY-MM-DD')}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {post.summary}
-        </Typography>
+        {!isSearchResult && (
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            {post.summary}
+          </Typography>
+        )}
+        {post.results &&
+          post.results.length > 0 &&
+          post.results.map((result) => (
+            <Typography
+              key={result}
+              variant="body2"
+              sx={{ color: 'text.secondary' }}
+            >
+              ...{result}...
+            </Typography>
+          ))}
       </CardContent>
       <CardActions>
         <Box display="flex" justifyContent="flex-end" width="100%">

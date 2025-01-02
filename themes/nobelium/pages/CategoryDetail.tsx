@@ -1,7 +1,7 @@
 import { useSiteStore } from 'providers/siteProvider';
 import LayoutBase from '../layout/LayoutBase';
 import BlogList from '../components/BlogList';
-import CategoryList from '../components/CategoryList';
+import CategoryList from '@/components/CategoryList';
 
 const CategoryDetail = () => {
   const category = useSiteStore((state) => state.category);

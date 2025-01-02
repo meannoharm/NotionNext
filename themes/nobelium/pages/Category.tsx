@@ -1,5 +1,5 @@
 import LayoutBase from '../layout/LayoutBase';
-import CategoryList from '../components/CategoryList';
+import CategoryList from '@/components/CategoryList';
 
 /**
  * 文章分类列表

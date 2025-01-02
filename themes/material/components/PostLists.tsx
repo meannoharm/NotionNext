@@ -6,6 +6,7 @@ import { useSiteStore } from '@/providers/siteProvider';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import Pagination from '@mui/material/Pagination';
+import Box from '@mui/material/Box';
 
 export default function PostList() {
   const { posts, page, postCount } = useSiteStore(
@@ -32,7 +33,9 @@ export default function PostList() {
         <PostCard key={post.id} post={post} />
       ))}
       {POST_LIST_STYLE === 'page' && (
-        <Pagination page={page} count={totalPage} />
+        <Box display="flex" justifyContent="flex-end" width="100%">
+          <Pagination page={page} count={totalPage} />
+        </Box>
       )}
     </Stack>
   );

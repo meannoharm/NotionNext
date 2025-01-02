@@ -9,7 +9,7 @@ import { useSiteStore } from '@/providers/siteProvider';
 import PostList from '../components/PostLists';
 import { useShallow } from 'zustand/react/shallow';
 
-const Home = () => {
+const CategoryDetail = () => {
   const { category, siteInfo } = useSiteStore(
     useShallow((state) => ({
       category: state.category,
@@ -38,4 +38,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default CategoryDetail;

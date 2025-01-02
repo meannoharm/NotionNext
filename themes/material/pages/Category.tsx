@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import { useTranslation } from 'next-i18next';
 import { useSiteStore } from '@/providers/siteProvider';
 
-const Home = () => {
+const Category = () => {
   const siteInfo = useSiteStore((state) => state.siteInfo);
   const { t } = useTranslation('nav');
 
@@ -28,4 +28,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Category;

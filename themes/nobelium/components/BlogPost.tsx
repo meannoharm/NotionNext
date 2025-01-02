@@ -11,7 +11,6 @@ export interface BlogPostProps {
 }
 const BlogPost: FC<BlogPostProps> = ({ post, isShowSummary = true }) => {
   const SUB_PATH = useConfigStore((state) => state.SUB_PATH);
-  const isSearchResult = post.results && post.results.length > 0;
 
   return (
     <Link href={`${SUB_PATH}/${post.slug}`}>
@@ -27,13 +26,13 @@ const BlogPost: FC<BlogPostProps> = ({ post, isShowSummary = true }) => {
             {dayjs(post?.date).format('YYYY-MM-DD')}
           </time>
         </header>
-        {!isSearchResult && isShowSummary && post.summary && (
+        {isShowSummary && post.summary && (
           <div className="hidden leading-8 text-gray-700 md:block dark:text-gray-300">
             {post.summary}
           </div>
         )}
         {post.results && post.results.length > 0 && (
-          <div className="hidden leading-8 text-gray-700 md:block dark:text-gray-300">
+          <div className="mt-2 hidden leading-8 text-gray-700 md:block dark:text-gray-300">
             {post.results.map((result) => (
               <div key={result} className="text-sm">
                 ...{result}...

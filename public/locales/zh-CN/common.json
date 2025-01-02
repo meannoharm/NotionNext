@@ -32,17 +32,15 @@
   "debug-close": "关闭调试",
   "theme-switch": "切换主题",
   "announcement": "公告",
-  "start-reading": "开始阅读",
+  "start_reading": "开始阅读",
   "minute": "分钟",
   "word-count": "字数",
   "prev": "上页",
   "next": "下页",
-  "search-articles": "搜索文章",
-  "search-tags": "搜索标签",
   "back": "返回上页",
   "top": "回到顶部",
   "404": "页面未找到",
-  "404-tips": "您访问的页面不存在，请检查网址是否正确或稍后再试。",
-  "site-config": "站点配置",
-  "read-more": "阅读全文"
+  "404_tips": "您访问的页面不存在，请检查网址是否正确或稍后再试。",
+  "site_config": "站点配置",
+  "read_more": "阅读全文"
 }

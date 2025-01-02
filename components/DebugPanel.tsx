@@ -70,7 +70,7 @@ const DebugPanel = () => {
 
         <div>
           <div className="w-18 mb-2 border-b pb-2 font-bold">
-            {t('site-config')}
+            {t('site_config')}
           </div>
           <div className="">
             {siteConfig &&

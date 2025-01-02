@@ -46,7 +46,7 @@ export default function PostCard({ post }: PostCardProps) {
       <CardActions>
         <Box display="flex" justifyContent="flex-end" width="100%">
           <Button size="small" onClick={handleClick}>
-            {t('read-more')}
+            {t('read_more')}
           </Button>
         </Box>
       </CardActions>

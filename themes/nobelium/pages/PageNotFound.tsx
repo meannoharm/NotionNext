@@ -14,7 +14,7 @@ const PageNotFound: FC = () => {
       <div className="flex flex-col items-center">
         <div className="mb-8 text-9xl">404</div>
         <div className="mb-2">{t('404')}</div>
-        <div>{t('404-tips')}</div>
+        <div>{t('404_tips')}</div>
       </div>
     </LayoutBase>
   );

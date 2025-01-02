@@ -88,7 +88,7 @@ const BlogListScroll = () => {
         onClick={handleGetMore}
         className="my-4 w-full cursor-pointer py-4 text-center "
       >
-        {hasMore ? t('more') : `${t('no-more')} 😰`}{' '}
+        {hasMore ? t('more') : `${t('no-more')} 😰`}
       </div>
     </div>
   );

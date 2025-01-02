@@ -13,6 +13,12 @@ const SearchInput = () => {
   const [text, setText] = useState('');
 
   useEffect(() => {
+    return () => {
+      setText('');
+    };
+  }, []);
+
+  useEffect(() => {
     setText(keyword);
   }, [keyword]);
 
@@ -34,6 +40,10 @@ const SearchInput = () => {
         alignItems: 'center',
         display: 'flex',
         width: '100%',
+      }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSearch();
       }}
     >
       <InputBase

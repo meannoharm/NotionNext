@@ -11,6 +11,8 @@ import Avatar from '@mui/material/Avatar';
 import NavButton from './NavButton';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Slide from '@mui/material/Slide';
 
 export default function Header() {
   const customNav = useSiteStore((state) => state.navList);
@@ -28,47 +30,59 @@ export default function Header() {
     }
   };
 
+  const disappearTrigger = useScrollTrigger({
+    threshold: 600,
+  });
+
+  const elevateTrigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
+
   return (
     <Box component="header">
-      <AppBar position="sticky">
-        <Toolbar>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: 'flex',
-              alignItems: 'center',
-              cursor: 'pointer',
-            }}
-            onClick={backToHome}
-          >
-            {siteInfo.icon && (
-              <Avatar
-                src={siteInfo.icon}
-                alt={siteInfo.title}
-                sx={{ width: 24, height: 24, marginRight: 2 }}
+      <Slide appear={false} direction="down" in={!disappearTrigger}>
+        <AppBar position="fixed" elevation={elevateTrigger ? 4 : 0}>
+          <Toolbar>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+              onClick={backToHome}
+            >
+              {siteInfo.icon && (
+                <Avatar
+                  src={siteInfo.icon}
+                  alt={siteInfo.title}
+                  sx={{ width: 24, height: 24, marginRight: 2 }}
+                />
+              )}
+              <Typography variant="h6" noWrap component="div">
+                {siteInfo.title}
+              </Typography>
+            </Box>
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              {customNav.map((nav) => (
+                <NavButton key={nav.id} nav={nav} />
+              ))}
+            </Box>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder={t('search_articles')}
+                inputProps={{ 'aria-label': 'search' }}
+                onKeyDown={handleOnKeyDown}
               />
-            )}
-            <Typography variant="h6" noWrap component="div">
-              {siteInfo.title}
-            </Typography>
-          </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {customNav.map((nav) => (
-              <NavButton key={nav.id} nav={nav} />
-            ))}
-          </Box>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder={t('search_articles')}
-              inputProps={{ 'aria-label': 'search' }}
-              onKeyDown={handleOnKeyDown}
-            />
-          </Search>
-        </Toolbar>
-      </AppBar>
+            </Search>
+          </Toolbar>
+        </AppBar>
+      </Slide>
+      <Toolbar />
     </Box>
   );
 }

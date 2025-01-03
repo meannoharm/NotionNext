@@ -1,14 +1,14 @@
 import { type FC, useRef, useState } from 'react';
 import CONFIG from '@/themes/nobelium/theme.config';
-import { NavItem } from './components/NavItem';
-import RandomPostButton from './components/RandomPostButton';
-import SearchButton from './components/SearchButton';
-import LanguageSwitchButton from './components/LanguageSwitchButton';
-import DarkModeButton from './components/DarkModeButton';
-import { Menu } from './components/Menu';
+import { NavItem } from './NavItem';
+import RandomPostButton from './RandomPostButton';
+import SearchButton from './SearchButton';
+import LanguageSwitchButton from './LanguageSwitchButton';
+import DarkModeButton from './DarkModeButton';
+import { Menu } from './Menu';
 import { isEmpty } from 'lodash';
-import { useSiteStore } from 'providers/siteProvider';
-import { useConfigStore } from 'providers/configProvider';
+import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { Nav } from '@/types';
 

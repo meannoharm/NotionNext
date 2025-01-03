@@ -1,8 +1,8 @@
 import { Transition } from '@headlessui/react';
-import Nav from './components/Nav/Nav';
-import Footer from './components/Footer';
-import JumpToTopButton from './components/JumpToTopButton';
-import { useStyleStore } from 'providers/styleProvider';
+import Nav from './Nav';
+import Footer from './Footer';
+import JumpToTopButton from '../components/JumpToTopButton';
+import { useStyleStore } from '@/providers/styleProvider';
 
 import type { FC, ReactNode } from 'react';
 

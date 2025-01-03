@@ -1,6 +1,9 @@
 import LayoutBase from '@/themes/nobelium/layout/LayoutBase';
-import BlogArchiveItem from './components/BlogArchiveItem';
 import { useSiteStore } from 'providers/siteProvider';
+import BlogPost from '@/themes/nobelium/components/BlogPost';
+
+import type { FC } from 'react';
+import type { Archive } from '@/types';
 
 /**
  * 归档
@@ -22,6 +25,24 @@ const Archive = () => {
         ))}
       </div>
     </LayoutBase>
+  );
+};
+
+const BlogArchiveItem: FC<{
+  archiveTitle: keyof Archive;
+  archivePosts: Archive;
+}> = ({ archiveTitle, archivePosts }) => {
+  return (
+    <div key={archiveTitle}>
+      <div id={archiveTitle} className="pb-4 pt-16 text-xl dark:text-gray-300">
+        {archiveTitle}
+      </div>
+      <div>
+        {archivePosts[archiveTitle].map((post) => (
+          <BlogPost key={post.id} post={post} isShowSummary={false} />
+        ))}
+      </div>
+    </div>
   );
 };
 

@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import CONFIG from '@/themes/nobelium/theme.config';
-import { SvgIcon } from './components/SvgIcon';
-import LazyImage from 'components/LazyImage';
-import NavBar from './components/NavBar/NavBar';
+import { SvgIcon } from '../components/SvgIcon';
+import LazyImage from '@/components/LazyImage';
+import NavBar from '../components/NavBar';
 import styles from './Nav.module.css';
-import { useSiteStore } from 'providers/siteProvider';
-import { useConfigStore } from 'providers/configProvider';
+import { useSiteStore } from '@/providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { FC } from 'react';
 

@@ -25,6 +25,7 @@ const Layout: FC<{
   return (
     <ThemeProvider theme={theme}>
       <Box
+        id="theme-material"
         sx={{
           display: 'flex',
           flexDirection: 'column',

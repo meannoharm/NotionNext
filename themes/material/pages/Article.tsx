@@ -12,6 +12,7 @@ import { useConfigStore } from '@/providers/configProvider';
 import Avatar from '@mui/material/Avatar';
 import md5 from 'js-md5';
 import TagList from '../components/TagList';
+import NotionIcon from '@/components/NotionIcon';
 
 const Article = () => {
   const { post, isLock } = useSiteStore(
@@ -35,6 +36,7 @@ const Article = () => {
       {!isLock && post && (
         <Stack id="article-wrapper" spacing={2}>
           <Typography variant="h3" gutterBottom>
+            {post?.pageIcon && <NotionIcon icon={post?.pageIcon} />}
             {post.title}
           </Typography>
           <Stack

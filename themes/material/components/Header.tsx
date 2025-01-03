@@ -40,7 +40,7 @@ export default function Header() {
   });
 
   return (
-    <Box component="header">
+    <Box component="header" sx={{ mb: 4 }}>
       <Slide appear={false} direction="down" in={!disappearTrigger}>
         <AppBar position="fixed" elevation={elevateTrigger ? 4 : 0}>
           <Toolbar>

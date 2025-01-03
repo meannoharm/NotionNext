@@ -1,5 +1,5 @@
 import LayoutBase from '../layout/LayoutBase';
-import { useTranslation } from 'next-i18next';
+import PageNotFoundTip from '@/components/PageNotFoundTip';
 
 import { type FC } from 'react';
 /**
@@ -8,14 +8,9 @@ import { type FC } from 'react';
  * @returns
  */
 const PageNotFound: FC = () => {
-  const { t } = useTranslation('common');
   return (
     <LayoutBase>
-      <div className="flex flex-col items-center">
-        <div className="mb-8 text-9xl">404</div>
-        <div className="mb-2">{t('404')}</div>
-        <div>{t('404_tips')}</div>
-      </div>
+      <PageNotFoundTip />
     </LayoutBase>
   );
 };

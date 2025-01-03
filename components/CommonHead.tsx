@@ -35,12 +35,14 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
     i18n: { language },
   } = useTranslation();
 
+  console.log(siteInfo);
+
   const baseUrl = SUB_PATH ? `${SITE_URL}/${SUB_PATH}` : SITE_URL;
   const url = pageMeta?.slug ? `${baseUrl}/${pageMeta.slug}` : baseUrl;
   // TODO: prepare default background image
   const image = pageMeta?.image || '/bg_image.jpg';
   const title = pageMeta?.title || siteInfo.title;
-  const description = pageMeta?.description || siteInfo.description;
+  const description = pageMeta?.description || siteInfo.description || '';
   const type = pageMeta?.type || 'website';
   const keywords = pageMeta?.tags?.join(',') || KEYWORDS;
   const lang = language ? language.replace('-', '_') : ''; // Facebook OpenGraph 要 zh_CN 這樣的格式才抓得到語言

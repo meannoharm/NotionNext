@@ -9,6 +9,7 @@ import { useStyleStore } from '@/providers/styleProvider';
 import { useMemo, type FC, type ReactNode } from 'react';
 import Grid from '@mui/material/Grid2';
 import SideBar from '../components/SideBar';
+import ScrollTop from '../components/ScrollTop';
 
 const Layout: FC<{
   children: ReactNode;
@@ -52,6 +53,7 @@ const Layout: FC<{
           </Container>
         </Box>
         <Footer />
+        <ScrollTop />
       </Box>
     </ThemeProvider>
   );

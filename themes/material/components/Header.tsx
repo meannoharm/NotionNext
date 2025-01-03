@@ -82,7 +82,7 @@ export default function Header() {
           </Toolbar>
         </AppBar>
       </Slide>
-      <Toolbar />
+      <Toolbar id="back-to-top-anchor" />
     </Box>
   );
 }

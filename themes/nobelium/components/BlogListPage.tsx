@@ -5,6 +5,8 @@ import { useTranslation } from 'next-i18next';
 import { useShallow } from 'zustand/react/shallow';
 import { useSiteStore } from 'providers/siteProvider';
 import { useConfigStore } from 'providers/configProvider';
+import { getPagePrefix } from '@/utils';
+
 const BlogListPage = () => {
   const { posts, page, postCount } = useSiteStore(
     useShallow((state) => ({
@@ -20,10 +22,7 @@ const BlogListPage = () => {
   const totalPage = Math.ceil(postCount / POSTS_PER_PAGE);
   const showPrev = page > 1;
   const showNext = page < totalPage && posts?.length > 0;
-  const pagePrefix = router.asPath
-    .split('?')[0]
-    .replace(/\/page\/[1-9]\d*/, '')
-    .replace(/\/$/, '');
+  const pagePrefix = getPagePrefix(router.asPath);
 
   return (
     <div className="my-6 w-full">

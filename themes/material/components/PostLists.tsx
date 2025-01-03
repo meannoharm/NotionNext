@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import PostCard from './PostCard';
 import Stack from '@mui/material/Stack';
 import { useConfigStore } from '@/providers/configProvider';
@@ -7,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
+import { getPagePrefix } from '@/utils';
 
 export default function PostList() {
   const { posts, page, postCount } = useSiteStore(
@@ -22,10 +22,20 @@ export default function PostList() {
       POST_LIST_STYLE: state.POST_LIST_STYLE,
     })),
   );
-  const { t } = useTranslation('common');
   const router = useRouter();
 
   const totalPage = Math.ceil(postCount / POSTS_PER_PAGE);
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    console.log(value, router);
+    const pagePrefix = getPagePrefix(router.asPath);
+    router.push({
+      pathname: `${pagePrefix}/page/${value}`,
+    });
+  };
 
   return (
     <Stack spacing={2}>
@@ -38,7 +48,11 @@ export default function PostList() {
       </Box>
       {POST_LIST_STYLE === 'page' && (
         <Box display="flex" justifyContent="flex-end" width="100%">
-          <Pagination page={page} count={totalPage} />
+          <Pagination
+            page={page}
+            count={totalPage}
+            onChange={handlePageChange}
+          />
         </Box>
       )}
     </Stack>

@@ -68,3 +68,12 @@ export function isUUID(str: string) {
     /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
   return uuidRegex.test(str);
 }
+
+// get page prefix from asPath
+// used for 'page' type of post list
+export function getPagePrefix(asPath: string) {
+  return asPath
+    .split('?')[0]
+    .replace(/\/page\/\d+/, '')
+    .replace(/\/$/, '');
+}

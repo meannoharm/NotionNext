@@ -7,10 +7,10 @@ import dynamic from 'next/dynamic';
 const GoogleAnalytics = dynamic(() =>
   import('@next/third-parties/google').then((res) => res.GoogleAnalytics),
 );
-const DebugPanel = dynamic(() => import('@/components/DebugPanel'), {
+const DebugPanel = dynamic(() => import('@/components/Addon/DebugPanel'), {
   ssr: false,
 });
-const ThemeSwitch = dynamic(() => import('@/components/ThemeSwitch'), {
+const ThemeSwitch = dynamic(() => import('@/components/Addon/ThemeSwitch'), {
   ssr: false,
 });
 const Analytics = dynamic(
@@ -29,19 +29,27 @@ const SpeedInsights = dynamic(
     ssr: false,
   },
 );
-const Ackee = dynamic(() => import('@/components/Ackee'), { ssr: false });
-const GoogleAdsense = dynamic(() => import('@/components/GoogleAdsense'), {
+const Ackee = dynamic(() => import('@/components/Addon/Ackee'), { ssr: false });
+const GoogleAdsense = dynamic(
+  () => import('@/components/Addon/GoogleAdsense'),
+  {
+    ssr: false,
+  },
+);
+const Messenger = dynamic(
+  () => import('@/components/Addon/FacebookMessenger'),
+  {
+    ssr: false,
+  },
+);
+const VConsole = dynamic(() => import('@/components/Addon/VConsole'), {
   ssr: false,
 });
-const Messenger = dynamic(() => import('@/components/FacebookMessenger'), {
-  ssr: false,
-});
-const VConsole = dynamic(() => import('@/components/VConsole'), { ssr: false });
 const CustomContextMenu = dynamic(
-  () => import('@/components/CustomContextMenu'),
+  () => import('@/components/Addon/CustomContextMenu'),
   { ssr: false },
 );
-const DisableCopy = dynamic(() => import('@/components/DisableCopy'), {
+const DisableCopy = dynamic(() => import('@/components/Addon/DisableCopy'), {
   ssr: false,
 });
 

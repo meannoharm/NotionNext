@@ -1,11 +1,14 @@
 import Header from '../components/Header';
 import Box from '@mui/material/Box';
+
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Footer from '../components/Footer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useStyleStore } from '@/providers/styleProvider';
 import { useMemo, type FC, type ReactNode } from 'react';
+import Grid from '@mui/material/Grid2';
+import SideBar from '../components/SideBar';
 
 const Layout: FC<{
   children: ReactNode;
@@ -36,9 +39,16 @@ const Layout: FC<{
         <Header />
         <Box sx={{ flex: '1 0 auto' }}>
           <Container maxWidth="lg">
-            <Box component="main" my={4}>
-              {children}
-            </Box>
+            <Grid container spacing={2}>
+              <Grid size={3}>
+                <SideBar />
+              </Grid>
+              <Grid size={9}>
+                <Box component="main" my={4}>
+                  {children}
+                </Box>
+              </Grid>
+            </Grid>
           </Container>
         </Box>
         <Footer />

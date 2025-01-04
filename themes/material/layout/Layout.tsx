@@ -40,7 +40,7 @@ const Layout: FC<{
         <Header />
         <Box sx={{ flex: '1 0 auto' }}>
           <Container maxWidth="lg">
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
               <Grid size={3}>
                 <SideBar />
               </Grid>

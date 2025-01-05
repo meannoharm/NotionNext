@@ -11,6 +11,11 @@ import { StyleProvider } from '@/providers/styleProvider';
 import { SiteStoreProvider } from '@/providers/siteProvider';
 import { ConfigProvider } from '@/providers/configProvider';
 import Addon from '@/components/Addon';
+import { bootstrap, isBrowser } from '@/utils';
+
+if (isBrowser) {
+  bootstrap();
+}
 
 import type { AppProps } from 'next/app';
 

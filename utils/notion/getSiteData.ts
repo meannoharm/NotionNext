@@ -131,7 +131,11 @@ async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
           allPages.push(page);
         }
 
-        if (page.type === PageType.Menu || page.type === PageType.Link) {
+        if (
+          page.type === PageType.HeadMenu ||
+          page.type === PageType.Menu ||
+          page.type === PageType.Link
+        ) {
           navPageList.push(page);
         }
       } catch (error) {
@@ -186,9 +190,12 @@ function getLatestPosts(
  */
 function getNavList(navPages: Page[]): Nav[] {
   const pageMap: Record<string, Nav> = {};
-  const navMenus: Nav[] = [];
+  let headerMenuId = '';
 
   navPages.forEach((page) => {
+    if (page.type === PageType.HeadMenu) {
+      headerMenuId = page.id;
+    }
     pageMap[page.id] = {
       id: page.id,
       show: true,
@@ -196,21 +203,22 @@ function getNavList(navPages: Page[]): Nav[] {
       title: page.title,
       to: page.slug,
       subMenus: [],
+      type: page.type,
     };
   });
 
   navPages.forEach((page) => {
+    const navItem = pageMap[page.id];
     if (page.parentId) {
       const parent = pageMap[page.parentId];
       if (parent) {
-        parent.subMenus!.push(pageMap[page.id]);
+        parent.subMenus!.push(navItem);
       }
-    } else {
-      navMenus.push(pageMap[page.id]);
     }
   });
 
-  return navMenus;
+  const headerMenu = pageMap[headerMenuId];
+  return headerMenu.subMenus || [];
 }
 
 /**

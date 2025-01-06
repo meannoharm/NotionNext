@@ -90,7 +90,11 @@ export default async function getPageProperties(
       pageInfo.slug = '#';
     }
   }
-  if (pageInfo.childrenIds && pageInfo.childrenIds.length > 0) {
+  if (
+    pageInfo.childrenIds &&
+    pageInfo.childrenIds.length > 0 &&
+    pageInfo.type !== PageType.HeadMenu
+  ) {
     pageInfo.type = PageType.Menu;
     pageInfo.slug = '#';
   }

@@ -11,7 +11,7 @@ export type * from 'notion-types';
 
 export interface Page {
   id: string;
-  type: PageType | null;
+  type: PageType;
   title: string;
   status: PageStatus | null;
   category: string;
@@ -52,6 +52,7 @@ export enum PageType {
   Page = 'Page',
   Notice = 'Notice',
   Config = 'Config',
+  HeadMenu = 'HeadMenu',
   Link = 'Link',
   Menu = 'Menu',
 }
@@ -76,6 +77,7 @@ export interface Nav {
   show: boolean;
   title: string;
   subMenus?: Nav[];
+  type: PageType;
 }
 
 export interface SiteInfo {

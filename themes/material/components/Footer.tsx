@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Link, Typography } from '@mui/material';
 import { useConfigStore } from '@/providers/configProvider';
 import { Trans, useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/react/shallow';
@@ -29,15 +29,10 @@ const Footer = () => {
       sx={{
         py: 2,
         px: 2,
-        backgroundColor: (theme) =>
-          theme.palette.mode === 'light'
-            ? theme.palette.grey[200]
-            : theme.palette.grey[800],
       }}
     >
-      <Container>
-        <Typography variant="body1">
-          {' '}
+      <Container sx={{ textAlign: 'center' }}>
+        <Typography variant="body2" color="text.secondary">
           © {AUTHOR} {copyrightDate}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -46,9 +41,25 @@ const Footer = () => {
             t={t}
             components={{
               link: (
-                <a href={LICENSE_URL} target="_blank">
+                <Link color="inherit" href={LICENSE_URL}>
                   {LICENSE}
-                </a>
+                </Link>
+              ),
+            }}
+          />
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          <Trans
+            i18nKey="powered-by"
+            t={t}
+            components={{
+              link: (
+                <Link
+                  color="inherit"
+                  href="https://www.github.com/czgaotian/notion-next-base"
+                >
+                  Notion Next Base
+                </Link>
               ),
             }}
           />

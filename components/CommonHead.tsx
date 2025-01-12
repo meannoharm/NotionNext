@@ -35,6 +35,8 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
     i18n: { language },
   } = useTranslation();
 
+  if (!siteInfo) return null;
+
   const baseUrl = SUB_PATH ? `${SITE_URL}/${SUB_PATH}` : SITE_URL;
   const url = pageMeta?.slug ? `${baseUrl}/${pageMeta.slug}` : baseUrl;
   // TODO: prepare default background image

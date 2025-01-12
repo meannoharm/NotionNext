@@ -49,7 +49,7 @@ function Code({ block }: { block: CodeBlock }) {
     }
   }, [codeRef]);
 
-  const handleMermaidOnLoad = () => {
+  const handleMermaidOnReady = () => {
     (window as any).mermaid?.contentLoaded();
   };
 
@@ -73,7 +73,7 @@ function Code({ block }: { block: CodeBlock }) {
         </figcaption>
       )}
       {language === 'mermaid' && (
-        <Script src={MERMAID_CDN} onLoad={handleMermaidOnLoad} />
+        <Script src={MERMAID_CDN} onReady={handleMermaidOnReady} />
       )}
     </>
   );

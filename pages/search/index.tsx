@@ -5,6 +5,7 @@ import { useSiteStore } from 'providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { PageMeta, SearchIndexProps } from '@/types';
 import type { GetStaticProps } from 'next';
@@ -15,19 +16,21 @@ import type { GetStaticProps } from 'next';
  * @returns
  */
 const SearchIndex: FC<SearchIndexProps> = (props) => {
+  const { siteData, config } = props;
+  const { siteInfo } = siteData;
+  const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
-  const { t } = useTranslation('nav');
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
-  useEffect(() => {
-    updateSiteDataState(props);
-  }, [props]);
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(() => updateConfig(config), [config]);
 
   const pageMeta: PageMeta = {
-    title: `${t('search')} | ${props.siteInfo.title}`,
-    description: props.siteInfo.description,
-    image: props.siteInfo.pageCover,
+    title: `${t('search')} | ${siteInfo.title}`,
+    description: siteInfo.description,
+    image: siteInfo.pageCover,
     slug: 'search',
     type: 'website',
   };
@@ -47,7 +50,15 @@ export const getStaticProps: GetStaticProps<SearchIndexProps> = async ({
 
   return {
     props: {
-      ...props,
+      config: props.config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
       ...(await serverSideTranslations(locale as string)),
     },
     revalidate: props.config.NEXT_REVALIDATE_SECOND,

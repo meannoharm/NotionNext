@@ -4,7 +4,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from '@/providers/siteProvider';
 import { useConfigStore } from '@/providers/configProvider';
-import { omit } from 'lodash';
 import ThemeLayout from '@/components/ThemeLayout';
 
 import type { GetStaticProps } from 'next';
@@ -18,18 +17,17 @@ import type { Page } from '@/types/notion';
  * @returns
  */
 const Index: FC<HomeIndexProps> = (props) => {
-  const { siteInfo } = props;
+  const { siteData, config, posts } = props;
+  const { siteInfo } = siteData;
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
   const updateConfig = useConfigStore((state) => state.setConfig);
 
-  useEffect(() => {
-    updateSiteDataState(props);
-    updateRenderPosts(props.posts, 1, props.publishedPosts.length);
-    updateConfig(props.config);
-  }, [props]);
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(() => updateConfig(config), [config]);
+  useEffect(() => updateRenderPosts(posts, 1, posts.length), [posts]);
 
   const pageMeta = {
     title: `${siteInfo?.title} | ${siteInfo?.description}`,
@@ -84,7 +82,15 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
 
   return {
     props: {
-      ...omit(props, 'allPages'),
+      config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
       posts,
       ...(await serverSideTranslations(locale as string)),
     },

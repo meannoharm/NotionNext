@@ -3,9 +3,9 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from 'providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
-import { omit } from 'lodash';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, CategoryDetailPageProps } from '@/types';
@@ -23,19 +23,23 @@ export interface CategoryDetailPageParams extends ParsedUrlQuery {
  */
 
 const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
-  const { siteInfo } = props;
+  const { siteData, config, posts, resultCount, category, page } = props;
+  const { siteInfo } = siteData;
   const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
   const updateCategory = useSiteStore((state) => state.updateCategory);
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
-  useEffect(() => {
-    updateSiteDataState(props);
-    updateRenderPosts(props.posts, props.page, props.resultCount);
-    updateCategory(props.category);
-  }, [props]);
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(() => updateConfig(config), [config]);
+  useEffect(
+    () => updateRenderPosts(posts, page, resultCount),
+    [posts, resultCount],
+  );
+  useEffect(() => updateCategory(category), [category]);
 
   const pageMeta: PageMeta = {
     title: `${props.category} | ${t('category')} | ${siteInfo?.title || ''}`,
@@ -73,7 +77,15 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-      ...omit(props, 'allPages'),
+      config: props.config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
       resultCount: filteredPosts.length,
       category,
       page: pageNumber,

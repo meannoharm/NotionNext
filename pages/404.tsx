@@ -2,12 +2,12 @@ import { getSiteData } from '@/utils/notion/getSiteData';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from 'providers/siteProvider';
-import { omit } from 'lodash';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
 
 import type { PageNotFoundIndexProps, PageMeta } from '@/types';
 import type { GetStaticProps } from 'next';
+import { useConfigStore } from '@/providers/configProvider';
 
 /**
  * 404
@@ -15,17 +15,23 @@ import type { GetStaticProps } from 'next';
  * @returns
  */
 const NoFound: FC<PageNotFoundIndexProps> = (props) => {
+  const { siteData, config } = props;
+  const { siteInfo } = siteData;
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
-  const { siteInfo } = props;
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
   useEffect(() => {
-    updateSiteDataState(props);
-  }, [props]);
+    updateSiteDataState(siteData);
+  }, [siteData]);
+
+  useEffect(() => {
+    updateConfig(config);
+  }, [config]);
 
   const pageMeta: PageMeta = {
-    title: `${props?.siteInfo?.title} | 页面找不到啦`,
+    title: `${siteInfo?.title} | 页面找不到啦`,
     description: '404 page not found',
     slug: '',
     type: 'website',
@@ -46,7 +52,15 @@ export const getStaticProps: GetStaticProps<PageNotFoundIndexProps> = async ({
   const props = (await getSiteData('404')) || {};
   return {
     props: {
-      ...omit(props, 'allPages'),
+      config: props.config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
       ...(await serverSideTranslations(locale as string)),
     },
   };

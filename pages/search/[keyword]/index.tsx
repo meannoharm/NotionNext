@@ -4,9 +4,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from 'providers/siteProvider';
 import getSearchResult from '@/utils/notion/getSearchResult';
-import { omit } from 'lodash';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, SearchDetailProps } from '@/types';
@@ -17,19 +17,24 @@ export interface SearchDetailParams extends ParsedUrlQuery {
 }
 
 const SearchDetail: FC<SearchDetailProps> = (props) => {
-  const { keyword, siteInfo } = props;
+  const { siteData, config, posts, keyword, resultCount } = props;
+  const { siteInfo } = siteData;
+  const { t } = useTranslation('nav');
+
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
   const updateKeyword = useSiteStore((state) => state.updateKeyword);
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
-  const { t } = useTranslation('nav');
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
-  useEffect(() => {
-    updateSiteDataState(props);
-    updateKeyword(keyword);
-    updateRenderPosts(props.posts, 1, props.resultCount);
-  }, [props]);
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(() => updateConfig(config), [config]);
+  useEffect(() => updateKeyword(keyword), [keyword]);
+  useEffect(
+    () => updateRenderPosts(posts, 1, resultCount),
+    [posts, resultCount],
+  );
 
   const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,
@@ -74,7 +79,15 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-      ...omit(props, 'allPages'),
+      config: props.config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
       resultCount: filteredPosts.length,
       keyword,
       posts,

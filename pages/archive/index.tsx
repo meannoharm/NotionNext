@@ -3,28 +3,33 @@ import { useEffect, type FC } from 'react';
 import { isBrowser } from '@/utils';
 import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
-import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from 'providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import ThemeLayout from '@/components/ThemeLayout';
+import { useShallow } from 'zustand/react/shallow';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, ArchiveIndexProps } from '../../types/page';
 import type { Archive } from '@/types/notion';
 
 const ArchiveIndex: FC<ArchiveIndexProps> = (props) => {
-  const { siteInfo } = props;
+  const { siteData, config, archive } = props;
+  const { siteInfo } = siteData;
   const { t } = useTranslation('nav');
-  const updateSiteDataState = useSiteStore(
-    (state) => state.updateSiteDataState,
-  );
-  const updateArchive = useSiteStore((state) => state.updateArchive);
 
-  useEffect(() => {
-    updateSiteDataState(props);
-    updateArchive(props.archive);
-  }, [props]);
+  const { updateArchive, updateSiteDataState } = useSiteStore(
+    useShallow((state) => ({
+      updateArchive: state.updateArchive,
+      updateSiteDataState: state.updateSiteDataState,
+    })),
+  );
+  const updateConfig = useConfigStore((state) => state.setConfig);
+
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(() => updateArchive(archive), [archive]);
+  useEffect(() => updateConfig(config), [config]);
 
   useEffect(() => {
     if (isBrowser) {
@@ -75,7 +80,15 @@ export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async ({
 
   return {
     props: {
-      ...omit(props, 'allPages'),
+      config: props.config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
       archive,
       ...(await serverSideTranslations(locale as string)),
     },

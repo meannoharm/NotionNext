@@ -1,8 +1,8 @@
 import { getSiteData } from '@/utils/notion/getSiteData';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { omit } from 'lodash';
 import { useSiteStore } from 'providers/siteProvider';
+import { useConfigStore } from '@/providers/configProvider';
 import CommonHead from '@/components/CommonHead';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
@@ -21,19 +21,20 @@ export interface TagIndexParams extends ParsedUrlQuery {
  * @returns
  */
 const TagIndex: FC<TagDetailProps> = (props) => {
-  const { tag, siteInfo } = props;
+  const { tag, siteData, config, posts, resultCount } = props;
+  const { siteInfo } = siteData;
   const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
   const updateTag = useSiteStore((state) => state.updateTag);
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
-  useEffect(() => {
-    updateSiteDataState(props);
-    updateRenderPosts(props.posts, 1, props.resultCount);
-    updateTag(tag);
-  }, [props]);
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(() => updateConfig(config), [config]);
+  useEffect(() => updateTag(tag), [tag]);
+  useEffect(() => updateRenderPosts(posts, 1, resultCount), [posts, resultCount]);
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,
@@ -69,7 +70,15 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-      ...omit(props, 'allPages'),
+            config: props.config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
       tag,
       posts,
       resultCount: filteredPosts.length,

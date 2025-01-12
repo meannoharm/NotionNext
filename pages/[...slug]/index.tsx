@@ -13,12 +13,12 @@ import { ALGOLIA_APPLICATION_ID } from '@/constants';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from 'providers/configProvider';
 import { useTranslation } from 'next-i18next';
+import Loading from '@/components/Loading';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, ArticleProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
-import Loading from '@/components/Loading';
 
 export interface PrefixParams extends ParsedUrlQuery {
   slug: string[];
@@ -30,7 +30,8 @@ export interface PrefixParams extends ParsedUrlQuery {
  * @returns
  */
 const Slug: FC<ArticleProps> = (props) => {
-  const { post, siteInfo } = props;
+  const { post, siteData, config } = props;
+  const { siteInfo } = siteData;
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { t } = useTranslation('common');
@@ -40,13 +41,9 @@ const Slug: FC<ArticleProps> = (props) => {
   const updatePost = useSiteStore((state) => state.updatePost);
   const updateConfig = useConfigStore((state) => state.setConfig);
 
-  useEffect(() => {
-    updateSiteDataState(props);
-    updatePost(post);
-    updateConfig(props.config);
-  }, [props]);
-
-  // 文章加载
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(() => updatePost(post), [post]);
+  useEffect(() => updateConfig(config), [config]);
   useEffect(() => {
     // 404
     if (!post) {
@@ -68,7 +65,7 @@ const Slug: FC<ArticleProps> = (props) => {
   const pageMeta: PageMeta = {
     title: post
       ? `${post?.title} | ${siteInfo?.title}`
-      : `${props?.siteInfo?.title} | loading`,
+      : `${siteInfo?.title} | loading`,
     description: post?.summary || '',
     type: post?.type || '',
     slug: post?.slug || '',
@@ -125,7 +122,15 @@ export const getStaticProps: GetStaticProps<
   if (!post) {
     return {
       props: {
-        ...props,
+        config: props.config,
+        siteData: {
+          notice: props.notice,
+          siteInfo: props.siteInfo,
+          tagOptions: props.tagOptions,
+          categoryOptions: props.categoryOptions,
+          navList: props.navList,
+          latestPosts: props.latestPosts,
+        },
         post: null,
         ...(await serverSideTranslations(locale as string)),
       },
@@ -146,8 +151,16 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-      ...props,
-      post,
+      config: props.config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
+      post: null,
       ...(await serverSideTranslations(locale as string)),
     },
     revalidate: config.NEXT_REVALIDATE_SECOND,

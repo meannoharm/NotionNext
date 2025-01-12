@@ -1,11 +1,11 @@
 import { getSiteData } from '@/utils/notion/getSiteData';
 import { useTranslation } from 'next-i18next';
-import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from 'providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { PageMeta, CategoryIndexProps } from '@/types';
 import type { GetStaticProps } from 'next';
@@ -16,15 +16,16 @@ import type { GetStaticProps } from 'next';
  * @returns
  */
 const Category: FC<CategoryIndexProps> = (props) => {
-  const { siteInfo } = props;
+  const { siteData, config } = props;
+  const { siteInfo } = siteData;
   const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
-  useEffect(() => {
-    updateSiteDataState(props);
-  }, [props]);
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(() => updateConfig(config), [config]);
 
   const pageMeta: PageMeta = {
     title: `${t('category')} | ${siteInfo?.title}`,
@@ -48,7 +49,15 @@ export const getStaticProps: GetStaticProps<CategoryIndexProps> = async ({
   const globalData = await getSiteData('category-index-props');
   return {
     props: {
-      ...omit(globalData, 'allPages'),
+      config: globalData.config,
+      siteData: {
+        notice: globalData.notice,
+        siteInfo: globalData.siteInfo,
+        tagOptions: globalData.tagOptions,
+        categoryOptions: globalData.categoryOptions,
+        navList: globalData.navList,
+        latestPosts: globalData.latestPosts,
+      },
       ...(await serverSideTranslations(locale as string)),
     },
     revalidate: globalData.config.NEXT_REVALIDATE_SECOND,

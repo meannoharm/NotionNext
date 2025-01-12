@@ -1,12 +1,12 @@
 import { getSiteData } from '@/utils/notion/getSiteData';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { omit } from 'lodash';
 import { useSiteStore } from 'providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import ThemeLayout from '@/components/ThemeLayout';
+import { useConfigStore } from '@/providers/configProvider';
 
-import type { FC } from 'react';
+import { useEffect, type FC } from 'react';
 import type { PageMeta, TagDetailPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps, GetStaticPaths } from 'next';
@@ -17,17 +17,20 @@ export interface TagDetailPageParams extends ParsedUrlQuery {
 }
 
 const TagDetailPage: FC<TagDetailPageProps> = (props) => {
-  const { tag, siteInfo } = props;
+  const { tag, siteData, config, posts, page, resultCount } = props;
+  const { siteInfo } = siteData;
   const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
   const updateTag = useSiteStore((state) => state.updateTag);
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
-  updateSiteDataState(props);
-  updateRenderPosts(props.posts, props.page, props.resultCount);
-  updateTag(props.tag);
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(() => updateConfig(config), [config]);
+  useEffect(() => updateRenderPosts(posts, page, resultCount), [posts, page, resultCount]);
+  useEffect(() => updateTag(tag), [tag]);
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,
@@ -64,7 +67,15 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-      ...omit(props, 'allPages'),
+            config: props.config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
       posts: paginatedPosts,
       resultCount: filteredPosts.length,
       tag,

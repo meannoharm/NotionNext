@@ -1,4 +1,5 @@
-import type { Site, Page, Archive } from './notion';
+import type { SiteConfig } from './config';
+import type { Page, Archive, SiteInfo, Tag, Category, Nav } from './notion';
 
 export type PageMeta = {
   title: string;
@@ -10,7 +11,17 @@ export type PageMeta = {
   category?: string;
   tags?: string[];
 };
-export type DataBaseForProps = Omit<Site, 'allPages'>;
+export type DataBaseForProps = {
+  config: SiteConfig;
+  siteData: {
+    notice: Page | null;
+    siteInfo: SiteInfo;
+    tagOptions: Tag[];
+    categoryOptions: Category[];
+    navList: Nav[];
+    latestPosts: Page[];
+  };
+};
 
 export type PageMetaProps = {
   pageMeta: PageMeta;
@@ -27,6 +38,7 @@ export type ArchiveIndexProps = DataBaseForProps & {
 };
 export type PageIndexProps = DataBaseForProps & {
   posts: Page[];
+  publishedPostsCount: number;
   page: number;
 };
 export type CategoryIndexProps = DataBaseForProps;

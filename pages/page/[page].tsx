@@ -1,11 +1,11 @@
 import { getSiteData } from '@/utils/notion/getSiteData';
 import { getPostBlocks } from '@/utils/notion/getPostBlocks';
-import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from 'providers/siteProvider';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from 'components/ThemeLayout';
+import { useConfigStore } from '@/providers/configProvider';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, PageIndexProps } from '@/types';
@@ -21,16 +21,20 @@ export interface PageParams extends ParsedUrlQuery {
  * @returns
  */
 const Page: FC<PageIndexProps> = (props) => {
-  const { siteInfo } = props;
+  const { siteData, page, posts, publishedPostsCount, config } = props;
+  const { siteInfo } = siteData;
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
   const updateRenderPosts = useSiteStore((state) => state.updateRenderPosts);
+  const updateConfig = useConfigStore((state) => state.setConfig);
 
-  useEffect(() => {
-    updateSiteDataState(props);
-    updateRenderPosts(props.posts, props.page, props.publishedPosts.length);
-  }, [props]);
+  useEffect(() => updateSiteDataState(siteData), [siteData]);
+  useEffect(
+    () => updateRenderPosts(posts, page, publishedPostsCount),
+    [posts, page, publishedPostsCount],
+  );
+  useEffect(() => updateConfig(config), [config]);
 
   const pageMeta: PageMeta = {
     title: `${props?.page} | Page | ${siteInfo?.title}`,
@@ -92,8 +96,17 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-      ...omit(props, 'allPages'),
+      config: props.config,
+      siteData: {
+        notice: props.notice,
+        siteInfo: props.siteInfo,
+        tagOptions: props.tagOptions,
+        categoryOptions: props.categoryOptions,
+        navList: props.navList,
+        latestPosts: props.latestPosts,
+      },
       posts,
+      publishedPostsCount: props.publishedPosts.length,
       page: pageNumber,
       ...(await serverSideTranslations(locale as string)),
     },

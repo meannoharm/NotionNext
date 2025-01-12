@@ -28,7 +28,7 @@ export const ArticleInfo = () => {
   );
 
   return (
-    <section className="mt-2 flex flex-col font-light">
+    <section className="mb-4 mt-2 flex flex-col font-light">
       <div className="text-3xl font-bold text-black dark:text-white">
         {post?.pageIcon && <NotionIcon icon={post?.pageIcon} />}
         {post?.title}

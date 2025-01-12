@@ -1,7 +1,7 @@
 import { getPostBlocks } from '@/utils/notion/getPostBlocks';
 import { getSiteData } from '@/utils/notion/getSiteData';
 import { getPageTableOfContents } from '@/utils/notion/getPageTableOfContents';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { isBrowser, isProduct, isUUID } from '@/utils';
 import { uploadDataToAlgolia } from '@/utils/algolia';
@@ -12,11 +12,13 @@ import { useSiteStore } from 'providers/siteProvider';
 import { ALGOLIA_APPLICATION_ID } from '@/constants';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from 'providers/configProvider';
+import { useTranslation } from 'next-i18next';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, ArticleProps } from '@/types';
 import type { GetStaticProps, GetStaticPaths } from 'next';
+import Loading from '@/components/Loading';
 
 export interface PrefixParams extends ParsedUrlQuery {
   slug: string[];
@@ -29,7 +31,9 @@ export interface PrefixParams extends ParsedUrlQuery {
  */
 const Slug: FC<ArticleProps> = (props) => {
   const { post, siteInfo } = props;
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
@@ -51,11 +55,13 @@ const Slug: FC<ArticleProps> = (props) => {
           const article = document.getElementById('notion-article');
           if (!article) {
             router.push('/404').then(() => {
-              console.warn('找不到页面', router.asPath);
+              console.warn(t('404_tips'), router.asPath);
             });
           }
         }
-      }, 8 * 1000); // 404时长 8秒
+      }, 3 * 1000); // 404时长 8秒
+    } else {
+      setIsLoading(false);
     }
   }, [post]);
 
@@ -74,7 +80,7 @@ const Slug: FC<ArticleProps> = (props) => {
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      <ThemeLayout />
+      {isLoading ? <Loading /> : <ThemeLayout />}
     </>
   );
 };

@@ -3,9 +3,9 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { omit } from 'lodash';
 import { useSiteStore } from 'providers/siteProvider';
-import CommonHead from 'components/CommonHead';
+import CommonHead from '@/components/CommonHead';
 import { useEffect, type FC } from 'react';
-import ThemeLayout from 'components/ThemeLayout';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { PageMeta, TagDetailProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';

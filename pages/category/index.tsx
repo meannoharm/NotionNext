@@ -3,9 +3,9 @@ import { useTranslation } from 'next-i18next';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from 'providers/siteProvider';
-import CommonHead from 'components/CommonHead';
+import CommonHead from '@/components/CommonHead';
 import { useEffect, type FC } from 'react';
-import ThemeLayout from 'components/ThemeLayout';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { PageMeta, CategoryIndexProps } from '@/types';
 import type { GetStaticProps } from 'next';

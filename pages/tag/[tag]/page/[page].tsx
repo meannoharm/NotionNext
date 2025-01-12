@@ -3,8 +3,8 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { omit } from 'lodash';
 import { useSiteStore } from 'providers/siteProvider';
-import CommonHead from 'components/CommonHead';
-import ThemeLayout from 'components/ThemeLayout';
+import CommonHead from '@/components/CommonHead';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { FC } from 'react';
 import type { PageMeta, TagDetailPageProps } from '@/types';

@@ -2,11 +2,11 @@ import { getSiteData } from '@/utils/notion/getSiteData';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from 'providers/siteProvider';
-import CommonHead from 'components/CommonHead';
+import CommonHead from '@/components/CommonHead';
 import getSearchResult from '@/utils/notion/getSearchResult';
 import { omit } from 'lodash';
 import { useEffect, type FC } from 'react';
-import ThemeLayout from 'components/ThemeLayout';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { PageMeta, SearchDetailPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';

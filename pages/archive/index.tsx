@@ -6,8 +6,8 @@ import dayjs from 'dayjs';
 import { omit } from 'lodash';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from 'providers/siteProvider';
-import CommonHead from 'components/CommonHead';
-import ThemeLayout from 'components/ThemeLayout';
+import CommonHead from '@/components/CommonHead';
+import ThemeLayout from '@/components/ThemeLayout';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, ArchiveIndexProps } from '../../types/page';

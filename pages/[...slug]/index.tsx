@@ -7,10 +7,10 @@ import { isBrowser, isProduct, isUUID } from '@/utils';
 import { uploadDataToAlgolia } from '@/utils/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getIndependentPage } from '@/utils/notion/getIndependentPage';
-import CommonHead from 'components/CommonHead';
+import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from 'providers/siteProvider';
 import { ALGOLIA_APPLICATION_ID } from '@/constants';
-import ThemeLayout from 'components/ThemeLayout';
+import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from 'providers/configProvider';
 
 import type { FC } from 'react';

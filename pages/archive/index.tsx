@@ -88,6 +88,7 @@ export const getStaticProps: GetStaticProps<ArchiveIndexProps> = async ({
         categoryOptions: props.categoryOptions,
         navList: props.navList,
         latestPosts: props.latestPosts,
+        totalPostsCount: props.publishedPosts.length,
       },
       archive,
       ...(await serverSideTranslations(locale as string)),

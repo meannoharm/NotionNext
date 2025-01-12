@@ -57,6 +57,7 @@ export const getStaticProps: GetStaticProps<CategoryIndexProps> = async ({
         categoryOptions: globalData.categoryOptions,
         navList: globalData.navList,
         latestPosts: globalData.latestPosts,
+        totalPostsCount: globalData.publishedPosts.length,
       },
       ...(await serverSideTranslations(locale as string)),
     },

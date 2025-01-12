@@ -203,7 +203,7 @@ function getNavList(navPages: Page[]): Nav[] {
       title: page.title,
       to: page.slug,
       subMenus: [],
-      type: page.type,
+      type: page.type as PageType,
     };
   });
 

@@ -60,6 +60,7 @@ export const getStaticProps: GetStaticProps<PageNotFoundIndexProps> = async ({
         categoryOptions: props.categoryOptions,
         navList: props.navList,
         latestPosts: props.latestPosts,
+        totalPostsCount: props.publishedPosts.length,
       },
       ...(await serverSideTranslations(locale as string)),
     },

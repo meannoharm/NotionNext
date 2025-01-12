@@ -31,7 +31,10 @@ const SearchDetailPage: FC<SearchDetailPageProps> = (props) => {
   useEffect(() => updateSiteDataState(siteData), [siteData]);
   useEffect(() => updateConfig(config), [config]);
   useEffect(() => updateKeyword(keyword), [keyword]);
-  useEffect(() => updateRenderPosts(posts, page, resultCount), [posts, page, resultCount]);
+  useEffect(
+    () => updateRenderPosts(posts, page, resultCount),
+    [posts, page, resultCount],
+  );
 
   const pageMeta: PageMeta = {
     title: `${keyword || ''}${keyword ? ' | ' : ''}${t('search')} | ${siteInfo?.title}`,
@@ -84,6 +87,7 @@ export const getStaticProps: GetStaticProps<
         categoryOptions: props.categoryOptions,
         navList: props.navList,
         latestPosts: props.latestPosts,
+        totalPostsCount: props.publishedPosts.length,
       },
       posts,
       resultCount: filteredPosts.length,

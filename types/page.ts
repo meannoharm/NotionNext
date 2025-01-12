@@ -1,6 +1,16 @@
 import type { SiteConfig } from './config';
 import type { Page, Archive, SiteInfo, Tag, Category, Nav } from './notion';
 
+export type SiteDataState = {
+  notice: Page | null;
+  siteInfo: SiteInfo;
+  tagOptions: Tag[];
+  categoryOptions: Category[];
+  navList: Nav[];
+  latestPosts: Page[];
+  totalPostsCount: number;
+};
+
 export type PageMeta = {
   title: string;
   description: string;
@@ -11,16 +21,10 @@ export type PageMeta = {
   category?: string;
   tags?: string[];
 };
+
 export type DataBaseForProps = {
   config: SiteConfig;
-  siteData: {
-    notice: Page | null;
-    siteInfo: SiteInfo;
-    tagOptions: Tag[];
-    categoryOptions: Category[];
-    navList: Nav[];
-    latestPosts: Page[];
-  };
+  siteData: SiteDataState;
 };
 
 export type PageMetaProps = {

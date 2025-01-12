@@ -90,6 +90,7 @@ export const getStaticProps: GetStaticProps<HomeIndexProps> = async ({
         categoryOptions: props.categoryOptions,
         navList: props.navList,
         latestPosts: props.latestPosts,
+        totalPostsCount: props.publishedPosts.length,
       },
       posts,
       ...(await serverSideTranslations(locale as string)),

@@ -34,7 +34,10 @@ const TagIndex: FC<TagDetailProps> = (props) => {
   useEffect(() => updateSiteDataState(siteData), [siteData]);
   useEffect(() => updateConfig(config), [config]);
   useEffect(() => updateTag(tag), [tag]);
-  useEffect(() => updateRenderPosts(posts, 1, resultCount), [posts, resultCount]);
+  useEffect(
+    () => updateRenderPosts(posts, 1, resultCount),
+    [posts, resultCount],
+  );
 
   const pageMeta: PageMeta = {
     title: `${tag} | ${t('tags')} | ${siteInfo?.title}`,
@@ -70,7 +73,7 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-            config: props.config,
+      config: props.config,
       siteData: {
         notice: props.notice,
         siteInfo: props.siteInfo,
@@ -78,6 +81,7 @@ export const getStaticProps: GetStaticProps<
         categoryOptions: props.categoryOptions,
         navList: props.navList,
         latestPosts: props.latestPosts,
+        totalPostsCount: props.publishedPosts.length,
       },
       tag,
       posts,

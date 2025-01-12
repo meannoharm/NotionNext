@@ -1,16 +1,8 @@
 import { createStore } from 'zustand';
-
-import type { Page, SiteInfo, Tag, Category, Nav, Archive } from '@/types/notion';
 import md5 from 'js-md5';
 
-export type SiteDataState = {
-  notice: Page | null;
-  siteInfo: SiteInfo;
-  tagOptions: Tag[];
-  categoryOptions: Category[];
-  navList: Nav[];
-  latestPosts: Page[];
-};
+import type { Page, Archive } from '@/types/notion';
+import type { SiteDataState } from '@/types/page';
 
 export type RenderDataState = {
   posts: Page[];
@@ -57,6 +49,7 @@ export const defaultInitState: SiteState = {
   categoryOptions: [],
   navList: [],
   latestPosts: [],
+  totalPostsCount: 0,
   archive: {},
   posts: [],
   page: 0,
@@ -98,6 +91,7 @@ export const createSiteStore = (initState: SiteState = defaultInitState) => {
         categoryOptions: props.categoryOptions,
         navList: props.navList,
         latestPosts: props.latestPosts,
+        totalPostsCount: props.totalPostsCount,
       }),
     updateRenderPosts: (posts, page, postCount) =>
       set({

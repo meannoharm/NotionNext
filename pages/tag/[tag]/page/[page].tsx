@@ -29,7 +29,10 @@ const TagDetailPage: FC<TagDetailPageProps> = (props) => {
 
   useEffect(() => updateSiteDataState(siteData), [siteData]);
   useEffect(() => updateConfig(config), [config]);
-  useEffect(() => updateRenderPosts(posts, page, resultCount), [posts, page, resultCount]);
+  useEffect(
+    () => updateRenderPosts(posts, page, resultCount),
+    [posts, page, resultCount],
+  );
   useEffect(() => updateTag(tag), [tag]);
 
   const pageMeta: PageMeta = {
@@ -67,7 +70,7 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: {
-            config: props.config,
+      config: props.config,
       siteData: {
         notice: props.notice,
         siteInfo: props.siteInfo,
@@ -75,6 +78,7 @@ export const getStaticProps: GetStaticProps<
         categoryOptions: props.categoryOptions,
         navList: props.navList,
         latestPosts: props.latestPosts,
+        totalPostsCount: props.publishedPosts.length,
       },
       posts: paginatedPosts,
       resultCount: filteredPosts.length,

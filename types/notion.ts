@@ -11,7 +11,7 @@ export type * from 'notion-types';
 
 export interface Page {
   id: string;
-  type: PageType;
+  type: PageType | null;
   title: string;
   status: PageStatus | null;
   category: string;

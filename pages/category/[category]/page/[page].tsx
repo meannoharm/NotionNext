@@ -25,7 +25,7 @@ export interface CategoryDetailPageParams extends ParsedUrlQuery {
 const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
   const { siteData, config, posts, resultCount, category, page } = props;
   const { siteInfo } = siteData;
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('nav');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );

@@ -18,7 +18,7 @@ import type { GetStaticProps } from 'next';
 const Category: FC<CategoryIndexProps> = (props) => {
   const { siteData, config } = props;
   const { siteInfo } = siteData;
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('nav');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );

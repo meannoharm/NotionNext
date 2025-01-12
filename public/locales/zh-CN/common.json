@@ -4,7 +4,6 @@
   "latest-posts": "最新发布",
   "tags": "标签",
   "no-tag": "NoTag",
-  "category": "分类",
   "share": "分享",
   "scan-qr-code": "微信扫码分享",
   "url-copied": "链接已复制！",
@@ -42,6 +41,7 @@
   "top": "回到顶部",
   "404": "页面未找到",
   "404_tips": "您访问的页面不存在，请检查网址是否正确或稍后再试。",
+  "404_title": "页面未找到",
   "site_config": "站点配置",
   "read_more": "阅读全文"
 }

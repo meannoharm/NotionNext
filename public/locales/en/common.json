@@ -4,7 +4,6 @@
   "latest-posts": "Latest posts",
   "tags": "Tags",
   "no-tag": "NoTag",
-  "category": "Category",
   "share": "Share",
   "scan-qr-code": "Scan QRCode",
   "url-copied": "URL has copied!",
@@ -42,6 +41,7 @@
   "analytics": "Analytics",
   "404": "Page not found.",
   "404_tips": "Sorry, the page you are looking for does not exist.",
+  "404_title": "Page Not Found",
   "site_config": "Site Config",
   "read_more": "Read More"
 }

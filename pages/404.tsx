@@ -4,6 +4,7 @@ import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from 'providers/siteProvider';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
+import { useTranslation } from 'next-i18next';
 
 import type { PageNotFoundIndexProps, PageMeta } from '@/types';
 import type { GetStaticProps } from 'next';
@@ -15,6 +16,7 @@ import { useConfigStore } from '@/providers/configProvider';
  * @returns
  */
 const NoFound: FC<PageNotFoundIndexProps> = (props) => {
+  const { t } = useTranslation('common');
   const { siteData, config } = props;
   const { siteInfo } = siteData;
   const updateSiteDataState = useSiteStore(
@@ -31,8 +33,8 @@ const NoFound: FC<PageNotFoundIndexProps> = (props) => {
   }, [config]);
 
   const pageMeta: PageMeta = {
-    title: `${siteInfo?.title} | 页面找不到啦`,
-    description: '404 page not found',
+    title: `${siteInfo?.title} | ${t('404_title')}`,
+    description: t('404_tips'),
     slug: '',
     type: 'website',
     image: siteInfo?.pageCover,

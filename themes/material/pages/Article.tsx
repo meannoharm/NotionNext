@@ -1,8 +1,6 @@
 import { useSiteStore } from '@/providers/siteProvider';
 import Layout from '../layout/Layout';
 import NotionPage from '@/components/NotionPage';
-import ShareBar from '@/components/ShareBar';
-import Comment from '@/components/Comment';
 import { useShallow } from 'zustand/react/shallow';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
@@ -60,8 +58,6 @@ const Article = () => {
             {post?.tags && <TagList tagList={post.tags} />}
           </Stack>
           <NotionPage post={post} />
-          <ShareBar post={post} />
-          <Comment />
         </Stack>
       )}
     </Layout>

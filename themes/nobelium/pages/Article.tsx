@@ -4,8 +4,6 @@ import ArticleInfo from '../components/ArticleInfo';
 import ArticleFooter from '../components/ArticleFooter';
 // TODO: move to theme file
 import NotionPage from '@/components/NotionPage';
-import ShareBar from '@/components/ShareBar';
-import Comment from '@/components/Comment';
 import { useSiteStore } from 'providers/siteProvider';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -27,8 +25,6 @@ const Post: FC = () => {
         <div id="article-wrapper" className="px-2">
           <ArticleInfo />
           <NotionPage post={post} />
-          <ShareBar post={post} />
-          <Comment />
           <ArticleFooter />
         </div>
       )}

@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { mapImgUrl } from '@/utils/notion/mapImage';
 import { NOTION_PAGE_ID, SITE_URL } from '@/constants';
+import ShareBar from '../ShareBar';
+import Comment from '@/components/Comment';
 
 import type { Page } from '@/types/notion';
 import { idToUuid } from 'notion-utils';
@@ -95,18 +97,26 @@ const NotionPage: FC<{
   }, []);
 
   return post && post.blockMap ? (
-    <div id="notion-article" className={`mx-auto overflow-hidden ${className}`}>
-      <NotionRenderer
-        recordMap={post.blockMap}
-        rootPageId={NOTION_PAGE_ID}
-        rootDomain={domain}
-        darkMode={isDarkMode}
-        mapImageUrl={mapImgUrl}
-        mapPageUrl={mapPageUrl}
-        previewImages={!!post.blockMap.preview_images}
-        components={components}
-      />
-    </div>
+    <>
+      <div
+        id="notion-article"
+        className={`mx-auto overflow-hidden ${className}`}
+      >
+        <NotionRenderer
+          recordMap={post.blockMap}
+          rootPageId={NOTION_PAGE_ID}
+          rootDomain={domain}
+          darkMode={isDarkMode}
+          mapImageUrl={mapImgUrl}
+          mapPageUrl={mapPageUrl}
+          previewImages={!!post.blockMap.preview_images}
+          components={components}
+          showTableOfContents={true}
+        />
+      </div>
+      <ShareBar post={post} />
+      <Comment />
+    </>
   ) : (
     post?.summary || null
   );

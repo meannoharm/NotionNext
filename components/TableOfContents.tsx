@@ -1,12 +1,20 @@
 import { useSiteStore } from '@/providers/siteProvider';
 
-const TableOfContent = () => {
+export interface TableOfContentProps {
+  position: 'static' | 'absolute' | 'sticky' | 'fixed';
+  top?: number | string;
+}
+
+const TableOfContent = ({
+  position = 'sticky',
+  top = '5rem',
+}: TableOfContentProps) => {
   const post = useSiteStore((state) => state.post);
 
   if (!post || !post.toc) return null;
 
   return (
-    <div className="sticky top-20 p-2">
+    <div className="p-2" style={{ top, position }}>
       {post.toc.map((item) => (
         <a
           href={`#${item.id}`}

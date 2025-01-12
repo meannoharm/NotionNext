@@ -3,7 +3,6 @@ import {
   Avatar,
   BottomNavigation,
   BottomNavigationAction,
-  Box,
   Divider,
   Stack,
 } from '@mui/material';
@@ -36,7 +35,7 @@ const SideBar = () => {
   const siteInfo = useSiteStore((state) => state.siteInfo);
 
   return (
-    <Card>
+    <Card sx={{ mb: 2 }}>
       <CardContent>
         <Stack spacing={1} alignItems="center">
           <Avatar

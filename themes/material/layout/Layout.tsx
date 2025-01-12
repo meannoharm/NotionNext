@@ -10,6 +10,7 @@ import { useMemo, type FC, type ReactNode } from 'react';
 import Grid from '@mui/material/Grid2';
 import SideBar from '../components/SideBar';
 import ScrollTop from '../components/ScrollTop';
+import TableOfContent from '@/components/TableOfContents';
 
 const Layout: FC<{
   children: ReactNode;
@@ -43,6 +44,7 @@ const Layout: FC<{
             <Grid container spacing={3}>
               <Grid size={3}>
                 <SideBar />
+                <TableOfContent />
               </Grid>
               <Grid size={9}>
                 <Box component="main" my={4}>

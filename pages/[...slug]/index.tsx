@@ -162,7 +162,7 @@ export const getStaticProps: GetStaticProps<
         latestPosts: props.latestPosts,
         totalPostsCount: props.publishedPosts.length,
       },
-      post: null,
+      post,
       ...(await serverSideTranslations(locale as string)),
     },
     revalidate: config.NEXT_REVALIDATE_SECOND,

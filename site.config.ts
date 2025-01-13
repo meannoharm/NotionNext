@@ -20,8 +20,8 @@ export default siteConfig({
   POST_PREVIEW_LINES: 10,
   ENABLE_RSS: true,
   CAN_NOT_COPY: false,
-  THEME_SWITCH: true,
-  DEBUG: true,
+  THEME_SWITCH: false,
+  DEBUG: false,
   CUSTOM_RIGHT_CLICK_CONTEXT_MENU: false,
 
   POST_SHARE_BAR_ENABLE: false,

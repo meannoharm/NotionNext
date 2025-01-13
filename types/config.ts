@@ -25,7 +25,7 @@ export type SiteConfig = {
   POST_LIST_PREVIEW: boolean;
   POST_PREVIEW_LINES: number;
   ENABLE_RSS: boolean;
-  CAN_COPY: boolean;
+  CAN_NOT_COPY: boolean;
   THEME_SWITCH: boolean;
   DEBUG: boolean;
   CUSTOM_RIGHT_CLICK_CONTEXT_MENU: boolean;

@@ -5,10 +5,10 @@ import { useEffect } from 'react';
  * 禁止用户拷贝文章的插件
  */
 export default function DisableCopy() {
-  const CAN_COPY = useConfigStore((state) => state.CAN_COPY);
+  const CAN_NOT_COPY = useConfigStore((state) => state.CAN_NOT_COPY);
 
   useEffect(() => {
-    if (!CAN_COPY) {
+    if (CAN_NOT_COPY) {
       // 全栈添加禁止复制的样式
       document.getElementsByTagName('html')[0].classList.add('forbid-copy');
       // 监听复制事件

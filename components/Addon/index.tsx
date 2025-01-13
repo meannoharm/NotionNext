@@ -64,7 +64,7 @@ export default function Addon() {
     FACEBOOK_APP_ID,
     FACEBOOK_PAGE,
     CUSTOM_RIGHT_CLICK_CONTEXT_MENU,
-    CAN_COPY,
+    CAN_NOT_COPY,
     GOOGLE_ANALYTICS_ENABLE,
     GOOGLE_ANALYTICS_ID,
   } = useConfigStore(
@@ -78,7 +78,7 @@ export default function Addon() {
       FACEBOOK_APP_ID: state.FACEBOOK_APP_ID,
       FACEBOOK_PAGE: state.FACEBOOK_PAGE,
       CUSTOM_RIGHT_CLICK_CONTEXT_MENU: state.CUSTOM_RIGHT_CLICK_CONTEXT_MENU,
-      CAN_COPY: state.CAN_COPY,
+      CAN_NOT_COPY: state.CAN_NOT_COPY,
       GOOGLE_ANALYTICS_ENABLE: state.GOOGLE_ANALYTICS_ENABLE,
       GOOGLE_ANALYTICS_ID: state.GOOGLE_ANALYTICS_ID,
     })),
@@ -97,7 +97,7 @@ export default function Addon() {
       {GOOGLE_ADSENSE_ENABLE && <GoogleAdsense />}
       {FACEBOOK_APP_ID && FACEBOOK_PAGE && <Messenger />}
       {CUSTOM_RIGHT_CLICK_CONTEXT_MENU && <CustomContextMenu />}
-      {!CAN_COPY && <DisableCopy />}
+      {CAN_NOT_COPY && <DisableCopy />}
       {GOOGLE_ANALYTICS_ENABLE && GOOGLE_ANALYTICS_ID && (
         <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />
       )}

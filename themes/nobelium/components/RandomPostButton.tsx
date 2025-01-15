@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useSiteStore } from 'providers/siteProvider';
-import { useConfigStore } from 'providers/configProvider';
 
 /**
  * 随机跳转到一个文章

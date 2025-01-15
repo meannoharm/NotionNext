@@ -7,7 +7,6 @@ import type {
 
 export type SiteConfig = {
   AUTHOR: string;
-  SUB_PATH: string;
   KEYWORDS: string;
   SINCE: number;
   LICENSE: string;

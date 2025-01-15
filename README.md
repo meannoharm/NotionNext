@@ -27,7 +27,7 @@ It uses Notion as a CMS, [notion-next-base](https://github.com/czgaotian/notion-
 
 and then, just click
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fczgaotian%2Fnotion-next-base)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fczgaotian%2Fnotion-next-base&env=EXT_PUBLIC_NOTION_PAGE_ID&envDescription=The%20ID%20of%20the%20Notion%20page%20you%20previously%20shared%20to%20the%20web%2C%20usually%20has%2032%20digits%20after%20your%20workspace%20address&envLink=https%3A%2F%2Fgithub.com%2Fczgaotian%2Fnotion-next-base%2Fresources%2Fenvironment.md)
 
 set following environment variables：
 

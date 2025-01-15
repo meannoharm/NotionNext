@@ -5,7 +5,6 @@ import { THEMES } from '@/constants';
 import useWindowSize from '@/utils/hooks/useWindowSize';
 import { useTranslation } from 'next-i18next';
 import { useStyleStore } from '@/providers/styleProvider';
-import { useConfigStore } from '@/providers/configProvider';
 import { useSiteStore } from '@/providers/siteProvider';
 
 /**

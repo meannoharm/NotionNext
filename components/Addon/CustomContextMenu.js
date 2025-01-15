@@ -22,7 +22,6 @@ export default function CustomContextMenu() {
   const windowSize = useWindowSize();
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-  const SUB_PATH = useConfigStore((state) => state.SUB_PATH);
   const latestPosts = useSiteStore((state) => state.latestPosts);
 
   const router = useRouter();
@@ -33,7 +32,7 @@ export default function CustomContextMenu() {
   function handleJumpToRandomPost() {
     const randomIndex = Math.floor(Math.random() * latestPosts.length);
     const randomPost = latestPosts[randomIndex];
-    router.push(`${SUB_PATH}/${randomPost?.slug}`);
+    router.push(`/${randomPost?.slug}`);
   }
 
   useLayoutEffect(() => {

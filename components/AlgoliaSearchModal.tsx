@@ -9,7 +9,6 @@ import {
   ALGOLIA_INDEX_NAME,
 } from '@/constants';
 import { useTranslation } from 'next-i18next';
-import { useConfigStore } from 'providers/configProvider';
 import { useSiteStore } from 'providers/siteProvider';
 
 import type { AlgoliaRecord } from '@/utils/algolia';
@@ -27,7 +26,6 @@ export default function AlgoliaSearchModal() {
   const [totalPage, setTotalPage] = useState(0);
   const [totalHit, setTotalHit] = useState(0);
   const [useTime, setUseTime] = useState(0);
-  const SUB_PATH = useConfigStore((state) => state.SUB_PATH);
   const { t } = useTranslation('search');
 
   const algoliaRef = useRef<SearchClient | null>(null);
@@ -139,7 +137,7 @@ export default function AlgoliaSearchModal() {
           {searchResults.map((result) => (
             <li key={result.objectID} className="my-2">
               <a
-                href={`${SUB_PATH}/${result.slug}`}
+                href={`/${result.slug}`}
                 className="font-bold text-black hover:text-blue-600 dark:text-gray-200"
               >
                 {result.title}

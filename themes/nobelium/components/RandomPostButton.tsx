@@ -10,7 +10,6 @@ export default function RandomPostButton() {
   const router = useRouter();
   const { t } = useTranslation('menu');
   const latestPosts = useSiteStore((state) => state.latestPosts);
-  const SUB_PATH = useConfigStore((state) => state.SUB_PATH);
 
   /**
    * 随机跳转文章
@@ -18,7 +17,7 @@ export default function RandomPostButton() {
   function handleClick() {
     const randomIndex = Math.floor(Math.random() * latestPosts.length);
     const randomPost = latestPosts[randomIndex];
-    router.push(`${SUB_PATH}/${randomPost?.slug}`);
+    router.push(`/${randomPost?.slug}`);
   }
 
   return (

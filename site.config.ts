@@ -2,7 +2,6 @@ import { siteConfig } from '@/types/config';
 
 export default siteConfig({
   AUTHOR: 'czgaotian',
-  SUB_PATH: '',
   KEYWORDS: 'Notion, Site, Blog',
   SINCE: 2022,
   LICENSE: 'CC BY-NC-SA 4.0',

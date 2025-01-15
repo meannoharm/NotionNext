@@ -16,7 +16,6 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
   const siteInfo = useSiteStore((state) => state.siteInfo);
   const {
     AUTHOR,
-    SUB_PATH,
     KEYWORDS,
     SEO_GOOGLE_SITE_VERIFICATION,
     SEO_BAIDU_SITE_VERIFICATION,
@@ -24,7 +23,6 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
   } = useConfigStore(
     useShallow((state) => ({
       AUTHOR: state.AUTHOR,
-      SUB_PATH: state.SUB_PATH,
       KEYWORDS: state.KEYWORDS,
       SEO_GOOGLE_SITE_VERIFICATION: state.SEO_GOOGLE_SITE_VERIFICATION,
       SEO_BAIDU_SITE_VERIFICATION: state.SEO_BAIDU_SITE_VERIFICATION,
@@ -37,7 +35,7 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
 
   if (!siteInfo) return null;
 
-  const baseUrl = SUB_PATH ? `${SITE_URL}/${SUB_PATH}` : SITE_URL;
+  const baseUrl = SITE_URL;
   const url = pageMeta?.slug ? `${baseUrl}/${pageMeta.slug}` : baseUrl;
   // TODO: prepare default background image
   const image = pageMeta?.image || '/bg_image.jpg';

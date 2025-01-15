@@ -18,6 +18,27 @@ It uses Notion as a CMS, [notion-next-base](https://github.com/czgaotian/notion-
 - nobelium and material theme can choice
 - Optimized for Next.js and Vercel
 
+## Quick Start
+
+### Deploy on Vercel with one Click
+
+- Star this repo 😉
+- Duplicate [this Notion template](https://deeply-amount-134.notion.site/14297ce5427180bcb214d8c92a8e0be8?v=14297ce54271817b9f1e000c627ec579), and share it to the public
+
+and then, just click
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fczgaotian%2Fnotion-next-base)
+
+set following environment variables：
+
+- `NEXT_PUBLIC_NOTION_PAGE_ID` (Required): The ID of the Notion page you previously shared to the web, usually has 32 digits after your workspace address
+
+Other environment variables, view [here](https://github.com/czgaotian/notion-next-base/resources/environment.md)
+
+<details><summary>Wait for a sec, what is Page ID？</summary>
+  <img src="/resources/pageId.png?raw=true">
+</details>
+
 ## Todo
 
 - [ ] usage and document

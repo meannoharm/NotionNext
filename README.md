@@ -33,7 +33,7 @@ set following environment variables：
 
 - `NEXT_PUBLIC_NOTION_PAGE_ID` (Required): The ID of the Notion page you previously shared to the web, usually has 32 digits after your workspace address
 
-Other environment variables, view [here](https://github.com/czgaotian/notion-next-base/resources/environment.md)
+Other environment variables, view [here](/resources/environment.md)
 
 <details><summary>Wait for a sec, what is Page ID？</summary>
   <img src="/resources/pageId.png?raw=true">

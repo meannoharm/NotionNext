@@ -97,7 +97,7 @@ export const getStaticPaths: GetStaticPaths<TagIndexParams> = async () => {
 
   return {
     paths: tagOptions.map((tag) => ({ params: { tag: tag.name } })),
-    fallback: true,
+    fallback: false,
   };
 };
 

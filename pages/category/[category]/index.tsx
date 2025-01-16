@@ -102,7 +102,7 @@ export const getStaticPaths: GetStaticPaths<
     paths: categoryOptions.map((category) => ({
       params: { category: category.name },
     })),
-    fallback: true,
+    fallback: false,
   };
 };
 

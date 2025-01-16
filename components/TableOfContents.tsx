@@ -1,7 +1,7 @@
 import { useSiteStore } from '@/providers/siteProvider';
 
 export interface TableOfContentProps {
-  position: 'static' | 'absolute' | 'sticky' | 'fixed';
+  position?: 'static' | 'absolute' | 'sticky' | 'fixed';
   top?: number | string;
 }
 

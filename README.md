@@ -46,6 +46,7 @@ Other environment variables, view [here](/resources/environment.md)
 - [x] new theme **material**
 - [ ] font family management
 - [ ] test
+- [ ] more fine-grained i18n
 
 ---
 

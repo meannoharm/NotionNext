@@ -7,9 +7,10 @@ export const NOTION_PAGE_ID = clientSideGetEnv(
   'NEXT_PUBLIC_NOTION_PAGE_ID',
   process.env.NEXT_PUBLIC_NOTION_PAGE_ID,
 );
-export const SITE_URL = clientSideGetEnv(
-  'NEXT_PUBLIC_SITE_URL',
-  process.env.NEXT_PUBLIC_SITE_URL,
+export const BASE_URL = clientSideGetEnv(
+  'NEXT_PUBLIC_BASE_URL',
+  process.env.NEXT_PUBLIC_BASE_URL,
+  '',
 );
 
 export const THEMES = clientSideGetEnv(

@@ -5,7 +5,7 @@ import { useStyleStore } from 'providers/styleProvider';
 import Script from 'next/script';
 import { useShallow } from 'zustand/react/shallow';
 import { useConfigStore } from 'providers/configProvider';
-import { SITE_URL } from '@/constants';
+import { getBaseUrl } from '@/utils';
 
 import type { Page } from '@/types/notion';
 
@@ -39,6 +39,8 @@ const Cusdis = ({ post }: { post: Page }) => {
     }
   };
 
+  const baseUrl = getBaseUrl();
+
   return (
     <>
       <div
@@ -48,7 +50,7 @@ const Cusdis = ({ post }: { post: Page }) => {
         data-host={CUSDIS_HOST}
         data-app-id={CUSDIS_APP_ID}
         data-page-id={post.id}
-        data-page-url={`${SITE_URL}${router.asPath}`}
+        data-page-url={`${baseUrl}${router.asPath}`}
         data-page-title={post.title}
         data-theme={isDarkMode ? 'dark' : 'light'}
       />

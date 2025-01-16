@@ -4,7 +4,7 @@ import React, { type FC, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { mapImgUrl } from '@/utils/notion/mapImage';
-import { NOTION_PAGE_ID, SITE_URL } from '@/constants';
+import { NOTION_PAGE_ID, BASE_URL } from '@/constants';
 import ShareBar from '../ShareBar';
 import Comment from '@/components/Comment';
 
@@ -59,12 +59,13 @@ const NotionPage: FC<{
 }> = ({ post, className = '' }) => {
   const isDarkMode = useStyleStore((state) => state.isDarkMode);
   const domain = useMemo(() => {
-    try {
-      const url = new URL(SITE_URL);
+    if (BASE_URL) {
+      const url = new URL(BASE_URL);
       return url.hostname;
-    } catch {
-      throw new Error('Invalid SITE_URL');
+    } else if (typeof window !== 'undefined') {
+      return window.location.host;
     }
+    return '';
   }, []);
 
   const components = useMemo<Partial<NotionComponents>>(

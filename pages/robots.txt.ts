@@ -1,9 +1,10 @@
 import { isProduct } from '@/utils';
-import { SITE_URL } from '@/constants';
+import { BASE_URL } from '@/constants';
 
 import type { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const baseUrl = BASE_URL || req.headers.origin;
   if (req.method !== 'GET') {
     res.statusCode = 405;
     res.setHeader('Content-Type', 'application/json');
@@ -26,13 +27,13 @@ Allow: /
 Disallow: /api/get-tweet-ast/*
 Disallow: /api/search-notion
 
-Sitemap: ${SITE_URL}/sitemap.xml
+Sitemap: ${baseUrl}/sitemap.xml
 `);
   } else {
     res.write(`User-agent: *
 Disallow: /
 
-Sitemap: ${SITE_URL}/sitemap.xml
+Sitemap: ${baseUrl}/sitemap.xml
 `);
   }
 

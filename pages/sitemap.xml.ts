@@ -1,47 +1,48 @@
 import { getServerSideSitemap } from 'next-sitemap';
 import { getSiteData } from '@/utils/notion/getSiteData';
 import dayjs from 'dayjs';
-import { SITE_URL } from '@/constants';
+import { BASE_URL } from '@/constants';
 
 import type { ISitemapField } from 'next-sitemap';
 import type { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const baseUrl = BASE_URL || ctx.req.headers.origin;
   const { allPages } = await getSiteData('rss');
   const lastmod = dayjs().format('YYYY-MM-DD');
   const defaultFields: ISitemapField[] = [
     {
-      loc: `${SITE_URL}`,
+      loc: `${baseUrl}`,
       lastmod,
       changefreq: 'daily',
       priority: 0.7,
     },
     {
-      loc: `${SITE_URL}/archive`,
+      loc: `${baseUrl}/archive`,
       lastmod,
       changefreq: 'daily',
       priority: 0.7,
     },
     {
-      loc: `${SITE_URL}/category`,
+      loc: `${baseUrl}/category`,
       lastmod,
       changefreq: 'daily',
       priority: 0.7,
     },
     {
-      loc: `${SITE_URL}/feed`,
+      loc: `${baseUrl}/feed`,
       lastmod,
       changefreq: 'daily',
       priority: 0.7,
     },
     {
-      loc: `${SITE_URL}/search`,
+      loc: `${baseUrl}/search`,
       lastmod,
       changefreq: 'daily',
       priority: 0.7,
     },
     {
-      loc: `${SITE_URL}/tag`,
+      loc: `${baseUrl}/tag`,
       lastmod,
       changefreq: 'daily',
       priority: 0.7,
@@ -52,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       ? post.slug.slice(1)
       : post.slug;
     return {
-      loc: `${SITE_URL}/${slugWithoutLeadingSlash}`,
+      loc: `${baseUrl}/${slugWithoutLeadingSlash}`,
       lastmod: dayjs(post.date).format('YYYY-MM-DD'),
       changefreq: 'daily',
       priority: 0.7,

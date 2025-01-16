@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useConfigStore } from 'providers/configProvider';
 import { useShallow } from 'zustand/react/shallow';
 import { useSiteStore } from 'providers/siteProvider';
-import { SITE_URL } from '@/constants';
+import { getBaseUrl } from '@/utils';
 
 import type { FC } from 'react';
 import type { PageMeta } from '@/types';
@@ -35,7 +35,7 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
 
   if (!siteInfo) return null;
 
-  const baseUrl = SITE_URL;
+  const baseUrl = getBaseUrl();
   const url = pageMeta?.slug ? `${baseUrl}/${pageMeta.slug}` : baseUrl;
   // TODO: prepare default background image
   const image = pageMeta?.image || '/bg_image.jpg';
@@ -105,7 +105,7 @@ const CommonHead: FC<CommonHeadProps> = ({ pageMeta }) => {
       <link
         rel="alternate"
         type="application/rss+xml"
-        href={`${SITE_URL}`}
+        href={`${baseUrl}`}
         title={title}
       />
     </Head>

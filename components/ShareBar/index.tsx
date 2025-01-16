@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import ShareButtons from './ShareButtons';
-import { SITE_URL } from '@/constants';
 import { useConfigStore } from 'providers/configProvider';
 import { useShallow } from 'zustand/react/shallow';
 import { useSiteStore } from 'providers/siteProvider';
+import { getBaseUrl } from '@/utils';
 
 import type { Page } from '@/types';
 
@@ -19,8 +19,9 @@ const ShareBar = ({ post }: { post: Page }) => {
   if (!POST_SHARE_BAR_ENABLE || !post || post?.type !== 'Post') {
     return null;
   }
+  const baseUrl = getBaseUrl();
 
-  const shareUrl = SITE_URL + router.asPath;
+  const shareUrl = baseUrl + router.asPath;
 
   return (
     <div className="mt-4 overflow-x-auto">

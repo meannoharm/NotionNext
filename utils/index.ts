@@ -1,3 +1,5 @@
+import { BASE_URL } from '@/constants';
+
 export const isProduct = () => process.env.VERCEL_ENV === 'product';
 
 /**
@@ -91,3 +93,10 @@ export function bootstrap() {
 This site is built using Notion, Next.js, and https://github.com/czgaotian/notion-next-base.
 `);
 }
+
+// get base url in browser
+export const getBaseUrl = () => {
+  if (BASE_URL) return BASE_URL;
+  else if (typeof window !== 'undefined') return window.location.origin;
+  else return '';
+};

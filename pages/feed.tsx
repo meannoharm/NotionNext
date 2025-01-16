@@ -1,9 +1,12 @@
 import type { GetServerSideProps } from 'next';
 import RSS from 'rss';
 import { getSiteData } from '@/utils/notion/getSiteData';
-import { SITE_URL } from '@/constants';
+import { BASE_URL } from '@/constants';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const baseUrl = BASE_URL || req.headers.origin;
+  if (!baseUrl) return { props: {} };
+
   if (req.method !== 'GET') {
     res.statusCode = 405;
     res.setHeader('Content-Type', 'application/json');
@@ -19,15 +22,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   const feed = new RSS({
     title: siteInfo.title,
-    site_url: SITE_URL,
-    feed_url: `${SITE_URL}/feed.xml`,
+    site_url: baseUrl,
+    feed_url: `${baseUrl}/feed.xml`,
     ttl: ttlMinutes,
   });
 
   allPages.forEach((page) => {
     feed.item({
       title: page.title,
-      url: `${SITE_URL}/${page.slug}`,
+      url: `${baseUrl}/${page.slug}`,
       date: new Date(page.date),
       description: page.summary,
     });

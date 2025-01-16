@@ -1,9 +1,8 @@
 import { getPostBlocks } from '@/utils/notion/getPostBlocks';
 import { getSiteData } from '@/utils/notion/getSiteData';
 import { getPageTableOfContents } from '@/utils/notion/getPageTableOfContents';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { isBrowser, isProduct, isUUID } from '@/utils';
+import { useEffect } from 'react';
+import { isProduct, isUUID } from '@/utils';
 import { uploadDataToAlgolia } from '@/utils/algolia';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getIndependentPage } from '@/utils/notion/getIndependentPage';
@@ -12,8 +11,6 @@ import { useSiteStore } from 'providers/siteProvider';
 import { ALGOLIA_APPLICATION_ID } from '@/constants';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from 'providers/configProvider';
-import { useTranslation } from 'next-i18next';
-import Loading from '@/components/Loading';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
@@ -32,9 +29,6 @@ export interface PrefixParams extends ParsedUrlQuery {
 const Slug: FC<ArticleProps> = (props) => {
   const { post, siteData, config } = props;
   const { siteInfo } = siteData;
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
-  const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
@@ -44,23 +38,6 @@ const Slug: FC<ArticleProps> = (props) => {
   useEffect(() => updateSiteDataState(siteData), [siteData]);
   useEffect(() => updatePost(post), [post]);
   useEffect(() => updateConfig(config), [config]);
-  useEffect(() => {
-    // 404
-    if (!post) {
-      setTimeout(() => {
-        if (isBrowser) {
-          const article = document.getElementById('notion-article');
-          if (!article) {
-            router.push('/404').then(() => {
-              console.warn(t('404_tips'), router.asPath);
-            });
-          }
-        }
-      }, 3 * 1000); // 404时长 8秒
-    } else {
-      setIsLoading(false);
-    }
-  }, [post]);
 
   const pageMeta: PageMeta = {
     title: post
@@ -77,23 +54,17 @@ const Slug: FC<ArticleProps> = (props) => {
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
-      {isLoading ? <Loading /> : <ThemeLayout />}
+      <ThemeLayout />
     </>
   );
 };
 
 export const getStaticPaths: GetStaticPaths<PrefixParams> = async () => {
-  if (!isProduct()) {
-    return {
-      paths: [],
-      fallback: true,
-    };
-  }
-
   const { allPages } = await getSiteData('slug-index');
   return {
     paths: allPages.map((row) => ({ params: { slug: row.slug.split('/') } })),
-    fallback: true,
+    // if the page directory has not matched one of slug, return 404 page
+    fallback: false,
   };
 };
 
@@ -121,21 +92,7 @@ export const getStaticProps: GetStaticProps<
   // 无法获取文章
   if (!post) {
     return {
-      props: {
-        config: props.config,
-        siteData: {
-          notice: props.notice,
-          siteInfo: props.siteInfo,
-          tagOptions: props.tagOptions,
-          categoryOptions: props.categoryOptions,
-          navList: props.navList,
-          latestPosts: props.latestPosts,
-          totalPostsCount: props.publishedPosts.length,
-        },
-        post: null,
-        ...(await serverSideTranslations(locale as string)),
-      },
-      revalidate: config.NEXT_REVALIDATE_SECOND,
+      notFound: true,
     };
   }
 

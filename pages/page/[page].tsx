@@ -61,7 +61,7 @@ export const getStaticPaths: GetStaticPaths<PageParams> = async () => {
     paths: Array.from({ length: totalPages }, (_, i) => ({
       params: { page: String(i + 1) },
     })),
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 

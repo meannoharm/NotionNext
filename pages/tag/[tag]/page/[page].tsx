@@ -110,7 +110,7 @@ export const getStaticPaths: GetStaticPaths<TagDetailPageParams> = async () => {
   });
   return {
     paths: paths,
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 

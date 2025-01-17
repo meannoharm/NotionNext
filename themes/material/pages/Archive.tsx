@@ -41,7 +41,6 @@ const Archive = () => {
           <Typography sx={{ color: 'text.primary' }}>{t('archive')}</Typography>
         </Breadcrumbs>
         <Box>
-          {' '}
           <div className="mb-10 min-h-screen w-full p-3  pb-20 md:py-12">
             {Object.keys(archive).map((archiveTitle) => (
               <Accordion defaultExpanded key={archiveTitle}>

@@ -47,9 +47,7 @@ const Layout: FC<{
                 <TableOfContent />
               </Grid>
               <Grid size={9}>
-                <Box component="main" my={4}>
-                  {children}
-                </Box>
+                <Box component="main">{children}</Box>
               </Grid>
             </Grid>
           </Container>

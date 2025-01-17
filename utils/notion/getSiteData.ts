@@ -189,6 +189,7 @@ function getLatestPosts(
  * @returns {Promise<[]|*[]>}
  */
 function getNavList(navPages: Page[]): Nav[] {
+  if (navPages.length === 0) return [];
   const pageMap: Record<string, Nav> = {};
   let headerMenuId = '';
 

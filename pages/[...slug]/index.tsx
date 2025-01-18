@@ -13,6 +13,7 @@ import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from 'providers/configProvider';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/router';
+import { useShallow } from 'zustand/react/shallow';
 
 import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, ArticleProps } from '@/types';
@@ -38,11 +39,19 @@ const Slug = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
-  const updatePost = useSiteStore((state) => state.updatePost);
+  const { updatePost, resetPost } = useSiteStore(
+    useShallow((state) => ({
+      updatePost: state.updatePost,
+      resetPost: state.resetPost,
+    })),
+  );
   const updateConfig = useConfigStore((state) => state.setConfig);
 
   useEffect(() => updateSiteDataState(siteData), [siteData]);
-  useEffect(() => updatePost(post), [post]);
+  useEffect(() => {
+    updatePost(post);
+    return resetPost;
+  }, [post]);
   useEffect(() => updateConfig(config), [config]);
 
   const pageMeta: PageMeta = {

@@ -24,6 +24,7 @@ export type SiteState = SiteDataState & RenderDataState & PostDataState;
 
 export interface SiteAction {
   updatePost: (post: Page | null) => void;
+  resetPost: () => void;
   updateIsLock: (isLock: boolean) => void;
   updateSiteDataState: (props: SiteDataState) => void;
   updateRenderPosts: (posts: Page[], page: number, postCount: number) => void;
@@ -82,6 +83,7 @@ export const createSiteStore = (initState: SiteState = defaultInitState) => {
       }
       set({ post });
     },
+    resetPost: () => set({ post: null }),
     updateIsLock: (isLock) => set({ isLock }),
     updateSiteDataState: (props) =>
       set({

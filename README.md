@@ -1,12 +1,12 @@
 # Notion Next Base
 
-A static blog system built with Next.js and the Notion API, deployed on Vercel
+A static site system built with Next.js and the Notion API, deployed on Vercel
 
 ## Intro
 
 This repository hosts my personal blog and portfolio website [gaotian.net](https://gaotian.net).
 
-It uses Notion as a CMS, [notion-next-base](https://github.com/czgaotian/notion-next-base) and [Vercel](https://vercel.com).
+It uses Notion as a CMS, powered by [notion-next-base](https://github.com/czgaotian/notion-next-base), and deployed on [Vercel](https://vercel.com).
 
 ## Features
 

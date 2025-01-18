@@ -1,4 +1,5 @@
 import { useSiteStore } from '@/providers/siteProvider';
+import Link from 'next/link';
 
 export interface TableOfContentProps {
   position?: 'static' | 'absolute' | 'sticky' | 'fixed';
@@ -16,8 +17,8 @@ const TableOfContent = ({
   return (
     <div className="p-2" style={{ top, position }}>
       {post.toc.map((item) => (
-        <a
-          href={`#${item.id}`}
+        <Link
+          href={`#${removeHyphens(item.id)}`}
           className="mb-1 block cursor-pointer text-gray-700 transition-colors hover:text-blue-500"
           style={{
             paddingLeft: `${2 * item.indentLevel}rem`,
@@ -25,10 +26,14 @@ const TableOfContent = ({
           key={item.id}
         >
           {item.text}
-        </a>
+        </Link>
       ))}
     </div>
   );
 };
 
 export default TableOfContent;
+
+const removeHyphens = (str: string): string => {
+  return str.replace(/-/g, '');
+};

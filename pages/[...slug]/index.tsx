@@ -14,10 +14,13 @@ import { useConfigStore } from 'providers/configProvider';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/router';
 
-import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PageMeta, ArticleProps } from '@/types';
-import type { GetStaticProps, GetStaticPaths } from 'next';
+import type {
+  GetStaticProps,
+  GetStaticPaths,
+  InferGetStaticPropsType,
+} from 'next';
 
 export interface PrefixParams extends ParsedUrlQuery {
   slug: string[];
@@ -28,7 +31,7 @@ export interface PrefixParams extends ParsedUrlQuery {
  * @param {*} props
  * @returns
  */
-const Slug: FC<ArticleProps> = (props) => {
+const Slug = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { post, siteData, config } = props;
   const { siteInfo } = siteData || {};
   const router = useRouter();
@@ -66,9 +69,7 @@ const Slug: FC<ArticleProps> = (props) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths<PrefixParams> = async ({
-  locales = [],
-}) => {
+export const getStaticPaths = (async ({ locales = [] }) => {
   const { allPages } = await getSiteData('slug-index');
   return {
     paths: locales.flatMap((locale) =>
@@ -77,14 +78,11 @@ export const getStaticPaths: GetStaticPaths<PrefixParams> = async ({
         locale,
       })),
     ),
-    fallback: true,
+    fallback: 'blocking',
   };
-};
+}) satisfies GetStaticPaths<PrefixParams>;
 
-export const getStaticProps: GetStaticProps<
-  ArticleProps,
-  PrefixParams
-> = async ({ params, locale }) => {
+export const getStaticProps = (async ({ params, locale }) => {
   const { slug: slugList } = params as PrefixParams;
   const slug = slugList.join('/');
   const from = `slug-index-${slug}`;
@@ -137,6 +135,6 @@ export const getStaticProps: GetStaticProps<
     },
     revalidate: config.NEXT_REVALIDATE_SECOND,
   };
-};
+}) satisfies GetStaticProps<ArticleProps, PrefixParams>;
 
 export default Slug;

@@ -5,23 +5,26 @@ import { useSiteStore } from 'providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from '@/providers/configProvider';
-import { useRouter } from 'next/router';
-import { useEffect, type FC } from 'react';
-import Loading from '@/components/Loading';
+import { useEffect } from 'react';
 
 import type { PageMeta, TagDetailPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
-import type { GetStaticProps, GetStaticPaths } from 'next';
+import type {
+  GetStaticProps,
+  GetStaticPaths,
+  InferGetStaticPropsType,
+} from 'next';
 
 export interface TagDetailPageParams extends ParsedUrlQuery {
   tag: string;
   page: string;
 }
 
-const TagDetailPage: FC<TagDetailPageProps> = (props) => {
+const TagDetailPage = (
+  props: InferGetStaticPropsType<typeof getStaticProps>,
+) => {
   const { tag, siteData, config, posts, page, resultCount } = props;
   const { siteInfo } = siteData || {};
-  const router = useRouter();
   const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
@@ -46,10 +49,6 @@ const TagDetailPage: FC<TagDetailPageProps> = (props) => {
     type: 'website',
   };
 
-  if (router.isFallback) {
-    return <Loading />;
-  }
-
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
@@ -58,10 +57,7 @@ const TagDetailPage: FC<TagDetailPageProps> = (props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<
-  TagDetailPageProps,
-  TagDetailPageParams
-> = async ({ params, locale }) => {
+export const getStaticProps = (async ({ params, locale }) => {
   const { tag, page } = params as TagDetailPageParams;
   const props = await getSiteData('tag-page-props');
   const pageNumber = parseInt(page, 10);
@@ -95,11 +91,9 @@ export const getStaticProps: GetStaticProps<
     },
     revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
-};
+}) satisfies GetStaticProps<TagDetailPageProps, TagDetailPageParams>;
 
-export const getStaticPaths: GetStaticPaths<TagDetailPageParams> = async ({
-  locales = [],
-}) => {
+export const getStaticPaths = (async ({ locales = [] }) => {
   const {
     tagOptions,
     publishedPosts,
@@ -122,8 +116,8 @@ export const getStaticPaths: GetStaticPaths<TagDetailPageParams> = async ({
   });
   return {
     paths: paths,
-    fallback: true,
+    fallback: 'blocking',
   };
-};
+}) satisfies GetStaticPaths<TagDetailPageParams>;
 
 export default TagDetailPage;

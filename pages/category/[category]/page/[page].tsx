@@ -3,13 +3,15 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from 'providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
-import { useEffect, type FC } from 'react';
+import { useEffect } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from '@/providers/configProvider';
-import Loading from '@/components/Loading';
-import { useRouter } from 'next/router';
 
-import type { GetStaticProps, GetStaticPaths } from 'next';
+import type {
+  GetStaticProps,
+  GetStaticPaths,
+  InferGetStaticPropsType,
+} from 'next';
 import type { PageMeta, CategoryDetailPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 
@@ -24,10 +26,11 @@ export interface CategoryDetailPageParams extends ParsedUrlQuery {
  * @returns
  */
 
-const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
+const CategoryDetailPage = (
+  props: InferGetStaticPropsType<typeof getStaticProps>,
+) => {
   const { siteData, config, posts, resultCount, category, page } = props;
   const { siteInfo } = siteData || {};
-  const router = useRouter();
   const { t } = useTranslation('nav');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
@@ -52,10 +55,6 @@ const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
     type: 'website',
   };
 
-  if (router.isFallback) {
-    return <Loading />;
-  }
-
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
@@ -64,10 +63,7 @@ const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<
-  CategoryDetailPageProps,
-  CategoryDetailPageParams
-> = async ({ params, locale }) => {
+export const getStaticProps = (async ({ params, locale }) => {
   const { category, page } = params as CategoryDetailPageParams;
   const pageNumber = parseInt(page, 10);
   const props = await getSiteData('category-page-props');
@@ -102,11 +98,9 @@ export const getStaticProps: GetStaticProps<
     },
     revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
-};
+}) satisfies GetStaticProps<CategoryDetailPageProps, CategoryDetailPageParams>;
 
-export const getStaticPaths: GetStaticPaths<CategoryDetailPageParams> = async ({
-  locales = [],
-}) => {
+export const getStaticPaths = (async ({ locales = [] }) => {
   const { categoryOptions, publishedPosts, config } =
     await getSiteData('category-paths');
   const paths: { params: CategoryDetailPageParams; locale: string }[] = [];
@@ -131,8 +125,8 @@ export const getStaticPaths: GetStaticPaths<CategoryDetailPageParams> = async ({
 
   return {
     paths,
-    fallback: true,
+    fallback: 'blocking',
   };
-};
+}) as GetStaticPaths<CategoryDetailPageParams>;
 
 export default CategoryDetailPage;

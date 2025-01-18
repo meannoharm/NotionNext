@@ -4,14 +4,16 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSiteStore } from 'providers/siteProvider';
 import { useConfigStore } from '@/providers/configProvider';
 import CommonHead from '@/components/CommonHead';
-import { useEffect, type FC } from 'react';
+import { useEffect } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
-import { useRouter } from 'next/router';
-import Loading from '@/components/Loading';
 
 import type { PageMeta, TagDetailProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
-import type { GetStaticProps, GetStaticPaths } from 'next';
+import type {
+  GetStaticProps,
+  GetStaticPaths,
+  InferGetStaticPropsType,
+} from 'next';
 
 export interface TagIndexParams extends ParsedUrlQuery {
   tag: string;
@@ -22,8 +24,7 @@ export interface TagIndexParams extends ParsedUrlQuery {
  * @param {*} props
  * @returns
  */
-const TagIndex: FC<TagDetailProps> = (props) => {
-  const router = useRouter();
+const TagIndex = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { tag, siteData, config, posts, resultCount } = props;
   const { siteInfo } = siteData || {};
   const { t } = useTranslation('common');
@@ -50,10 +51,6 @@ const TagIndex: FC<TagDetailProps> = (props) => {
     type: 'website',
   };
 
-  if (router.isFallback) {
-    return <Loading />;
-  }
-
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
@@ -62,10 +59,7 @@ const TagIndex: FC<TagDetailProps> = (props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<
-  TagDetailProps,
-  TagIndexParams
-> = async ({ params, locale }) => {
+export const getStaticProps = (async ({ params, locale }) => {
   const { tag } = params as TagIndexParams;
   const props = await getSiteData('tag-props');
 
@@ -97,11 +91,9 @@ export const getStaticProps: GetStaticProps<
     },
     revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
-};
+}) satisfies GetStaticProps<TagDetailProps, TagIndexParams>;
 
-export const getStaticPaths: GetStaticPaths<TagIndexParams> = async ({
-  locales = [],
-}) => {
+export const getStaticPaths = (async ({ locales = [] }) => {
   const { tagOptions } = await getSiteData('tag-static-path');
 
   return {
@@ -110,6 +102,6 @@ export const getStaticPaths: GetStaticPaths<TagIndexParams> = async ({
     ),
     fallback: false,
   };
-};
+}) satisfies GetStaticPaths<TagIndexParams>;
 
 export default TagIndex;

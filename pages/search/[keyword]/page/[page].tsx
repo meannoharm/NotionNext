@@ -5,24 +5,23 @@ import { useSiteStore } from 'providers/siteProvider';
 import { useConfigStore } from '@/providers/configProvider';
 import CommonHead from '@/components/CommonHead';
 import getSearchResult from '@/utils/notion/getSearchResult';
-import { useEffect, type FC } from 'react';
+import { useEffect } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
-import Loading from '@/components/Loading';
-import { useRouter } from 'next/router';
 
 import type { PageMeta, SearchDetailPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
-import type { GetStaticProps } from 'next';
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 
 export interface SearchDetailPageParams extends ParsedUrlQuery {
   keyword: string;
   page: string;
 }
 
-const SearchDetailPage: FC<SearchDetailPageProps> = (props) => {
+const SearchDetailPage = (
+  props: InferGetStaticPropsType<typeof getStaticProps>,
+) => {
   const { keyword, siteData, config, posts, page, resultCount } = props;
   const { siteInfo } = siteData || {};
-  const router = useRouter();
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
@@ -47,10 +46,6 @@ const SearchDetailPage: FC<SearchDetailPageProps> = (props) => {
     type: 'website',
   };
 
-  if (router.isFallback) {
-    return <Loading />;
-  }
-
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
@@ -71,10 +66,7 @@ export const getStaticPaths = async () => {
  * @param {*} param0
  * @returns
  */
-export const getStaticProps: GetStaticProps<
-  SearchDetailPageProps,
-  SearchDetailPageParams
-> = async ({ params, locale }) => {
+export const getStaticProps = (async ({ params, locale }) => {
   const { keyword, page } = params as SearchDetailPageParams;
   const props = await getSiteData('search-detail-page');
 
@@ -104,6 +96,6 @@ export const getStaticProps: GetStaticProps<
     },
     revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
-};
+}) satisfies GetStaticProps<SearchDetailPageProps, SearchDetailPageParams>;
 
 export default SearchDetailPage;

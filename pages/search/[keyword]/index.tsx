@@ -4,13 +4,11 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CommonHead from '@/components/CommonHead';
 import { useSiteStore } from 'providers/siteProvider';
 import getSearchResult from '@/utils/notion/getSearchResult';
-import { useEffect, type FC } from 'react';
+import { useEffect } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from '@/providers/configProvider';
-import Loading from '@/components/Loading';
-import { useRouter } from 'next/router';
 
-import type { GetStaticProps } from 'next';
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import type { PageMeta, SearchDetailProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 
@@ -18,11 +16,12 @@ export interface SearchDetailParams extends ParsedUrlQuery {
   keyword: string;
 }
 
-const SearchDetail: FC<SearchDetailProps> = (props) => {
+const SearchDetail = (
+  props: InferGetStaticPropsType<typeof getStaticProps>,
+) => {
   const { siteData, config, posts, keyword, resultCount } = props;
   const { siteInfo } = siteData || {};
   const { t } = useTranslation('nav');
-  const router = useRouter();
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
@@ -46,10 +45,6 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
     type: 'website',
   };
 
-  if (router.isFallback) {
-    return <Loading />;
-  }
-
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
@@ -61,7 +56,7 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 
@@ -70,10 +65,7 @@ export const getStaticPaths = async () => {
  * @param {*} param0
  * @returns
  */
-export const getStaticProps: GetStaticProps<
-  SearchDetailProps,
-  SearchDetailParams
-> = async ({ params, locale }) => {
+export const getStaticProps = (async ({ params, locale }) => {
   const props = await getSiteData('search-detail-page');
   const { keyword } = params as SearchDetailParams;
 
@@ -102,6 +94,6 @@ export const getStaticProps: GetStaticProps<
     },
     revalidate: props.config.NEXT_REVALIDATE_SECOND,
   };
-};
+}) satisfies GetStaticProps<SearchDetailProps, SearchDetailParams>;
 
 export default SearchDetail;

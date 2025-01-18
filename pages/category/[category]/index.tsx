@@ -93,9 +93,7 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export const getStaticPaths: GetStaticPaths<CategoryDetailParams> = async ({
-  locales = [],
-}) => {
+export const getStaticPaths = (async ({ locales = [] }) => {
   const { categoryOptions } = await getSiteData('category-paths');
   return {
     paths: locales.flatMap((locale) =>
@@ -106,6 +104,6 @@ export const getStaticPaths: GetStaticPaths<CategoryDetailParams> = async ({
     ),
     fallback: false,
   };
-};
+}) satisfies GetStaticPaths<CategoryDetailParams>;
 
 export default CategoryDetail;

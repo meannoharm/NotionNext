@@ -52,7 +52,7 @@ const Page: FC<PageIndexProps> = (props) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths<PageParams> = async () => {
+export const getStaticPaths = (async () => {
   const from = 'page-paths';
   const { publishedPosts, config } = await getSiteData(from);
   const totalPages = Math.ceil(publishedPosts.length / config.POSTS_PER_PAGE);
@@ -63,7 +63,7 @@ export const getStaticPaths: GetStaticPaths<PageParams> = async () => {
     })),
     fallback: 'blocking',
   };
-};
+}) satisfies GetStaticPaths<PageParams>;
 
 export const getStaticProps: GetStaticProps<
   PageIndexProps,

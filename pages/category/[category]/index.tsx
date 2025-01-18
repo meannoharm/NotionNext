@@ -93,15 +93,17 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export const getStaticPaths: GetStaticPaths<
-  CategoryDetailParams
-> = async () => {
-  const from = 'category-paths';
-  const { categoryOptions } = await getSiteData(from);
+export const getStaticPaths: GetStaticPaths<CategoryDetailParams> = async ({
+  locales = [],
+}) => {
+  const { categoryOptions } = await getSiteData('category-paths');
   return {
-    paths: categoryOptions.map((category) => ({
-      params: { category: category.name },
-    })),
+    paths: locales.flatMap((locale) =>
+      categoryOptions.map((category) => ({
+        params: { category: category.name },
+        locale,
+      })),
+    ),
     fallback: false,
   };
 };

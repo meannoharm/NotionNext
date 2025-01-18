@@ -11,6 +11,8 @@ import { useSiteStore } from 'providers/siteProvider';
 import { ALGOLIA_APPLICATION_ID } from '@/constants';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from 'providers/configProvider';
+import Loading from '@/components/Loading';
+import { useRouter } from 'next/router';
 
 import type { FC } from 'react';
 import type { ParsedUrlQuery } from 'querystring';
@@ -28,7 +30,8 @@ export interface PrefixParams extends ParsedUrlQuery {
  */
 const Slug: FC<ArticleProps> = (props) => {
   const { post, siteData, config } = props;
-  const { siteInfo } = siteData;
+  const { siteInfo } = siteData || {};
+  const router = useRouter();
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
@@ -51,6 +54,10 @@ const Slug: FC<ArticleProps> = (props) => {
     tags: post?.tags,
   };
 
+  if (router.isFallback) {
+    return <Loading />;
+  }
+
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
@@ -59,12 +66,18 @@ const Slug: FC<ArticleProps> = (props) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths<PrefixParams> = async () => {
+export const getStaticPaths: GetStaticPaths<PrefixParams> = async ({
+  locales = [],
+}) => {
   const { allPages } = await getSiteData('slug-index');
   return {
-    paths: allPages.map((row) => ({ params: { slug: row.slug.split('/') } })),
-    // if the page directory has not matched one of slug, return 404 page
-    fallback: false,
+    paths: locales.flatMap((locale) =>
+      allPages.map((row) => ({
+        params: { slug: row.slug.split('/') },
+        locale,
+      })),
+    ),
+    fallback: true,
   };
 };
 

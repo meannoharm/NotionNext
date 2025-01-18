@@ -6,6 +6,8 @@ import CommonHead from '@/components/CommonHead';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from '@/providers/configProvider';
+import Loading from '@/components/Loading';
+import { useRouter } from 'next/router';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 import type { PageMeta, CategoryDetailPageProps } from '@/types';
@@ -24,7 +26,8 @@ export interface CategoryDetailPageParams extends ParsedUrlQuery {
 
 const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
   const { siteData, config, posts, resultCount, category, page } = props;
-  const { siteInfo } = siteData;
+  const { siteInfo } = siteData || {};
+  const router = useRouter();
   const { t } = useTranslation('nav');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
@@ -48,6 +51,10 @@ const CategoryDetailPage: FC<CategoryDetailPageProps> = (props) => {
     image: siteInfo?.pageCover,
     type: 'website',
   };
+
+  if (router.isFallback) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -97,27 +104,34 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export const getStaticPaths: GetStaticPaths<
-  CategoryDetailPageParams
-> = async () => {
+export const getStaticPaths: GetStaticPaths<CategoryDetailPageParams> = async ({
+  locales = [],
+}) => {
   const { categoryOptions, publishedPosts, config } =
     await getSiteData('category-paths');
-  const paths: { params: CategoryDetailPageParams }[] = [];
+  const paths: { params: CategoryDetailPageParams; locale: string }[] = [];
 
-  categoryOptions?.forEach((category) => {
-    // 只处理发布状态的文章
-    const categoryPosts = publishedPosts?.filter((post) =>
-      post.category?.includes(category.name),
-    );
-    const totalPages = Math.ceil(categoryPosts.length / config.POSTS_PER_PAGE);
-    for (let i = 1; i < totalPages; i++) {
-      paths.push({ params: { category: category.name, page: String(i + 1) } });
-    }
+  locales.forEach((locale) => {
+    categoryOptions?.forEach((category) => {
+      // 只处理发布状态的文章
+      const categoryPosts = publishedPosts?.filter((post) =>
+        post.category?.includes(category.name),
+      );
+      const totalPages = Math.ceil(
+        categoryPosts.length / config.POSTS_PER_PAGE,
+      );
+      for (let i = 1; i < totalPages; i++) {
+        paths.push({
+          params: { category: category.name, page: String(i + 1) },
+          locale,
+        });
+      }
+    });
   });
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 

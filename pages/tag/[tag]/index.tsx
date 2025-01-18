@@ -6,6 +6,8 @@ import { useConfigStore } from '@/providers/configProvider';
 import CommonHead from '@/components/CommonHead';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
+import { useRouter } from 'next/router';
+import Loading from '@/components/Loading';
 
 import type { PageMeta, TagDetailProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
@@ -21,8 +23,9 @@ export interface TagIndexParams extends ParsedUrlQuery {
  * @returns
  */
 const TagIndex: FC<TagDetailProps> = (props) => {
+  const router = useRouter();
   const { tag, siteData, config, posts, resultCount } = props;
-  const { siteInfo } = siteData;
+  const { siteInfo } = siteData || {};
   const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
@@ -46,6 +49,10 @@ const TagIndex: FC<TagDetailProps> = (props) => {
     slug: 'tag/' + tag,
     type: 'website',
   };
+
+  if (router.isFallback) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -92,11 +99,15 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export const getStaticPaths: GetStaticPaths<TagIndexParams> = async () => {
+export const getStaticPaths: GetStaticPaths<TagIndexParams> = async ({
+  locales = [],
+}) => {
   const { tagOptions } = await getSiteData('tag-static-path');
 
   return {
-    paths: tagOptions.map((tag) => ({ params: { tag: tag.name } })),
+    paths: locales.flatMap((locale) =>
+      tagOptions.map((tag) => ({ params: { tag: tag.name }, locale })),
+    ),
     fallback: false,
   };
 };

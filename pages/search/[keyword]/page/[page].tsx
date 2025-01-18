@@ -7,6 +7,8 @@ import CommonHead from '@/components/CommonHead';
 import getSearchResult from '@/utils/notion/getSearchResult';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
+import Loading from '@/components/Loading';
+import { useRouter } from 'next/router';
 
 import type { PageMeta, SearchDetailPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
@@ -19,7 +21,8 @@ export interface SearchDetailPageParams extends ParsedUrlQuery {
 
 const SearchDetailPage: FC<SearchDetailPageProps> = (props) => {
   const { keyword, siteData, config, posts, page, resultCount } = props;
-  const { siteInfo } = siteData;
+  const { siteInfo } = siteData || {};
+  const router = useRouter();
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
@@ -43,6 +46,10 @@ const SearchDetailPage: FC<SearchDetailPageProps> = (props) => {
     slug: 'search/' + (keyword || ''),
     type: 'website',
   };
+
+  if (router.isFallback) {
+    return <Loading />;
+  }
 
   return (
     <>

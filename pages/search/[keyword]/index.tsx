@@ -7,6 +7,8 @@ import getSearchResult from '@/utils/notion/getSearchResult';
 import { useEffect, type FC } from 'react';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from '@/providers/configProvider';
+import Loading from '@/components/Loading';
+import { useRouter } from 'next/router';
 
 import type { GetStaticProps } from 'next';
 import type { PageMeta, SearchDetailProps } from '@/types';
@@ -18,9 +20,9 @@ export interface SearchDetailParams extends ParsedUrlQuery {
 
 const SearchDetail: FC<SearchDetailProps> = (props) => {
   const { siteData, config, posts, keyword, resultCount } = props;
-  const { siteInfo } = siteData;
+  const { siteInfo } = siteData || {};
   const { t } = useTranslation('nav');
-
+  const router = useRouter();
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
   );
@@ -44,6 +46,10 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
     type: 'website',
   };
 
+  if (router.isFallback) {
+    return <Loading />;
+  }
+
   return (
     <>
       <CommonHead pageMeta={pageMeta} />
@@ -55,7 +61,7 @@ const SearchDetail: FC<SearchDetailProps> = (props) => {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 

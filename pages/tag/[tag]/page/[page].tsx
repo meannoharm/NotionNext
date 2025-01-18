@@ -5,8 +5,10 @@ import { useSiteStore } from 'providers/siteProvider';
 import CommonHead from '@/components/CommonHead';
 import ThemeLayout from '@/components/ThemeLayout';
 import { useConfigStore } from '@/providers/configProvider';
-
+import { useRouter } from 'next/router';
 import { useEffect, type FC } from 'react';
+import Loading from '@/components/Loading';
+
 import type { PageMeta, TagDetailPageProps } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticProps, GetStaticPaths } from 'next';
@@ -18,7 +20,8 @@ export interface TagDetailPageParams extends ParsedUrlQuery {
 
 const TagDetailPage: FC<TagDetailPageProps> = (props) => {
   const { tag, siteData, config, posts, page, resultCount } = props;
-  const { siteInfo } = siteData;
+  const { siteInfo } = siteData || {};
+  const router = useRouter();
   const { t } = useTranslation('common');
   const updateSiteDataState = useSiteStore(
     (state) => state.updateSiteDataState,
@@ -42,6 +45,10 @@ const TagDetailPage: FC<TagDetailPageProps> = (props) => {
     slug: 'tag/' + tag,
     type: 'website',
   };
+
+  if (router.isFallback) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -90,7 +97,9 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export const getStaticPaths: GetStaticPaths<TagDetailPageParams> = async () => {
+export const getStaticPaths: GetStaticPaths<TagDetailPageParams> = async ({
+  locales = [],
+}) => {
   const {
     tagOptions,
     publishedPosts,
@@ -98,19 +107,22 @@ export const getStaticPaths: GetStaticPaths<TagDetailPageParams> = async () => {
   } = await getSiteData('tag-page-static-path');
   const paths: {
     params: TagDetailPageParams;
+    locale: string;
   }[] = [];
-  tagOptions?.forEach((tag) => {
-    const tagPosts = publishedPosts.filter((post) =>
-      post?.tags?.includes(tag.name),
-    );
-    const totalPages = Math.ceil(tagPosts.length / POSTS_PER_PAGE);
-    for (let i = 1; i < totalPages; i++) {
-      paths.push({ params: { tag: tag.name, page: String(i + 1) } });
-    }
+  locales.forEach((locale) => {
+    tagOptions?.forEach((tag) => {
+      const tagPosts = publishedPosts.filter((post) =>
+        post?.tags?.includes(tag.name),
+      );
+      const totalPages = Math.ceil(tagPosts.length / POSTS_PER_PAGE);
+      for (let i = 1; i < totalPages; i++) {
+        paths.push({ params: { tag: tag.name, page: String(i + 1) }, locale });
+      }
+    });
   });
   return {
     paths: paths,
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 

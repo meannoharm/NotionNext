@@ -18,6 +18,10 @@ It uses Notion as a CMS, powered by [notion-next-base](https://github.com/czgaot
 - nobelium and material theme can choice
 - Optimized for Next.js and Vercel
 
+## Warning
+
+This project is actively under development. Welcome to follow its progress, provide feedback, or contribute to its development.
+
 ## Quick Start
 
 ### Deploy on Vercel with one Click
